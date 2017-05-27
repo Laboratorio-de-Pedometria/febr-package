@@ -1,11 +1,16 @@
 Package: febr
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Brazilian Soil Iron Data Repository
+Version: 0.2.0
+Date: 2017-05-27
+Author: Alessandro Samuel-Rosa
+Maintainer: Alessandro Samuel-Rosa <alessandrosamuelrosa@gmail.com>
+Description: Make the access to the data in the Brazilian Soil Iron Data Repository as easy as possible.
+License: GPL (>= 2)
 Encoding: UTF-8
+Imports:
+    cellranger,
+    googlesheets,
+    readr
 LazyData: true
+RoxygenNote: 6.0.1
