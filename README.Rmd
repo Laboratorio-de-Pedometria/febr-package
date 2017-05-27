@@ -4,3 +4,23 @@
 Use o seguinte comando para instalar a última versão de desenvolvimento do pacote `febr`:  
 
     devtools::install_github("samuel-rosa/febr")
+    
+# Utilização
+
+O pacote `febr` possui quatro funções.
+
+Para descarregar as informações básicas de todos os conjuntos de dados, use
+
+    dts <- datasets()
+
+Já para descarregar os dados pontuais de todas as observações do solo, a função é
+
+    obs <- observations()
+    
+Descarrgar os dados das camadas/horizontes do solo, incluíndo os dados de ferro, é feito usando
+
+    lrs <- layers()
+
+Por fim, para descarregar os metadados, use
+
+    mtd <- metadata()

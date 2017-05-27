@@ -8,15 +8,33 @@
 #' @param stack.obs Should observations from different datasets be stacked on a single data frame for output?
 #' Used only with \code{which.cols = "standard"}. Defaults to \code{stack.obs = TRUE}.
 #'
-#' @param missing.coords What should be done with observations missin spatial coordinates? Options are
+#' @param missing.coords What should be done with observations missing spatial coordinates? Options are
 #' \code{"drop"} (default) and \code{"keep"}.
 #'
 #' @param progress Show progress bar?
 #'
+#' @details Standard columns are as follows:
+#' \itemize{
+#' \item \code{dataset_id}. Identification code of the respective dataset.
+#' \item \code{observation_id}. Identification code of the respective observation.
+#' \item \code{observation_date}. Date of observation.
+#' \item \code{coord_system}. Coordinate reference system.
+#' \item \code{coord_x}. Longitude or Easting.
+#' \item \code{coord_y}. Latitude or Northing.
+#' \item \code{coord_accuracy}. Accuracy with which coordinates were determined.
+#' \item \code{coord_source}. Source of the coordinates.
+#' \item \code{country_id}. Country code (ISO 3166-1 alpha-2).
+#' \item \code{state_id}. Code of the federative unit.
+#' \item \code{city_name}. Name of the city where the observation was taken.
+#' \item \code{sample_type}. Type of soil sample, i.e. simple or composed.
+#' \item \code{sample_number}. Number of soil samples taken.
+#' \item \code{sample_area}. Sampling area.
+#' }
+#'
 #' @return A list or data.frame with some or all of the data of the soil observations contained in Fe-BR.
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso www.ufsm.br/febr
+#' @seealso \url{http://www.ufsm.br/febr}
 #' @export
 #' @examples
 #' \dontrun{
@@ -79,7 +97,7 @@ observations <-
       }
 
       # Observações processadas
-      obs[[i]] <- tmp
+      obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$n[i]), tmp)
       if (progress) {
         utils::setTxtProgressBar(pb, i)
       }
