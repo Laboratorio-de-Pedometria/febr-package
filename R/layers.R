@@ -59,7 +59,8 @@ layers <-
     for (i in 1:length(sheets_keys$layer)) {
       tmp <- googlesheets::gs_key(sheets_keys$layer[i], verbose = FALSE)
       tmp <- suppressMessages(
-        googlesheets::gs_read_csv(tmp, na = c("NA", "-", ""), locale = locale, verbose = FALSE)
+        googlesheets::gs_read_csv(
+          tmp, na = c("NA", "-", ""), locale = locale, verbose = FALSE, comment = "unidade")
       )
 
       # Definir as colunas a serem mantidas
