@@ -15,18 +15,23 @@
 #'
 #' @details Standard columns and their content are as follows:
 #' \itemize{
-#' \item \code{dataset_id}. Identification code of the datasets to which soil observations belong.
+#' \item \code{dataset_id}. Identification code of the datasets in Fe-BR to which soil observations belong.
 #' \item \code{observacao_id}. Identification code of soil observations in Fe-BR.
-#' \item \code{observacao_data}. Date in which soil observations where carried out.
+#' \item \code{sisb_id}. Identification code of soil observations in the Brazilian Soil Information System
+#' maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
+#' \url{https://www.bdsolos.cnptia.embrapa.br/consulta_publica.html}.
+#' \item \code{ibge_id}. Identification code of soil observations in the database of the Brazilian Institute
+#' of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/downloads_geociencias.htm#}.
+#' \item \code{observacao_data}. Date (dd-mm-yyyy) in which soil observations were made.
 #' \item \code{coord_sistema}. Coordinate reference system used.
-#' \item \code{coord_x}. Longitude or Easting.
-#' \item \code{coord_y}. Latitude or Northing.
-#' \item \code{coord_precisao}. Precision with which x- and y-coordinates were measured.
+#' \item \code{coord_x}. Longitude (°) or Easting (m).
+#' \item \code{coord_y}. Latitude (°) or Northing (m).
+#' \item \code{coord_precisao}. Precision with which x- and y-coordinates were determined.
 #' \item \code{coord_fonte}. Source of the x- and y-coordinates.
-#' \item \code{pais_id}. Country code ISO 3166-1 alpha-2, i.e. \code{"BR"}.
-#' \item \code{estado_id}. Code of the Brazilian federative unit.
-#' \item \code{municipio_id}. Name of the city where soil observations were carried out.
-#' \item \code{amostra_tipo}. Type of soil sample, i.e. simple or composed.
+#' \item \code{pais_id}. Country code (ISO 3166-1 alpha-2), i.e. \code{"BR"}.
+#' \item \code{estado_id}. Code of the Brazilian federative units.
+#' \item \code{municipio_id}. Name of the county where soil observations were made.
+#' \item \code{amostra_tipo}. Type of soil sample taken, i.e. simple or composed.
 #' \item \code{amostra_quanti}. Number of soil samples taken.
 #' \item \code{amostra_area}. Sampling area.
 #' }
@@ -38,7 +43,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' res <- observations(which.cols = "standard", stack.obs = TRUE)
+#' res <- observations(which.cols = "standard", stack.obs = TRUE, missing.coords = "drop", progress = TRUE)
 #' str(res)
 #' }
 ###############################################################################################################
@@ -65,30 +70,44 @@ observations <-
 
     # Descarregar chaves de identificação das planilhas do repositório
     sheets_keys <- googlesheets::gs_key("18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", verbose = FALSE)
-    sheets_keys <- suppressMessages(
-      googlesheets::gs_read(sheets_keys, range = cellranger::cell_cols(3), verbose = FALSE)
-    )
+    sheets_keys <- suppressMessages(googlesheets::gs_read(sheets_keys, verbose = FALSE))
 
     # Definir opções de local
     locale <- readr::locale(decimal_mark = ",")
 
+    # Definir as colunas padrão
+    if (which.cols == "standard") {
+      target_cols <-
+        c("observacao_id", "sisb_id", "ibge_id", "observacao_data", "coord_sistema", "coord_x", "coord_y",
+          "coord_precisao", "coord_fonte", "pais_id", "estado_id", "municipio_id", "amostra_tipo",
+          "amostra_quanti", "amostra_area")
+    }
+
     # Descarregar planilhas com observações
     if (progress) {
-      pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$observation), style = 3)
+      pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$observacao), style = 3)
     }
     obs <- list()
-    for (i in 1:length(sheets_keys$observation)) {
-      tmp <- googlesheets::gs_key(sheets_keys$observation[i], verbose = FALSE)
+    for (i in 1:length(sheets_keys$observacao)) {
+      tmp <- googlesheets::gs_key(sheets_keys$observacao[i], verbose = FALSE)
       tmp <- suppressMessages(
         googlesheets::gs_read_csv(tmp, na = c("NA", "-", ""), locale = locale, verbose = FALSE)
       )
 
       # Definir as colunas a serem mantidas
       if (which.cols == "standard") {
-        cols <-
-          c("observation_id", "observation_date", "coord_system", "coord_x", "coord_y", "coord_accuracy",
-            "coord_source", "country_id", "state_id", "city_id", "sample_type", "sample_number", "sample_area")
+        cols <- colnames(tmp) %in% target_cols
         tmp <- tmp[, cols]
+
+        # 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros
+        # durante a fusão das tabelas devido ao tipo de dado.
+        tmp$observacao_id <- as.character(tmp$observacao_id)
+        if ("sisb_id" %in% colnames(tmp)) {
+          tmp$sisb_id <- as.character(tmp$sisb_id)
+        }
+        if ("ibge_id" %in% colnames(tmp)) {
+          tmp$ibge_id <- as.character(tmp$ibge_id)
+        }
       }
 
       # Se necessário, descartar observações sem coordenadas
@@ -96,8 +115,11 @@ observations <-
         tmp <- tmp[!is.na(tmp$coord_x), ]
       }
 
-      # Observações processadas
-      obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$n[i]), tmp)
+      # Adicionar 'dataset_id' às observações processadas.
+      # Verificar se, com a eliminação das observações sem coordenadas, ainda restou alguma observação
+      if (nrow(tmp) >= 1) {
+        obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
+      }
       if (progress) {
         utils::setTxtProgressBar(pb, i)
       }
@@ -108,7 +130,8 @@ observations <-
 
     # Empilhar dados se necessário
     if (stack.obs) {
-      obs <- do.call(what = rbind, args = obs)
+      # obs <- do.call(what = rbind, args = obs)
+      obs <- suppressWarnings(dplyr::bind_rows(obs))
     }
 
     return (obs)
