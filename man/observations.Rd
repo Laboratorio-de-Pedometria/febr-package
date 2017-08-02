@@ -5,7 +5,7 @@
 \title{Get soil observations}
 \usage{
 observations(which.cols = "standard", stack.obs = TRUE,
-  missing.coords = "drop", progress = TRUE)
+  missing.coords = "drop", target.crs = "EPSG:4674", progress = TRUE)
 }
 \arguments{
 \item{which.cols}{Which columns should be returned? Options are \code{"standard"} (default) and
@@ -17,6 +17,11 @@ output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.o
 \item{missing.coords}{What should be done with soil observations missing spatial coordinates? Options are
 \code{"drop"} (default) and \code{"keep"}.}
 
+\item{target.crs}{EPSG code defining the target coordinate reference system to which spatial coordinates
+should be transformed. Used only with \code{stack.obs = TRUE}. Defaults to \code{target.crs = "EPSG:4674"},
+i.e. SIRGAS 2000, the standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}.
+If set to \code{target.crs = NULL} then the native spatial coordinates are returned.}
+
 \item{progress}{Show download progress bar?}
 }
 \value{
@@ -24,7 +29,7 @@ A list or data.frame with some or all of the data of soil observations contained
 }
 \description{
 Download soil observation-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR) --
-\url{http://coral.ufsm.br/febr/}.
+\url{http://www.ufsm.br/febr}.
 }
 \details{
 Standard columns and their content are as follows:
@@ -37,7 +42,7 @@ maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
 \item \code{ibge_id}. Identification code of soil observations in the database of the Brazilian Institute
 of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/downloads_geociencias.htm#}.
 \item \code{observacao_data}. Date (dd-mm-yyyy) in which soil observations were made.
-\item \code{coord_sistema}. EPSG code of the coordinate reference system, see
+\item \code{coord_sistema}. EPSG code of the coordinate reference system -- see more at
 \url{http://spatialreference.org/ref/epsg/}.
 \item \code{coord_x}. Longitude (°) or Easting (m).
 \item \code{coord_y}. Latitude (°) or Northing (m).

@@ -1,7 +1,7 @@
 #' Get soil observations
 #'
 #' Download soil observation-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR) --
-#' \url{http://coral.ufsm.br/febr/}.
+#' \url{http://www.ufsm.br/febr}.
 #'
 #' @param which.cols Which columns should be returned? Options are \code{"standard"} (default) and
 #' \code{"all"}.
@@ -29,7 +29,7 @@
 #' \item \code{ibge_id}. Identification code of soil observations in the database of the Brazilian Institute
 #' of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/downloads_geociencias.htm#}.
 #' \item \code{observacao_data}. Date (dd-mm-yyyy) in which soil observations were made.
-#' \item \code{coord_sistema}. EPSG code of the coordinate reference system, see
+#' \item \code{coord_sistema}. EPSG code of the coordinate reference system -- see more at
 #' \url{http://spatialreference.org/ref/epsg/}.
 #' \item \code{coord_x}. Longitude (°) or Easting (m).
 #' \item \code{coord_y}. Latitude (°) or Northing (m).
