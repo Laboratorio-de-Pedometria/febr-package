@@ -100,7 +100,7 @@ observations <-
         tmp <- tmp[, cols]
 
         # 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros
-        # durante a fusão das tabelas devido ao tipo de dado.
+        # durante o empilhamento das tabelas devido ao tipo de dado.
         tmp$observacao_id <- as.character(tmp$observacao_id)
         if ("sisb_id" %in% colnames(tmp)) {
           tmp$sisb_id <- as.character(tmp$sisb_id)
@@ -116,7 +116,7 @@ observations <-
       }
 
       # Adicionar 'dataset_id' às observações processadas.
-      # Verificar se, com a eliminação das observações sem coordenadas, ainda restou alguma observação
+      # Verificar se, com a eliminação das observações sem coordenadas, restou alguma observação
       if (nrow(tmp) >= 1) {
         obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
       }
@@ -128,10 +128,9 @@ observations <-
       close(pb)
     }
 
-    # Empilhar dados se necessário
+    # Se necessário, empilhar tabelas e colocar colunas na ordem padrão
     if (stack.obs) {
-      # obs <- do.call(what = rbind, args = obs)
-      obs <- suppressWarnings(dplyr::bind_rows(obs))
+      obs <- suppressWarnings(dplyr::bind_rows(obs))[, target_cols]
     }
 
     return (obs)
