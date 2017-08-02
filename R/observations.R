@@ -1,6 +1,7 @@
 #' Get soil observations
 #'
-#' Download soil observation-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR).
+#' Download soil observation-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR) --
+#' \url{http://coral.ufsm.br/febr/}.
 #'
 #' @param which.cols Which columns should be returned? Options are \code{"standard"} (default) and
 #' \code{"all"}.
@@ -11,7 +12,7 @@
 #' @param missing.coords What should be done with soil observations missing spatial coordinates? Options are
 #' \code{"drop"} (default) and \code{"keep"}.
 #'
-#' @param progress Show progress bar?
+#' @param progress Show download progress bar?
 #'
 #' @details Standard columns and their content are as follows:
 #' \itemize{
@@ -23,14 +24,15 @@
 #' \item \code{ibge_id}. Identification code of soil observations in the database of the Brazilian Institute
 #' of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/downloads_geociencias.htm#}.
 #' \item \code{observacao_data}. Date (dd-mm-yyyy) in which soil observations were made.
-#' \item \code{coord_sistema}. Coordinate reference system used.
+#' \item \code{coord_sistema}. EPSG code of the coordinate reference system, see
+#' \url{http://spatialreference.org/ref/epsg/}.
 #' \item \code{coord_x}. Longitude (°) or Easting (m).
 #' \item \code{coord_y}. Latitude (°) or Northing (m).
-#' \item \code{coord_precisao}. Precision with which x- and y-coordinates were determined.
+#' \item \code{coord_precisao}. Precision with which x- and y-coordinates were determined (m).
 #' \item \code{coord_fonte}. Source of the x- and y-coordinates.
 #' \item \code{pais_id}. Country code (ISO 3166-1 alpha-2), i.e. \code{"BR"}.
 #' \item \code{estado_id}. Code of the Brazilian federative units.
-#' \item \code{municipio_id}. Name of the county where soil observations were made.
+#' \item \code{municipio_id}. Name of the Brazilian county where soil observations were made.
 #' \item \code{amostra_tipo}. Type of soil sample taken, i.e. simple or composed.
 #' \item \code{amostra_quanti}. Number of soil samples taken.
 #' \item \code{amostra_area}. Sampling area.

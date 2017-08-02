@@ -11,42 +11,49 @@ observations(which.cols = "standard", stack.obs = TRUE,
 \item{which.cols}{Which columns should be returned? Options are \code{"standard"} (default) and
 \code{"all"}.}
 
-\item{stack.obs}{Should observations from different datasets be stacked on a single data frame for output?
-Used only with \code{which.cols = "standard"}. Defaults to \code{stack.obs = TRUE}.}
+\item{stack.obs}{Should soil observations from different datasets be stacked on a single data frame for
+output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.obs = TRUE}.}
 
-\item{missing.coords}{What should be done with observations missing spatial coordinates? Options are
+\item{missing.coords}{What should be done with soil observations missing spatial coordinates? Options are
 \code{"drop"} (default) and \code{"keep"}.}
 
-\item{progress}{Show progress bar?}
+\item{progress}{Show download progress bar?}
 }
 \value{
-A list or data.frame with some or all of the data of the soil observations contained in Fe-BR.
+A list or data.frame with some or all of the data of soil observations contained in Fe-BR.
 }
 \description{
-Download observation-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR).
+Download soil observation-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR) --
+\url{http://coral.ufsm.br/febr/}.
 }
 \details{
-Standard columns are as follows:
+Standard columns and their content are as follows:
 \itemize{
-\item \code{dataset_id}. Identification code of the respective dataset.
-\item \code{observation_id}. Identification code of the respective observation.
-\item \code{observation_date}. Date of observation.
-\item \code{coord_system}. Coordinate reference system.
-\item \code{coord_x}. Longitude or Easting.
-\item \code{coord_y}. Latitude or Northing.
-\item \code{coord_accuracy}. Accuracy with which coordinates were determined.
-\item \code{coord_source}. Source of the coordinates.
-\item \code{country_id}. Country code (ISO 3166-1 alpha-2).
-\item \code{state_id}. Code of the federative unit.
-\item \code{city_name}. Name of the city where the observation was taken.
-\item \code{sample_type}. Type of soil sample, i.e. simple or composed.
-\item \code{sample_number}. Number of soil samples taken.
-\item \code{sample_area}. Sampling area.
+\item \code{dataset_id}. Identification code of the datasets in Fe-BR to which soil observations belong.
+\item \code{observacao_id}. Identification code of soil observations in Fe-BR.
+\item \code{sisb_id}. Identification code of soil observations in the Brazilian Soil Information System
+maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
+\url{https://www.bdsolos.cnptia.embrapa.br/consulta_publica.html}.
+\item \code{ibge_id}. Identification code of soil observations in the database of the Brazilian Institute
+of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/downloads_geociencias.htm#}.
+\item \code{observacao_data}. Date (dd-mm-yyyy) in which soil observations were made.
+\item \code{coord_sistema}. EPSG code of the coordinate reference system, see
+\url{http://spatialreference.org/ref/epsg/}.
+\item \code{coord_x}. Longitude (°) or Easting (m).
+\item \code{coord_y}. Latitude (°) or Northing (m).
+\item \code{coord_precisao}. Precision with which x- and y-coordinates were determined (m).
+\item \code{coord_fonte}. Source of the x- and y-coordinates.
+\item \code{pais_id}. Country code (ISO 3166-1 alpha-2), i.e. \code{"BR"}.
+\item \code{estado_id}. Code of the Brazilian federative units.
+\item \code{municipio_id}. Name of the Brazilian county where soil observations were made.
+\item \code{amostra_tipo}. Type of soil sample taken, i.e. simple or composed.
+\item \code{amostra_quanti}. Number of soil samples taken.
+\item \code{amostra_area}. Sampling area.
 }
 }
 \examples{
 \dontrun{
-res <- observations(which.cols = "standard", stack.obs = TRUE)
+res <- observations(which.cols = "standard", stack.obs = TRUE, missing.coords = "drop", progress = TRUE)
 str(res)
 }
 }
