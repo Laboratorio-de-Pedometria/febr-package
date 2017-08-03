@@ -12,7 +12,9 @@
 #' @param missing.data What should be done with soil layers missing iron data? Options are \code{"drop"}
 #' (default) and \code{"keep"}.
 #'
-#' @param harmonization Level of harmonization for the data.
+#' @param harmonization Level of harmonization that should be applied to the data. Options are \code{1}, for
+#' harmonization based only on the extraction method, and \code{2} (default) for harmonization based on both
+#' extraction and measurement methods. Generally used in conjunction with \code{stack.layers = TRUE}.
 #'
 #' @param progress Show progress bar?
 #'
@@ -25,11 +27,10 @@
 #' \item \code{amostra_codigo}. Laboratory number of the soil samples.
 #' \item \code{profund_sup}. Upper boundary of soil layers (cm).
 #' \item \code{profund_inf}. Lower boundary of soil layers (cm).
-#' \item \code{fe_xxx_yyy}. Soil iron content data, with \code{xxx} being a given extractant and \code{yyy}
-#' being a given determination technique/equipment.
+#' \item \code{fe_xxx_yyy}. Soil iron content data, with \code{xxx} being a given extraction method and
+#' \code{yyy} being a given measurement method.
 #' }
-#'
-#' @return A list with some or all of the data of the soil layers contained in Fe-BR.
+#' @return A list or data.frame with some or all of the data of soil layers contained in Fe-BR.
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \url{http://www.ufsm.br/febr}
@@ -41,8 +42,8 @@
 #' }
 ###############################################################################################################
 layers <-
-  function (which.cols = "standard", stack.layers = TRUE, missing.data = "drop",
-            harmonization = 2, progress = TRUE) {
+  function (which.cols = "standard", stack.layers = TRUE, missing.data = "drop", harmonization = 2,
+            progress = TRUE) {
 
     # Verificar consistência dos parâmetros
     if(!which.cols %in% c("standard", "all")) {
@@ -140,7 +141,6 @@ layers <-
         tmp[, fe_cols] <- sapply(1:length(fe_cols), function (j) {
           round(tmp[, fe_cols[j]], digits = fe_stand$digits[j])
         })
-
         # Harmonizar dados de ferro
         if (harmonization == 1) {
           new_colnames <- matrix(stringr::str_split_fixed(colnames(tmp[, fe_cols]), "_", 3)[, 1:2], ncol = 2)
@@ -154,7 +154,6 @@ layers <-
           }
           colnames(tmp)[colnames(tmp) %in% fe_cols] <- new_colnames
         }
-
         # Se as tabelas forem empilhadas, então 'observacao_id', 'profund_sup' e 'profund_inf' precisam estar
         # no formato de caracter para evitar erros devido ao tipo de dado.
         if (stack.layers) {
@@ -162,7 +161,6 @@ layers <-
           tmp$profund_sup <- as.character(tmp$profund_sup)
           tmp$profund_inf <- as.character(tmp$profund_inf)
         }
-
         # Adicionar 'dataset_id' às camadas processadas.
         res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
 
@@ -172,9 +170,7 @@ layers <-
           a$units <- c(rep("unitless", 2), gsub("-", "unitless", as.character(unit)[-1]))
           attributes(res[[i]]) <- a
         }
-
       }
-
       if (progress) {
         utils::setTxtProgressBar(pb, i)
       }
@@ -182,7 +178,6 @@ layers <-
     if (progress) {
       close(pb)
     }
-
     # Se necessário, empilhar tabelas, adicionando informações sobre as unidades de medida
     if (stack.layers) {
       res <- suppressWarnings(dplyr::bind_rows(res))
@@ -193,74 +188,5 @@ layers <-
       a$units <- c(rep("unitless", 5), rep("cm", 2), as.character(fe_stand))
       attributes(res) <- a
     }
-
-    return (res)
-  }
-
-# Definir unidade e número de casas decimais para cada tipo de dado de ferro ##################################
-standards <-
-  function (x = "fe", code) {
-
-    switch(
-      x,
-      "fe" = {
-        # Segundo a terceira edição do Manual de Métodos de Análise de Solo (Donagemma et al. 2011), as
-        # seguintes convenções devem ser aplicadas:
-        # - Ferro no extrato sulfúrico: g/kg, com 1 casa decimal
-        # - Ferro livre: g/kg, com 2 casas decimais
-        # - Microelementos: mg/kg, sem casa decimal
-        # - Ataque triácido: g/kg, com 1 casa decimal
-        res <- matrix(
-          c("aquaregia",   "g/kg",  1, "Ácido clorídrico + Ácido nítrico",
-            "cloridrico",  "g/kg",  1, "Ácido clorídrico",
-            "ditionito",   "g/kg",  2, "Citrato-ditionito-bicarbonato",
-            "dtpa",        "mg/kg", 0, "DTPA",
-            "mehlich",     "mg/kg", 0, "Mehlich",
-            "oxalato",     "g/kg",  2, "Oxalato ácido de amônio",
-            "pirofosfato", "g/kg",  2, "Pirofosfato de sódio",
-            "rggh",        "-",     3, "Razão goethita/(goethita+hematita)",
-            "sulfurico",   "g/kg",  1, "Ácido sulfúrico",
-            "triacido",    "g/kg",  1, "Ácido perclórico + Ácido nítrico + Ácido fluorídrico"),
-          ncol = 4, byrow = TRUE
-        )
-        res <- as.data.frame(res, stringsAsFactors = FALSE)
-        colnames(res) <- c("code", "unit", "digits", "description")
-        res$digits <- as.numeric(res$digits)
-      }
-    )
-
-    if (!missing(code)) {
-      res <- res[res$code %in% code, ]
-    }
-
-    return (res)
-  }
-
-# Conversion of units #########################################################################################
-conversions <-
-  function (source, target) {
-
-    # Fatores de conversão entre unidades
-    # Conversão de massa-volume para massa-massa é feita assumindo uma densidade da alíquota de solo usada
-    # para as análises igual a 1.00 g/cm^3.
-    switch(
-      target,
-      "mg/kg" = {
-        res <- data.frame(
-          source = c("g/kg", "%",   "mg/dm^3"),
-          factor = c(1000,   10000, 1)
-        )
-        res <- res$factor[res$source %in% source]
-      },
-      "g/kg" = {
-        res <- data.frame(
-          source = c("mg/kg", "%", "mg/dm^3"),
-          factor = c(1/1000,  10,  1/1000)
-        )
-        res <- res$factor[res$source %in% source]
-      }
-    )
-
-    res <- data.frame(source, target, factor = res)
     return (res)
   }

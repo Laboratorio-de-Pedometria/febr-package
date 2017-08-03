@@ -4,37 +4,49 @@
 \alias{layers}
 \title{Get soil layers}
 \usage{
-layers(which.cols = "standard", progress = TRUE)
+layers(which.cols = "standard", stack.layers = TRUE,
+  missing.data = "drop", harmonization = 2, progress = TRUE)
 }
 \arguments{
 \item{which.cols}{Which columns should be returned? Options are \code{"standard"} (default) and
 \code{"all"}.}
 
+\item{stack.layers}{Should soil layers from different datasets be stacked on a single data frame for
+output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.layers = TRUE}.}
+
+\item{missing.data}{What should be done with soil layers missing iron data? Options are \code{"drop"}
+(default) and \code{"keep"}.}
+
+\item{harmonization}{Level of harmonization that should be applied to the data. Options are \code{1}, for
+harmonization based only on the extraction method, and \code{2} (default) for harmonization based on both
+extraction and measurement methods. Generally used in conjunction with \code{stack.layers = TRUE}.}
+
 \item{progress}{Show progress bar?}
 }
 \value{
-A list with some or all of the data of the soil layers contained in Fe-BR.
+A list or data.frame with some or all of the data of soil layers contained in Fe-BR.
 }
 \description{
-Download layer-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR).
+Download soil layer-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR)  --
+\url{http://www.ufsm.br/febr}.
 }
 \details{
-Standard columns are as follows:
+Standard columns and their content are as follows:
 \itemize{
-\item \code{dataset_id}. Identification code of the respective dataset.
-\item \code{observation_id}. Identification code of the respective observation.
-\item \code{layer_number}. Sequential layer number, from top to bottom.
-\item \code{layer_name}. Layer designation according to some standard soil description guidelines.
-\item \code{sample_code}. Laboratory number of the soil sample.
-\item \code{upper_depth}. Limite superior da camada.
-\item \code{lower_depth}. Limite inferior da camada.
-\item \code{fe_xxx_yyy}. Soil iron content data, with \code{xxx} being a given extractant and \code{yyy}
-being a given determination technique/equipment.
+\item \code{dataset_id}. Identification code of the datasets in Fe-BR to which soil observations belong.
+\item \code{observacao_id}. Identification code of soil observations in Fe-BR.
+\item \code{camada_numero}. Sequential layer number, from top to bottom.
+\item \code{camada_nome}. Layer designation according to some standard soil description guidelines.
+\item \code{amostra_codigo}. Laboratory number of the soil samples.
+\item \code{profund_sup}. Upper boundary of soil layers (cm).
+\item \code{profund_inf}. Lower boundary of soil layers (cm).
+\item \code{fe_xxx_yyy}. Soil iron content data, with \code{xxx} being a given extraction method and
+\code{yyy} being a given measurement method.
 }
 }
 \examples{
 \dontrun{
-res <- layers()
+res <- layers(which.cols = "standard", stack.layers = TRUE, missing.data = "drop", progress = TRUE)
 str(res)
 }
 }
