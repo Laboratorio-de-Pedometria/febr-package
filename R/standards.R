@@ -1,6 +1,6 @@
-#' Standards
+#' Standards for soil variables
 #'
-#' Standards for soil variables in the Brazilian Soil Iron Data Repository (Fe-BR)  -- 
+#' Definitions of standards for soil variables in the Brazilian Soil Iron Data Repository (Fe-BR)  -- 
 #' \url{http://www.ufsm.br/febr}.
 #'
 #' @param soil.var Identification code of the soil variable. The only currently available option is 
@@ -16,14 +16,18 @@
 #' @return A data.frame.
 #'
 #' @references
-#' Donagemma, G. K., Campos, D. V. B., Calderano, S. B., Teixeira, W. G., Viana, J. H. M. \emph{Manual de 
-#' Métodos de Análise de Solo}. Rio de Janeiro: Embrapa Solos, p. 230, 2011.
+#' Donagemma, G. K., Campos, D. V. B., Calderano, S. B., Teixeira, W. G. and Viana, J. H. M. (2011)
+#' \emph{Manual de Métodos de Análise de Solo}. Rio de Janeiro: Embrapa Solos.
 #' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \url{http://www.ufsm.br/febr}
 #' @export
 #' @examples
+#' # All standards
 #' standards()
+#' 
+#' # Specific stantdard
+#' standards(extraction.method = "sulfurico")
 #' 
 # Definir unidade e número de casas decimais para cada tipo de dado de ferro ##################################
 standards <-

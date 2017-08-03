@@ -33,7 +33,7 @@
 #' @return A list or data.frame with some or all of the data of soil layers contained in Fe-BR.
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso \url{http://www.ufsm.br/febr}
+#' @seealso \url{http://www.ufsm.br/febr}, \code{\link[febr]{standards}}, \code{\link[febr]{conversions}}
 #' @export
 #' @examples
 #' \dontrun{
