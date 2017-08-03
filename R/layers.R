@@ -123,11 +123,11 @@ layers <-
 
         # Identificar tipos de dado de ferro para padronização da unidade de medida e número de casas decimais
         fe_type <- stringr::str_split_fixed(fe_cols, "_", n = 3)[, 2]
-        fe_stand <- lapply(fe_type, function (y) standards(x = "fe", code = y))
+        fe_stand <- lapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y))
         fe_stand <- do.call(rbind, fe_stand)
 
         # Se necessário, padronizar unidades de medida
-        idx_unit <- which(!unit[, fe_cols] %in% unique(standards(x = "fe")$unit))
+        idx_unit <- which(!unit[, fe_cols] %in% unique(standards(soil.var = "fe")$unit))
         if (length(idx_unit) >= 1) {
           conv_factor <- lapply(1:length(fe_type[idx_unit]), function (j) {
             conversions(source = unlist(unit[, fe_cols[idx_unit]])[[j]], target = fe_stand$unit[idx_unit][j])
@@ -182,7 +182,7 @@ layers <-
       res <- suppressWarnings(dplyr::bind_rows(res))
       fe_cols <- colnames(res)[grep("^fe_", colnames(res))]
       fe_type <- stringr::str_split_fixed(fe_cols, "_", n = 3)[, 2]
-      fe_stand <- sapply(fe_type, function (y) standards(x = "fe", code = y)$unit)
+      fe_stand <- sapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y)$unit)
       a <- attributes(res)
       a$units <- c(rep("unitless", 5), rep("cm", 2), as.character(fe_stand))
       attributes(res) <- a
