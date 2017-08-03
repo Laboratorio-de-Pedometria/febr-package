@@ -12,6 +12,8 @@
 #' @param missing.data What should be done with soil layers missing iron data? Options are \code{"drop"}
 #' (default) and \code{"keep"}.
 #'
+#' @param harmonization Level of harmonization for the data.
+#'
 #' @param progress Show progress bar?
 #'
 #' @details Standard columns and their content are as follows:
@@ -40,11 +42,11 @@
 ###############################################################################################################
 layers <-
   function (which.cols = "standard", stack.layers = TRUE, missing.data = "drop",
-            harmonization = list(level = 1), progress = TRUE) {
+            harmonization = 2, progress = TRUE) {
 
     # Verificar consistência dos parâmetros
     if(!which.cols %in% c("standard", "all")) {
-      stop (paste("unknown value '", which.cols, "' passed to parameter which.cols", sep = ""))
+      stop (paste("Unknown value '", which.cols, "' passed to parameter which.cols", sep = ""))
     }
     if (!is.logical(stack.layers)) {
       stop (paste("Unknown value '", stack.layers, "' passed to parameter stack.layers", sep = ""))
@@ -53,8 +55,14 @@ layers <-
       message("stack.layers can only be used with standard columns... switching to FALSE")
       stack.layers <- FALSE
     }
+    if (!missing.data %in% c("drop", "keep")) {
+      stop (paste("Unknown value '", missing.data, "' passed to parameter missing.data", sep = ""))
+    }
+    if (!harmonization %in% c(1, 2)) {
+      stop (paste("Unknown value '", harmonization, "' passed to parameter harmonization", sep = ""))
+    }
     if (!is.logical(progress)) {
-      stop (paste("unknown value '", progress, "' passed to parameter progress", sep = ""))
+      stop (paste("Unknown value '", progress, "' passed to parameter progress", sep = ""))
     }
 
     # Descarregar chaves de identificação das planilhas do repositório
@@ -74,28 +82,27 @@ layers <-
     if (progress) {
       pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$camada), style = 3)
     }
-    obs <- list()
+    res <- list()
     for (i in 1:length(sheets_keys$camada)) {
       tmp <- googlesheets::gs_key(sheets_keys$camada[i], verbose = FALSE)
       unit <- suppressMessages(googlesheets::gs_read_csv(tmp, locale = locale, verbose = FALSE, n_max = 1))
-
-      # Solução rápida para conjuntos de dados para os quais ainda não sabemos a unidade de medida
+      # Solução rápida e suja enquanto as unidade de medida não são padronizadas
       unit[which(unit %in% "???")] <- "g/kg"
-
+      unit[which(unit %in% "mg/dm3")] <- "mg/dm^3"
       tmp <- suppressMessages(
         googlesheets::gs_read_csv(
           tmp, na = c("NA", "-", ""), locale = locale, verbose = FALSE, comment = "unidade")
       )
 
-      # Identificar colunas com dados de ferro
+      # Identificar colunas potencialmente com dados de ferro
       fe_cols <- colnames(tmp)[grep("^fe_", colnames(tmp))]
 
       # Se houver, descartar colunas sem dados de ferro, atualizando a lista dos nomes das colunas com dados
       # de ferro
-      if (any(apply(tmp[, fe_cols], 2, function (x) all(is.na(x))))) {
-        idx <- which(apply(tmp[, fe_cols], 2, function (x) all(is.na(x))))
-        tmp <- tmp[, !colnames(tmp) %in% fe_cols[idx]]
-        fe_cols <- fe_cols[-idx]
+      idx_na <- which(apply(tmp[, fe_cols], 2, function (x) all(is.na(x))))
+      if (length(idx_na) >= 1) {
+        tmp <- tmp[, !colnames(tmp) %in% fe_cols[idx_na]]
+        fe_cols <- fe_cols[-idx_na]
       }
 
       # Definir as colunas a serem mantidas
@@ -120,13 +127,13 @@ layers <-
         fe_stand <- do.call(rbind, fe_stand)
 
         # Se necessário, padronizar unidades de medida
-        if (any(!unit[, fe_cols] %in% unique(standards(x = "fe")$unit))) {
-          idx <- which(!unit[, fe_cols] %in% unique(standards(x = "fe")$unit))
-          conv_factor <- lapply(1:length(fe_type[idx]), function (j) {
-            conversions(source = unlist(unit[, fe_cols[idx]])[[j]], target = fe_stand$unit[idx][j])
+        idx_unit <- which(!unit[, fe_cols] %in% unique(standards(x = "fe")$unit))
+        if (length(idx_unit) >= 1) {
+          conv_factor <- lapply(1:length(fe_type[idx_unit]), function (j) {
+            conversions(source = unlist(unit[, fe_cols[idx_unit]])[[j]], target = fe_stand$unit[idx_unit][j])
           })
           conv_factor <- do.call(rbind, conv_factor)
-          tmp[fe_cols[idx]] <- t(t(tmp[fe_cols[idx]]) * conv_factor$factor)
+          tmp[fe_cols[idx_unit]] <- t(t(tmp[fe_cols[idx_unit]]) * conv_factor$factor)
         }
 
         # Padronizar número de casas decimais
@@ -135,7 +142,7 @@ layers <-
         })
 
         # Harmonizar dados de ferro
-        if (harmonization$level == 1) {
+        if (harmonization == 1) {
           new_colnames <- matrix(stringr::str_split_fixed(colnames(tmp[, fe_cols]), "_", 3)[, 1:2], ncol = 2)
           new_colnames <- apply(new_colnames, 1, paste, collapse = "_", sep = "")
 
@@ -157,7 +164,15 @@ layers <-
         }
 
         # Adicionar 'dataset_id' às camadas processadas.
-        obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
+        res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
+
+        # Se as tabelas não são empilhadas, adicionar informação sobre unidade de medida
+        if (!stack.layers) {
+          a <- attributes(res[[i]])
+          a$units <- c(rep("unitless", 2), gsub("-", "unitless", as.character(unit)[-1]))
+          attributes(res[[i]]) <- a
+        }
+
       }
 
       if (progress) {
@@ -168,12 +183,18 @@ layers <-
       close(pb)
     }
 
-    # Se necessário, empilhar tabelas
+    # Se necessário, empilhar tabelas, adicionando informações sobre as unidades de medida
     if (stack.layers) {
-      obs <- suppressWarnings(dplyr::bind_rows(obs))
+      res <- suppressWarnings(dplyr::bind_rows(res))
+      fe_cols <- colnames(res)[grep("^fe_", colnames(res))]
+      fe_type <- stringr::str_split_fixed(fe_cols, "_", n = 3)[, 2]
+      fe_stand <- sapply(fe_type, function (y) standards(x = "fe", code = y)$unit)
+      a <- attributes(res)
+      a$units <- c(rep("unitless", 5), rep("cm", 2), as.character(fe_stand))
+      attributes(res) <- a
     }
 
-    return (obs)
+    return (res)
   }
 
 # Definir unidade e número de casas decimais para cada tipo de dado de ferro ##################################
@@ -220,18 +241,20 @@ conversions <-
   function (source, target) {
 
     # Fatores de conversão entre unidades
+    # Conversão de massa-volume para massa-massa é feita assumindo uma densidade da alíquota de solo usada
+    # para as análises igual a 1.00 g/cm^3.
     switch(
       target,
       "mg/kg" = {
         res <- data.frame(
-          source = c("g/kg", "%",   "mg/dm3"),
+          source = c("g/kg", "%",   "mg/dm^3"),
           factor = c(1000,   10000, 1)
         )
         res <- res$factor[res$source %in% source]
       },
       "g/kg" = {
         res <- data.frame(
-          source = c("mg/kg", "%", "mg/dm3"),
+          source = c("mg/kg", "%", "mg/dm^3"),
           factor = c(1/1000,  10,  1/1000)
         )
         res <- res$factor[res$source %in% source]
