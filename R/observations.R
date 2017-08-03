@@ -171,7 +171,7 @@ observations <-
           } else {
             j <- 1:length(obs)
           }
-          obs <- lapply(obs[j], function (x) {
+          obs[j] <- lapply(obs[j], function (x) {
             sp::coordinates(x) <- c("coord_x", "coord_y")
             sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
             x <- sp::spTransform(x, sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
