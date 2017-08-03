@@ -58,7 +58,7 @@ of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/down
 }
 \examples{
 \dontrun{
-res <- observations(which.cols = "standard", stack.obs = TRUE, missing.coords = "drop", progress = TRUE)
+res <- observations(which.cols = "standard", stack.obs = TRUE, missing.coords = "drop")
 str(res)
 }
 }
