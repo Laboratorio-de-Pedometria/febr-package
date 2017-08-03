@@ -38,6 +38,22 @@ standards <-
       stop (paste("Unknown value '", soil.var, "' passed to parameter soil.var", sep = ""))
     }
     
+    # checking R files for non-ASCII characters ... WARNING
+    # Found the following file with non-ASCII characters:
+      # standards.R
+    # Portable packages must use only ASCII characters in their R code, except perhaps in comments.
+    # Use \uxxxx escapes for other characters.
+    # Use sprintf("%X", as.integer(charToRaw("£"))) to know the hexadecimal number of your character.
+    # http://www.javascripter.net/faq/accentedcharacters.htm
+    # Á: \u00C1
+    # á: \u00E1
+    # ã: \u00E3
+    # é: \u00E9
+    # í: \u00ED
+    # ó: \u00F3
+    # ô: \u00F4
+    # ú: \u00FA
+    
     switch(
       soil.var,
       "fe" = {
@@ -48,16 +64,24 @@ standards <-
         # - Microelementos: mg/kg, sem casa decimal
         # - Ataque triácido: g/kg, com 1 casa decimal
         res <- matrix(
-          c("aquaregia",   "g/kg",  1, "Ácido clorídrico + Ácido nítrico",
-            "cloridrico",  "g/kg",  1, "Ácido clorídrico",
+          c(# Ácido clorídrico + Ácido nítrico
+            "aquaregia",   "g/kg",  1, "\u00C1cido clor\u00EDdrico + \u00C1cido n\u00EDtrico",
+            # Ácido clorídrico,
+            "cloridrico",  "g/kg",  1, "\u00C1cido clor\u00EDdrico",
             "ditionito",   "g/kg",  2, "Citrato-ditionito-bicarbonato",
             "dtpa",        "mg/kg", 0, "DTPA",
             "mehlich",     "mg/kg", 0, "Mehlich",
-            "oxalato",     "g/kg",  2, "Oxalato ácido de amônio",
-            "pirofosfato", "g/kg",  2, "Pirofosfato de sódio",
-            "rggh",        "-",     3, "Razão goethita/(goethita+hematita)",
-            "sulfurico",   "g/kg",  1, "Ácido sulfúrico",
-            "triacido",    "g/kg",  1, "Ácido perclórico + Ácido nítrico + Ácido fluorídrico"),
+            # Oxalato ácido de amônio
+            "oxalato",     "g/kg",  2, "Oxalato \u00E1cido de am\u00F4nio",
+            # Pirofosfato de sódio
+            "pirofosfato", "g/kg",  2, "Pirofosfato de s\u00F3dio",
+            # Razão goethita/(goethita+hematita)
+            "rggh",        "-",     3, "Raz\u00E3o goethita/(goethita+hematita)",
+            # Ácido sulfúrico
+            "sulfurico",   "g/kg",  1, "\u00C1cido sulf\u00FArico",
+            # Ácido perclórico + Ácido nítrico + Ácido fluorídrico
+            "triacido",    "g/kg",  1, 
+                         "\u00C1cido percl\u00F3rico + \u00C1cido n\u00EDtrico + \u00C1cido fluor\u00EDdrico"),
           ncol = 4, byrow = TRUE
         )
         res <- as.data.frame(res, stringsAsFactors = FALSE)
