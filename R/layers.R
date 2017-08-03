@@ -40,7 +40,6 @@
 #' res <- layers(which.cols = "standard", stack.layers = TRUE, missing.data = "drop", progress = TRUE)
 #' str(res)
 #' }
-###############################################################################################################
 layers <-
   function (which.cols = "standard", stack.layers = TRUE, missing.data = "drop", harmonization = 2,
             progress = TRUE) {
