@@ -51,7 +51,7 @@ str(res)
 }
 }
 \seealso{
-\url{http://www.ufsm.br/febr}, \code{\link[febr]{standards}}, \code{\link[febr]{conversions}}
+\url{http://www.ufsm.br/febr}, \code{\link[febr]{standards}}, \code{\link[febr]{conversion}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

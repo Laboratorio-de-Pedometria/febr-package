@@ -33,7 +33,7 @@
 #' @return A list or data.frame with some or all of the data of soil layers contained in Fe-BR.
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso \url{http://www.ufsm.br/febr}, \code{\link[febr]{standards}}, \code{\link[febr]{conversions}}
+#' @seealso \url{http://www.ufsm.br/febr}, \code{\link[febr]{standards}}, \code{\link[febr]{conversion}}
 #' @export
 #' @examples
 #' \dontrun{
@@ -130,7 +130,7 @@ layers <-
         idx_unit <- which(!unit[, fe_cols] %in% unique(standards(soil.var = "fe")$unit))
         if (length(idx_unit) >= 1) {
           conv_factor <- lapply(1:length(fe_type[idx_unit]), function (j) {
-            conversions(source = unlist(unit[, fe_cols[idx_unit]])[[j]], target = fe_stand$unit[idx_unit][j])
+            conversion(source = unlist(unit[, fe_cols[idx_unit]])[[j]], target = fe_stand$unit[idx_unit][j])
           })
           conv_factor <- do.call(rbind, conv_factor)
           tmp[fe_cols[idx_unit]] <- t(t(tmp[fe_cols[idx_unit]]) * conv_factor$factor)

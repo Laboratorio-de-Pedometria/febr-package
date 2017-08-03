@@ -3,7 +3,7 @@
 #' Factors for converting measurement units of soil variables in the Brazilian Soil Iron Data Repository
 #' (Fe-BR) -- \url{http://www.ufsm.br/febr}.
 #'
-#' @param source Source measurement unit. Currently available options are \code{"g/kg"}, \code{"%"}, 
+#' @param source Source measurement unit. Currently available options are \code{"g/kg"}, \code{"\%"},
 #' \code{"mg/kg"} and \code{"mg/dm^3"}.
 #' 
 #' @param target Target measurement unit. Currently available options are \code{"g/kg"} and \code{"mg/kg"}.
@@ -22,9 +22,9 @@
 #' @seealso \url{http://www.ufsm.br/febr}
 #' @export
 #' @examples
-#' conversions(source = "%", target = "g/kg")
+#' conversion(source = "%", target = "g/kg")
 #' 
-conversions <-
+conversion <-
   function (source, target) {
 
     # Fatores de conversão entre unidades
