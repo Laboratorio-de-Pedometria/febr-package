@@ -3,6 +3,10 @@
 #' Download soil observation-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR) --
 #' \url{http://www.ufsm.br/febr}.
 #'
+#' @param dataset Character vector with the identification code of the dataset -- or datasets -- for which 
+#' soil observation-specific data should be downloaded. Defaults to \code{dataset = "all"}, that is, download
+#' data from all existing datasets.
+#' 
 #' @param which.cols Which columns should be returned? Options are \code{"standard"} (default) and
 #' \code{"all"}.
 #'
@@ -43,20 +47,20 @@
 #' \item \code{amostra_area}. Sampling area.
 #' }
 #'
-#' @return A list or data.frame with some or all of the data of soil observations contained in Fe-BR.
+#' @return A list or data.frame with soil observation-specific data.
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \url{http://www.ufsm.br/febr}
 #' @export
 #' @examples
 #' \dontrun{
-#' res <- observations(which.cols = "standard", stack.obs = TRUE, missing.coords = "drop")
+#' res <- observations(dataset = "ctb0016")
 #' str(res)
 #' }
 ###############################################################################################################
 observations <-
-  function (which.cols = "standard", stack.obs = TRUE, missing.coords = "drop", target.crs = "EPSG:4674",
-            progress = TRUE) {
+  function (dataset = "all", which.cols = "standard", stack.obs = TRUE, missing.coords = "drop", 
+            target.crs = "EPSG:4674", progress = TRUE) {
 
     # Verificar consistência dos parâmetros
     if(!which.cols %in% c("standard", "all")) {
@@ -100,6 +104,15 @@ observations <-
     sheets_keys <- googlesheets::gs_key("18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", verbose = FALSE)
     sheets_keys <- suppressMessages(googlesheets::gs_read(sheets_keys, verbose = FALSE))
 
+    # Which datasets should be downloaded?
+    if (!"all" %in% dataset) {
+      idx_out <- which(!dataset %in% sheets_keys$ctb)
+      if (length(idx_out) >= 1) {
+        stop (paste("Unknown value '", dataset[idx_out], "' passed to parameter dataset", sep = ""))
+      }
+      sheets_keys <- sheets_keys[sheets_keys$ctb %in% dataset, ]
+    }
+    
     # Definir opções de local
     locale <- readr::locale(decimal_mark = ",")
 
