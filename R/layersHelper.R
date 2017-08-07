@@ -2,7 +2,6 @@
 # Two options are implemented:
 # 1. Remove plus sign, using the already existing value as the maximum observation depth.
 # 2. Add a given quantity thus increasing the maximum observation depth.
-# 3. Keep.
 # 
 # We recommend adding some amount because many authors describe the depth of the last layer using a single 
 # number and a plus sign. See for example ctb0014.
@@ -75,6 +74,8 @@
 # res[, c("profund_sup", "profund_inf")]
 # res2 <- .solveIrregularLayerTransition(res)
 # cbind(res[, c("profund_sup", "profund_inf")], res2[, c("profund_sup", "profund_inf")])
+#' 
+#' @importFrom stats median 
 .solveIrregularLayerTransition <-
   function (obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
             smoothing.fun = "mean") {
@@ -111,7 +112,7 @@
         },
         median = {
           obj[depth.cols][as.matrix(i)] <-
-            apply(new_depth, 1, function (x) median(as.numeric(x), na.rm = TRUE))
+            apply(new_depth, 1, function (x) stats::median(as.numeric(x), na.rm = TRUE))
         }
       )
     }
