@@ -118,8 +118,6 @@ layers <-
         paste("Unknown value '", standardization$smoothing.fun, "' passed to 'standardization$smoothing.fun'", 
             sep = ""))
     }
-    
-    
     if (!harmonization$level %in% c(1, 2)) {
       stop (
         paste("Unknown value '", harmonization$level, "' passed to 'harmonization$level'", sep = ""))
@@ -180,7 +178,7 @@ layers <-
       soil_vars <- unlist(soil_vars)
       idx_na <- which(apply(tmp[soil_vars], 2, function (x) all(is.na(x))))
       
-      if (length(length(idx_na)) > length(soil_vars)) {
+      if (length(idx_na) < length(soil_vars)) {
         
         # Update the names of soil variables
         if (length(idx_na) >= 1) {
