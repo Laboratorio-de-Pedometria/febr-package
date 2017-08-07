@@ -1,15 +1,15 @@
 #' Get soil observations
 #'
-#' Download soil observation-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR) --
+#' Download soil observation-specific data contained in the Brazilian Soil Iron Data Repository --
 #' \url{http://www.ufsm.br/febr}.
 #'
-#' @param dataset Character vector with the identification code of the dataset -- or datasets -- for which 
-#' soil observation-specific data should be downloaded. Defaults to \code{dataset = "all"}, that is, download
+#' @param dataset Identification code of the dataset or datasets for which soil layer-specific data should be
+#' downloaded -- see \url{http://www.ufsm.br/febr/data}. Defaults to \code{dataset = "all"}, that is, download
 #' data from all existing datasets.
 #' 
 #' @param which.cols Which columns should be returned? Options are \code{"standard"} (default) and
-#' \code{"all"}.
-#'
+#' \code{"all"}. See \sQuote{Details} for a description of the standard columns.
+#' 
 #' @param stack.obs Should soil observations from different datasets be stacked on a single data frame for
 #' output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.obs = TRUE}.
 #'
@@ -23,7 +23,12 @@
 #'
 #' @param progress Show download progress bar?
 #'
-#' @details Standard columns and their content are as follows:
+#' @param verbose Show informative messages? Generally useful identify datasets with any inconsistent data. 
+#' Please report to \email{fe-br@@googlegroups.com} if you find any issue.
+#' 
+#' @details 
+#' \subsection{Standard columns}{
+#' Standard columns and their content are as follows:
 #' \itemize{
 #' \item \code{dataset_id}. Identification code of the datasets in Fe-BR to which soil observations belong.
 #' \item \code{observacao_id}. Identification code of soil observations in Fe-BR.
@@ -46,21 +51,23 @@
 #' \item \code{amostra_quanti}. Number of soil samples taken.
 #' \item \code{amostra_area}. Sampling area.
 #' }
+#' }
 #'
 #' @return A list or data.frame with soil observation-specific data.
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso \url{http://www.ufsm.br/febr}
+#' @seealso \code{\link[febr]{layers}}
 #' @export
 #' @examples
 #' \dontrun{
-#' res <- observations(dataset = "ctb0016")
+#' res <- observations(dataset = paste("ctb000", 4:9, sep = ""))
 #' str(res)
 #' }
 ###############################################################################################################
 observations <-
   function (dataset = "all", which.cols = "standard", stack.obs = TRUE, missing.coords = "drop", 
-            target.crs = "EPSG:4674", progress = TRUE) {
+            target.crs = "EPSG:4674",
+            progress = TRUE, verbose = TRUE) {
 
     # Verificar consistência dos parâmetros
     if(!which.cols %in% c("standard", "all")) {
@@ -99,10 +106,16 @@ observations <-
     if (!is.logical(progress)) {
       stop (paste("Unknown value '", progress, "' passed to parameter progress", sep = ""))
     }
+    
+    # Options
+    opts <- .opt()
 
     # Descarregar chaves de identificação das planilhas do repositório
-    sheets_keys <- googlesheets::gs_key("18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", verbose = FALSE)
-    sheets_keys <- suppressMessages(googlesheets::gs_read(sheets_keys, verbose = FALSE))
+    sheets_keys <- 
+      googlesheets::gs_key("18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", verbose = opts$gs$verbose)
+    sheets_keys <- suppressMessages(
+      googlesheets::gs_read(sheets_keys, na = opts$gs$na, verbose = opts$gs$verbose))
+    sheets_keys <- .getDataset(sheets_keys = sheets_keys, dataset = dataset)
 
     # Which datasets should be downloaded?
     if (!"all" %in% dataset) {
@@ -112,9 +125,6 @@ observations <-
       }
       sheets_keys <- sheets_keys[sheets_keys$ctb %in% dataset, ]
     }
-    
-    # Definir opções de local
-    locale <- readr::locale(decimal_mark = ",")
 
     # Definir as colunas padrão
     if (which.cols == "standard") {
@@ -130,9 +140,16 @@ observations <-
     }
     obs <- list()
     for (i in 1:length(sheets_keys$observacao)) {
-      tmp <- googlesheets::gs_key(sheets_keys$observacao[i], verbose = FALSE)
+      
+      # Informative messages
+      if (verbose) {
+        message(paste("Downloading dataset ", sheets_keys$ctb[i], "...", sep = "")) 
+      }
+      
+      tmp <- googlesheets::gs_key(sheets_keys$observacao[i], verbose = opts$gs$verbose)
       tmp <- suppressMessages(
-        googlesheets::gs_read_csv(tmp, na = c("NA", "-", ""), locale = locale, verbose = FALSE)
+        googlesheets::gs_read_csv(
+          tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
       )
 
       # Definir as colunas a serem mantidas
@@ -202,7 +219,7 @@ observations <-
       }
 
       # Colocar colunas na ordem padrão
-      obs <- obs[, target_cols]
+      # obs <- obs[, target_cols]
     }
 
     return (obs)

@@ -1,28 +1,53 @@
 #' Get soil layers
 #'
-#' Download soil layer-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR)  --
+#' Download soil layer-specific data contained in the Brazilian Soil Iron Data Repository  --
 #' \url{http://www.ufsm.br/febr}.
 #' 
-#' @param dataset Character vector with the identification code of the dataset -- or datasets -- for which 
-#' soil layer-specific data should be downloaded. Defaults to \code{dataset = "all"}, that is, download data
-#' from all existing datasets.
+#' @param dataset Identification code of the dataset or datasets for which soil layer-specific data should be
+#' downloaded -- see \url{http://www.ufsm.br/febr/data}. Defaults to \code{dataset = "all"}, that is, download
+#' data from all existing datasets.
 #' 
 #' @param which.cols Which columns should be returned? Options are \code{"standard"} (default) and
-#' \code{"all"}.
+#' \code{"all"}. See \sQuote{Details} for a description of the standard columns.
+#' 
+#' @param soil.vars Identification code of the soil variables for which soil layer-specific data should be
+#' downloaded. The only currently available option is \code{soil.vars = "fe"}, that is, various forms of soil 
+#' iron content.
 #'
-#' @param stack.layers Should soil layers from different datasets be stacked on a single data frame for
-#' output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.layers = TRUE}.
+#' @param stack.datasets Should soil layers from different datasets be stacked on a single data frame for
+#' output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.datasets = TRUE}.
 #'
-#' @param missing.data What should be done with soil layers missing iron data? Options are \code{"drop"}
+#' @param missing.data What should be done with soil layers missing any iron data? Options are \code{"drop"}
 #' (default) and \code{"keep"}.
+#' 
+#' @param standardization List with definitions on how to \emph{standardize} soil layer-specific data.
+#' \itemize{
+#' \item \code{plus.sign} What should be done with the plus sign ('+') commonly used along with the inferior 
+#'       limit of the bottom layer of soil observations? Options are \code{"add"} (default), \code{"remove"},
+#'       and \code{"keep"}.
+#' \item \code{plus.depth} Depth increment (in centimetres) when processing the plus sign ('+') with 
+#'       \code{plus.sign = "add"}. Defaults to \code{plus.depth = 2.5}.
+#' \item \code{transition} What should be done about wavy, irregular, and broken transitions between layers in
+#'       a soil observation? Options are \code{"smooth"} (default) and \code{"keep"}.
+#' \item \code{smoothing.fun} Function that should be used to smooth wavy and irregular transitions between 
+#'       layers in a soil observation when \code{transition = "smooth"}. Options are \code{"mean"} (default),
+#'       \code{"min"}, \code{"max"}, and \code{"median"}. 
+#' }
 #'
-#' @param harmonization Level of harmonization that should be applied to the data. Options are \code{1}, for
-#' harmonization based only on the extraction method, and \code{2} (default) for harmonization based on both
-#' extraction and measurement methods. Generally used in conjunction with \code{stack.layers = TRUE}.
+#' @param harmonization List with definitions on how to \emph{harmonize} soil layer-specific data.
+#' \itemize{
+#' \item \code{level} Should data on soil variables be harmonized based only on the extraction method, 
+#'       \code{level = 1} (default), or on both extraction and measurement methods, \code{level = 2}? See 
+#'       \code{\link[febr]{standards}}.
+#' }
 #'
-#' @param progress Show progress bar?
+#' @param progress Show download progress bar?
+#' 
+#' @param verbose Show informative messages? Generally useful identify datasets with any inconsistent data. 
+#' Please report to \email{fe-br@@googlegroups.com} if you find any issue.
 #'
 #' @details
+#' \subsection{Standard columns}{
 #' Standard columns and their content are as follows:
 #' \itemize{
 #' \item \code{dataset_id}. Identification code of the datasets in Fe-BR to which soil observations belong.
@@ -35,44 +60,72 @@
 #' \item \code{fe_xxx_yyy}. Soil iron content data, with \code{xxx} being a given extraction method and
 #' \code{yyy} being a given measurement method.
 #' }
+#' }
 #' @return A list or data.frame with soil layer-specific data.
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso \url{http://www.ufsm.br/febr}, \code{\link[febr]{standards}}, \code{\link[febr]{conversion}}
+#' @seealso \code{\link[febr]{observations}}, \code{\link[febr]{standards}}, \code{\link[febr]{conversion}}
 #' @export
 #' @examples
 #' \dontrun{
-# res <- layers(dataset = paste("ctb000", 4:10, sep = ""), progress = FALSE)
+#' res <- layers(dataset = paste("ctb000", 4:9, sep = ""))
 #' str(res)
 #' }
 ###############################################################################################################
 layers <-
   function (dataset = "all", which.cols = "standard", soil.vars = "fe",
-            stack.layers = TRUE, missing.data = "drop",
+            stack.datasets = TRUE, missing.data = "drop",
             standardization = list(
               plus.sign = "add", plus.depth = 2.5, transition = "smooth", smoothing.fun = "mean"),
-            harmonization = 1, 
+            harmonization = list(level = 1),
             progress = TRUE, verbose = TRUE) {
      
-    # Verificar consistência dos parâmetros
+    # CHECKS ----
     if(!which.cols %in% c("standard", "all")) {
-      stop (paste("Unknown value '", which.cols, "' passed to parameter which.cols", sep = ""))
+      stop (paste("Unknown value '", which.cols, "' passed to 'which.cols'", sep = ""))
     }
-    if (!is.logical(stack.layers)) {
-      stop (paste("Unknown value '", stack.layers, "' passed to parameter stack.layers", sep = ""))
+    if(!soil.vars %in% c("fe")) {
+      stop (paste("Unknown value '", soil.vars, "' passed to 'soil.vars'", sep = ""))
     }
-    if (which.cols == "all" && stack.layers == TRUE) {
-      message("stack.layers can only be used with standard columns... switching to FALSE")
-      stack.layers <- FALSE
+    if (!is.logical(stack.datasets)) {
+      stop (paste("Unknown value '", stack.datasets, "' passed to 'stack.datasets'", sep = ""))
+    }
+    if (which.cols == "all" && stack.datasets == TRUE) {
+      message("stack.datasets can only be used with standard columns... switching to FALSE")
+      stack.datasets <- FALSE
     }
     if (!missing.data %in% c("drop", "keep")) {
-      stop (paste("Unknown value '", missing.data, "' passed to parameter missing.data", sep = ""))
+      stop (paste("Unknown value '", missing.data, "' passed to 'missing.data", sep = ""))
     }
-    if (!harmonization %in% c(1, 2)) {
-      stop (paste("Unknown value '", harmonization, "' passed to parameter harmonization", sep = ""))
+    if (!standardization$plus.sign %in% c("add", "remove", "keep")) {
+      stop (
+        paste("Unknown value '", standardization$plus.sign, "' passed to 'standardization$plus.sign'", 
+          sep = ""))
+    }
+    if (standardization$plus.depth > 100 || standardization$plus.depth < 0) {
+      stop (
+        paste("Unlikely value '", standardization$plus.depth, "' passed to 'standardization$plus.depth'", 
+              sep = "")
+      )
+    }
+    if (!standardization$transition %in% c("smooth", "keep")) {
+      stop (
+        paste("Unknown value '", standardization$transition, "' passed to 'standardization$transition'", 
+              sep = ""))
+    }
+    if (!standardization$smoothing.fun %in% c("mean", "min", "max", "median")) {
+      stop(
+        paste("Unknown value '", standardization$smoothing.fun, "' passed to 'standardization$smoothing.fun'", 
+            sep = ""))
+    }
+    
+    
+    if (!harmonization$level %in% c(1, 2)) {
+      stop (
+        paste("Unknown value '", harmonization$level, "' passed to 'harmonization$level'", sep = ""))
     }
     if (!is.logical(progress)) {
-      stop (paste("Unknown value '", progress, "' passed to parameter progress", sep = ""))
+      stop (paste("Unknown value '", progress, "' passed to 'progress'", sep = ""))
     }
 
     # Options
@@ -83,26 +136,8 @@ layers <-
       googlesheets::gs_key("18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", verbose = opts$gs$verbose)
     sheets_keys <- 
       suppressMessages(googlesheets::gs_read(sheets_keys, verbose = opts$gs$verbose, na = opts$gs$na))
+    sheets_keys <- .getDataset(sheets_keys = sheets_keys, dataset = dataset)
     
-    # Which datasets should be downloaded?
-    if ("all" %in% dataset) {
-      # Some datasets are not ready for download
-      sheets_keys <- sheets_keys[!is.na(sheets_keys$camada), ]
-      
-    } else {
-      idx_out <- which(!dataset %in% sheets_keys$ctb)
-      if (length(idx_out) >= 1) {
-        stop (paste("Unknown value '", dataset[idx_out], "' passed to parameter dataset", sep = ""))
-      }
-      sheets_keys <- sheets_keys[sheets_keys$ctb %in% dataset, ]
-      
-      # Some datasets might not be ready for download
-      idx_na <- which(is.na(sheets_keys$camada))
-      if (length(idx_na) >= 1) {
-        stop (paste("Cannot download dataset '", dataset[idx_na], "'. See https://goo.gl/tVC8dH", sep = ""))
-      }
-    }
-
     # Definir as colunas padrão
     if (which.cols == "standard") {
       target_cols <- c(opts$layers$id.cols, opts$layers$depth.cols)
@@ -117,9 +152,12 @@ layers <-
     }
     res <- list()
     for (i in 1:length(sheets_keys$camada)) {
+      
+      # Informative messages
       if (verbose) {
-        message(paste("Downloading dataset ", sheets_keys$ctb[i], "...", sep = ""))
+        message(paste("Downloading dataset ", sheets_keys$ctb[i], "...", sep = "")) 
       }
+      
       tmp <- googlesheets::gs_key(sheets_keys$camada[i], verbose = opts$gs$verbose)
       unit <- suppressMessages(
         googlesheets::gs_read_csv(tmp, locale = opts$gs$locale, verbose = opts$gs$verbose, n_max = 1))
@@ -208,7 +246,7 @@ layers <-
           
           # HARMONIZATION ----
           # Harmonizar dados de ferro
-          if (harmonization == 1) {
+          if (harmonization$level == 1) {
             new_colnames <- matrix(stringr::str_split_fixed(colnames(tmp[soil_vars]), "_", 3)[, 1:2], ncol = 2)
             new_colnames <- apply(new_colnames, 1, paste, collapse = "_", sep = "")
             
@@ -223,7 +261,7 @@ layers <-
           
           # STACKING ----
           # If tables are to be stacked, then id.cols must be of type character
-          if (stack.layers) {
+          if (stack.datasets) {
             tmp[opts$layers$id.cols] <- sapply(tmp[opts$layers$id.cols], as.character)
             
             # If tables are to be stacked and depth data has not been standardized, then depth.cols must be 
@@ -239,7 +277,7 @@ layers <-
           res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
           
           # Se as tabelas não são empilhadas, adicionar informação sobre unidade de medida
-          if (!stack.layers) {
+          if (!stack.datasets) {
             a <- attributes(res[[i]])
             a$units <- c(rep("unitless", 2), gsub("-", "unitless", as.character(unit)[-1]))
             attributes(res[[i]]) <- a
@@ -254,7 +292,7 @@ layers <-
       close(pb)
     }
     # Se necessário, empilhar tabelas, adicionando informações sobre as unidades de medida
-    if (stack.layers) {
+    if (stack.datasets) {
       res <- suppressWarnings(dplyr::bind_rows(res))
       soil_vars <- colnames(res)[grep("^fe_", colnames(res))]
       fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
