@@ -1,10 +1,11 @@
 #' Get soil metadata
 #'
-#' Download metadata-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR).
+#' Download metadata-specific data contained in the Brazilian Soil Iron Data Repository  --
+#' \url{http://www.ufsm.br/febr}.
 #'
 #' @param progress Show progress bar?
 #'
-#' @return A list with all of the data of the soil metadata contained in Fe-BR.
+#' @return A list with metadata-specific data.
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \url{http://www.ufsm.br/febr}

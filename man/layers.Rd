@@ -5,39 +5,64 @@
 \title{Get soil layers}
 \usage{
 layers(dataset = "all", which.cols = "standard", soil.vars = "fe",
-  stack.layers = TRUE, missing.data = "drop",
+  stack.datasets = TRUE, missing.data = "drop",
   standardization = list(plus.sign = "add", plus.depth = 2.5, transition =
-  "smooth", smoothing.fun = "mean"), harmonization = 1, progress = TRUE,
-  verbose = TRUE)
+  "smooth", smoothing.fun = "mean"), harmonization = list(level = 1),
+  progress = TRUE, verbose = TRUE)
 }
 \arguments{
-\item{dataset}{Character vector with the identification code of the dataset -- or datasets -- for which 
-soil layer-specific data should be downloaded. Defaults to \code{dataset = "all"}, that is, download data
-from all existing datasets.}
+\item{dataset}{Identification code of the dataset or datasets for which soil layer-specific data should be
+downloaded -- see \url{http://www.ufsm.br/febr/data}. Defaults to \code{dataset = "all"}, that is, download
+data from all existing datasets.}
 
 \item{which.cols}{Which columns should be returned? Options are \code{"standard"} (default) and
-\code{"all"}.}
+\code{"all"}. See \sQuote{Details} for a description of the standard columns.}
 
-\item{stack.layers}{Should soil layers from different datasets be stacked on a single data frame for
-output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.layers = TRUE}.}
+\item{soil.vars}{Identification code of the soil variables for which soil layer-specific data should be
+downloaded. The only currently available option is \code{soil.vars = "fe"}, that is, various forms of soil 
+iron content.}
 
-\item{missing.data}{What should be done with soil layers missing iron data? Options are \code{"drop"}
+\item{stack.datasets}{Should soil layers from different datasets be stacked on a single data frame for
+output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.datasets = TRUE}.}
+
+\item{missing.data}{What should be done with soil layers missing any iron data? Options are \code{"drop"}
 (default) and \code{"keep"}.}
 
-\item{harmonization}{Level of harmonization that should be applied to the data. Options are \code{1}, for
-harmonization based only on the extraction method, and \code{2} (default) for harmonization based on both
-extraction and measurement methods. Generally used in conjunction with \code{stack.layers = TRUE}.}
+\item{standardization}{List with definitions on how to \emph{standardize} soil layer-specific data.
+\itemize{
+\item \code{plus.sign} What should be done with the plus sign ('+') commonly used along with the inferior 
+      limit of the bottom layer of soil observations? Options are \code{"add"} (default), \code{"remove"},
+      and \code{"keep"}.
+\item \code{plus.depth} Depth increment (in centimetres) when processing the plus sign ('+') with 
+      \code{plus.sign = "add"}. Defaults to \code{plus.depth = 2.5}.
+\item \code{transition} What should be done about wavy, irregular, and broken transitions between layers in
+      a soil observation? Options are \code{"smooth"} (default) and \code{"keep"}.
+\item \code{smoothing.fun} Function that should be used to smooth wavy and irregular transitions between 
+      layers in a soil observation when \code{transition = "smooth"}. Options are \code{"mean"} (default),
+      \code{"min"}, \code{"max"}, and \code{"median"}. 
+}}
 
-\item{progress}{Show progress bar?}
+\item{harmonization}{List with definitions on how to \emph{harmonize} soil layer-specific data.
+\itemize{
+\item \code{level} Should data on soil variables be harmonized based only on the extraction method, 
+      \code{level = 1} (default), or on both extraction and measurement methods, \code{level = 2}? See 
+      \code{\link[febr]{standards}}.
+}}
+
+\item{progress}{Show download progress bar?}
+
+\item{verbose}{Show informative messages? Generally useful identify datasets with any inconsistent data. 
+Please report to \email{fe-br@googlegroups.com} if you find any issue.}
 }
 \value{
 A list or data.frame with soil layer-specific data.
 }
 \description{
-Download soil layer-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR)  --
+Download soil layer-specific data contained in the Brazilian Soil Iron Data Repository  --
 \url{http://www.ufsm.br/febr}.
 }
 \details{
+\subsection{Standard columns}{
 Standard columns and their content are as follows:
 \itemize{
 \item \code{dataset_id}. Identification code of the datasets in Fe-BR to which soil observations belong.
@@ -51,13 +76,15 @@ Standard columns and their content are as follows:
 \code{yyy} being a given measurement method.
 }
 }
+}
 \examples{
 \dontrun{
+res <- layers(dataset = paste("ctb000", 4:9, sep = ""))
 str(res)
 }
 }
 \seealso{
-\url{http://www.ufsm.br/febr}, \code{\link[febr]{standards}}, \code{\link[febr]{conversion}}
+\code{\link[febr]{observations}}, \code{\link[febr]{standards}}, \code{\link[febr]{conversion}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

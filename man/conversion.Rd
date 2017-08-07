@@ -17,7 +17,7 @@ A data.frame with source and target measurement units and their corresponding co
 }
 \description{
 Factors for converting measurement units of soil variables in the Brazilian Soil Iron Data Repository
-(Fe-BR) -- \url{http://www.ufsm.br/febr}.
+-- \url{http://www.ufsm.br/febr}.
 }
 \details{
 Target measurement units are defined according to the third edition of the Manual of Methods of Soil

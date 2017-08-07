@@ -10,10 +10,11 @@ datasets(progress = TRUE)
 \item{progress}{Show progress bar?}
 }
 \value{
-A list with all of the data of the soil datasets contained in Fe-BR.
+A list with dataset-specific data.
 }
 \description{
-Download dataset-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR).
+Download dataset-specific data contained in the Brazilian Soil Iron Data Repository  --
+\url{http://www.ufsm.br/febr}.
 }
 \examples{
 \dontrun{

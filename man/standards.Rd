@@ -16,7 +16,7 @@ standards(soil.var = "fe", extraction.method)
 A data.frame.
 }
 \description{
-Definitions of standards for soil variables in the Brazilian Soil Iron Data Repository (Fe-BR)  -- 
+Definitions of standards for soil variables in the Brazilian Soil Iron Data Repository  -- 
 \url{http://www.ufsm.br/febr}.
 }
 \details{

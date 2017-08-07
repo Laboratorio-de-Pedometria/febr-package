@@ -5,15 +5,16 @@
 \title{Get soil observations}
 \usage{
 observations(dataset = "all", which.cols = "standard", stack.obs = TRUE,
-  missing.coords = "drop", target.crs = "EPSG:4674", progress = TRUE)
+  missing.coords = "drop", target.crs = "EPSG:4674", progress = TRUE,
+  verbose = TRUE)
 }
 \arguments{
-\item{dataset}{Character vector with the identification code of the dataset -- or datasets -- for which 
-soil observation-specific data should be downloaded. Defaults to \code{dataset = "all"}, that is, download
+\item{dataset}{Identification code of the dataset or datasets for which soil layer-specific data should be
+downloaded -- see \url{http://www.ufsm.br/febr/data}. Defaults to \code{dataset = "all"}, that is, download
 data from all existing datasets.}
 
 \item{which.cols}{Which columns should be returned? Options are \code{"standard"} (default) and
-\code{"all"}.}
+\code{"all"}. See \sQuote{Details} for a description of the standard columns.}
 
 \item{stack.obs}{Should soil observations from different datasets be stacked on a single data frame for
 output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.obs = TRUE}.}
@@ -27,15 +28,19 @@ i.e. SIRGAS 2000, the standard CRS for Brazil -- see more at \url{http://spatial
 If set to \code{target.crs = NULL} then the native spatial coordinates are returned.}
 
 \item{progress}{Show download progress bar?}
+
+\item{verbose}{Show informative messages? Generally useful identify datasets with any inconsistent data. 
+Please report to \email{fe-br@googlegroups.com} if you find any issue.}
 }
 \value{
 A list or data.frame with soil observation-specific data.
 }
 \description{
-Download soil observation-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR) --
+Download soil observation-specific data contained in the Brazilian Soil Iron Data Repository --
 \url{http://www.ufsm.br/febr}.
 }
 \details{
+\subsection{Standard columns}{
 Standard columns and their content are as follows:
 \itemize{
 \item \code{dataset_id}. Identification code of the datasets in Fe-BR to which soil observations belong.
@@ -60,14 +65,15 @@ of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/down
 \item \code{amostra_area}. Sampling area.
 }
 }
+}
 \examples{
 \dontrun{
-res <- observations(dataset = "ctb0016")
+res <- observations(dataset = paste("ctb000", 4:9, sep = ""))
 str(res)
 }
 }
 \seealso{
-\url{http://www.ufsm.br/febr}
+\code{\link[febr]{layers}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

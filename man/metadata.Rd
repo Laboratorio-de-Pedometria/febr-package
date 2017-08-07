@@ -10,10 +10,11 @@ metadata(progress = TRUE)
 \item{progress}{Show progress bar?}
 }
 \value{
-A list with all of the data of the soil metadata contained in Fe-BR.
+A list with metadata-specific data.
 }
 \description{
-Download metadata-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR).
+Download metadata-specific data contained in the Brazilian Soil Iron Data Repository  --
+\url{http://www.ufsm.br/febr}.
 }
 \examples{
 \dontrun{

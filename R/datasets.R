@@ -1,10 +1,11 @@
 #' Get soil datasets
 #'
-#' Download dataset-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR).
+#' Download dataset-specific data contained in the Brazilian Soil Iron Data Repository  --
+#' \url{http://www.ufsm.br/febr}.
 #'
 #' @param progress Show progress bar?
 #'
-#' @return A list with all of the data of the soil datasets contained in Fe-BR.
+#' @return A list with dataset-specific data.
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \url{http://www.ufsm.br/febr}
