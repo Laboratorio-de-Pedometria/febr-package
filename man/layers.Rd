@@ -4,10 +4,17 @@
 \alias{layers}
 \title{Get soil layers}
 \usage{
-layers(which.cols = "standard", stack.layers = TRUE,
-  missing.data = "drop", harmonization = 2, progress = TRUE)
+layers(dataset = "all", which.cols = "standard", soil.vars = "fe",
+  stack.layers = TRUE, missing.data = "drop",
+  standardization = list(plus.sign = "add", plus.depth = 2.5, transition =
+  "smooth", smoothing.fun = "mean"), harmonization = 1, progress = TRUE,
+  verbose = TRUE)
 }
 \arguments{
+\item{dataset}{Character vector with the identification code of the dataset -- or datasets -- for which 
+soil layer-specific data should be downloaded. Defaults to \code{dataset = "all"}, that is, download data
+from all existing datasets.}
+
 \item{which.cols}{Which columns should be returned? Options are \code{"standard"} (default) and
 \code{"all"}.}
 
@@ -24,7 +31,7 @@ extraction and measurement methods. Generally used in conjunction with \code{sta
 \item{progress}{Show progress bar?}
 }
 \value{
-A list or data.frame with some or all of the data of soil layers contained in Fe-BR.
+A list or data.frame with soil layer-specific data.
 }
 \description{
 Download soil layer-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR)  --
@@ -46,7 +53,6 @@ Standard columns and their content are as follows:
 }
 \examples{
 \dontrun{
-res <- layers(which.cols = "standard", stack.layers = TRUE, missing.data = "drop", progress = TRUE)
 str(res)
 }
 }

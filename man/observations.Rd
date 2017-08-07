@@ -4,10 +4,14 @@
 \alias{observations}
 \title{Get soil observations}
 \usage{
-observations(which.cols = "standard", stack.obs = TRUE,
+observations(dataset = "all", which.cols = "standard", stack.obs = TRUE,
   missing.coords = "drop", target.crs = "EPSG:4674", progress = TRUE)
 }
 \arguments{
+\item{dataset}{Character vector with the identification code of the dataset -- or datasets -- for which 
+soil observation-specific data should be downloaded. Defaults to \code{dataset = "all"}, that is, download
+data from all existing datasets.}
+
 \item{which.cols}{Which columns should be returned? Options are \code{"standard"} (default) and
 \code{"all"}.}
 
@@ -25,7 +29,7 @@ If set to \code{target.crs = NULL} then the native spatial coordinates are retur
 \item{progress}{Show download progress bar?}
 }
 \value{
-A list or data.frame with some or all of the data of soil observations contained in Fe-BR.
+A list or data.frame with soil observation-specific data.
 }
 \description{
 Download soil observation-specific data contained in the Brazilian Soil Iron Data Repository (Fe-BR) --
@@ -58,7 +62,7 @@ of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/down
 }
 \examples{
 \dontrun{
-res <- observations(which.cols = "standard", stack.obs = TRUE, missing.coords = "drop")
+res <- observations(dataset = "ctb0016")
 str(res)
 }
 }
