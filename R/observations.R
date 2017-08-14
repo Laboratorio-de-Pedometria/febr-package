@@ -66,8 +66,7 @@
 ###############################################################################################################
 observations <-
   function (dataset = "all", which.cols = "standard", stack.obs = TRUE, missing.coords = "drop", 
-            target.crs = "EPSG:4674",
-            progress = TRUE, verbose = TRUE) {
+            target.crs = "EPSG:4674", progress = TRUE, verbose = TRUE) {
 
     # Verificar consistência dos parâmetros
     if(!which.cols %in% c("standard", "all")) {
@@ -191,7 +190,7 @@ observations <-
       obs <- suppressWarnings(dplyr::bind_rows(obs))
 
       # Transformar SRC
-      if (!is.null(target.crs)) {
+      if (!is.null(target.crs) && nrow(obs) >= 1) {
         # Até que se prove o contrário, sempre haverá diversos SRC. Contudo, para evitar surpresas, é melhor
         # inserir desde já o código para o caso de um único SRC.
         if (nlevels(as.factor(obs$coord_sistema)) > 1) {
