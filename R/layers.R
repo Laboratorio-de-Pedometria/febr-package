@@ -87,6 +87,7 @@ layers <-
     if(!soil.vars %in% c("fe")) {
       stop (paste("Unknown value '", soil.vars, "' passed to 'soil.vars'", sep = ""))
     }
+    soil.vars <- paste(soil.vars, "_", sep = "")
     if (!is.logical(stack.datasets)) {
       stop (paste("Unknown value '", stack.datasets, "' passed to 'stack.datasets'", sep = ""))
     }
@@ -140,9 +141,6 @@ layers <-
     if (which.cols == "standard") {
       target_cols <- c(opts$layers$id.cols, opts$layers$depth.cols)
     }
-    
-    # Set IDs of soil variables
-    soil_vars <- paste(soil.vars, "_", sep = "")
 
     # Descarregar planilhas com camadas
     if (progress) {
@@ -174,7 +172,7 @@ layers <-
       # Note that some of them might not contain any data at all, thus being filled-up with NAs. In this case, 
       # the respective columns are discarded and, if any column with data remains, we continue with the data
       # processing steps. In this case we also update the names of the soil variables.
-      soil_vars <- lapply(soil_vars, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))])
+      soil_vars <- lapply(soil.vars, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))])
       soil_vars <- unlist(soil_vars)
       idx_na <- which(apply(tmp[soil_vars], 2, function (x) all(is.na(x))))
       

@@ -14,7 +14,6 @@
 # res[, c("profund_sup", "profund_inf")]
 # res <- .setMaximumObservationDepth(res)
 # res[, c("profund_sup", "profund_inf")]
-# 
 .setMaximumObservationDepth <-
   function (obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"), plus.sign = "add",
             plus.depth = 2.5) {
@@ -74,7 +73,7 @@
 # res[, c("profund_sup", "profund_inf")]
 # res2 <- .solveIrregularLayerTransition(res)
 # cbind(res[, c("profund_sup", "profund_inf")], res2[, c("profund_sup", "profund_inf")])
-#' 
+# 
 #' @importFrom stats median 
 .solveIrregularLayerTransition <-
   function (obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
