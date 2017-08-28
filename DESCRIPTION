@@ -1,8 +1,8 @@
 Package: febr
 Type: Package
 Title: Brazilian Soil Iron Data Repository
-Version: 0.4.0
-Date: 2017-08-07
+Version: 0.4.1
+Date: 2017-08-14
 Author: Alessandro Samuel-Rosa
 Maintainer: Alessandro Samuel-Rosa <alessandrosamuelrosa@gmail.com>
 Description: Make the access to the data in the Brazilian Soil Iron Data Repository as easy as possible.
