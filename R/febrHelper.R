@@ -7,10 +7,11 @@
         depth.cols = c("profund_sup", "profund_inf"),
         soil.vars = c(
           # Variáveis químicas
-          c(alumínio = 'al', cálcio = 'ca', carbono = 'c', ferro = 'fe', magnésio = 'mg', potássio = 'k', 
-            sódio = 'na'),
+          # c(alumínio = 'al', cálcio = 'ca', carbono = 'c', 
+            ferro = 'fe'
+            # magnésio = 'mg', potássio = 'k', sódio = 'na'),
           # Variáveis físicas
-          c(areia = 'areia', argila = 'argila', densidade = 'densidade')
+          # c(areia = 'areia', argila = 'argila', densidade = 'densidade')
         )
       ),
       gs = list(
