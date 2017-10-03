@@ -4,7 +4,14 @@
       layers = list(
         id.cols = 
           c("observacao_id", "camada_numero", "camada_nome", "amostra_codigo"),
-        depth.cols = c("profund_sup", "profund_inf")
+        depth.cols = c("profund_sup", "profund_inf"),
+        soil.vars = c(
+          # Variáveis químicas
+          c(alumínio = 'al', cálcio = 'ca', carbono = 'c', ferro = 'fe', magnésio = 'mg', potássio = 'k', 
+            sódio = 'na'),
+          # Variáveis físicas
+          c(areia = 'areia', argila = 'argila', densidade = 'densidade')
+        )
       ),
       gs = list(
         comment = "unidade",
