@@ -144,9 +144,9 @@ layers <-
     sheets_keys <- .getDataset(sheets_keys = sheets_keys, dataset = dataset)
     
     # Definir as colunas padrão
-    if (which.cols == "standard") {
+    # if (which.cols == "standard") {
       target_cols <- c(opts$layers$id.cols, opts$layers$depth.cols)
-    }
+    # }
 
     # Descarregar planilhas com camadas
     if (progress) {
@@ -173,13 +173,20 @@ layers <-
       )
       tmp <- as.data.frame(tmp)
       
-      # CLEAN UP
-      # Identify the columns that should contain data on the chosen soil variables.
-      # Note that some of them might not contain any data at all, thus being filled-up with NAs. In this case, 
-      # the respective columns are discarded and, if any column with data remains, we continue with the data
-      # processing steps. In this case we also update the names of the soil variables.
-      soil_vars <- lapply(soil.vars, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))])
-      soil_vars <- unlist(soil_vars)
+      # Quais colunas/variáveis?
+      # No caso de which.cols == "standard", então precisamos identificar as colunas que contém os dados da
+      # variável do solo escolhida. Note que algumas dessas colunas podem não conter quaiquer dados, assim 
+      # sendo ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas e, se sobrar alguma coluna
+      # com dados, continua-se com os passos seguintes do processamento. Nesse caso, o nome das variáveis 
+      # 'soil_vars' também é atualizado.  
+      # soil_vars <- lapply(soil.vars, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))])
+      # soil_vars <- unlist(soil_vars)
+      if (which.cols == 'standard') {
+        soil_vars <- lapply(soil.vars, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))])
+        soil_vars <- unlist(soil_vars)
+      } else {
+        soil_vars <- colnames(tmp)[!colnames(tmp) %in% target_cols]
+      }
       idx_na <- which(apply(tmp[soil_vars], 2, function (x) all(is.na(x))))
       
       if (length(idx_na) < length(soil_vars)) {
