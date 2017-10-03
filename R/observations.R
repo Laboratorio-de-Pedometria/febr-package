@@ -88,20 +88,34 @@ observations <-
         "Setting target CRS to NULL...", sep = "")
         )
       target.crs <- NULL
+    } else {
+      crs_list <- paste("EPSG:", c(
+        # Córrego Alegre
+        4225, 22521, 22522, 22523, 22524, 22525,
+        # SAD69
+        4618 , 29168, 29188, 29169, 29189, 29170, 29190, 29191, 29192, 29193, 29194, 29195,
+        # WGS 84
+        4326, 32618, 32718, 32619, 32719, 32620, 32720, 32721, 32722, 32723, 32724, 32725,
+        # SIRGAS 2000
+        4674, 31972, 31978, 31973, 31979, 31974, 31980, 31981, 31982, 31983, 31984, 31985
+      ), sep = "")
+      if (!toupper(target.crs) %in% crs_list) {
+        stop (paste("Unknown value '", target.crs, "' passed to parameter target.crs", sep = ""))
+      }
     }
-    crs_list <- paste("EPSG:", c(
-      # Córrego Alegre
-      4225, 22521, 22522, 22523, 22524, 22525,
-      # SAD69
-      4618 , 29168, 29188, 29169, 29189, 29170, 29190, 29191, 29192, 29193, 29194, 29195,
-      # WGS 84
-      4326, 32618, 32718, 32619, 32719, 32620, 32720, 32721, 32722, 32723, 32724, 32725,
-      # SIRGAS 2000
-      4674, 31972, 31978, 31973, 31979, 31974, 31980, 31981, 31982, 31983, 31984, 31985
-    ), sep = "")
-    if (!toupper(target.crs) %in% crs_list) {
-      stop (paste("Unknown value '", target.crs, "' passed to parameter target.crs", sep = ""))
-    }
+    # crs_list <- paste("EPSG:", c(
+    #   # Córrego Alegre
+    #   4225, 22521, 22522, 22523, 22524, 22525,
+    #   # SAD69
+    #   4618 , 29168, 29188, 29169, 29189, 29170, 29190, 29191, 29192, 29193, 29194, 29195,
+    #   # WGS 84
+    #   4326, 32618, 32718, 32619, 32719, 32620, 32720, 32721, 32722, 32723, 32724, 32725,
+    #   # SIRGAS 2000
+    #   4674, 31972, 31978, 31973, 31979, 31974, 31980, 31981, 31982, 31983, 31984, 31985
+    # ), sep = "")
+    # if (!toupper(target.crs) %in% crs_list) {
+    #   stop (paste("Unknown value '", target.crs, "' passed to parameter target.crs", sep = ""))
+    # }
     if (!is.logical(progress)) {
       stop (paste("Unknown value '", progress, "' passed to parameter progress", sep = ""))
     }
