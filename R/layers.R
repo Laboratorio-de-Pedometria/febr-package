@@ -144,9 +144,9 @@ layers <-
     sheets_keys <- .getDataset(sheets_keys = sheets_keys, dataset = dataset)
     
     # Definir as colunas padrão
-    # if (which.cols == "standard") {
+    if (which.cols == "standard") {
       target_cols <- c(opts$layers$id.cols, opts$layers$depth.cols)
-    # }
+    }
 
     # Descarregar planilhas com camadas
     if (progress) {
@@ -178,15 +178,9 @@ layers <-
       # variável do solo escolhida. Note que algumas dessas colunas podem não conter quaiquer dados, assim 
       # sendo ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas e, se sobrar alguma coluna
       # com dados, continua-se com os passos seguintes do processamento. Nesse caso, o nome das variáveis 
-      # 'soil_vars' também é atualizado.  
-      # soil_vars <- lapply(soil.vars, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))])
-      # soil_vars <- unlist(soil_vars)
-      if (which.cols == 'standard') {
-        soil_vars <- lapply(soil.vars, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))])
-        soil_vars <- unlist(soil_vars)
-      } else {
-        soil_vars <- colnames(tmp)[!colnames(tmp) %in% target_cols]
-      }
+      # 'soil_vars' também é atualizado.
+      soil_vars <- lapply(soil.vars, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))])
+      soil_vars <- unlist(soil_vars)
       idx_na <- which(apply(tmp[soil_vars], 2, function (x) all(is.na(x))))
       
       if (length(idx_na) < length(soil_vars)) {
