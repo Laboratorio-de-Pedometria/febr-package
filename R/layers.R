@@ -80,6 +80,9 @@ layers <-
             harmonization = list(level = 1),
             progress = TRUE, verbose = TRUE) {
      
+    # Opções
+    opts <- .opt()
+    
     # CHECKS ----
     if(!which.cols %in% c("standard", "all")) {
       stop (paste("Unknown value '", which.cols, "' passed to 'which.cols'", sep = ""))
@@ -127,8 +130,8 @@ layers <-
       stop (paste("Unknown value '", progress, "' passed to 'progress'", sep = ""))
     }
 
-    # Options
-    opts <- .opt()
+    # # Options
+    # opts <- .opt()
     
     # Descarregar chaves de identificação das planilhas
     sheets_keys <- 
