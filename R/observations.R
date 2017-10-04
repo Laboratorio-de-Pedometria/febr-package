@@ -82,13 +82,13 @@ observations <-
     if (!missing.coords %in% c("drop", "keep")) {
       stop (paste("Unknown value '", missing.coords, "' passed to parameter missing.coords", sep = ""))
     }
-    if (!is.null(target.crs) && stack.obs == FALSE || which.cols == "all") {
-      message(paste(
-        "Coordinate transformation only works for stacked observations with standard columns\n",
-        "Setting target CRS to NULL...", sep = "")
-        )
-      target.crs <- NULL
-    } else {
+    # if (!is.null(target.crs) && stack.obs == FALSE || which.cols == "all") {
+      # message(paste(
+        # "Coordinate transformation only works for stacked observations with standard columns\n",
+        # "Setting target CRS to NULL...", sep = "")
+        # )
+      # target.crs <- NULL
+    # } else {
       crs_list <- paste("EPSG:", c(
         # Córrego Alegre
         4225, 22521, 22522, 22523, 22524, 22525,
@@ -102,7 +102,7 @@ observations <-
       if (!toupper(target.crs) %in% crs_list) {
         stop (paste("Unknown value '", target.crs, "' passed to parameter target.crs", sep = ""))
       }
-    }
+    # }
     # crs_list <- paste("EPSG:", c(
     #   # Córrego Alegre
     #   4225, 22521, 22522, 22523, 22524, 22525,
@@ -191,6 +191,35 @@ observations <-
       if (nrow(tmp) >= 1) {
         obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
       }
+      
+      # Transformar SRC
+      if (!is.null(target.crs) && nrow(obs[[i]]) >= 1) {
+        # Até que se prove o contrário, sempre haverá diversos SRC. Contudo, para evitar surpresas, é melhor
+        # inserir desde já o código para o caso de um único SRC.
+        if (nlevels(as.factor(obs[[i]]$coord_sistema)) > 1) {
+          obs[[i]] <- split(obs[[i]], as.factor(obs[[i]]$coord_sistema))
+          if (toupper(target.crs) %in% names(obs[[i]])) {
+            j <- which(!names(obs[[i]]) %in% toupper(target.crs))
+          } else {
+            j <- 1:length(obs[[i]])
+          }
+          obs[[i]][j] <- lapply(obs[[i]][j], function (x) {
+            sp::coordinates(x) <- c("coord_x", "coord_y")
+            sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
+            x <- sp::spTransform(x, sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
+            as.data.frame(x)
+          })
+          obs[[i]] <- suppressWarnings(dplyr::bind_rows(obs[[i]]))
+          obs[[i]]$coord_sistema <- toupper(target.crs)
+        } else if (unique(obs[[i]]$coord_sistema) != toupper(target.crs)) {
+          sp::coordinates(obs[[i]]) <- c("coord_x", "coord_y")
+          sp::proj4string(obs[[i]]) <- sp::CRS(paste("+init=", tolower(obs[[i]]$coord_sistema[1]), sep = ""))
+          obs[[i]] <- sp::spTransform(obs[[i]], sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
+          obs[[i]] <- as.data.frame(obs[[i]])
+          obs[[i]]$coord_sistema <- toupper(target.crs)
+        }
+      }
+      
       if (progress) {
         utils::setTxtProgressBar(pb, i)
       }
@@ -203,33 +232,33 @@ observations <-
     if (stack.obs) {
       obs <- suppressWarnings(dplyr::bind_rows(obs))
 
-      # Transformar SRC
-      if (!is.null(target.crs) && nrow(obs) >= 1) {
-        # Até que se prove o contrário, sempre haverá diversos SRC. Contudo, para evitar surpresas, é melhor
-        # inserir desde já o código para o caso de um único SRC.
-        if (nlevels(as.factor(obs$coord_sistema)) > 1) {
-          obs <- split(obs, as.factor(obs$coord_sistema))
-          if (toupper(target.crs) %in% names(obs)) {
-            j <- which(!names(obs) %in% toupper(target.crs))
-          } else {
-            j <- 1:length(obs)
-          }
-          obs[j] <- lapply(obs[j], function (x) {
-            sp::coordinates(x) <- c("coord_x", "coord_y")
-            sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
-            x <- sp::spTransform(x, sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
-            as.data.frame(x)
-          })
-          obs <- suppressWarnings(dplyr::bind_rows(obs))
-          obs$coord_sistema <- toupper(target.crs)
-        } else if (unique(obs$coord_sistema) != toupper(target.crs)) {
-          sp::coordinates(obs) <- c("coord_x", "coord_y")
-          sp::proj4string(obs) <- sp::CRS(paste("+init=", tolower(obs$coord_sistema[1]), sep = ""))
-          obs <- sp::spTransform(obs, sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
-          obs <- as.data.frame(obs)
-          obs$coord_sistema <- toupper(target.crs)
-        }
-      }
+      # # Transformar SRC
+      # if (!is.null(target.crs) && nrow(obs) >= 1) {
+      #   # Até que se prove o contrário, sempre haverá diversos SRC. Contudo, para evitar surpresas, é melhor
+      #   # inserir desde já o código para o caso de um único SRC.
+      #   if (nlevels(as.factor(obs$coord_sistema)) > 1) {
+      #     obs <- split(obs, as.factor(obs$coord_sistema))
+      #     if (toupper(target.crs) %in% names(obs)) {
+      #       j <- which(!names(obs) %in% toupper(target.crs))
+      #     } else {
+      #       j <- 1:length(obs)
+      #     }
+      #     obs[j] <- lapply(obs[j], function (x) {
+      #       sp::coordinates(x) <- c("coord_x", "coord_y")
+      #       sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
+      #       x <- sp::spTransform(x, sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
+      #       as.data.frame(x)
+      #     })
+      #     obs <- suppressWarnings(dplyr::bind_rows(obs))
+      #     obs$coord_sistema <- toupper(target.crs)
+      #   } else if (unique(obs$coord_sistema) != toupper(target.crs)) {
+      #     sp::coordinates(obs) <- c("coord_x", "coord_y")
+      #     sp::proj4string(obs) <- sp::CRS(paste("+init=", tolower(obs$coord_sistema[1]), sep = ""))
+      #     obs <- sp::spTransform(obs, sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
+      #     obs <- as.data.frame(obs)
+      #     obs$coord_sistema <- toupper(target.crs)
+      #   }
+      # }
 
       # Colocar colunas na ordem padrão
       # obs <- obs[, target_cols]

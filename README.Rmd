@@ -3,7 +3,7 @@
 
 Use o seguinte comando para instalar a última versão de desenvolvimento do pacote `febr`:  
 
-    devtools::install_github("samuel-rosa/febr")
+    devtools::install_github("samuel-rosa/febr-package")
     
 # Utilização
 
