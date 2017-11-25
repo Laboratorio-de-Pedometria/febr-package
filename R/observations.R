@@ -1,6 +1,6 @@
 #' Get soil observations
 #'
-#' Download soil observation-specific data contained in the Brazilian Soil Iron Data Repository --
+#' Download soil observation-specific data contained in the Free Brazilian Repository for Open Soil Data --
 #' \url{http://www.ufsm.br/febr}.
 #'
 #' @param dataset Identification code of the dataset or datasets for which soil layer-specific data should be
@@ -30,8 +30,8 @@
 #' \subsection{Standard columns}{
 #' Standard columns and their content are as follows:
 #' \itemize{
-#' \item \code{dataset_id}. Identification code of the datasets in Fe-BR to which soil observations belong.
-#' \item \code{observacao_id}. Identification code of soil observations in Fe-BR.
+#' \item \code{dataset_id}. Identification code of the datasets in febr to which soil observations belong.
+#' \item \code{observacao_id}. Identification code of soil observations in febr.
 #' \item \code{sisb_id}. Identification code of soil observations in the Brazilian Soil Information System
 #' maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
 #' \url{https://www.bdsolos.cnptia.embrapa.br/consulta_publica.html}.

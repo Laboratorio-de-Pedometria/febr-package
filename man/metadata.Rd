@@ -13,7 +13,7 @@ metadata(progress = TRUE)
 A list with metadata-specific data.
 }
 \description{
-Download metadata-specific data contained in the Brazilian Soil Iron Data Repository  --
+Download metadata-specific data contained in the Free Brazilian Repository for Open Soil Data --
 \url{http://www.ufsm.br/febr}.
 }
 \examples{

@@ -13,7 +13,7 @@ datasets(progress = TRUE)
 A list with dataset-specific data.
 }
 \description{
-Download dataset-specific data contained in the Brazilian Soil Iron Data Repository  --
+Download dataset-specific data contained in the Free Brazilian Repository for Open Soil Data --
 \url{http://www.ufsm.br/febr}.
 }
 \examples{

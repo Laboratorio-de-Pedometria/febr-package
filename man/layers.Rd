@@ -58,15 +58,15 @@ Please report to \email{fe-br@googlegroups.com} if you find any issue.}
 A list or data.frame with soil layer-specific data.
 }
 \description{
-Download soil layer-specific data contained in the Brazilian Soil Iron Data Repository  --
+Download soil layer-specific data contained in the Free Brazilian Repository for Open Soil Data --
 \url{http://www.ufsm.br/febr}.
 }
 \details{
 \subsection{Standard columns}{
 Standard columns and their content are as follows:
 \itemize{
-\item \code{dataset_id}. Identification code of the datasets in Fe-BR to which soil observations belong.
-\item \code{observacao_id}. Identification code of soil observations in Fe-BR.
+\item \code{dataset_id}. Identification code of the datasets in febr to which soil observations belong.
+\item \code{observacao_id}. Identification code of soil observations in febr.
 \item \code{camada_numero}. Sequential layer number, from top to bottom.
 \item \code{camada_nome}. Layer designation according to some standard soil description guidelines.
 \item \code{amostra_codigo}. Laboratory number of the soil samples.

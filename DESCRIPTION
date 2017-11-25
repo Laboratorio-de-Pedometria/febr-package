@@ -1,19 +1,20 @@
 Package: febr
 Type: Package
-Title: Brazilian Soil Iron Data Repository
-Version: 0.4-3
-Date: 2017-10-04
+Title: Free Brazilian Repository for Open Soil Data 
+Version: 0.4-4
+Date: 2017-11-25
 Author: Alessandro Samuel-Rosa
 Maintainer: Alessandro Samuel-Rosa <alessandrosamuelrosa@gmail.com>
-Description: Make the access to the data in the Brazilian Soil Iron Data Repository as easy as possible.
+Description: 
+  Make the access to the open soil data in the Free Brazilian Repository for Open Soil Data as easy as possible.
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports:
-    cellranger,
-    dplyr,
-    googlesheets,
-    readr,
-    sp,
-    stringr
+  cellranger,
+  dplyr,
+  googlesheets,
+  readr,
+  sp,
+  stringr
 LazyData: true
 RoxygenNote: 6.0.1
