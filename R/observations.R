@@ -159,8 +159,13 @@ observations <-
         if ("ibge_id" %in% colnames(tmp)) {
           tmp$ibge_id <- as.character(tmp$ibge_id)
         }
+        
+        # 'coord_precisao' precisa estar no formato numérico ao invés de inteiro
+        if ("coord_precisao" %in% colnames(tmp)) {
+          tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
+        }
       }
-
+      
       # Se necessário, descartar observações sem coordenadas
       if (missing.coords == "drop") {
         tmp <- tmp[!is.na(tmp$coord_x), ]
