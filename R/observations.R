@@ -60,8 +60,8 @@
 #' @export
 #' @examples
 #' \dontrun{
-res <- observations(dataset = paste("ctb000", 4:9, sep = ""))
-str(res)
+#' res <- observations(dataset = paste("ctb000", 4:9, sep = ""))
+#' str(res)
 #' }
 ###############################################################################################################
 observations <-
@@ -136,7 +136,8 @@ observations <-
       
       # Informative messages
       if (verbose) {
-        message(paste("Downloading dataset ", sheets_keys$ctb[i], "...", sep = "")) 
+        par <- ifelse(progress, "\n", "")
+        message(paste(par, "Downloading dataset ", sheets_keys$ctb[i], "...", sep = ""))
       }
       
       tmp <- googlesheets::gs_key(sheets_keys$observacao[i], verbose = opts$gs$verbose)
