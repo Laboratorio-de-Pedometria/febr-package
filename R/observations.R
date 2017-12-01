@@ -17,14 +17,14 @@
 #' \code{"drop"} (default) and \code{"keep"}.
 #'
 #' @param target.crs EPSG code defining the target coordinate reference system to which spatial coordinates
-#' should be transformed. Used only with \code{stack.obs = TRUE}. Defaults to \code{target.crs = "EPSG:4674"},
-#' i.e. SIRGAS 2000, the standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}.
-#' If set to \code{target.crs = NULL} then the native spatial coordinates are returned.
+#' should be transformed. Defaults to \code{target.crs = "EPSG:4674"}, i.e. SIRGAS 2000, the standard CRS for
+#' Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. If set to \code{target.crs = NULL} then
+#' the native spatial coordinates are returned.
 #'
 #' @param progress Show download progress bar?
 #'
-#' @param verbose Show informative messages? Generally useful identify datasets with any inconsistent data. 
-#' Please report to \email{fe-br@@googlegroups.com} if you find any issue.
+#' @param verbose Show informative messages? Generally useful to identify datasets with any inconsistent data. 
+#' Please report to \email{febr-forum@@googlegroups.com} if you find any issue.
 #' 
 #' @details 
 #' \subsection{Standard columns}{
@@ -45,7 +45,7 @@
 #' \item \code{coord_precisao}. Precision with which x- and y-coordinates were determined (m).
 #' \item \code{coord_fonte}. Source of the x- and y-coordinates.
 #' \item \code{pais_id}. Country code (ISO 3166-1 alpha-2), i.e. \code{"BR"}.
-#' \item \code{estado_id}. Code of the Brazilian federative units.
+#' \item \code{estado_id}. Code of the Brazilian federative unit where soil observations were made.
 #' \item \code{municipio_id}. Name of the Brazilian county where soil observations were made.
 #' \item \code{amostra_tipo}. Type of soil sample taken, i.e. simple or composed.
 #' \item \code{amostra_quanti}. Number of soil samples taken.
@@ -60,6 +60,8 @@
 #' @export
 #' @examples
 #' \dontrun{
+res <- observations("ctb0001", stack.obs = FALSE)
+str(res)
 #' res <- observations(dataset = paste("ctb000", 4:9, sep = ""))
 #' str(res)
 #' }
@@ -82,40 +84,19 @@ observations <-
     if (!missing.coords %in% c("drop", "keep")) {
       stop (paste("Unknown value '", missing.coords, "' passed to parameter missing.coords", sep = ""))
     }
-    # if (!is.null(target.crs) && stack.obs == FALSE || which.cols == "all") {
-      # message(paste(
-        # "Coordinate transformation only works for stacked observations with standard columns\n",
-        # "Setting target CRS to NULL...", sep = "")
-        # )
-      # target.crs <- NULL
-    # } else {
-      crs_list <- paste("EPSG:", c(
-        # Córrego Alegre
-        4225, 22521, 22522, 22523, 22524, 22525,
-        # SAD69
-        4618 , 29168, 29188, 29169, 29189, 29170, 29190, 29191, 29192, 29193, 29194, 29195,
-        # WGS 84
-        4326, 32618, 32718, 32619, 32719, 32620, 32720, 32721, 32722, 32723, 32724, 32725,
-        # SIRGAS 2000
-        4674, 31972, 31978, 31973, 31979, 31974, 31980, 31981, 31982, 31983, 31984, 31985
-      ), sep = "")
-      if (!toupper(target.crs) %in% crs_list) {
-        stop (paste("Unknown value '", target.crs, "' passed to parameter target.crs", sep = ""))
-      }
-    # }
-    # crs_list <- paste("EPSG:", c(
-    #   # Córrego Alegre
-    #   4225, 22521, 22522, 22523, 22524, 22525,
-    #   # SAD69
-    #   4618 , 29168, 29188, 29169, 29189, 29170, 29190, 29191, 29192, 29193, 29194, 29195,
-    #   # WGS 84
-    #   4326, 32618, 32718, 32619, 32719, 32620, 32720, 32721, 32722, 32723, 32724, 32725,
-    #   # SIRGAS 2000
-    #   4674, 31972, 31978, 31973, 31979, 31974, 31980, 31981, 31982, 31983, 31984, 31985
-    # ), sep = "")
-    # if (!toupper(target.crs) %in% crs_list) {
-    #   stop (paste("Unknown value '", target.crs, "' passed to parameter target.crs", sep = ""))
-    # }
+    crs_list <- paste("EPSG:", c(
+      # Córrego Alegre
+      4225, 22521, 22522, 22523, 22524, 22525,
+      # SAD69
+      4618 , 29168, 29188, 29169, 29189, 29170, 29190, 29191, 29192, 29193, 29194, 29195,
+      # WGS 84
+      4326, 32618, 32718, 32619, 32719, 32620, 32720, 32721, 32722, 32723, 32724, 32725,
+      # SIRGAS 2000
+      4674, 31972, 31978, 31973, 31979, 31974, 31980, 31981, 31982, 31983, 31984, 31985
+    ), sep = "")
+    if (!toupper(target.crs) %in% crs_list) {
+      stop (paste("Unknown value '", target.crs, "' passed to parameter target.crs", sep = ""))
+    }
     if (!is.logical(progress)) {
       stop (paste("Unknown value '", progress, "' passed to parameter progress", sep = ""))
     }
@@ -138,6 +119,7 @@ observations <-
       }
       sheets_keys <- sheets_keys[sheets_keys$ctb %in% dataset, ]
     }
+    n <- nrow(sheets_keys)
 
     # Definir as colunas padrão
     if (which.cols == "standard") {
@@ -162,9 +144,9 @@ observations <-
       tmp <- googlesheets::gs_key(sheets_keys$observacao[i], verbose = opts$gs$verbose)
       tmp <- suppressMessages(
         googlesheets::gs_read_csv(
-          tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
+          tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose, comment = opts$gs$comment)
       )
-
+      
       # Definir as colunas a serem mantidas
       if (which.cols == "standard") {
         cols <- colnames(tmp) %in% target_cols
@@ -194,8 +176,7 @@ observations <-
       
       # Transformar SRC
       if (!is.null(target.crs) && nrow(obs[[i]]) >= 1) {
-        # Até que se prove o contrário, sempre haverá diversos SRC. Contudo, para evitar surpresas, é melhor
-        # inserir desde já o código para o caso de um único SRC.
+        # Muitas vezes há diversos SRC...
         if (nlevels(as.factor(obs[[i]]$coord_sistema)) > 1) {
           obs[[i]] <- split(obs[[i]], as.factor(obs[[i]]$coord_sistema))
           if (toupper(target.crs) %in% names(obs[[i]])) {
@@ -211,6 +192,8 @@ observations <-
           })
           obs[[i]] <- suppressWarnings(dplyr::bind_rows(obs[[i]]))
           obs[[i]]$coord_sistema <- toupper(target.crs)
+          
+          # No caso de um único SRC... Diferente do SRC alvo...
         } else if (unique(obs[[i]]$coord_sistema) != toupper(target.crs)) {
           sp::coordinates(obs[[i]]) <- c("coord_x", "coord_y")
           sp::proj4string(obs[[i]]) <- sp::CRS(paste("+init=", tolower(obs[[i]]$coord_sistema[1]), sep = ""))
@@ -231,38 +214,9 @@ observations <-
     # Se necessário, empilhar tabelas
     if (stack.obs) {
       obs <- suppressWarnings(dplyr::bind_rows(obs))
-
-      # # Transformar SRC
-      # if (!is.null(target.crs) && nrow(obs) >= 1) {
-      #   # Até que se prove o contrário, sempre haverá diversos SRC. Contudo, para evitar surpresas, é melhor
-      #   # inserir desde já o código para o caso de um único SRC.
-      #   if (nlevels(as.factor(obs$coord_sistema)) > 1) {
-      #     obs <- split(obs, as.factor(obs$coord_sistema))
-      #     if (toupper(target.crs) %in% names(obs)) {
-      #       j <- which(!names(obs) %in% toupper(target.crs))
-      #     } else {
-      #       j <- 1:length(obs)
-      #     }
-      #     obs[j] <- lapply(obs[j], function (x) {
-      #       sp::coordinates(x) <- c("coord_x", "coord_y")
-      #       sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
-      #       x <- sp::spTransform(x, sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
-      #       as.data.frame(x)
-      #     })
-      #     obs <- suppressWarnings(dplyr::bind_rows(obs))
-      #     obs$coord_sistema <- toupper(target.crs)
-      #   } else if (unique(obs$coord_sistema) != toupper(target.crs)) {
-      #     sp::coordinates(obs) <- c("coord_x", "coord_y")
-      #     sp::proj4string(obs) <- sp::CRS(paste("+init=", tolower(obs$coord_sistema[1]), sep = ""))
-      #     obs <- sp::spTransform(obs, sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
-      #     obs <- as.data.frame(obs)
-      #     obs$coord_sistema <- toupper(target.crs)
-      #   }
-      # }
-
-      # Colocar colunas na ordem padrão
-      # obs <- obs[, target_cols]
+    } else if (n == 1) {
+      obs <- obs[[1]]
     }
-
+    
     return (obs)
   }
