@@ -57,8 +57,8 @@
 #' \item \code{amostra_codigo}. Laboratory number of the soil samples.
 #' \item \code{profund_sup}. Upper boundary of soil layers (cm).
 #' \item \code{profund_inf}. Lower boundary of soil layers (cm).
-#' \item \code{fe_xxx_yyy}. Soil iron content data, with \code{xxx} being a given extraction method and
-#' \code{yyy} being a given measurement method.
+# \item \code{fe_xxx_yyy}. Soil iron content data, with \code{xxx} being a given extraction method and
+# \code{yyy} being a given measurement method.
 #' }
 #' }
 #' @return A list or data.frame with soil layer-specific data.
@@ -132,9 +132,6 @@ layers <-
     if (!is.logical(progress)) {
       stop (paste("Unknown value '", progress, "' passed to 'progress'", sep = ""))
     }
-
-    # # Options
-    # opts <- .opt()
     
     # Descarregar chaves de identificação das planilhas
     sheets_keys <- 
