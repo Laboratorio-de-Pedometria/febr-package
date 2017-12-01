@@ -3,9 +3,9 @@
 #' Download soil observation-specific data contained in the Free Brazilian Repository for Open Soil Data --
 #' \url{http://www.ufsm.br/febr}.
 #'
-#' @param dataset Identification code of the dataset or datasets for which soil layer-specific data should be
-#' downloaded -- see \url{http://www.ufsm.br/febr/data}. Defaults to \code{dataset = "all"}, that is, download
-#' data from all existing datasets.
+#' @param dataset Identification code of the dataset (or datasets) for which soil layer-specific data should be
+#' downloaded -- see \url{http://www.ufsm.br/febr/data}. Use \code{dataset = "all"} to download data from all
+#' existing datasets.
 #' 
 #' @param which.cols Which columns should be returned? Options are \code{"standard"} (default) and
 #' \code{"all"}. See \sQuote{Details} for a description of the standard columns.
@@ -65,7 +65,7 @@ str(res)
 #' }
 ###############################################################################################################
 observations <-
-  function (dataset = "all", which.cols = "standard", stack.obs = TRUE, missing.coords = "drop", 
+  function (dataset, which.cols = "standard", stack.obs = TRUE, missing.coords = "drop", 
             target.crs = "EPSG:4674", progress = TRUE, verbose = TRUE) {
 
     # Verificar consistência dos parâmetros
