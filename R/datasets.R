@@ -26,9 +26,7 @@ datasets <-
 
     # Descarregar chaves de identificação das planilhas do repositório
     sheets_keys <- googlesheets::gs_key("18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", verbose = FALSE)
-    sheets_keys <- suppressMessages(
-      googlesheets::gs_read(sheets_keys, verbose = FALSE)
-    )
+    sheets_keys <- suppressMessages(googlesheets::gs_read(sheets_keys, verbose = FALSE))
 
     # Definir opções de local
     locale <- readr::locale(decimal_mark = ",")
