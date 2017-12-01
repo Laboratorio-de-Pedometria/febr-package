@@ -44,7 +44,7 @@
 #' @param progress Show download progress bar?
 #' 
 #' @param verbose Show informative messages? Generally useful identify datasets with any inconsistent data. 
-#' Please report to \email{fe-br@@googlegroups.com} if you find any issue.
+#' Please report to \email{febr-forum@@googlegroups.com} if you find any issue.
 #'
 #' @details
 #' \subsection{Standard columns}{
