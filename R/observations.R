@@ -60,10 +60,8 @@
 #' @export
 #' @examples
 #' \dontrun{
-res <- observations("ctb0001", stack.obs = FALSE)
+res <- observations(dataset = paste("ctb000", 4:9, sep = ""))
 str(res)
-#' res <- observations(dataset = paste("ctb000", 4:9, sep = ""))
-#' str(res)
 #' }
 ###############################################################################################################
 observations <-
@@ -171,7 +169,7 @@ observations <-
       # Adicionar 'dataset_id' às observações processadas.
       # Verificar se, com a eliminação das observações sem coordenadas, restou alguma observação
       if (nrow(tmp) >= 1) {
-        obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
+        obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
       }
       
       # Transformar SRC
