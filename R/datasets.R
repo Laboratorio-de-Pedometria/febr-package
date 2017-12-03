@@ -1,8 +1,12 @@
 #' Get soil datasets
 #'
-#' Download dataset-specific data contained in the Free Brazilian Repository for Open Soil Data --
+#' Download soil dataset-specific data contained in the Free Brazilian Repository for Open Soil Data --
 #' \url{http://www.ufsm.br/febr}.
 #'
+#' @param id Identification code of the dataset (or datasets) for which soil dataset-specific data should be
+#' downloaded -- see \url{http://www.ufsm.br/febr/data}. Use \code{dataset = "all"} to download data from all
+#' existing datasets.
+#' 
 #' @param progress Show progress bar?
 #'
 #' @return A list with dataset-specific data.
@@ -17,7 +21,7 @@
 #' }
 ###############################################################################################################
 datasets <-
-  function (progress = TRUE) {
+  function (id, progress = TRUE) {
 
     # Verificar consistência dos parâmetros
     if (!is.logical(progress)) {
