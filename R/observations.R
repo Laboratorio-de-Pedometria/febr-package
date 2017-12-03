@@ -145,6 +145,7 @@ observations <-
         googlesheets::gs_read_csv(
           tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose, comment = opts$gs$comment)
       )
+      n_obs <- nrow(tmp)
       
       # Definir as colunas a serem mantidas
       if (which.cols == "standard") {
@@ -167,13 +168,26 @@ observations <-
         }
       }
       
-      # Se necessário, descartar observações sem coordenadas
-      if (missing.coords == "drop") {
-        tmp <- tmp[!is.na(tmp$coord_x), ]
+      # OBSERVAÇÕES SEM COORDENADAS
+      ## Verificar se existem observações sem coordenadas
+      n_missing <- sum(is.na(tmp$coord_x))
+      if (n_missing > 0) {
+      
+        ## Se necessário, descartar as observações sem coordenadas
+        if (missing.coords == "drop") {
+          
+          ## Alerta-se no caso de não haver quaisquer observações com coordenadas
+          if (n_missing == n_obs) {
+            m <- glue::glue("All observations in {dataset} are missing coordinates. None will be returned.")
+            message(m)
+          }
+          tmp <- tmp[!is.na(tmp$coord_x), ]  
+        }
       }
-
+      
       # Adicionar 'dataset_id' às observações processadas.
       # Verificar se, com a eliminação das observações sem coordenadas, restou alguma observação
+      
       if (nrow(tmp) >= 1) {
         obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
         
