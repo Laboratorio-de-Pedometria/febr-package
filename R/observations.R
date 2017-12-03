@@ -224,6 +224,9 @@ observations <-
               tmp_obs <- suppressWarnings(dplyr::bind_rows(tmp_obs))
               tmp_obs$coord_sistema <- toupper(target.crs)
               
+              ## Agrupar observações com e sem coordenadas
+              obs[[i]] <- rbind(tmp_obs, obs[[i]][-id_coords, ])
+              
             } else {
               
             }
