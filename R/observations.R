@@ -191,6 +191,14 @@ observations <-
         
         ## Adicionar a identificação do dataset às observações
         obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
+        
+        ## Transformação do sistema de referência de coordenadas
+        ## Verificar se existem observações com coordenadas.
+        if (n_obs > n_missing) {
+          id_missing <- which(is.na(obs[[i]]$coord_x))
+          
+        }
+        
       }
       
       
