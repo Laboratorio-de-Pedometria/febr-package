@@ -214,6 +214,16 @@ observations <-
                 j <- 1:n_crs
               }
               
+              ## Transformar os sistemas de referência de coordenadas
+              tmp_obs[j] <- lapply(tmp_obs[j], function (x) {
+                sp::coordinates(x) <- c("coord_x", "coord_y")
+                sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
+                x <- sp::spTransform(x, sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
+                as.data.frame(x)
+              })
+              tmp_obs <- suppressWarnings(dplyr::bind_rows(tmp_obs))
+              tmp_obs$coord_sistema <- toupper(target.crs)
+              
             } else {
               
             }
@@ -229,21 +239,20 @@ observations <-
         if (!is.null(target.crs)) {
           # Muitas vezes há diversos SRC...
           if (nlevels(as.factor(obs[[i]]$coord_sistema)) > 1) {
-            obs[[i]] <- split(obs[[i]], as.factor(obs[[i]]$coord_sistema))
-            if (toupper(target.crs) %in% names(obs[[i]])) {
-              j <- which(!names(obs[[i]]) %in% toupper(target.crs))
-            } else {
-              j <- 1:length(obs[[i]])
-            }
-            
-            obs[[i]][j] <- lapply(obs[[i]][j], function (x) {
-              sp::coordinates(x) <- c("coord_x", "coord_y")
-              sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
-              x <- sp::spTransform(x, sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
-              as.data.frame(x)
-            })
-            obs[[i]] <- suppressWarnings(dplyr::bind_rows(obs[[i]]))
-            obs[[i]]$coord_sistema <- toupper(target.crs)
+            # obs[[i]] <- split(obs[[i]], as.factor(obs[[i]]$coord_sistema))
+            # if (toupper(target.crs) %in% names(obs[[i]])) {
+            #   j <- which(!names(obs[[i]]) %in% toupper(target.crs))
+            # } else {
+            #   j <- 1:length(obs[[i]])
+            # }
+            # obs[[i]][j] <- lapply(obs[[i]][j], function (x) {
+            #   sp::coordinates(x) <- c("coord_x", "coord_y")
+            #   sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
+            #   x <- sp::spTransform(x, sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
+            #   as.data.frame(x)
+            # })
+            # obs[[i]] <- suppressWarnings(dplyr::bind_rows(obs[[i]]))
+            # obs[[i]]$coord_sistema <- toupper(target.crs)
             
             # No caso de um único SRC... Diferente do SRC alvo...
           } else if (unique(obs[[i]]$coord_sistema) != toupper(target.crs)) {
