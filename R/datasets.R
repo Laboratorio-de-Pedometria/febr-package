@@ -3,9 +3,9 @@
 #' Download soil dataset-specific data contained in the Free Brazilian Repository for Open Soil Data --
 #' \url{http://www.ufsm.br/febr}.
 #'
-#' @param id Identification code of the dataset (or datasets) for which soil dataset-specific data should be
-#' downloaded -- see \url{http://www.ufsm.br/febr/data}. Use \code{dataset = "all"} to download data from all
-#' existing datasets.
+#' @param dataset Identification code of the dataset (or datasets) for which soil dataset-specific data should 
+#' be downloaded -- see \url{http://www.ufsm.br/febr/data}. Use \code{dataset = "all"} to download data from 
+#' all existing datasets.
 #' 
 #' @param progress Show progress bar?
 #'
@@ -21,7 +21,7 @@
 #' }
 ###############################################################################################################
 datasets <-
-  function (id, progress = TRUE) {
+  function (dataset, progress = TRUE) {
 
     # Verificar consistência dos parâmetros
     if (!is.logical(progress)) {
@@ -29,8 +29,17 @@ datasets <-
     }
 
     # Descarregar chaves de identificação das planilhas do repositório
-    sheets_keys <- googlesheets::gs_key("18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", verbose = FALSE)
-    sheets_keys <- suppressMessages(googlesheets::gs_read(sheets_keys, verbose = FALSE))
+    sheets_keys <- .getSheetsKeys(dataset = dataset)
+    
+    # Which datasets should be downloaded?
+    if (!"all" %in% dataset) {
+      idx_out <- which(!dataset %in% sheets_keys$ctb)
+      if (length(idx_out) >= 1) {
+        stop (paste("Unknown value '", dataset[idx_out], "' passed to parameter dataset", sep = ""))
+      }
+      sheets_keys <- sheets_keys[sheets_keys$ctb %in% dataset, ]
+    }
+    n <- nrow(sheets_keys)
 
     # Definir opções de local
     locale <- readr::locale(decimal_mark = ",")

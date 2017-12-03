@@ -103,11 +103,7 @@ observations <-
     opts <- .opt()
 
     # Descarregar chaves de identificação das planilhas do repositório
-    sheets_keys <- 
-      googlesheets::gs_key("18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", verbose = opts$gs$verbose)
-    sheets_keys <- suppressMessages(
-      googlesheets::gs_read(sheets_keys, na = opts$gs$na, verbose = opts$gs$verbose))
-    sheets_keys <- .getDataset(sheets_keys = sheets_keys, dataset = dataset)
+    sheets_keys <- .getSheetsKeys(dataset = dataset)
 
     # Which datasets should be downloaded?
     if (!"all" %in% dataset) {

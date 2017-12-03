@@ -133,12 +133,8 @@ layers <-
       stop (paste("Unknown value '", progress, "' passed to 'progress'", sep = ""))
     }
     
-    # Descarregar chaves de identificação das planilhas
-    sheets_keys <- 
-      googlesheets::gs_key("18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", verbose = opts$gs$verbose)
-    sheets_keys <- 
-      suppressMessages(googlesheets::gs_read(sheets_keys, verbose = opts$gs$verbose, na = opts$gs$na))
-    sheets_keys <- .getDataset(sheets_keys = sheets_keys, dataset = dataset)
+    # Descarregar chaves de identificação das planilhas do repositório
+    sheets_keys <- .getSheetsKeys(dataset = dataset)
     
     # Definir as colunas padrão
     if (which.cols == "standard") {
