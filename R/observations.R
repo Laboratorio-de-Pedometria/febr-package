@@ -180,6 +180,7 @@ observations <-
           if (n_missing == n_obs) {
             m <- glue::glue("All observations in {dataset} are missing coordinates. None will be returned.")
             message(m)
+            n_obs <- 0
           }
           tmp <- tmp[!is.na(tmp$coord_x), ]  
         }
