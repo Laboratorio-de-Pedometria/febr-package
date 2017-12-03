@@ -202,8 +202,17 @@ observations <-
             tmp_obs <- obs[[i]][id_coords, ]
             
             ## Verificar quantos são os sistemas de referência de coordenadas usados no dataset
-            n_crs <- nlevels(as.factor(obs[[i]]$coord_sistema))
+            n_crs <- nlevels(as.factor(tmp_obs$coord_sistema))
+            
             if (n_crs > 1) {
+              tmp_obs <- split(tmp_obs, as.factor(tmp_obs$coord_sistema))
+              
+              ## Verificar se algum dos sistemas de referência de coordenadas é igual ao alvo
+              if (toupper(target.crs) %in% names(tmp_obs)) {
+                j <- which(!names(tmp_obs) %in% toupper(target.crs))
+              } else {
+                j <- 1:n_crs
+              }
               
             } else {
               
@@ -220,13 +229,13 @@ observations <-
         if (!is.null(target.crs)) {
           # Muitas vezes há diversos SRC...
           if (nlevels(as.factor(obs[[i]]$coord_sistema)) > 1) {
-            
             obs[[i]] <- split(obs[[i]], as.factor(obs[[i]]$coord_sistema))
             if (toupper(target.crs) %in% names(obs[[i]])) {
               j <- which(!names(obs[[i]]) %in% toupper(target.crs))
             } else {
               j <- 1:length(obs[[i]])
             }
+            
             obs[[i]][j] <- lapply(obs[[i]][j], function (x) {
               sp::coordinates(x) <- c("coord_x", "coord_y")
               sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
