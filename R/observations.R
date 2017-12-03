@@ -193,12 +193,13 @@ observations <-
         obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
         
         ## Sistema de referência de coordenadas
-        ## Verificar se existem observações com coordenadas e identificar aquelas sem coordenadas.
+        ## Verificar se existem observações com coordenadas e identificá-las.
         if (n_obs > n_missing) {
-          id_missing <- which(is.na(obs[[i]]$coord_x))
+          id_coords <- which(!is.na(obs[[i]]$coord_x))
           
           ## Verificar se o sistema de referência de coordenadas deve ser transformado
           if (!is.null(target.crs)) {
+            tmp_obs <- obs[[i]][id_coords, ]
             
             ## Verificar quantos são os sistemas de referência de coordenadas usados no dataset
             n_crs <- nlevels(as.factor(obs[[i]]$coord_sistema))
@@ -217,10 +218,9 @@ observations <-
       if (nrow(tmp) >= 1) {
         # Transformar SRC
         if (!is.null(target.crs)) {
-          
-          
           # Muitas vezes há diversos SRC...
           if (nlevels(as.factor(obs[[i]]$coord_sistema)) > 1) {
+            
             obs[[i]] <- split(obs[[i]], as.factor(obs[[i]]$coord_sistema))
             if (toupper(target.crs) %in% names(obs[[i]])) {
               j <- which(!names(obs[[i]]) %in% toupper(target.crs))
