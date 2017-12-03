@@ -182,15 +182,22 @@ observations <-
             message(m)
             n_obs <- 0
           }
-          tmp <- tmp[!is.na(tmp$coord_x), ]  
+          tmp <- tmp[!is.na(tmp$coord_x), ]
         }
       }
       
-      # Adicionar 'dataset_id' às observações processadas.
-      # Verificar se, com a eliminação das observações sem coordenadas, restou alguma observação
-      
-      if (nrow(tmp) >= 1) {
+      # OBSERVAÇÕES RESTANTES (COM E/OU SEM COORDENADAS)
+      if (n_obs >= 1) {
+        
+        ## Adicionar a identificação do dataset às observações
         obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
+      }
+      
+      
+      
+      # Verificar se, com a eliminação das observações sem coordenadas, restou alguma observação
+      if (nrow(tmp) >= 1) {
+        
         
         # Transformar SRC
         if (!is.null(target.crs)) {
