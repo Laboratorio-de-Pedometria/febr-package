@@ -92,7 +92,7 @@ observations <-
       # SIRGAS 2000
       4674, 31972, 31978, 31973, 31979, 31974, 31980, 31981, 31982, 31983, 31984, 31985
     ), sep = "")
-    if (!toupper(target.crs) %in% crs_list) {
+    if (!is.null(target.crs) && !toupper(target.crs) %in% crs_list) {
       stop (paste("Unknown value '", target.crs, "' passed to parameter target.crs", sep = ""))
     }
     if (!is.logical(progress)) {
@@ -130,16 +130,17 @@ observations <-
     obs <- list()
     for (i in 1:length(sheets_keys$observacao)) {
       
+      dts <- sheets_keys$ctb[i]
+      
       # Informative messages
       if (verbose) {
         par <- ifelse(progress, "\n", "")
-        message(paste(par, "Downloading dataset ", sheets_keys$ctb[i], "...", sep = ""))
+        message(paste(par, "Downloading dataset ", dts, "...", sep = ""))
       }
       
       tmp <- googlesheets::gs_key(sheets_keys$observacao[i], verbose = opts$gs$verbose)
       tmp <- suppressMessages(
-        googlesheets::gs_read_csv(
-          tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose, comment = opts$gs$comment)
+        googlesheets::gs_read_csv(tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
       )
       n_obs <- nrow(tmp)
       
@@ -174,7 +175,7 @@ observations <-
           
           ## Alerta-se no caso de não haver quaisquer observações com coordenadas
           if (n_missing == n_obs) {
-            m <- glue::glue("All observations in {dataset} are missing coordinates. None will be returned.")
+            m <- glue::glue("All observations in {dts} are missing coordinates. None will be returned.")
             message(m)
             n_obs <- 0
           }
