@@ -3,6 +3,10 @@
 #' Download metadata-specific data contained in the Free Brazilian Repository for Open Soil Data --
 #' \url{http://www.ufsm.br/febr}.
 #'
+#' @param dataset Identification code of the dataset (or datasets) for which soil metadata-specific data should
+#' be downloaded -- see \url{http://www.ufsm.br/febr/data}. Use \code{dataset = "all"} to download data from 
+#' all existing datasets.
+#' 
 #' @param progress Show progress bar?
 #'
 #' @return A list with metadata-specific data.
@@ -17,7 +21,7 @@
 #' }
 ###############################################################################################################
 metadata <-
-  function (progress = TRUE) {
+  function (dataset, progress = TRUE) {
 
     # Verificar consistência dos parâmetros
     if (!is.logical(progress)) {
@@ -25,10 +29,7 @@ metadata <-
     }
 
     # Descarregar chaves de identificação das planilhas do repositório
-    sheets_keys <- googlesheets::gs_key("18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", verbose = FALSE)
-    sheets_keys <- suppressMessages(
-      googlesheets::gs_read(sheets_keys, verbose = FALSE)
-    )
+    sheets_keys <- .getSheetsKeys(dataset = dataset)
 
     # Definir opções de local
     locale <- readr::locale(decimal_mark = ",")
