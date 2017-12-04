@@ -106,13 +106,13 @@ observations <-
     sheets_keys <- .getSheetsKeys(dataset = dataset)
 
     # Which datasets should be downloaded?
-    if (!"all" %in% dataset) {
-      idx_out <- which(!dataset %in% sheets_keys$ctb)
-      if (length(idx_out) >= 1) {
-        stop (paste("Unknown value '", dataset[idx_out], "' passed to parameter dataset", sep = ""))
-      }
-      sheets_keys <- sheets_keys[sheets_keys$ctb %in% dataset, ]
-    }
+    # if (!"all" %in% dataset) {
+    #   idx_out <- which(!dataset %in% sheets_keys$ctb)
+    #   if (length(idx_out) >= 1) {
+    #     stop (paste("Unknown value '", dataset[idx_out], "' passed to parameter dataset", sep = ""))
+    #   }
+    #   sheets_keys <- sheets_keys[sheets_keys$ctb %in% dataset, ]
+    # }
     n <- nrow(sheets_keys)
 
     # Definir as colunas padrão
