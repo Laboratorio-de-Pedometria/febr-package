@@ -4,16 +4,20 @@
 \alias{datasets}
 \title{Get soil datasets}
 \usage{
-datasets(progress = TRUE)
+datasets(dataset, progress = TRUE)
 }
 \arguments{
+\item{dataset}{Identification code of the dataset (or datasets) for which soil dataset-specific data should 
+be downloaded -- see \url{http://www.ufsm.br/febr/data}. Use \code{dataset = "all"} to download data from 
+all existing datasets.}
+
 \item{progress}{Show progress bar?}
 }
 \value{
 A list with dataset-specific data.
 }
 \description{
-Download dataset-specific data contained in the Free Brazilian Repository for Open Soil Data --
+Download soil dataset-specific data contained in the Free Brazilian Repository for Open Soil Data --
 \url{http://www.ufsm.br/febr}.
 }
 \examples{

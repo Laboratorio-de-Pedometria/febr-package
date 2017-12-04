@@ -4,14 +4,14 @@
 \alias{observations}
 \title{Get soil observations}
 \usage{
-observations(dataset = "all", which.cols = "standard", stack.obs = TRUE,
+observations(dataset, which.cols = "standard", stack.obs = TRUE,
   missing.coords = "drop", target.crs = "EPSG:4674", progress = TRUE,
   verbose = TRUE)
 }
 \arguments{
-\item{dataset}{Identification code of the dataset or datasets for which soil layer-specific data should be
-downloaded -- see \url{http://www.ufsm.br/febr/data}. Defaults to \code{dataset = "all"}, that is, download
-data from all existing datasets.}
+\item{dataset}{Identification code of the dataset (or datasets) for which soil layer-specific data should be
+downloaded -- see \url{http://www.ufsm.br/febr/data}. Use \code{dataset = "all"} to download data from all
+existing datasets.}
 
 \item{which.cols}{Which columns should be returned? Options are \code{"standard"} (default) and
 \code{"all"}. See \sQuote{Details} for a description of the standard columns.}
@@ -23,14 +23,14 @@ output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.o
 \code{"drop"} (default) and \code{"keep"}.}
 
 \item{target.crs}{EPSG code defining the target coordinate reference system to which spatial coordinates
-should be transformed. Used only with \code{stack.obs = TRUE}. Defaults to \code{target.crs = "EPSG:4674"},
-i.e. SIRGAS 2000, the standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}.
-If set to \code{target.crs = NULL} then the native spatial coordinates are returned.}
+should be transformed. Defaults to \code{target.crs = "EPSG:4674"}, i.e. SIRGAS 2000, the standard CRS for
+Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. If set to \code{target.crs = NULL} then
+the native spatial coordinates are returned.}
 
 \item{progress}{Show download progress bar?}
 
-\item{verbose}{Show informative messages? Generally useful identify datasets with any inconsistent data. 
-Please report to \email{fe-br@googlegroups.com} if you find any issue.}
+\item{verbose}{Show informative messages? Generally useful to identify datasets with any inconsistent data. 
+Please report to \email{febr-forum@googlegroups.com} if you find any issue.}
 }
 \value{
 A list or data.frame with soil observation-specific data.
@@ -58,7 +58,7 @@ of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/down
 \item \code{coord_precisao}. Precision with which x- and y-coordinates were determined (m).
 \item \code{coord_fonte}. Source of the x- and y-coordinates.
 \item \code{pais_id}. Country code (ISO 3166-1 alpha-2), i.e. \code{"BR"}.
-\item \code{estado_id}. Code of the Brazilian federative units.
+\item \code{estado_id}. Code of the Brazilian federative unit where soil observations were made.
 \item \code{municipio_id}. Name of the Brazilian county where soil observations were made.
 \item \code{amostra_tipo}. Type of soil sample taken, i.e. simple or composed.
 \item \code{amostra_quanti}. Number of soil samples taken.

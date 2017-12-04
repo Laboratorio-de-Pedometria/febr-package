@@ -4,9 +4,13 @@
 \alias{metadata}
 \title{Get soil metadata}
 \usage{
-metadata(progress = TRUE)
+metadata(dataset, progress = TRUE)
 }
 \arguments{
+\item{dataset}{Identification code of the dataset (or datasets) for which soil metadata-specific data should
+be downloaded -- see \url{http://www.ufsm.br/febr/data}. Use \code{dataset = "all"} to download data from 
+all existing datasets.}
+
 \item{progress}{Show progress bar?}
 }
 \value{

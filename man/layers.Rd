@@ -4,7 +4,7 @@
 \alias{layers}
 \title{Get soil layers}
 \usage{
-layers(dataset = "all", which.cols = "standard", soil.vars = "fe",
+layers(dataset, which.cols = "standard", soil.vars = "fe",
   stack.datasets = TRUE, missing.data = "drop",
   standardization = list(plus.sign = "add", plus.depth = 2.5, transition =
   "smooth", smoothing.fun = "mean"), harmonization = list(level = 1),
@@ -12,8 +12,8 @@ layers(dataset = "all", which.cols = "standard", soil.vars = "fe",
 }
 \arguments{
 \item{dataset}{Identification code of the dataset or datasets for which soil layer-specific data should be
-downloaded -- see \url{http://www.ufsm.br/febr/data}. Defaults to \code{dataset = "all"}, that is, download
-data from all existing datasets.}
+downloaded -- see \url{http://www.ufsm.br/febr/data}. Use \code{dataset = "all"} to download data from all
+existing datasets.}
 
 \item{which.cols}{Which columns should be returned? Options are \code{"standard"} (default) and
 \code{"all"}. See \sQuote{Details} for a description of the standard columns.}
@@ -52,7 +52,7 @@ output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.d
 \item{progress}{Show download progress bar?}
 
 \item{verbose}{Show informative messages? Generally useful identify datasets with any inconsistent data. 
-Please report to \email{fe-br@googlegroups.com} if you find any issue.}
+Please report to \email{febr-forum@googlegroups.com} if you find any issue.}
 }
 \value{
 A list or data.frame with soil layer-specific data.
@@ -72,8 +72,6 @@ Standard columns and their content are as follows:
 \item \code{amostra_codigo}. Laboratory number of the soil samples.
 \item \code{profund_sup}. Upper boundary of soil layers (cm).
 \item \code{profund_inf}. Lower boundary of soil layers (cm).
-\item \code{fe_xxx_yyy}. Soil iron content data, with \code{xxx} being a given extraction method and
-\code{yyy} being a given measurement method.
 }
 }
 }
