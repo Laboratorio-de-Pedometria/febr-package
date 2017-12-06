@@ -12,7 +12,7 @@ layers(dataset, which.cols = "standard", soil.vars = "fe",
 }
 \arguments{
 \item{dataset}{Identification code of the dataset or datasets for which soil layer-specific data should be
-downloaded -- see \url{http://www.ufsm.br/febr/data}. Use \code{dataset = "all"} to download data from all
+downloaded -- see \url{http://www.ufsm.br/febr/book}. Use \code{dataset = "all"} to download data from all
 existing datasets.}
 
 \item{which.cols}{Which columns should be returned? Options are \code{"standard"} (default) and

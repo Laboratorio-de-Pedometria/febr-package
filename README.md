@@ -8,7 +8,7 @@ fonte. Afinal de contas, o **febr** é um repositório livre!
 
 Use o seguinte comando para instalar a última versão de desenvolvimento do pacote `febr`:  
 
-    devtools::install_github("samuel-rosa/febr-package")
+    devtools::install_github("febr-team/febr-package")
     
 # Utilização
 
