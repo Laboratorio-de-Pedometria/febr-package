@@ -150,8 +150,10 @@ layers <-
     for (i in 1:length(sheets_keys$camada)) {
       
       # Informative messages
+      dts <- sheets_keys$ctb[i]
       if (verbose) {
-        message(paste("Downloading dataset ", sheets_keys$ctb[i], "...", sep = "")) 
+        par <- ifelse(progress, "\n", "")
+        message(paste(par, "Downloading dataset ", dts, "...", sep = ""))
       }
       
       tmp <- googlesheets::gs_key(sheets_keys$camada[i], verbose = opts$gs$verbose)

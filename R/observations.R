@@ -130,9 +130,8 @@ observations <-
     obs <- list()
     for (i in 1:length(sheets_keys$observacao)) {
       
-      dts <- sheets_keys$ctb[i]
-      
       # Informative messages
+      dts <- sheets_keys$ctb[i]
       if (verbose) {
         par <- ifelse(progress, "\n", "")
         message(paste(par, "Downloading dataset ", dts, "...", sep = ""))

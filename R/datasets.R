@@ -8,6 +8,9 @@
 #' all existing datasets.
 #' 
 #' @param progress Show progress bar?
+#' 
+#' @param verbose Show informative messages? Generally useful identify datasets with any inconsistent data. 
+#' Please report to \email{febr-forum@@googlegroups.com} if you find any issue.
 #'
 #' @return A list with dataset-specific data.
 #'
@@ -21,7 +24,7 @@
 #' }
 ###############################################################################################################
 datasets <-
-  function (dataset, progress = TRUE) {
+  function (dataset, progress = TRUE, verbose = TRUE) {
 
     # Verificar consistência dos parâmetros
     if (!is.logical(progress)) {
@@ -50,6 +53,14 @@ datasets <-
     }
     obs <- list()
     for (i in 1:length(sheets_keys$dataset)) {
+      
+      # Informative messages
+      dts <- sheets_keys$ctb[i]
+      if (verbose) {
+        par <- ifelse(progress, "\n", "")
+        message(paste(par, "Downloading dataset ", dts, "...", sep = ""))
+      }
+      
       tmp <- googlesheets::gs_key(sheets_keys$dataset[i], verbose = FALSE)
       tmp <- suppressMessages(
         googlesheets::gs_read_csv(tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
