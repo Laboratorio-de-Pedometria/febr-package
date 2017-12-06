@@ -14,18 +14,18 @@ Use o seguinte comando para instalar a última versão de desenvolvimento do pac
 
 O pacote `febr` possui quatro funções principais.
 
-Para descarregar as informações básicas de todos os conjuntos de dados, use
+Para descarregar as informações básicas do conjunto de dados `ctb0003`, use
 
-    dts <- datasets()
+    dts <- datasets("ctb0003")
 
-Já para descarregar os dados pontuais de todas as observações do solo, a função é
+Já para descarregar os dados pontuais das observações do solo do conjunto de dados `ctb0003`, a função é
 
-    obs <- observations()
+    obs <- observations("ctb0003")
     
 Descarrgar os dados das camadas/horizontes do solo é feito usando
 
-    lrs <- layers()
+    lrs <- layers("ctb0003")
 
 Por fim, para descarregar os metadados, use
 
-    mtd <- metadata()
+    mtd <- metadata("ctb0003")
