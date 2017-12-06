@@ -44,7 +44,7 @@ metadata <-
     }
     obs <- list()
     for (i in 1:length(stats::na.omit(sheets_keys$metadado))) {
-      # i <- 1
+      
       # Informative messages
       dts <- sheets_keys$ctb[i]
       if (verbose) {
