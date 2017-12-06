@@ -135,6 +135,7 @@ layers <-
     
     # Descarregar chaves de identificação das planilhas do repositório
     sheets_keys <- .getSheetsKeys(dataset = dataset)
+    n <- nrow(sheets_keys)
     
     # Definir as colunas padrão
     if (which.cols == "standard") {

@@ -41,9 +41,9 @@ datasets <-
     # }
     n <- nrow(sheets_keys)
 
-    # Definir opções de local
-    locale <- readr::locale(decimal_mark = ",")
-
+    # Opções
+    opts <- .opt()
+    
     # Descarregar planilhas com camadas
     if (progress) {
       pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$dataset), style = 3)
@@ -52,7 +52,7 @@ datasets <-
     for (i in 1:length(sheets_keys$dataset)) {
       tmp <- googlesheets::gs_key(sheets_keys$dataset[i], verbose = FALSE)
       tmp <- suppressMessages(
-        googlesheets::gs_read_csv(tmp, na = c("NA", "-", ""), locale = locale, verbose = FALSE)
+        googlesheets::gs_read_csv(tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
       )
 
       # Observações processadas

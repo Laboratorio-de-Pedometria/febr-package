@@ -30,9 +30,10 @@ metadata <-
 
     # Descarregar chaves de identificação das planilhas do repositório
     sheets_keys <- .getSheetsKeys(dataset = dataset)
-
-    # Definir opções de local
-    locale <- readr::locale(decimal_mark = ",")
+    n <- nrow(sheets_keys)
+    
+    # Opções
+    opts <- .opt()
 
     # Descarregar planilhas com camadas
     if (progress) {
@@ -42,7 +43,7 @@ metadata <-
     for (i in 1:length(stats::na.omit(sheets_keys$metadata))) {
       tmp <- googlesheets::gs_key(stats::na.omit(sheets_keys$metadata)[i], verbose = FALSE)
       tmp <- suppressMessages(
-        googlesheets::gs_read_csv(tmp, na = c("NA", "-", ""), locale = locale, verbose = FALSE)
+        googlesheets::gs_read_csv(tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
       )
 
       # Observações processadas
