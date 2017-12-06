@@ -73,7 +73,7 @@
 #' }
 ###############################################################################################################
 layers <-
-  function (dataset, which.cols = "standard", soil.vars = "fe",
+  function (dataset, which.cols = "standard", soil.vars = "argila",
             stack.datasets = TRUE, missing.data = "drop",
             standardization = list(
               plus.sign = "add", plus.depth = 2.5, transition = "smooth", smoothing.fun = "mean"),
@@ -145,7 +145,7 @@ layers <-
     }
     res <- list()
     for (i in 1:length(sheets_keys$camada)) {
-      
+      # i <- 1
       # Informative messages
       dts <- sheets_keys$ctb[i]
       if (verbose) {
@@ -220,25 +220,25 @@ layers <-
         # Também é possível que o conjunto de dados não possua quaisquer dados de ferro
         if (nrow(tmp) >= 1) {
           
-          # STANDARDIZATION ----
+          # STANDARDIZATION (Fe) ----
           # Identificar tipos de dado de ferro para padronização da unidade de medida e número de casas decimais
-          fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
-          fe_stand <- lapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y))
-          fe_stand <- do.call(rbind, fe_stand)
+          # fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
+          # fe_stand <- lapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y))
+          # fe_stand <- do.call(rbind, fe_stand)
           
           # 1. Se necessário, padronizar unidades de medida
-          idx_unit <- which(!unit[, soil_vars] %in% unique(standards(soil.var = "fe")$unit))
-          if (length(idx_unit) >= 1) {
-            conv_factor <- lapply(1:length(fe_type[idx_unit]), function (j) {
-              conversion(source = unlist(unit[, soil_vars[idx_unit]])[[j]], target = fe_stand$unit[idx_unit][j])
-            })
-            conv_factor <- do.call(rbind, conv_factor)
-            tmp[soil_vars[idx_unit]] <- t(t(tmp[soil_vars[idx_unit]]) * conv_factor$factor)
-          }
+          # idx_unit <- which(!unit[, soil_vars] %in% unique(standards(soil.var = "fe")$unit))
+          # if (length(idx_unit) >= 1) {
+            # conv_factor <- lapply(1:length(fe_type[idx_unit]), function (j) {
+              # conversion(source = unlist(unit[, soil_vars[idx_unit]])[[j]], target = fe_stand$unit[idx_unit][j])
+            # })
+            # conv_factor <- do.call(rbind, conv_factor)
+            # tmp[soil_vars[idx_unit]] <- t(t(tmp[soil_vars[idx_unit]]) * conv_factor$factor)
+          # }
           # 2. Padronizar número de casas decimais
-          tmp[, soil_vars] <- sapply(1:length(soil_vars), function (j) {
-            round(tmp[, soil_vars[j]], digits = fe_stand$digits[j])
-          })
+          # tmp[, soil_vars] <- sapply(1:length(soil_vars), function (j) {
+            # round(tmp[, soil_vars[j]], digits = fe_stand$digits[j])
+          # })
           
           # HARMONIZATION ----
           # Harmonizar dados de ferro
