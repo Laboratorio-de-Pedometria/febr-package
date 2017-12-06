@@ -56,7 +56,7 @@ datasets <-
       )
 
       # Observações processadas
-      obs[[i]] <- tmp
+      obs[[i]] <- as.data.frame(tmp)
       if (progress) {
         utils::setTxtProgressBar(pb, i)
       }
@@ -64,6 +64,6 @@ datasets <-
     if (progress) {
       close(pb)
     }
-
+    
     return (obs)
   }
