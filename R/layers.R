@@ -87,12 +87,9 @@ layers <-
     if(!which.cols %in% c("standard", "all")) {
       stop (paste("Unknown value '", which.cols, "' passed to 'which.cols'", sep = ""))
     }
-    # if(!soil.vars %in% c("fe")) {
+    # if(!soil.vars %in% opts$layers$soil.vars) {
     #   stop (paste("Unknown value '", soil.vars, "' passed to 'soil.vars'", sep = ""))
     # }
-    if(!soil.vars %in% opts$layers$soil.vars) {
-      stop (paste("Unknown value '", soil.vars, "' passed to 'soil.vars'", sep = ""))
-    }
     soil.vars <- paste(soil.vars, "_", sep = "")
     if (!is.logical(stack.datasets)) {
       stop (paste("Unknown value '", stack.datasets, "' passed to 'stack.datasets'", sep = ""))
