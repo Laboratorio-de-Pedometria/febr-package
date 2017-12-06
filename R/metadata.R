@@ -66,6 +66,10 @@ metadata <-
     if (progress) {
       close(pb)
     }
+    
+    if (n == 1) {
+      obs <- obs[[1]]
+    }
 
     return (obs)
   }
