@@ -11,8 +11,7 @@
 #' \code{"all"}. See \sQuote{Details} for a description of the standard columns.
 #' 
 #' @param soil.vars Identification code of the soil variables for which soil layer-specific data should be
-#' downloaded. The only currently available option is \code{soil.vars = "fe"}, that is, various forms of soil 
-#' iron content.
+#' downloaded.
 #'
 #' @param stack.datasets Should soil layers from different datasets be stacked on a single data frame for
 #' output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.datasets = TRUE}.
@@ -20,7 +19,8 @@
 #' @param missing.data What should be done with soil layers missing any iron data? Options are \code{"drop"}
 #' (default) and \code{"keep"}.
 #' 
-#' @param standardization List with definitions on how to \emph{standardize} soil layer-specific data.
+#' @param standardization List with definitions on how to \emph{standardize} soil layer-specific data. Only 
+#' works when \code{soil.vars = 'fe'}.
 #' \itemize{
 #' \item \code{plus.sign} What should be done with the plus sign ('+') commonly used along with the inferior 
 #'       limit of the bottom layer of soil observations? Options are \code{"add"} (default), \code{"remove"},
@@ -73,7 +73,7 @@
 #' }
 ###############################################################################################################
 layers <-
-  function (dataset, which.cols = "standard", soil.vars = "argila",
+  function (dataset, which.cols = "standard", soil.vars,
             stack.datasets = TRUE, missing.data = "drop",
             standardization = list(
               plus.sign = "add", plus.depth = 2.5, transition = "smooth", smoothing.fun = "mean"),
