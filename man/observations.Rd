@@ -4,17 +4,15 @@
 \alias{observations}
 \title{Get soil observations}
 \usage{
-observations(dataset, which.cols = "standard", stack.obs = TRUE,
-  missing.coords = "drop", target.crs = "EPSG:4674", progress = TRUE,
-  verbose = TRUE)
+observations(dataset, variable, stack.obs = TRUE, missing.coords = "drop",
+  target.crs = "EPSG:4674", progress = TRUE, verbose = TRUE)
 }
 \arguments{
-\item{dataset}{Identification code of the dataset (or datasets) for which soil layer-specific data should be
-downloaded -- see \url{http://www.ufsm.br/febr/book}. Use \code{dataset = "all"} to download data from all
-existing datasets.}
+\item{dataset}{Identification code of the dataset (or datasets). Use \code{dataset = "all"} to download 
+all datasets.}
 
-\item{which.cols}{Which columns should be returned? Options are \code{"standard"} (default) and
-\code{"all"}. See \sQuote{Details} for a description of the standard columns.}
+\item{variable}{Name(s) of the variable(s). If missing, then a set of standard columns is downloaded. Use
+\code{variable = "all"} to download all variables. See \sQuote{Details} for more information.}
 
 \item{stack.obs}{Should soil observations from different datasets be stacked on a single data frame for
 output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.obs = TRUE}.}
@@ -68,7 +66,7 @@ of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/down
 }
 \examples{
 \dontrun{
-res <- observations(dataset = paste("ctb000", 4:9, sep = ""))
+res <- observations(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
 str(res)
 }
 }
