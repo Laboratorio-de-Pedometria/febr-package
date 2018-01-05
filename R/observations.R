@@ -103,15 +103,6 @@ observations <-
 
     # Descarregar chaves de identificação das planilhas do repositório
     sheets_keys <- .getSheetsKeys(dataset = dataset)
-
-    # Which datasets should be downloaded?
-    # if (!"all" %in% dataset) {
-    #   idx_out <- which(!dataset %in% sheets_keys$ctb)
-    #   if (length(idx_out) >= 1) {
-    #     stop (paste("Unknown value '", dataset[idx_out], "' passed to parameter dataset", sep = ""))
-    #   }
-    #   sheets_keys <- sheets_keys[sheets_keys$ctb %in% dataset, ]
-    # }
     n <- nrow(sheets_keys)
 
     # Definir as colunas padrão
@@ -246,38 +237,6 @@ observations <-
           }
         }
       }
-      
-      # # Verificar se, com a eliminação das observações sem coordenadas, restou alguma observação
-      # if (nrow(tmp) >= 1) {
-      #   # Transformar SRC
-      #   if (!is.null(target.crs)) {
-      #     # Muitas vezes há diversos SRC...
-      #     if (nlevels(as.factor(obs[[i]]$coord_sistema)) > 1) {
-      #       # obs[[i]] <- split(obs[[i]], as.factor(obs[[i]]$coord_sistema))
-      #       # if (toupper(target.crs) %in% names(obs[[i]])) {
-      #       #   j <- which(!names(obs[[i]]) %in% toupper(target.crs))
-      #       # } else {
-      #       #   j <- 1:length(obs[[i]])
-      #       # }
-      #       # obs[[i]][j] <- lapply(obs[[i]][j], function (x) {
-      #       #   sp::coordinates(x) <- c("coord_x", "coord_y")
-      #       #   sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
-      #       #   x <- sp::spTransform(x, sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
-      #       #   as.data.frame(x)
-      #       # })
-      #       # obs[[i]] <- suppressWarnings(dplyr::bind_rows(obs[[i]]))
-      #       # obs[[i]]$coord_sistema <- toupper(target.crs)
-      #       
-      #       # No caso de um único SRC... Diferente do SRC alvo...
-      #     } else if (unique(obs[[i]]$coord_sistema) != toupper(target.crs)) {
-      #       sp::coordinates(obs[[i]]) <- c("coord_x", "coord_y")
-      #       sp::proj4string(obs[[i]]) <- sp::CRS(paste("+init=", tolower(obs[[i]]$coord_sistema[1]), sep = ""))
-      #       obs[[i]] <- sp::spTransform(obs[[i]], sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
-      #       obs[[i]] <- as.data.frame(obs[[i]])
-      #       obs[[i]]$coord_sistema <- toupper(target.crs)
-      #     }
-      #   } 
-      # }
       
       # Organize column names
       obs[[i]] <- obs[[i]][cols]
