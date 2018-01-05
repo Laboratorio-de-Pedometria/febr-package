@@ -3,12 +3,11 @@
 #' Download soil observation-specific data contained in the Free Brazilian Repository for Open Soil Data --
 #' \url{http://www.ufsm.br/febr}.
 #'
-#' @param dataset Identification code of the dataset (or datasets) for which soil layer-specific data should be
-#' downloaded -- see \url{http://www.ufsm.br/febr/book}. Use \code{dataset = "all"} to download data from all
-#' existing datasets.
+#' @param dataset Identification code of the dataset (or datasets). Use \code{dataset = "all"} to download 
+#' all datasets.
 #' 
-#' @param which.cols Which columns should be returned? Options are \code{"standard"} (default) and
-#' \code{"all"}. See \sQuote{Details} for a description of the standard columns.
+#' @param variable Name(s) of the variable(s). If missing, then a set of standard columns is downloaded. Use
+#' \code{variable = "all"} to download all variables. See \sQuote{Details} for more information.
 #' 
 #' @param stack.obs Should soil observations from different datasets be stacked on a single data frame for
 #' output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.obs = TRUE}.
@@ -60,26 +59,24 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' res <- observations(dataset = paste("ctb000", 4:9, sep = ""))
+#' res <- observations(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
 #' str(res)
 #' }
-observations(dataset = "ctb0797", var.names = "coord")
 ###############################################################################################################
 observations <-
-  function (dataset, which.cols = "standard", var.names, 
+  function (dataset, variable, 
+            # which.cols = "standard",
             stack.obs = TRUE, missing.coords = "drop", 
             target.crs = "EPSG:4674", progress = TRUE, verbose = TRUE) {
 
     # Verificar consistência dos parâmetros
-    if(!which.cols %in% c("standard", "all")) {
-      stop (paste("Unknown value '", which.cols, "' passed to parameter which.cols", sep = ""))
-    }
     if (!is.logical(stack.obs)) {
       stop (paste("Unknown value '", stack.obs, "' passed to parameter stack.obs", sep = ""))
     }
-    if (which.cols == "all" && stack.obs == TRUE) {
-      message("stack.obs can only be used with standard columns... switching to FALSE")
-      stack.obs <- FALSE
+    if (!missing(variable)) {
+      if (variable == "all" && stack.obs == TRUE) {
+        stop ("observations cannot be stacked when downloading all variables")
+      }
     }
     if (!missing.coords %in% c("drop", "keep")) {
       stop (paste("Unknown value '", missing.coords, "' passed to parameter missing.coords", sep = ""))
@@ -118,7 +115,7 @@ observations <-
     n <- nrow(sheets_keys)
 
     # Definir as colunas padrão
-    if (which.cols == "standard") {
+    if (missing(variable) || variable != "all") {
       target_cols <-
         c("observacao_id", "sisb_id", "ibge_id", "observacao_data", "coord_sistema", "coord_x", "coord_y",
           "coord_precisao", "coord_fonte", "pais_id", "estado_id", "municipio_id", "amostra_tipo",
@@ -146,15 +143,15 @@ observations <-
       n_obs <- nrow(tmp)
       
       # Definir as colunas a serem mantidas
-      if (which.cols == "standard") {
+      if (missing(variable) || variable != "all") {
         cols <- colnames(tmp) %in% target_cols
         cols <- colnames(tmp)[cols]
         
-        # Keep extra variables. We check if any of the column names starts with var.names. Duplicates between
+        # Keep extra variables. We check if any of the column names starts with 'variable'. Duplicates between
         # standard columns and extra variables are removed. 
-        if (!missing(var.names)) {
+        if (!missing(variable)) {
           extra_cols <- 
-            lapply(var.names, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))]) 
+            lapply(variable, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))]) 
           extra_cols <- unlist(extra_cols)
           cols <- c(cols, extra_cols)
           idx <- !duplicated(cols)
