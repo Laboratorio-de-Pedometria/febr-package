@@ -282,6 +282,9 @@ observations <-
       #   } 
       # }
       
+      # Organize column names
+      obs[[i]] <- obs[[i]][cols]
+      
       if (progress) {
         utils::setTxtProgressBar(pb, i)
       }
