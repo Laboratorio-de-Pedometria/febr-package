@@ -63,9 +63,11 @@
 #' res <- observations(dataset = paste("ctb000", 4:9, sep = ""))
 #' str(res)
 #' }
+observations(dataset = "ctb0797", var.names = "coord")
 ###############################################################################################################
 observations <-
-  function (dataset, which.cols = "standard", stack.obs = TRUE, missing.coords = "drop", 
+  function (dataset, which.cols = "standard", var.names, 
+            stack.obs = TRUE, missing.coords = "drop", 
             target.crs = "EPSG:4674", progress = TRUE, verbose = TRUE) {
 
     # Verificar consistência dos parâmetros
@@ -129,7 +131,7 @@ observations <-
     }
     obs <- list()
     for (i in 1:length(sheets_keys$observacao)) {
-      
+      # i <- 1
       # Informative messages
       dts <- sheets_keys$ctb[i]
       if (verbose) {
@@ -146,6 +148,18 @@ observations <-
       # Definir as colunas a serem mantidas
       if (which.cols == "standard") {
         cols <- colnames(tmp) %in% target_cols
+        cols <- colnames(tmp)[cols]
+        
+        # Keep extra variables. We check if any of the column names starts with var.names. Duplicates between
+        # standard columns and extra variables are removed. 
+        if (!missing(var.names)) {
+          extra_cols <- 
+            lapply(var.names, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))]) 
+          extra_cols <- unlist(extra_cols)
+          cols <- c(cols, extra_cols)
+          idx <- !duplicated(cols)
+          cols <- cols[idx]
+        }
         tmp <- tmp[, cols]
 
         # 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros
