@@ -4,7 +4,7 @@
 \alias{datasets}
 \title{Get soil datasets}
 \usage{
-datasets(dataset, progress = TRUE)
+datasets(dataset, progress = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{dataset}{Identification code of the dataset (or datasets) for which soil dataset-specific data should 
@@ -12,6 +12,9 @@ be downloaded -- see \url{http://www.ufsm.br/febr/book}. Use \code{dataset = "al
 all existing datasets.}
 
 \item{progress}{Show progress bar?}
+
+\item{verbose}{Show informative messages? Generally useful identify datasets with any inconsistent data. 
+Please report to \email{febr-forum@googlegroups.com} if you find any issue.}
 }
 \value{
 A list with dataset-specific data.
