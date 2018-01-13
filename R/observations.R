@@ -213,6 +213,12 @@ observations <-
               tmp_obs$coord_sistema[is_sad69] <- "EPSG:4618" 
             }
             
+            ## Verificar se o sistema de referência de coordenadas é o SIRGAS
+            is_sirgas <- tmp_obs$coord_sistema %in% "SIRGAS"
+            if (any(is_sirgas)) {
+              tmp_obs$coord_sistema[is_sirgas] <- target.crs 
+            }
+            
             ## Verificar quantos são os sistemas de referência de coordenadas usados no dataset
             n_crs <- nlevels(as.factor(tmp_obs$coord_sistema))
             
