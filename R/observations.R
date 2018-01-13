@@ -207,6 +207,12 @@ observations <-
               tmp_obs$coord_sistema[is_na_crs] <- target.crs
             }
             
+            ## Verificar se o sistema de referência de coordenadas é o SAD69
+            is_sad69 <- tmp_obs$coord_sistema %in% "SAD69"
+            if (any(is_sad69)) {
+              tmp_obs$coord_sistema[is_sad69] <- "EPSG:4618" 
+            }
+            
             ## Verificar quantos são os sistemas de referência de coordenadas usados no dataset
             n_crs <- nlevels(as.factor(tmp_obs$coord_sistema))
             
