@@ -128,7 +128,8 @@ observations <-
       
       tmp <- googlesheets::gs_key(sheets_keys$observacao[i], verbose = opts$gs$verbose)
       tmp <- suppressMessages(
-        googlesheets::gs_read_csv(tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
+        googlesheets::gs_read_csv(
+          tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose, comment = opts$gs$comment)
       )
       n_obs <- nrow(tmp)
       
@@ -197,6 +198,14 @@ observations <-
           ## Verificar se o sistema de referência de coordenadas deve ser transformado
           if (!is.null(target.crs)) {
             tmp_obs <- obs[[i]][id_coords, ]
+            
+            ## Verificar se o sistema de referência de coordenadas está faltando
+            is_na_crs <- is.na(tmp_obs$coord_sistema)
+            if (any(is_na_crs)) {
+              is_degree <- nchar(round(abs(tmp_obs$coord_x))) <= 2
+              is_na_crs <- which(is_na_crs[is_degree])
+              tmp_obs$coord_sistema[is_na_crs] <- target.crs
+            }
             
             ## Verificar quantos são os sistemas de referência de coordenadas usados no dataset
             n_crs <- nlevels(as.factor(tmp_obs$coord_sistema))

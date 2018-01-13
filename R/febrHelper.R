@@ -15,7 +15,7 @@
         )
       ),
       gs = list(
-        comment = "unidade",
+        comment = "#unidade",
         locale = readr::locale(decimal_mark = ","),
         na = c("NA", "-", ""),
         verbose = FALSE
