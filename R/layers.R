@@ -11,10 +11,13 @@
 #' \code{variable = "all"} to download all variables. See \sQuote{Details} for more information.
 #'
 #' @param stack Should soil layers from different datasets be stacked on a single data frame for
-#' output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack = TRUE}.
+#' output? Defaults to \code{stack = FALSE}, the output being a list of data frames.
 #'
-#' @param missing What should be done with soil layers missing data? Options are \code{"drop"}
-#' and \code{"keep"} (default).
+#' @param missing List with named arguments specifying what should be done with layers missing depth, 
+#' \code{depth}, or data, \code{data}? Options are \code{"keep"} (default) and \code{"drop"}.
+#' 
+#' @param missing List with named a argument specifying what should be done with layers missing data, 
+#' \code{data}? Options are \code{"keep"} (default) and \code{"drop"}.
 #' 
 #' @param standardization List with definitions on how to \emph{standardize} soil layer-specific data. Only 
 #' works when \code{soil.vars = 'fe'}.
@@ -72,7 +75,7 @@
 ###############################################################################################################
 layers <-
   function (dataset, variable,
-            stack = TRUE, missing = "keep",
+            stack = FALSE, missing = list(depth = "keep", data = "keep"),
             standardization = list(
               plus.sign = "keep", plus.depth = 0, transition = "keep", smoothing.fun = "mean"),
             harmonization = list(level = 2),
@@ -140,6 +143,7 @@ layers <-
         message(paste(par, "Downloading dataset ", dts, "...", sep = ""))
       }
       
+      # DESCARREGAMENTO
       tmp <- googlesheets::gs_key(sheets_keys$camada[i], verbose = opts$gs$verbose)
       unit <- suppressMessages(
         googlesheets::gs_read_csv(tmp, locale = opts$gs$locale, verbose = opts$gs$verbose, n_max = 1))
@@ -153,117 +157,163 @@ layers <-
           tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose, comment = opts$gs$comment)
       )
       tmp <- as.data.frame(tmp)
+      n_rows <- nrow(tmp)
       
-      # COLUNAS
-      ## Definir as colunas a serem mantidas
-      ## As colunas padrão são sempre mantidas.
-      ## Nota: No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados, assim 
-      ## sendo ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas. Esse processamento deve
-      ## ser feito no Google Sheets.
-      in_cols <- colnames(tmp)
-      cols <- in_cols[in_cols %in% std_cols]
-      
-      ## Colunas adicionais
-      extra_cols <- vector()
-      if (!missing(variable)) {
+      # PROCESSAMENTO I
+      ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas profundidades
+      na_depth <- max(apply(tmp[c("profund_sup", "profund_inf")], 2, function (x) sum(is.na(x))))
+      if (missing$depth == "keep" || missing$depth == "drop" && na_depth < n_rows) {
         
-        if (variable == "all") {
-          extra_cols <- in_cols[!in_cols %in% std_cols]
-          idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
-          extra_cols <- extra_cols[!idx_na]
-          cols <- c(cols, extra_cols)
+        # COLUNAS
+        ## Definir as colunas a serem mantidas
+        ## As colunas padrão são sempre mantidas.
+        ## No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados, assim sendo
+        ## ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.  
+        in_cols <- colnames(tmp)
+        cols <- in_cols[in_cols %in% std_cols]
+        extra_cols <- vector()
+        if (!missing(variable)) {
           
-        } else {
-          extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)])
-          extra_cols <- unlist(extra_cols)
-          extra_cols <- extra_cols[!extra_cols %in% std_cols]
-          idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
-          extra_cols <- extra_cols[!idx_na]
-          cols <- c(cols, extra_cols)
+          if (variable == "all") {
+            extra_cols <- in_cols[!in_cols %in% std_cols]
+            idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
+            extra_cols <- extra_cols[!idx_na]
+            
+          } else {
+            extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)])
+            extra_cols <- unlist(extra_cols)
+            extra_cols <- extra_cols[!extra_cols %in% std_cols]
+            idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
+            extra_cols <- extra_cols[!idx_na]
+          }
         }
+        cols <- c(cols, extra_cols)
+        tmp <- tmp[, cols]
       }
-      tmp <- tmp[, cols]
-      
-      
-      
-      # PADRONIZAÇÃO I
-      ## Sinal positivo em 'profund_inf' indicando maior profundidade do solo
-      ## O padrão consiste em manter o sinal positivo.
-      if (standardization$plus.sign != "keep") {
-        tmp <- .setMaximumObservationDepth(
-          obj = tmp, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
-          plus.sign = standardization$plus.sign, plus.depth = standardization$plus.depth)
-      }
-      
-      ## Transição ondulada ou irregular
-      ## O padrão consiste em manter a transição ondulada ou irregular.
-      if (standardization$transition != "keep") {
-        tmp <- .solveIrregularLayerTransition(
-          obj = tmp, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
-          smoothing.fun = standardization$smoothing.fun)
-        
-        # What to do with broken layer transitions?
-        # if (length(extra_cols) > 0) {
-        #   tmp <- .solveBrokenLayerTransition(
-        #     obj = tmp, id.cols = opts$layers$id.cols, depth.cols = c("profund_sup", "profund_inf")) 
-        # }
-      }
-      
+
       # LINHAS
-      ## Se necessário, descartar linhas com dados faltantes nas colunas adicionais
-      if (length(extra_cols) >= 1 && missing.data == "drop") {
+      ## Definir as linhas a serem mantidas
+      if (length(extra_cols) >= 1 && missing$data == "drop") {
         idx_keep <- is.na(tmp[extra_cols])
         idx_keep <- rowSums(idx_keep) < ncol(idx_keep)
         tmp <- tmp[idx_keep, ]
       }
+      if (missing$depth == "drop") {
+        na_depth_id <- apply(tmp[c("profund_sup", "profund_inf")], 1, function (x) sum(is.na(x))) >= 1
+        tmp <- tmp[!na_depth_id, ]
+      }
+      n_rows <- nrow(tmp)
+      
+      # PROCESSAMENTO II
+      ## A continuação do processamento dos dados depende das presença de dados após a eliminação de colunas
+      ## e linhas com NAs.
+      if (n_rows >= 1 && missing(variable) || length(extra_cols) >= 1) {
         
-      # PADRONIZAÇÃO II
-      ## Unidade de medida e número de casas decimais
-      ## É preciso verificar se, com a eliminação de linhas e colunas com dados faltantes, restaram dados para
-      ## processamento.
-      if (nrow(tmp) >= 1 && length(extra_cols) >= 1) {
+        # PADRONIZAÇÃO I
+        ## Profundidade e transição entre as camadas
+        
+        ## Sinal positivo em 'profund_inf' indicando maior profundidade do abaixo da última camada
+        ## O padrão consiste em manter o sinal positivo.
+        if (standardization$plus.sign != "keep") {
+          tmp <- .setMaximumObservationDepth(
+            obj = tmp, plus.sign = standardization$plus.sign, plus.depth = standardization$plus.depth)
+        }
+        
+        ## Transição ondulada ou irregular
+        ## O padrão consiste em manter a transição ondulada ou irregular.
+        if (standardization$transition != "keep") {
+          tmp <- .solveIrregularLayerTransition(obj = tmp, smoothing.fun = standardization$smoothing.fun)
+          
+          # What to do with broken layer transitions?
+          # if (length(extra_cols) > 0) {
+          #   tmp <- .solveBrokenLayerTransition(obj = tmp)
+          # }
+        }
+       
+        # PADRONIZAÇÃO II
+        ## Unidade de medida e número de casas decimais
+        
+        # if (soil.vars == 'fe') {
+        #   fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
+        #   fe_stand <- lapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y))
+        #   fe_stand <- do.call(rbind, fe_stand)
+        #   
+        #   # 1. Se necessário, padronizar unidades de medida
+        #   idx_unit <- which(!unit[, soil_vars] %in% unique(standards(soil.var = "fe")$unit))
+        #   if (length(idx_unit) >= 1) {
+        #     conv_factor <- lapply(1:length(fe_type[idx_unit]), function (j) {
+        #       conversion(source = unlist(unit[, soil_vars[idx_unit]])[[j]], target = fe_stand$unit[idx_unit][j])
+        #     })
+        #     conv_factor <- do.call(rbind, conv_factor)
+        #     tmp[soil_vars[idx_unit]] <- t(t(tmp[soil_vars[idx_unit]]) * conv_factor$factor)
+        #   }
+        #   # 2. Padronizar número de casas decimais
+        #   tmp[, soil_vars] <- sapply(1:length(soil_vars), function (j) {
+        #     round(tmp[, soil_vars[j]], digits = fe_stand$digits[j])
+        #   })
+        # }
+        
+        # HARMONIZAÇÃO I
+        ## 
+        
+        # if (harmonization$level == 1) {
+        #   new_colnames <- matrix(stringr::str_split_fixed(colnames(tmp[soil_vars]), "_", 3)[, 1:2], ncol = 2)
+        #   new_colnames <- apply(new_colnames, 1, paste, collapse = "_", sep = "")
+        #   
+        #   # Nomes idênticos são gerados para variáveis definidas pelo mesmo extrator. Nesses casos mantém-se
+        #   # os nomes originais das respectivas colunas.
+        #   if (any(duplicated(new_colnames))) {
+        #     idx <- c(which(duplicated(new_colnames)), which(duplicated(new_colnames, fromLast = TRUE)))
+        #     new_colnames[idx] <- soil_vars[idx]
+        #   }
+        #   colnames(tmp)[colnames(tmp) %in% soil_vars] <- new_colnames
+        # }
         
       }
-        
-        
+      
+      
+      
+      
+      
+      
         if (nrow(tmp) >= 1) {
           
           # STANDARDIZATION (Fe) ----
           # Identificar tipos de dado de ferro para padronização da unidade de medida e número de casas decimais
-          if (soil.vars == 'fe') {
-            fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
-            fe_stand <- lapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y))
-            fe_stand <- do.call(rbind, fe_stand)
-            
-            # 1. Se necessário, padronizar unidades de medida
-            idx_unit <- which(!unit[, soil_vars] %in% unique(standards(soil.var = "fe")$unit))
-            if (length(idx_unit) >= 1) {
-              conv_factor <- lapply(1:length(fe_type[idx_unit]), function (j) {
-                conversion(source = unlist(unit[, soil_vars[idx_unit]])[[j]], target = fe_stand$unit[idx_unit][j])
-              })
-              conv_factor <- do.call(rbind, conv_factor)
-              tmp[soil_vars[idx_unit]] <- t(t(tmp[soil_vars[idx_unit]]) * conv_factor$factor)
-            }
-            # 2. Padronizar número de casas decimais
-            tmp[, soil_vars] <- sapply(1:length(soil_vars), function (j) {
-              round(tmp[, soil_vars[j]], digits = fe_stand$digits[j])
-            })
-          }
+          # if (soil.vars == 'fe') {
+          #   fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
+          #   fe_stand <- lapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y))
+          #   fe_stand <- do.call(rbind, fe_stand)
+          #   
+          #   # 1. Se necessário, padronizar unidades de medida
+          #   idx_unit <- which(!unit[, soil_vars] %in% unique(standards(soil.var = "fe")$unit))
+          #   if (length(idx_unit) >= 1) {
+          #     conv_factor <- lapply(1:length(fe_type[idx_unit]), function (j) {
+          #       conversion(source = unlist(unit[, soil_vars[idx_unit]])[[j]], target = fe_stand$unit[idx_unit][j])
+          #     })
+          #     conv_factor <- do.call(rbind, conv_factor)
+          #     tmp[soil_vars[idx_unit]] <- t(t(tmp[soil_vars[idx_unit]]) * conv_factor$factor)
+          #   }
+          #   # 2. Padronizar número de casas decimais
+          #   tmp[, soil_vars] <- sapply(1:length(soil_vars), function (j) {
+          #     round(tmp[, soil_vars[j]], digits = fe_stand$digits[j])
+          #   })
+          # }
           
           # HARMONIZATION ----
           # Harmonizar dados de ferro
-          if (harmonization$level == 1) {
-            new_colnames <- matrix(stringr::str_split_fixed(colnames(tmp[soil_vars]), "_", 3)[, 1:2], ncol = 2)
-            new_colnames <- apply(new_colnames, 1, paste, collapse = "_", sep = "")
-            
-            # Nomes idênticos são gerados para variáveis definidas pelo mesmo extrator. Nesses casos mantém-se
-            # os nomes originais das respectivas colunas.
-            if (any(duplicated(new_colnames))) {
-              idx <- c(which(duplicated(new_colnames)), which(duplicated(new_colnames, fromLast = TRUE)))
-              new_colnames[idx] <- soil_vars[idx]
-            }
-            colnames(tmp)[colnames(tmp) %in% soil_vars] <- new_colnames
-          }
+          # if (harmonization$level == 1) {
+          #   new_colnames <- matrix(stringr::str_split_fixed(colnames(tmp[soil_vars]), "_", 3)[, 1:2], ncol = 2)
+          #   new_colnames <- apply(new_colnames, 1, paste, collapse = "_", sep = "")
+          #   
+          #   # Nomes idênticos são gerados para variáveis definidas pelo mesmo extrator. Nesses casos mantém-se
+          #   # os nomes originais das respectivas colunas.
+          #   if (any(duplicated(new_colnames))) {
+          #     idx <- c(which(duplicated(new_colnames)), which(duplicated(new_colnames, fromLast = TRUE)))
+          #     new_colnames[idx] <- soil_vars[idx]
+          #   }
+          #   colnames(tmp)[colnames(tmp) %in% soil_vars] <- new_colnames
+          # }
           
           # STACKING ----
           # If tables are to be stacked, then id.cols must be of type character
