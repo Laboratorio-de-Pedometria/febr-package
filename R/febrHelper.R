@@ -9,9 +9,9 @@
             "amostra_tipo", "amostra_quanti", "amostra_area")
         ),
       layers = list(
-        id.cols = 
-          c("observacao_id", "camada_numero", "camada_nome", "amostra_codigo"),
-        depth.cols = c("profund_sup", "profund_inf"),
+        std.cols = 
+          c("observacao_id", "camada_numero", "camada_nome", "amostra_codigo",
+            "profund_sup", "profund_inf"),
         soil.vars = c(
           # Variáveis químicas
           # c(alumínio = 'al', cálcio = 'ca', carbono = 'c', 

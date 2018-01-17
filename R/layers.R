@@ -140,9 +140,6 @@ layers <-
     sheets_keys <- .getSheetsKeys(dataset = dataset)
     n <- nrow(sheets_keys)
     
-    # Definir as colunas padrão
-    std_cols <- c(opts$layers$id.cols, opts$layers$depth.cols)
-    
     # Descarregar planilhas com camadas
     if (progress) {
       pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$camada), style = 3)
@@ -171,6 +168,28 @@ layers <-
       )
       tmp <- as.data.frame(tmp)
       
+      # Definir as colunas a serem mantidas
+      if (missing(variable) || variable != "all") {
+        
+        # Manter colunas padrão
+        in_cols <- colnames(tmp)
+        cols <- in_cols %in% opts$layers$std.cols
+        cols <- in_cols[cols]
+        
+        # Manter colunas adicionais
+        # Verifica-se se algum dos nomes das colunas inicia com 'variable'.
+        # Nomes duplicados entre as colunas padrão e as colunas adicionais são removidos.
+        if (!missing(variable)) {
+          extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)]) 
+          extra_cols <- unlist(extra_cols)
+          cols <- c(cols, extra_cols)
+          idx <- !duplicated(cols)
+          cols <- cols[idx]
+        }
+        tmp <- tmp[, cols]
+      }
+      
+      
       # Quais colunas/variáveis?
       # No caso de which.cols == "standard", então precisamos identificar as colunas que contém os dados da
       # variável do solo escolhida. Note que algumas dessas colunas podem não conter quaiquer dados, assim 
@@ -191,26 +210,26 @@ layers <-
         
         # Definir as colunas a serem mantidas
         if (which.cols == "standard") {
-          tmp <- tmp[, c(target_cols, soil_vars)]
+          tmp <- tmp[, c(std_cols, soil_vars)]
         }
         
         # STANDARDIZATION ----
         # I. What to do with the plus sign?
         if (standardization$plus.sign != "keep") {
           tmp <- .setMaximumObservationDepth(
-            obj = tmp, id.col = target_cols[1], depth.cols = opts$layers$depth.cols,
+            obj = tmp, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
             plus.sign = standardization$plus.sign, plus.depth = standardization$plus.depth)
         }
         
         if (standardization$transition != "keep") {
           # II. What to do with wavy and irregular layer transitions?
           tmp <- .solveIrregularLayerTransition(
-            obj = tmp, id.col = target_cols[1], depth.cols = opts$layers$depth.cols,
+            obj = tmp, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
             smoothing.fun = standardization$smoothing.fun)
           
           # III. What to do with broken layer transitions?
           tmp <- .solveBrokenLayerTransition(
-            obj = tmp, id.cols = opts$layers$id.cols, depth.cols = opts$layers$depth.cols)
+            obj = tmp, id.cols = opts$layers$id.cols, depth.cols = c("profund_sup", "profund_inf"))
         }
         
         # CLEAN UP ----
@@ -270,9 +289,9 @@ layers <-
             # If tables are to be stacked and depth data has not been standardized, then depth.cols must be 
             # of type character. Otherwise depth.cols must be of type numeric.
             if (standardization$plus.sign == "keep" || standardization$transition == "keep") {
-              tmp[opts$layers$depth.cols] <- sapply(tmp[opts$layers$depth.cols], as.character)
+              tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.character)
             } else {
-              tmp[opts$layers$depth.cols] <- sapply(tmp[opts$layers$depth.cols], as.numeric)
+              tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
             }
           }
           
