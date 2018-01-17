@@ -62,8 +62,8 @@
 #' res <- observations(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
 #' str(res)
 #' }
-# obs <- observations(dataset = "ctb0029", variable = "taxon")
-# head(obs)
+obs <- observations(dataset = "ctb0029")
+head(obs, 1)
 ###############################################################################################################
 observations <-
   function (dataset, variable,
@@ -132,21 +132,28 @@ observations <-
       
       # COLUNAS
       ## Definir as colunas a serem mantidas
-      ## Manter colunas padrão
+      ## As colunas padrão são sempre mantidas.
+      ## No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados, assim sendo
+      ## ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.  
       in_cols <- colnames(tmp)
       cols <- in_cols[in_cols %in% std_cols]
       
       ## Colunas adicionais
+      extra_cols <- vector()
       if (!missing(variable)) {
         
         if (variable == "all") {
           extra_cols <- in_cols[!in_cols %in% std_cols]
+          idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
+          extra_cols <- extra_cols[!idx_na]
           cols <- c(cols, extra_cols)
           
         } else {
           extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)])
           extra_cols <- unlist(extra_cols)
           extra_cols <- extra_cols[!extra_cols %in% std_cols]
+          idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
+          extra_cols <- extra_cols[!idx_na]
           cols <- c(cols, extra_cols)
         }
       }
