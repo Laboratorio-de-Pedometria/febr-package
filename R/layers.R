@@ -141,10 +141,7 @@ layers <-
     n <- nrow(sheets_keys)
     
     # Definir as colunas padrão
-    if (missing(variable) || variable != "all") {
-    # if (which.cols == "standard") {
-      target_cols <- c(opts$layers$id.cols, opts$layers$depth.cols)
-    }
+    std_cols <- c(opts$layers$id.cols, opts$layers$depth.cols)
     
     # Descarregar planilhas com camadas
     if (progress) {
