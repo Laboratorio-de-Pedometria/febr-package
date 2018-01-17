@@ -71,7 +71,7 @@
 #' res <- layers(dataset = paste("ctb000", 4:9, sep = ""))
 #' str(res)
 #' }
-dataset <- "ctb0029"
+# dataset <- "ctb0029"
 ###############################################################################################################
 layers <-
   function (dataset, variable,
@@ -84,21 +84,7 @@ layers <-
     # Opções
     opts <- .opt()
     
-    # CHECKS ----
-    # if(!which.cols %in% c("standard", "all")) {
-    #   stop (paste("Unknown value '", which.cols, "' passed to 'which.cols'", sep = ""))
-    # }
-    # if(!soil.vars %in% opts$layers$soil.vars) {
-    #   stop (paste("Unknown value '", soil.vars, "' passed to 'soil.vars'", sep = ""))
-    # }
-    # soil.vars <- paste(soil.vars, "_", sep = "")
-    # if (!is.logical(stack)) {
-    #   stop (paste("Unknown value '", stack, "' passed to 'stack'", sep = ""))
-    # }
-    # if (which.cols == "all" && stack == TRUE) {
-    #   message("stack can only be used with standard columns... switching to FALSE")
-    #   stack <- FALSE
-    # }
+    # Verificar consistência dos parâmetros
     if (!missing(variable)) {
       if (variable == "all" && stack == TRUE) {
         stop ("data cannot be stacked when downloading all variables")
@@ -149,7 +135,7 @@ layers <-
     }
     res <- list()
     for (i in 1:length(sheets_keys$camada)) {
-      # i <- 1
+
       # Informative messages
       dts <- sheets_keys$ctb[i]
       if (verbose) {
@@ -171,26 +157,28 @@ layers <-
       )
       tmp <- as.data.frame(tmp)
       
-      # Definir as colunas a serem mantidas
-      if (missing(variable) || variable != "all") {
+      # COLUNAS
+      ## Definir as colunas a serem mantidas
+      ## Manter colunas padrão
+      in_cols <- colnames(tmp)
+      cols <- in_cols[in_cols %in% std_cols]
+      
+      ## Colunas adicionais
+      if (!missing(variable)) {
         
-        # Manter colunas padrão
-        in_cols <- colnames(tmp)
-        cols <- in_cols %in% std_cols
-        cols <- in_cols[cols]
-        
-        # Manter colunas adicionais
-        # Verifica-se se algum dos nomes das colunas inicia com 'variable'.
-        # Nomes duplicados entre as colunas padrão e as colunas adicionais são removidos.
-        if (!missing(variable)) {
-          extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)]) 
-          extra_cols <- unlist(extra_cols)
+        if (variable == "all") {
+          extra_cols <- in_cols[!in_cols %in% std_cols]
           cols <- c(cols, extra_cols)
-          idx <- !duplicated(cols)
-          cols <- cols[idx]
+          
+        } else {
+          extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)])
+          extra_cols <- unlist(extra_cols)
+          extra_cols <- extra_cols[!extra_cols %in% std_cols]
+          cols <- c(cols, extra_cols)
         }
-        tmp <- tmp[, cols]
       }
+      tmp <- tmp[, cols]
+      
       
       
       # Quais colunas/variáveis?

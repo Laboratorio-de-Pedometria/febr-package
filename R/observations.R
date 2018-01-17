@@ -62,7 +62,7 @@
 #' res <- observations(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
 #' str(res)
 #' }
-# obs <- observations(dataset = c("ctb0029", "ctb0003"))
+# obs <- observations(dataset = "ctb0029", variable = "taxon")
 # head(obs)
 ###############################################################################################################
 observations <-
@@ -115,7 +115,7 @@ observations <-
     }
     obs <- list()
     for (i in 1:length(sheets_keys$observacao)) {
-      # i <- 1
+
       # Informative messages
       dts <- sheets_keys$ctb[i]
       if (verbose) {
@@ -130,30 +130,32 @@ observations <-
       )
       n_obs <- nrow(tmp)
       
-      # Definir as colunas a serem mantidas
-      if (missing(variable) || variable != "all") {
-        
-        # Manter colunas padrão
-        in_cols <- colnames(tmp)
-        cols <- in_cols %in% std_cols
-        cols <- in_cols[cols]
-        
-        # Manter colunas adicionais
-        # Verifica-se se algum dos nomes das colunas inicia com 'variable'.
-        # Nomes duplicados entre as colunas padrão e as colunas adicionais são removidos.
-        if (!missing(variable)) {
-          extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)]) 
-          extra_cols <- unlist(extra_cols)
-          cols <- c(cols, extra_cols)
-          idx <- !duplicated(cols)
-          cols <- cols[idx]
-        }
-        tmp <- tmp[, cols]
-      }
+      # COLUNAS
+      ## Definir as colunas a serem mantidas
+      ## Manter colunas padrão
+      in_cols <- colnames(tmp)
+      cols <- in_cols[in_cols %in% std_cols]
       
-      # Definição do tipo de dados
-      # 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros
-      # durante o empilhamento das tabelas devido ao tipo de dado.
+      ## Colunas adicionais
+      if (!missing(variable)) {
+        
+        if (variable == "all") {
+          extra_cols <- in_cols[!in_cols %in% std_cols]
+          cols <- c(cols, extra_cols)
+          
+        } else {
+          extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)])
+          extra_cols <- unlist(extra_cols)
+          extra_cols <- extra_cols[!extra_cols %in% std_cols]
+          cols <- c(cols, extra_cols)
+        }
+      }
+      tmp <- tmp[, cols]
+      
+      # TIPO DE DADOS
+      ## 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros
+      ## durante o empilhamento das tabelas devido ao tipo de dado.
+      ## Nota: esse processamento deve ser feito via Google Sheets.
       tmp$observacao_id <- as.character(tmp$observacao_id)
       if ("sisb_id" %in% colnames(tmp)) {
         tmp$sisb_id <- as.character(tmp$sisb_id)
@@ -259,7 +261,7 @@ observations <-
       }
       
       # Organize column names
-      # obs[[i]] <- obs[[i]][cols]
+      obs[[i]] <- obs[[i]][cols]
       
       if (progress) {
         utils::setTxtProgressBar(pb, i)
