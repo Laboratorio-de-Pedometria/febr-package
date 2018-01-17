@@ -105,7 +105,8 @@ observations <-
     # Variáveis padrão
     std_cols <- opts$observations$std.cols
     
-    # Descarregar chaves de identificação das planilhas do repositório
+    # CHAVES
+    ## Descarregar chaves de identificação das planilhas do repositório
     sheets_keys <- .getSheetsKeys(dataset = dataset)
     n <- nrow(sheets_keys)
     
@@ -123,17 +124,19 @@ observations <-
         message(paste(par, "Downloading dataset ", dts, "...", sep = ""))
       }
       
+      # DESCARREGAMENTO
       tmp <- googlesheets::gs_key(sheets_keys$observacao[i], verbose = opts$gs$verbose)
       tmp <- suppressMessages(
         googlesheets::gs_read_csv(
           tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose, comment = opts$gs$comment)
       )
-      n_obs <- nrow(tmp)
+      tmp <- as.data.frame(tmp)
+      n_rows <- nrow(tmp)
       
       # PROCESSAMENTO I
       ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas coordenadas.
       na_coord <- max(apply(tmp[c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
-      if (missing$coord == "keep" || missing$coord == "drop" && na_coord < n_obs) {
+      if (missing$coord == "keep" || missing$coord == "drop" && na_coord < n_rows) {
         
         # COLUNAS
         ## Definir as colunas a serem mantidas
@@ -172,12 +175,12 @@ observations <-
           na_coord_id <- apply(tmp[c("coord_x", "coord_y")], 1, function (x) sum(is.na(x))) >= 1
           tmp <- tmp[!na_coord_id, ]
         }
-        n_obs <- nrow(tmp)
+        n_rows <- nrow(tmp)
         
         # PROCESSAMENTO II
         ## A continuação do processamento dos dados depende das presença de dados após a eliminação de colunas
         ## e linhas com NAs.
-        if (n_obs >= 1 && missing(variable) || length(extra_cols) >= 1) {
+        if (n_rows >= 1 && missing(variable) || length(extra_cols) >= 1) {
           
           # TIPO DE DADOS
           ## 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros
@@ -195,18 +198,14 @@ observations <-
             tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
           }
           
-          # IDENTIFICAÇÃO
-          ## Código de identificação do conjunto de dados
-          obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
-          
           # SISTEMA DE REFERÊNCIA DE COORDENADAS
           ## Verificar se existem observações com coordenadas e se o SRC deve ser transformado
           na_coord <- max(apply(tmp[c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
-          if (n_obs > na_coord && !is.null(crs)) {
+          if (n_rows > na_coord && !is.null(crs)) {
             
             ## Identificar as observações com coordenadas
-            id_coords <- which(!is.na(obs[[i]]$coord_x))
-            tmp_obs <- obs[[i]][id_coords, ]
+            id_coords <- which(!is.na(tmp$coord_x))
+            tmp_obs <- tmp[id_coords, ]
             
             ## Verificar se o SRC está faltando
             is_na_crs <- is.na(tmp_obs$coord_sistema)
@@ -264,17 +263,17 @@ observations <-
             }
             
             ## Agrupar observações com e sem coordenadas
-            obs[[i]] <- rbind(tmp_obs, obs[[i]][-id_coords, ])
+            tmp <- rbind(tmp_obs, tmp[-id_coords, ])
             
           }
           
-          ## Organizar as colunas
-          obs[[i]] <- obs[[i]][cols]
+          # IDENTIFICAÇÃO
+          ## Código de identificação do conjunto de dados
+          obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)[cols]
           
           if (progress) {
             utils::setTxtProgressBar(pb, i)
           }
-          
           
         } else {
           obs[[i]] <- data.frame()
