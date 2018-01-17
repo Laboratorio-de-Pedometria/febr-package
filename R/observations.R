@@ -62,8 +62,8 @@
 #' res <- observations(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
 #' str(res)
 #' }
-obs <- observations(dataset = c("ctb0029", "ctb0003"))
-head(obs)
+# obs <- observations(dataset = c("ctb0029", "ctb0003"))
+# head(obs)
 ###############################################################################################################
 observations <-
   function (dataset, variable,
@@ -106,12 +106,6 @@ observations <-
     sheets_keys <- .getSheetsKeys(dataset = dataset)
     n <- nrow(sheets_keys)
 
-    # Definir as colunas padrão
-    std_cols <-
-      c("observacao_id", "sisb_id", "ibge_id", "observacao_data", "coord_sistema", "coord_x", "coord_y",
-        "coord_precisao", "coord_fonte", "pais_id", "estado_id", "municipio_id", "amostra_tipo",
-        "amostra_quanti", "amostra_area")
-
     # Descarregar planilhas com observações
     if (progress) {
       pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$observacao), style = 3)
@@ -137,15 +131,15 @@ observations <-
       if (missing(variable) || variable != "all") {
         
         # Manter colunas padrão
-        cols <- colnames(tmp) %in% std_cols
-        cols <- colnames(tmp)[cols]
+        in_cols <- colnames(tmp)
+        cols <- in_cols %in% opts$observations$std.cols
+        cols <- in_cols[cols]
         
         # Manter colunas adicionais
         # Verifica-se se algum dos nomes das colunas inicia com 'variable'.
         # Nomes duplicados entre as colunas padrão e as colunas adicionais são removidos.
         if (!missing(variable)) {
-          extra_cols <- 
-            lapply(variable, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))]) 
+          extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)]) 
           extra_cols <- unlist(extra_cols)
           cols <- c(cols, extra_cols)
           idx <- !duplicated(cols)

@@ -1,6 +1,13 @@
 .opt <- 
   function () {
     list(
+      observations = list(
+        std.cols =
+          c("observacao_id", "sisb_id", "ibge_id", "observacao_data", 
+            "coord_sistema", "coord_x", "coord_y", "coord_precisao", "coord_fonte", 
+            "pais_id", "estado_id", "municipio_id", 
+            "amostra_tipo", "amostra_quanti", "amostra_area")
+        ),
       layers = list(
         id.cols = 
           c("observacao_id", "camada_numero", "camada_nome", "amostra_codigo"),
