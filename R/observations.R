@@ -62,6 +62,8 @@
 #' res <- observations(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
 #' str(res)
 #' }
+obs <- observations(dataset = "ctb0029", variable = "all")
+head(obs)
 ###############################################################################################################
 observations <-
   function (dataset, variable,
@@ -133,11 +135,14 @@ observations <-
       
       # Definir as colunas a serem mantidas
       if (missing(variable) || variable != "all") {
+        
+        # Manter colunas padrão
         cols <- colnames(tmp) %in% std_cols
         cols <- colnames(tmp)[cols]
         
-        # Keep extra variables. We check if any of the column names starts with 'variable'. Duplicates between
-        # standard columns and extra variables are removed. 
+        # Manter colunas adicionais
+        # Verifica-se se algum dos nomes das colunas inicia com 'variable'.
+        # Nomes duplicados entre as colunas padrão e as colunas adicionais são removidos.
         if (!missing(variable)) {
           extra_cols <- 
             lapply(variable, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))]) 
@@ -257,7 +262,7 @@ observations <-
       }
       
       # Organize column names
-      obs[[i]] <- obs[[i]][cols]
+      # obs[[i]] <- obs[[i]][cols]
       
       if (progress) {
         utils::setTxtProgressBar(pb, i)
