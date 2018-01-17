@@ -12,7 +12,7 @@
 #' @param stack Should soil observations from different datasets be stacked on a single data frame for
 #' output? Defaults to \code{stack = FALSE} and the output is a list of data frames.
 #'
-#' @param missing.coords What should be done with soil observations missing spatial coordinates? Options are
+#' @param missing$coord What should be done with soil observations missing spatial coordinates? Options are
 #' \code{"keep"} (default) and \code{"drop"}.
 #'
 #' @param target.crs EPSG code defining the target coordinate reference system to which spatial coordinates
@@ -63,13 +63,13 @@
 #' str(res)
 #' }
 obs <- observations(dataset = "ctb0029")
-head(obs, 1)
+head(obs);dim(obs)
 ###############################################################################################################
 observations <-
   function (dataset, variable,
             stack = FALSE, missing = list(coord = "keep", data = "keep"), target.crs = "EPSG:4674",
             progress = TRUE, verbose = TRUE) {
-
+    
     # Options
     opts <- .opt()
     
@@ -82,8 +82,8 @@ observations <-
         stop ("data cannot be stacked when downloading all variables")
       }
     }
-    if (!missing.coords %in% c("drop", "keep")) {
-      stop (paste("Unknown value '", missing.coords, "' passed to parameter missing.coords", sep = ""))
+    if (!missing$coord %in% c("drop", "keep")) {
+      stop (paste("Unknown value '", missing$coord, "' passed to parameter missing$coord", sep = ""))
     }
     crs_list <- paste("EPSG:", c(
       # Córrego Alegre
@@ -104,18 +104,18 @@ observations <-
     
     # Variáveis padrão
     std_cols <- opts$observations$std.cols
-
+    
     # Descarregar chaves de identificação das planilhas do repositório
     sheets_keys <- .getSheetsKeys(dataset = dataset)
     n <- nrow(sheets_keys)
-
+    
     # Descarregar planilhas com observações
     if (progress) {
       pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$observacao), style = 3)
     }
     obs <- list()
     for (i in 1:length(sheets_keys$observacao)) {
-
+      
       # Informative messages
       dts <- sheets_keys$ctb[i]
       if (verbose) {
@@ -199,36 +199,16 @@ observations <-
           ## Código de identificação do conjunto de dados
           obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
           
-          
-        } else {
-          m <- glue::glue("All observations in {dts} are missing data. None will be returned.")
-          message(m)
-        }
-      } else {
-        m <- glue::glue("All observations in {dts} are missing coordinates. None will be returned.")
-        message(m)
-      }
-      
-      
-      
-      
-      
-
-      # OBSERVAÇÕES RESTANTES (COM E/OU SEM COORDENADAS)
-      if (n_obs >= 1) {
-        
-        
-        
-        ## Sistema de referência de coordenadas
-        ## Verificar se existem observações com coordenadas e identificá-las.
-        if (n_obs > n_missing) {
-          id_coords <- which(!is.na(obs[[i]]$coord_x))
-          
-          ## Verificar se o sistema de referência de coordenadas deve ser transformado
-          if (!is.null(target.crs)) {
+          # SISTEMA DE REFERÊNCIA DE COORDENADAS
+          ## Verificar se existem observações com coordenadas e se o SRC deve ser transformado
+          na_coord <- max(apply(tmp[c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
+          if (n_obs > na_coord && !is.null(target.crs)) {
+            
+            ## Identificar as observações com coordenadas
+            id_coords <- which(!is.na(obs[[i]]$coord_x))
             tmp_obs <- obs[[i]][id_coords, ]
             
-            ## Verificar se o sistema de referência de coordenadas está faltando
+            ## Verificar se o SRC está faltando
             is_na_crs <- is.na(tmp_obs$coord_sistema)
             if (any(is_na_crs)) {
               is_degree <- nchar(round(abs(tmp_obs$coord_x))) <= 2
@@ -236,32 +216,34 @@ observations <-
               tmp_obs$coord_sistema[is_na_crs] <- target.crs
             }
             
-            ## Verificar se o sistema de referência de coordenadas é o SAD69
+            ## Verificar se o SRC é o SAD69
+            ## Nota: Isso deve ser feito no Google Sheets
             is_sad69 <- tmp_obs$coord_sistema %in% "SAD69"
             if (any(is_sad69)) {
               tmp_obs$coord_sistema[is_sad69] <- "EPSG:4618" 
             }
             
-            ## Verificar se o sistema de referência de coordenadas é o SIRGAS
+            ## Verificar se o SRC é o SIRGAS
+            ## Nota: Isso deve ser feito no Google Sheets
             is_sirgas <- tmp_obs$coord_sistema %in% "SIRGAS"
             if (any(is_sirgas)) {
               tmp_obs$coord_sistema[is_sirgas] <- target.crs 
             }
             
-            ## Verificar quantos são os sistemas de referência de coordenadas usados no dataset
+            ## Verificar quantos são os SRC usados
             n_crs <- nlevels(as.factor(tmp_obs$coord_sistema))
             
             if (n_crs > 1) {
               tmp_obs <- split(tmp_obs, as.factor(tmp_obs$coord_sistema))
               
-              ## Verificar se algum dos sistemas de referência de coordenadas é igual ao alvo
+              ## Verificar se algum dos SRC é igual ao alvo
               if (toupper(target.crs) %in% names(tmp_obs)) {
                 j <- which(!names(tmp_obs) %in% toupper(target.crs))
               } else {
                 j <- 1:n_crs
               }
               
-              ## Transformar os sistemas de referência de coordenadas
+              ## Transformar os SRC
               tmp_obs[j] <- lapply(tmp_obs[j], function (x) {
                 sp::coordinates(x) <- c("coord_x", "coord_y")
                 sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
@@ -273,7 +255,7 @@ observations <-
               
             } else if (tmp_obs$coord_sistema[1] != toupper(target.crs)) {
               
-              ## Transformar o sistema de referência de coordenadas
+              ## Transformar o SRC
               sp::coordinates(tmp_obs) <- c("coord_x", "coord_y")
               sp::proj4string(tmp_obs) <- sp::CRS(paste("+init=", tolower(tmp_obs$coord_sistema[1]), sep = ""))
               tmp_obs <- sp::spTransform(tmp_obs, sp::CRS(paste("+init=", tolower(target.crs), sep = "")))
@@ -283,22 +265,34 @@ observations <-
             
             ## Agrupar observações com e sem coordenadas
             obs[[i]] <- rbind(tmp_obs, obs[[i]][-id_coords, ])
+            
           }
+          
+          ## Organizar as colunas
+          obs[[i]] <- obs[[i]][cols]
+          
+          if (progress) {
+            utils::setTxtProgressBar(pb, i)
+          }
+          
+          
+        } else {
+          obs[[i]] <- data.frame()
+          m <- glue::glue("All observations in {dts} are missing data. None will be returned.")
+          message(m)
         }
-      }
-      
-      # Organize column names
-      obs[[i]] <- obs[[i]][cols]
-      
-      if (progress) {
-        utils::setTxtProgressBar(pb, i)
+      } else {
+        obs[[i]] <- data.frame()
+        m <- glue::glue("All observations in {dts} are missing coordinates. None will be returned.")
+        message(m)
       }
     }
     if (progress) {
       close(pb)
     }
-
-    # Se necessário, empilhar tabelas
+    
+    # FINAL
+    ## Empilhar conjuntos de dados
     if (stack) {
       obs <- suppressWarnings(dplyr::bind_rows(obs))
     } else if (n == 1) {
