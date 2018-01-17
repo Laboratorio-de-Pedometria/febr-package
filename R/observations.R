@@ -10,10 +10,10 @@
 #' \code{variable = "all"} to download all variables. See \sQuote{Details} for more information.
 #' 
 #' @param stack.obs Should soil observations from different datasets be stacked on a single data frame for
-#' output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.obs = TRUE}.
+#' output? Defaults to \code{stack.obs = FALSE} and the output is a list of data frames.
 #'
 #' @param missing.coords What should be done with soil observations missing spatial coordinates? Options are
-#' \code{"drop"} (default) and \code{"keep"}.
+#' \code{"keep"} (default) and \code{"drop"}.
 #'
 #' @param target.crs EPSG code defining the target coordinate reference system to which spatial coordinates
 #' should be transformed. Defaults to \code{target.crs = "EPSG:4674"}, i.e. SIRGAS 2000, the standard CRS for
@@ -65,8 +65,8 @@
 ###############################################################################################################
 observations <-
   function (dataset, variable, 
-            stack.obs = TRUE, missing.coords = "drop", 
-            target.crs = "EPSG:4674", progress = TRUE, verbose = TRUE) {
+            stack.obs = FALSE, missing.coords = "keep", target.crs = "EPSG:4674",
+            progress = TRUE, verbose = TRUE) {
 
     # Verificar consistência dos parâmetros
     if (!is.logical(stack.obs)) {
