@@ -13,8 +13,8 @@
 #' @param soil.vars Identification code of the soil variables for which soil layer-specific data should be
 #' downloaded.
 #'
-#' @param stack.datasets Should soil layers from different datasets be stacked on a single data frame for
-#' output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.datasets = TRUE}.
+#' @param stack Should soil layers from different datasets be stacked on a single data frame for
+#' output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack = TRUE}.
 #'
 #' @param missing.data What should be done with soil layers missing any iron data? Options are \code{"drop"}
 #' (default) and \code{"keep"}.
@@ -71,10 +71,11 @@
 #' res <- layers(dataset = paste("ctb000", 4:9, sep = ""))
 #' str(res)
 #' }
+# febr::layers("ctb0029")
 ###############################################################################################################
 layers <-
-  function (dataset, which.cols = "standard", soil.vars,
-            stack.datasets = TRUE, missing.data = "drop",
+  function (dataset, variable,
+            stack = TRUE, missing.data = "drop",
             standardization = list(
               plus.sign = "add", plus.depth = 2.5, transition = "smooth", smoothing.fun = "mean"),
             harmonization = list(level = 1),
@@ -84,19 +85,24 @@ layers <-
     opts <- .opt()
     
     # CHECKS ----
-    if(!which.cols %in% c("standard", "all")) {
-      stop (paste("Unknown value '", which.cols, "' passed to 'which.cols'", sep = ""))
-    }
+    # if(!which.cols %in% c("standard", "all")) {
+    #   stop (paste("Unknown value '", which.cols, "' passed to 'which.cols'", sep = ""))
+    # }
     # if(!soil.vars %in% opts$layers$soil.vars) {
     #   stop (paste("Unknown value '", soil.vars, "' passed to 'soil.vars'", sep = ""))
     # }
-    soil.vars <- paste(soil.vars, "_", sep = "")
-    if (!is.logical(stack.datasets)) {
-      stop (paste("Unknown value '", stack.datasets, "' passed to 'stack.datasets'", sep = ""))
-    }
-    if (which.cols == "all" && stack.datasets == TRUE) {
-      message("stack.datasets can only be used with standard columns... switching to FALSE")
-      stack.datasets <- FALSE
+    # soil.vars <- paste(soil.vars, "_", sep = "")
+    # if (!is.logical(stack)) {
+    #   stop (paste("Unknown value '", stack, "' passed to 'stack'", sep = ""))
+    # }
+    # if (which.cols == "all" && stack == TRUE) {
+    #   message("stack can only be used with standard columns... switching to FALSE")
+    #   stack <- FALSE
+    # }
+    if (!missing(variable)) {
+      if (variable == "all" && stack == TRUE) {
+        stop ("data cannot be stacked when downloading all variables")
+      }
     }
     if (!missing.data %in% c("drop", "keep")) {
       stop (paste("Unknown value '", missing.data, "' passed to 'missing.data", sep = ""))
@@ -135,10 +141,11 @@ layers <-
     n <- nrow(sheets_keys)
     
     # Definir as colunas padrão
-    if (which.cols == "standard") {
+    if (missing(variable) || variable != "all") {
+    # if (which.cols == "standard") {
       target_cols <- c(opts$layers$id.cols, opts$layers$depth.cols)
     }
-
+    
     # Descarregar planilhas com camadas
     if (progress) {
       pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$camada), style = 3)
@@ -260,7 +267,7 @@ layers <-
           
           # STACKING ----
           # If tables are to be stacked, then id.cols must be of type character
-          if (stack.datasets) {
+          if (stack) {
             tmp[opts$layers$id.cols] <- sapply(tmp[opts$layers$id.cols], as.character)
             
             # If tables are to be stacked and depth data has not been standardized, then depth.cols must be 
@@ -276,7 +283,7 @@ layers <-
           res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
           
           # Se as tabelas não são empilhadas, adicionar informação sobre unidade de medida
-          if (!stack.datasets) {
+          if (!stack) {
             a <- attributes(res[[i]])
             a$units <- c(rep("unitless", 2), gsub("-", "unitless", as.character(unit)[-1]))
             attributes(res[[i]]) <- a
@@ -291,7 +298,7 @@ layers <-
       close(pb)
     }
     # Se necessário, empilhar tabelas, adicionando informações sobre as unidades de medida
-    if (stack.datasets) {
+    if (stack) {
       res <- suppressWarnings(dplyr::bind_rows(res))
       soil_vars <- colnames(res)[grep("^fe_", colnames(res))]
       fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
@@ -301,4 +308,4 @@ layers <-
       attributes(res) <- a
     }
     return (res)
-  }
+}
