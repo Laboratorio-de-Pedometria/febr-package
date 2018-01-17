@@ -7,17 +7,14 @@
 #' downloaded -- see \url{http://www.ufsm.br/febr/book}. Use \code{dataset = "all"} to download data from all
 #' existing datasets.
 #' 
-#' @param which.cols Which columns should be returned? Options are \code{"standard"} (default) and
-#' \code{"all"}. See \sQuote{Details} for a description of the standard columns.
-#' 
-#' @param soil.vars Identification code of the soil variables for which soil layer-specific data should be
-#' downloaded.
+#' @param variable Name(s) of the variable(s). If missing, then a set of standard columns is downloaded. Use
+#' \code{variable = "all"} to download all variables. See \sQuote{Details} for more information.
 #'
 #' @param stack Should soil layers from different datasets be stacked on a single data frame for
 #' output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack = TRUE}.
 #'
-#' @param missing.data What should be done with soil layers missing any iron data? Options are \code{"drop"}
-#' (default) and \code{"keep"}.
+#' @param missing What should be done with soil layers missing data? Options are \code{"drop"}
+#' and \code{"keep"} (default).
 #' 
 #' @param standardization List with definitions on how to \emph{standardize} soil layer-specific data. Only 
 #' works when \code{soil.vars = 'fe'}.
@@ -75,7 +72,7 @@
 ###############################################################################################################
 layers <-
   function (dataset, variable,
-            stack = TRUE, missing.data = "drop",
+            stack = TRUE, missing = "keep",
             standardization = list(
               plus.sign = "keep", plus.depth = 0, transition = "keep", smoothing.fun = "mean"),
             harmonization = list(level = 2),
@@ -160,8 +157,9 @@ layers <-
       # COLUNAS
       ## Definir as colunas a serem mantidas
       ## As colunas padrão são sempre mantidas.
-      ## No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados, assim sendo
-      ## ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.  
+      ## Nota: No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados, assim 
+      ## sendo ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas. Esse processamento deve
+      ## ser feito no Google Sheets.
       in_cols <- colnames(tmp)
       cols <- in_cols[in_cols %in% std_cols]
       
@@ -186,7 +184,9 @@ layers <-
       }
       tmp <- tmp[, cols]
       
-      # PADRONIZAÇÃO
+      
+      
+      # PADRONIZAÇÃO I
       ## Sinal positivo em 'profund_inf' indicando maior profundidade do solo
       ## O padrão consiste em manter o sinal positivo.
       if (standardization$plus.sign != "keep") {
@@ -202,26 +202,30 @@ layers <-
           obj = tmp, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
           smoothing.fun = standardization$smoothing.fun)
         
-        # III. What to do with broken layer transitions?
+        # What to do with broken layer transitions?
         # if (length(extra_cols) > 0) {
         #   tmp <- .solveBrokenLayerTransition(
         #     obj = tmp, id.cols = opts$layers$id.cols, depth.cols = c("profund_sup", "profund_inf")) 
         # }
       }
       
-      # LIMPEZA
-      ## Se necessário, descartar camadas com dados faltantes das colunas adicionais
-      if (length(extra_cols) > 0 && missing.data == "drop") {
+      # LINHAS
+      ## Se necessário, descartar linhas com dados faltantes nas colunas adicionais
+      if (length(extra_cols) >= 1 && missing.data == "drop") {
         idx_keep <- is.na(tmp[extra_cols])
         idx_keep <- rowSums(idx_keep) < ncol(idx_keep)
         tmp <- tmp[idx_keep, ]
       }
         
-      
+      # PADRONIZAÇÃO II
+      ## Unidade de medida e número de casas decimais
+      ## É preciso verificar se, com a eliminação de linhas e colunas com dados faltantes, restaram dados para
+      ## processamento.
+      if (nrow(tmp) >= 1 && length(extra_cols) >= 1) {
+        
+      }
         
         
-        # Verificar se, com a eliminação das camadas sem quaisquer dados de ferro, restou alguma camada
-        # Também é possível que o conjunto de dados não possua quaisquer dados de ferro
         if (nrow(tmp) >= 1) {
           
           # STANDARDIZATION (Fe) ----

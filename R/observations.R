@@ -67,7 +67,7 @@ head(obs, 1)
 ###############################################################################################################
 observations <-
   function (dataset, variable,
-            stack = FALSE, missing.coords = "keep", target.crs = "EPSG:4674",
+            stack = FALSE, missing = list(coord = "keep", data = "keep"), target.crs = "EPSG:4674",
             progress = TRUE, verbose = TRUE) {
 
     # Options
@@ -130,74 +130,94 @@ observations <-
       )
       n_obs <- nrow(tmp)
       
-      # COLUNAS
-      ## Definir as colunas a serem mantidas
-      ## As colunas padrão são sempre mantidas.
-      ## No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados, assim sendo
-      ## ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.  
-      in_cols <- colnames(tmp)
-      cols <- in_cols[in_cols %in% std_cols]
-      
-      ## Colunas adicionais
-      extra_cols <- vector()
-      if (!missing(variable)) {
+      # PROCESSAMENTO I
+      ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas coordenadas.
+      na_coord <- max(apply(tmp[c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
+      if (missing$coord == "keep" || missing$coord == "drop" && na_coord < n_obs) {
         
-        if (variable == "all") {
-          extra_cols <- in_cols[!in_cols %in% std_cols]
-          idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
-          extra_cols <- extra_cols[!idx_na]
-          cols <- c(cols, extra_cols)
+        # COLUNAS
+        ## Definir as colunas a serem mantidas
+        ## As colunas padrão são sempre mantidas.
+        ## No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados, assim sendo
+        ## ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.  
+        in_cols <- colnames(tmp)
+        cols <- in_cols[in_cols %in% std_cols]
+        extra_cols <- vector()
+        if (!missing(variable)) {
+          
+          if (variable == "all") {
+            extra_cols <- in_cols[!in_cols %in% std_cols]
+            idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
+            extra_cols <- extra_cols[!idx_na]
+            
+          } else {
+            extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)])
+            extra_cols <- unlist(extra_cols)
+            extra_cols <- extra_cols[!extra_cols %in% std_cols]
+            idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
+            extra_cols <- extra_cols[!idx_na]
+          }
+        }
+        cols <- c(cols, extra_cols)
+        tmp <- tmp[, cols]
+        
+        # LINHAS
+        ## Definir as linhas a serem mantidas
+        if (length(extra_cols) >= 1 && missing$data == "drop") {
+          idx_keep <- is.na(tmp[extra_cols])
+          idx_keep <- rowSums(idx_keep) < ncol(idx_keep)
+          tmp <- tmp[idx_keep, ]
+        }
+        if (missing$coord == "drop") {
+          na_coord_id <- apply(tmp[c("coord_x", "coord_y")], 1, function (x) sum(is.na(x))) >= 1
+          tmp <- tmp[!na_coord_id, ]
+        }
+        n_obs <- nrow(tmp)
+        
+        # PROCESSAMENTO II
+        ## A continuação do processamento dos dados depende das presença de dados após a eliminação de colunas
+        ## e linhas com NAs.
+        if (n_obs >= 1 && missing(variable) || length(extra_cols) >= 1) {
+          
+          # TIPO DE DADOS
+          ## 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros
+          ## durante o empilhamento das tabelas devido ao tipo de dado.
+          ## Nota: esse processamento deve ser feito via Google Sheets.
+          tmp$observacao_id <- as.character(tmp$observacao_id)
+          if ("sisb_id" %in% colnames(tmp)) {
+            tmp$sisb_id <- as.character(tmp$sisb_id)
+          }
+          if ("ibge_id" %in% colnames(tmp)) {
+            tmp$ibge_id <- as.character(tmp$ibge_id)
+          }
+          # 'coord_precisao' precisa estar no formato numérico ao invés de inteiro
+          if ("coord_precisao" %in% colnames(tmp)) {
+            tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
+          }
+          
+          # IDENTIFICAÇÃO
+          ## Código de identificação do conjunto de dados
+          obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
+          
           
         } else {
-          extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)])
-          extra_cols <- unlist(extra_cols)
-          extra_cols <- extra_cols[!extra_cols %in% std_cols]
-          idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
-          extra_cols <- extra_cols[!idx_na]
-          cols <- c(cols, extra_cols)
+          m <- glue::glue("All observations in {dts} are missing data. None will be returned.")
+          message(m)
         }
-      }
-      tmp <- tmp[, cols]
-      
-      # TIPO DE DADOS
-      ## 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros
-      ## durante o empilhamento das tabelas devido ao tipo de dado.
-      ## Nota: esse processamento deve ser feito via Google Sheets.
-      tmp$observacao_id <- as.character(tmp$observacao_id)
-      if ("sisb_id" %in% colnames(tmp)) {
-        tmp$sisb_id <- as.character(tmp$sisb_id)
-      }
-      if ("ibge_id" %in% colnames(tmp)) {
-        tmp$ibge_id <- as.character(tmp$ibge_id)
-      }
-      # 'coord_precisao' precisa estar no formato numérico ao invés de inteiro
-      if ("coord_precisao" %in% colnames(tmp)) {
-        tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
+      } else {
+        m <- glue::glue("All observations in {dts} are missing coordinates. None will be returned.")
+        message(m)
       }
       
-      # OBSERVAÇÕES SEM COORDENADAS
-      ## Verificar se existem observações sem coordenadas
-      n_missing <- sum(is.na(tmp$coord_x))
-      if (n_missing > 0) {
       
-        ## Se necessário, descartar as observações sem coordenadas
-        if (missing.coords == "drop") {
-          
-          ## Alerta-se no caso de não haver quaisquer observações com coordenadas
-          if (n_missing == n_obs) {
-            m <- glue::glue("All observations in {dts} are missing coordinates. None will be returned.")
-            message(m)
-            n_obs <- 0
-          }
-          tmp <- tmp[!is.na(tmp$coord_x), ]
-        }
-      }
       
+      
+      
+
       # OBSERVAÇÕES RESTANTES (COM E/OU SEM COORDENADAS)
       if (n_obs >= 1) {
         
-        ## Adicionar a identificação do dataset às observações
-        obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
+        
         
         ## Sistema de referência de coordenadas
         ## Verificar se existem observações com coordenadas e identificá-las.
