@@ -23,12 +23,12 @@
 #' works when \code{soil.vars = 'fe'}.
 #' \itemize{
 #' \item \code{plus.sign} What should be done with the plus sign ('+') commonly used along with the inferior 
-#'       limit of the bottom layer of soil observations? Options are \code{"add"} (default), \code{"remove"},
-#'       and \code{"keep"}.
+#'       limit of the bottom layer of soil observations? Options are \code{"keep"} (default), \code{"add"},
+#'       and \code{"remove"}.
 #' \item \code{plus.depth} Depth increment (in centimetres) when processing the plus sign ('+') with 
-#'       \code{plus.sign = "add"}. Defaults to \code{plus.depth = 2.5}.
+#'       \code{plus.sign = "add"}. Defaults to \code{plus.depth = 0}.
 #' \item \code{transition} What should be done about wavy, irregular, and broken transitions between layers in
-#'       a soil observation? Options are \code{"smooth"} (default) and \code{"keep"}.
+#'       a soil observation? Options are \code{"keep"} (default) and \code{"smooth"}.
 #' \item \code{smoothing.fun} Function that should be used to smooth wavy and irregular transitions between 
 #'       layers in a soil observation when \code{transition = "smooth"}. Options are \code{"mean"} (default),
 #'       \code{"min"}, \code{"max"}, and \code{"median"}. 
@@ -37,7 +37,7 @@
 #' @param harmonization List with definitions on how to \emph{harmonize} soil layer-specific data.
 #' \itemize{
 #' \item \code{level} Should data on soil variables be harmonized based only on the extraction method, 
-#'       \code{level = 1} (default), or on both extraction and measurement methods, \code{level = 2}? See 
+#'       \code{level = 1}, or on both extraction and measurement methods, \code{level = 2} (default)? See 
 #'       \code{\link[febr]{standards}}.
 #' }
 #'
@@ -77,8 +77,8 @@ layers <-
   function (dataset, variable,
             stack = TRUE, missing.data = "drop",
             standardization = list(
-              plus.sign = "add", plus.depth = 2.5, transition = "smooth", smoothing.fun = "mean"),
-            harmonization = list(level = 1),
+              plus.sign = "keep", plus.depth = 0, transition = "keep", smoothing.fun = "mean"),
+            harmonization = list(level = 2),
             progress = TRUE, verbose = TRUE) {
      
     # Opções
@@ -159,77 +159,66 @@ layers <-
       
       # COLUNAS
       ## Definir as colunas a serem mantidas
-      ## Manter colunas padrão
+      ## As colunas padrão são sempre mantidas.
+      ## No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados, assim sendo
+      ## ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.  
       in_cols <- colnames(tmp)
       cols <- in_cols[in_cols %in% std_cols]
       
       ## Colunas adicionais
+      extra_cols <- vector()
       if (!missing(variable)) {
         
         if (variable == "all") {
           extra_cols <- in_cols[!in_cols %in% std_cols]
+          idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
+          extra_cols <- extra_cols[!idx_na]
           cols <- c(cols, extra_cols)
           
         } else {
           extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)])
           extra_cols <- unlist(extra_cols)
           extra_cols <- extra_cols[!extra_cols %in% std_cols]
+          idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
+          extra_cols <- extra_cols[!idx_na]
           cols <- c(cols, extra_cols)
         }
       }
       tmp <- tmp[, cols]
       
+      # PADRONIZAÇÃO
+      ## Sinal positivo em 'profund_inf' indicando maior profundidade do solo
+      ## O padrão consiste em manter o sinal positivo.
+      if (standardization$plus.sign != "keep") {
+        tmp <- .setMaximumObservationDepth(
+          obj = tmp, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
+          plus.sign = standardization$plus.sign, plus.depth = standardization$plus.depth)
+      }
       
+      ## Transição ondulada ou irregular
+      ## O padrão consiste em manter a transição ondulada ou irregular.
+      if (standardization$transition != "keep") {
+        tmp <- .solveIrregularLayerTransition(
+          obj = tmp, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
+          smoothing.fun = standardization$smoothing.fun)
+        
+        # III. What to do with broken layer transitions?
+        # if (length(extra_cols) > 0) {
+        #   tmp <- .solveBrokenLayerTransition(
+        #     obj = tmp, id.cols = opts$layers$id.cols, depth.cols = c("profund_sup", "profund_inf")) 
+        # }
+      }
       
-      # Quais colunas/variáveis?
-      # No caso de which.cols == "standard", então precisamos identificar as colunas que contém os dados da
-      # variável do solo escolhida. Note que algumas dessas colunas podem não conter quaiquer dados, assim 
-      # sendo ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas e, se sobrar alguma coluna
-      # com dados, continua-se com os passos seguintes do processamento. Nesse caso, o nome das variáveis 
-      # 'soil_vars' também é atualizado.
-      soil_vars <- lapply(soil.vars, function (x) colnames(tmp)[grep(paste("^", x, sep = ""), colnames(tmp))])
-      soil_vars <- unlist(soil_vars)
-      idx_na <- which(apply(tmp[soil_vars], 2, function (x) all(is.na(x))))
+      # LIMPEZA
+      ## Se necessário, descartar camadas com dados faltantes das colunas adicionais
+      if (length(extra_cols) > 0 && missing.data == "drop") {
+        idx_keep <- is.na(tmp[extra_cols])
+        idx_keep <- rowSums(idx_keep) < ncol(idx_keep)
+        tmp <- tmp[idx_keep, ]
+      }
+        
       
-      if (length(idx_na) < length(soil_vars)) {
         
-        # Update the names of soil variables
-        if (length(idx_na) >= 1) {
-          tmp <- tmp[, !colnames(tmp) %in% soil_vars[idx_na]]
-          soil_vars <- soil_vars[-idx_na]
-        }
-        
-        # Definir as colunas a serem mantidas
-        if (which.cols == "standard") {
-          tmp <- tmp[, c(std_cols, soil_vars)]
-        }
-        
-        # STANDARDIZATION ----
-        # I. What to do with the plus sign?
-        if (standardization$plus.sign != "keep") {
-          tmp <- .setMaximumObservationDepth(
-            obj = tmp, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
-            plus.sign = standardization$plus.sign, plus.depth = standardization$plus.depth)
-        }
-        
-        if (standardization$transition != "keep") {
-          # II. What to do with wavy and irregular layer transitions?
-          tmp <- .solveIrregularLayerTransition(
-            obj = tmp, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
-            smoothing.fun = standardization$smoothing.fun)
-          
-          # III. What to do with broken layer transitions?
-          tmp <- .solveBrokenLayerTransition(
-            obj = tmp, id.cols = opts$layers$id.cols, depth.cols = c("profund_sup", "profund_inf"))
-        }
-        
-        # CLEAN UP ----
-        # Se necessário, descartar camadas sem qualquer tipo de dado de ferro
-        if (missing.data == "drop") {
-          idx_keep <- is.na(tmp[soil_vars])
-          idx_keep <- rowSums(idx_keep) < ncol(idx_keep)
-          tmp <- tmp[idx_keep, ]
-        }
         
         # Verificar se, com a eliminação das camadas sem quaisquer dados de ferro, restou alguma camada
         # Também é possível que o conjunto de dados não possua quaisquer dados de ferro
