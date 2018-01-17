@@ -9,8 +9,8 @@
 #' @param variable Name(s) of the variable(s). If missing, then a set of standard columns is downloaded. Use
 #' \code{variable = "all"} to download all variables. See \sQuote{Details} for more information.
 #' 
-#' @param stack.obs Should soil observations from different datasets be stacked on a single data frame for
-#' output? Defaults to \code{stack.obs = FALSE} and the output is a list of data frames.
+#' @param stack Should soil observations from different datasets be stacked on a single data frame for
+#' output? Defaults to \code{stack = FALSE} and the output is a list of data frames.
 #'
 #' @param missing.coords What should be done with soil observations missing spatial coordinates? Options are
 #' \code{"keep"} (default) and \code{"drop"}.
@@ -62,21 +62,21 @@
 #' res <- observations(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
 #' str(res)
 #' }
-obs <- observations(dataset = "ctb0029", variable = "all")
+obs <- observations(dataset = c("ctb0029", "ctb0003"))
 head(obs)
 ###############################################################################################################
 observations <-
   function (dataset, variable,
-            stack.obs = FALSE, missing.coords = "keep", target.crs = "EPSG:4674",
+            stack = FALSE, missing.coords = "keep", target.crs = "EPSG:4674",
             progress = TRUE, verbose = TRUE) {
 
     # Verificar consistência dos parâmetros
-    if (!is.logical(stack.obs)) {
-      stop (paste("Unknown value '", stack.obs, "' passed to parameter stack.obs", sep = ""))
+    if (!is.logical(stack)) {
+      stop (paste("Unknown value '", stack, "' passed to parameter stack", sep = ""))
     }
     if (!missing(variable)) {
-      if (variable == "all" && stack.obs == TRUE) {
-        stop ("observations cannot be stacked when downloading all variables")
+      if (variable == "all" && stack == TRUE) {
+        stop ("data cannot be stacked when downloading all variables")
       }
     }
     if (!missing.coords %in% c("drop", "keep")) {
@@ -152,21 +152,21 @@ observations <-
           cols <- cols[idx]
         }
         tmp <- tmp[, cols]
-
-        # 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros
-        # durante o empilhamento das tabelas devido ao tipo de dado.
-        tmp$observacao_id <- as.character(tmp$observacao_id)
-        if ("sisb_id" %in% colnames(tmp)) {
-          tmp$sisb_id <- as.character(tmp$sisb_id)
-        }
-        if ("ibge_id" %in% colnames(tmp)) {
-          tmp$ibge_id <- as.character(tmp$ibge_id)
-        }
-        
-        # 'coord_precisao' precisa estar no formato numérico ao invés de inteiro
-        if ("coord_precisao" %in% colnames(tmp)) {
-          tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
-        }
+      }
+      
+      # Definição do tipo de dados
+      # 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros
+      # durante o empilhamento das tabelas devido ao tipo de dado.
+      tmp$observacao_id <- as.character(tmp$observacao_id)
+      if ("sisb_id" %in% colnames(tmp)) {
+        tmp$sisb_id <- as.character(tmp$sisb_id)
+      }
+      if ("ibge_id" %in% colnames(tmp)) {
+        tmp$ibge_id <- as.character(tmp$ibge_id)
+      }
+      # 'coord_precisao' precisa estar no formato numérico ao invés de inteiro
+      if ("coord_precisao" %in% colnames(tmp)) {
+        tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
       }
       
       # OBSERVAÇÕES SEM COORDENADAS
@@ -273,7 +273,7 @@ observations <-
     }
 
     # Se necessário, empilhar tabelas
-    if (stack.obs) {
+    if (stack) {
       obs <- suppressWarnings(dplyr::bind_rows(obs))
     } else if (n == 1) {
       obs <- obs[[1]]
