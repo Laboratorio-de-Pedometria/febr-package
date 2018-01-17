@@ -70,6 +70,9 @@ observations <-
             stack = FALSE, missing.coords = "keep", target.crs = "EPSG:4674",
             progress = TRUE, verbose = TRUE) {
 
+    # Options
+    opts <- .opt()
+    
     # Verificar consistência dos parâmetros
     if (!is.logical(stack)) {
       stop (paste("Unknown value '", stack, "' passed to parameter stack", sep = ""))
@@ -99,8 +102,8 @@ observations <-
       stop (paste("Unknown value '", progress, "' passed to parameter progress", sep = ""))
     }
     
-    # Options
-    opts <- .opt()
+    # Variáveis padrão
+    std_cols <- opts$observations$std.cols
 
     # Descarregar chaves de identificação das planilhas do repositório
     sheets_keys <- .getSheetsKeys(dataset = dataset)
@@ -132,7 +135,7 @@ observations <-
         
         # Manter colunas padrão
         in_cols <- colnames(tmp)
-        cols <- in_cols %in% opts$observations$std.cols
+        cols <- in_cols %in% std_cols
         cols <- in_cols[cols]
         
         # Manter colunas adicionais

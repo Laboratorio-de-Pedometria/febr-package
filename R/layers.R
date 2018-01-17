@@ -71,7 +71,7 @@
 #' res <- layers(dataset = paste("ctb000", 4:9, sep = ""))
 #' str(res)
 #' }
-# febr::layers("ctb0029")
+dataset <- "ctb0029"
 ###############################################################################################################
 layers <-
   function (dataset, variable,
@@ -136,6 +136,9 @@ layers <-
       stop (paste("Unknown value '", progress, "' passed to 'progress'", sep = ""))
     }
     
+    # Variáveis padrão
+    std_cols <- opts$layers$std.cols
+    
     # Descarregar chaves de identificação das planilhas do repositório
     sheets_keys <- .getSheetsKeys(dataset = dataset)
     n <- nrow(sheets_keys)
@@ -173,7 +176,7 @@ layers <-
         
         # Manter colunas padrão
         in_cols <- colnames(tmp)
-        cols <- in_cols %in% opts$layers$std.cols
+        cols <- in_cols %in% std_cols
         cols <- in_cols[cols]
         
         # Manter colunas adicionais
