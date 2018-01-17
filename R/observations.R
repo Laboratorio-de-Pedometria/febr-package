@@ -64,7 +64,7 @@
 #' }
 ###############################################################################################################
 observations <-
-  function (dataset, variable, 
+  function (dataset, variable,
             stack.obs = FALSE, missing.coords = "keep", target.crs = "EPSG:4674",
             progress = TRUE, verbose = TRUE) {
 
@@ -105,12 +105,10 @@ observations <-
     n <- nrow(sheets_keys)
 
     # Definir as colunas padrão
-    if (missing(variable) || variable != "all") {
-      target_cols <-
-        c("observacao_id", "sisb_id", "ibge_id", "observacao_data", "coord_sistema", "coord_x", "coord_y",
-          "coord_precisao", "coord_fonte", "pais_id", "estado_id", "municipio_id", "amostra_tipo",
-          "amostra_quanti", "amostra_area")
-    }
+    std_cols <-
+      c("observacao_id", "sisb_id", "ibge_id", "observacao_data", "coord_sistema", "coord_x", "coord_y",
+        "coord_precisao", "coord_fonte", "pais_id", "estado_id", "municipio_id", "amostra_tipo",
+        "amostra_quanti", "amostra_area")
 
     # Descarregar planilhas com observações
     if (progress) {
@@ -135,7 +133,7 @@ observations <-
       
       # Definir as colunas a serem mantidas
       if (missing(variable) || variable != "all") {
-        cols <- colnames(tmp) %in% target_cols
+        cols <- colnames(tmp) %in% std_cols
         cols <- colnames(tmp)[cols]
         
         # Keep extra variables. We check if any of the column names starts with 'variable'. Duplicates between
