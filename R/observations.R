@@ -114,7 +114,7 @@ observations <-
     if (progress) {
       pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$observacao), style = 3)
     }
-    obs <- list()
+    res <- list()
     for (i in 1:length(sheets_keys$observacao)) {
       
       # Informative messages
@@ -269,19 +269,19 @@ observations <-
           
           # IDENTIFICAÇÃO
           ## Código de identificação do conjunto de dados
-          obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)[cols]
+          res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)[cols]
           
           if (progress) {
             utils::setTxtProgressBar(pb, i)
           }
           
         } else {
-          obs[[i]] <- data.frame()
+          res[[i]] <- data.frame()
           m <- glue::glue("All observations in {dts} are missing data. None will be returned.")
           message(m)
         }
       } else {
-        obs[[i]] <- data.frame()
+        res[[i]] <- data.frame()
         m <- glue::glue("All observations in {dts} are missing coordinates. None will be returned.")
         message(m)
       }
@@ -293,10 +293,10 @@ observations <-
     # FINAL
     ## Empilhar conjuntos de dados
     if (stack) {
-      obs <- suppressWarnings(dplyr::bind_rows(obs))
+      res <- suppressWarnings(dplyr::bind_rows(res))
     } else if (n == 1) {
-      obs <- obs[[1]]
+      res <- res[[1]]
     }
     
-    return (obs)
+    return (res)
   }

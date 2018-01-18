@@ -80,7 +80,7 @@ layers <-
               plus.sign = "keep", plus.depth = 0, transition = "keep", smoothing.fun = "mean"),
             harmonization = list(level = 2),
             progress = TRUE, verbose = TRUE) {
-     
+    
     # Opções
     opts <- .opt()
     
@@ -96,7 +96,7 @@ layers <-
     if (!standardization$plus.sign %in% c("add", "remove", "keep")) {
       stop (
         paste("Unknown value '", standardization$plus.sign, "' passed to 'standardization$plus.sign'", 
-          sep = ""))
+              sep = ""))
     }
     if (standardization$plus.depth > 100 || standardization$plus.depth < 0) {
       stop (
@@ -112,7 +112,7 @@ layers <-
     if (!standardization$smoothing.fun %in% c("mean", "min", "max", "median")) {
       stop(
         paste("Unknown value '", standardization$smoothing.fun, "' passed to 'standardization$smoothing.fun'", 
-            sep = ""))
+              sep = ""))
     }
     if (!harmonization$level %in% c(1, 2)) {
       stop (
@@ -135,7 +135,7 @@ layers <-
     }
     res <- list()
     for (i in 1:length(sheets_keys$camada)) {
-
+      
       # Informative messages
       dts <- sheets_keys$ctb[i]
       if (verbose) {
@@ -189,108 +189,60 @@ layers <-
         }
         cols <- c(cols, extra_cols)
         tmp <- tmp[, cols]
-      }
-
-      # LINHAS
-      ## Definir as linhas a serem mantidas
-      if (length(extra_cols) >= 1 && missing$data == "drop") {
-        idx_keep <- is.na(tmp[extra_cols])
-        idx_keep <- rowSums(idx_keep) < ncol(idx_keep)
-        tmp <- tmp[idx_keep, ]
-      }
-      if (missing$depth == "drop") {
-        na_depth_id <- apply(tmp[c("profund_sup", "profund_inf")], 1, function (x) sum(is.na(x))) >= 1
-        tmp <- tmp[!na_depth_id, ]
-      }
-      n_rows <- nrow(tmp)
-      
-      # PROCESSAMENTO II
-      ## A continuação do processamento dos dados depende das presença de dados após a eliminação de colunas
-      ## e linhas com NAs.
-      if (n_rows >= 1 && missing(variable) || length(extra_cols) >= 1) {
         
-        # TIPO DE DADOS
-        ## "observacao_id", "camada_numero", "camada_nome", "amostra_codigo", "profund_sup" e "profund_inf"
-        ## precisam estar no formato de carácter para evitar erros durante o empilhamento das tabelas
-        ## devido ao tipo de dado.
-        ## Nota: esse processamento deve ser feito via Google Sheets.
-        tmp[std_cols] <- sapply(tmp[std_cols], as.character)
-        
-        # PADRONIZAÇÃO I
-        ## Profundidade e transição entre as camadas
-        
-        ## Sinal positivo em 'profund_inf' indicando maior profundidade do abaixo da última camada
-        ## O padrão consiste em manter o sinal positivo.
-        if (standardization$plus.sign != "keep") {
-          tmp <- .setMaximumObservationDepth(
-            obj = tmp, plus.sign = standardization$plus.sign, plus.depth = standardization$plus.depth)
+        # LINHAS
+        ## Definir as linhas a serem mantidas
+        if (length(extra_cols) >= 1 && missing$data == "drop") {
+          idx_keep <- is.na(tmp[extra_cols])
+          idx_keep <- rowSums(idx_keep) < ncol(idx_keep)
+          tmp <- tmp[idx_keep, ]
         }
-        
-        ## Transição ondulada ou irregular
-        ## O padrão consiste em manter a transição ondulada ou irregular.
-        if (standardization$transition != "keep") {
-          tmp <- .solveIrregularLayerTransition(obj = tmp, smoothing.fun = standardization$smoothing.fun)
-          
-          # What to do with broken layer transitions?
-          # tmp <- .solveBrokenLayerTransition(obj = tmp)
-          
+        if (missing$depth == "drop") {
+          na_depth_id <- apply(tmp[c("profund_sup", "profund_inf")], 1, function (x) sum(is.na(x))) >= 1
+          tmp <- tmp[!na_depth_id, ]
         }
+        n_rows <- nrow(tmp)
         
-        ## Se a profundidade foi padronizada, então deve ser definida como tipo 'Real'
-        if (standardization$plus.sign != "keep" || standardization$transition != "keep") {
-          tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
-        }
-        
-        # PADRONIZAÇÃO II
-        ## Unidade de medida e número de casas decimais
-        
-        # if (soil.vars == 'fe') {
-        #   fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
-        #   fe_stand <- lapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y))
-        #   fe_stand <- do.call(rbind, fe_stand)
-        #   
-        #   # 1. Se necessário, padronizar unidades de medida
-        #   idx_unit <- which(!unit[, soil_vars] %in% unique(standards(soil.var = "fe")$unit))
-        #   if (length(idx_unit) >= 1) {
-        #     conv_factor <- lapply(1:length(fe_type[idx_unit]), function (j) {
-        #       conversion(source = unlist(unit[, soil_vars[idx_unit]])[[j]], target = fe_stand$unit[idx_unit][j])
-        #     })
-        #     conv_factor <- do.call(rbind, conv_factor)
-        #     tmp[soil_vars[idx_unit]] <- t(t(tmp[soil_vars[idx_unit]]) * conv_factor$factor)
-        #   }
-        #   # 2. Padronizar número de casas decimais
-        #   tmp[, soil_vars] <- sapply(1:length(soil_vars), function (j) {
-        #     round(tmp[, soil_vars[j]], digits = fe_stand$digits[j])
-        #   })
-        # }
-        
-        # HARMONIZAÇÃO I
-        ## 
-        
-        # if (harmonization$level == 1) {
-        #   new_colnames <- matrix(stringr::str_split_fixed(colnames(tmp[soil_vars]), "_", 3)[, 1:2], ncol = 2)
-        #   new_colnames <- apply(new_colnames, 1, paste, collapse = "_", sep = "")
-        #   
-        #   # Nomes idênticos são gerados para variáveis definidas pelo mesmo extrator. Nesses casos mantém-se
-        #   # os nomes originais das respectivas colunas.
-        #   if (any(duplicated(new_colnames))) {
-        #     idx <- c(which(duplicated(new_colnames)), which(duplicated(new_colnames, fromLast = TRUE)))
-        #     new_colnames[idx] <- soil_vars[idx]
-        #   }
-        #   colnames(tmp)[colnames(tmp) %in% soil_vars] <- new_colnames
-        # }
-        
-      }
-      
-      
-      
-      
-      
-      
-        if (nrow(tmp) >= 1) {
+        # PROCESSAMENTO II
+        ## A continuação do processamento dos dados depende das presença de dados após a eliminação de colunas
+        ## e linhas com NAs.
+        if (n_rows >= 1 && missing(variable) || length(extra_cols) >= 1) {
           
-          # STANDARDIZATION (Fe) ----
-          # Identificar tipos de dado de ferro para padronização da unidade de medida e número de casas decimais
+          # TIPO DE DADOS
+          ## "observacao_id", "camada_numero", "camada_nome", "amostra_codigo", "profund_sup" e "profund_inf"
+          ## precisam estar no formato de carácter para evitar erros durante o empilhamento das tabelas
+          ## devido ao tipo de dado.
+          ## Nota: esse processamento deve ser feito via Google Sheets.
+          tmp[std_cols] <- sapply(tmp[std_cols], as.character)
+          
+          # PADRONIZAÇÃO I
+          ## Profundidade e transição entre as camadas
+          
+          ## Sinal positivo em 'profund_inf' indicando maior profundidade do abaixo da última camada
+          ## O padrão consiste em manter o sinal positivo.
+          if (standardization$plus.sign != "keep") {
+            tmp <- .setMaximumObservationDepth(
+              obj = tmp, plus.sign = standardization$plus.sign, plus.depth = standardization$plus.depth)
+          }
+          
+          ## Transição ondulada ou irregular
+          ## O padrão consiste em manter a transição ondulada ou irregular.
+          if (standardization$transition != "keep") {
+            tmp <- .solveIrregularLayerTransition(obj = tmp, smoothing.fun = standardization$smoothing.fun)
+            
+            # What to do with broken layer transitions?
+            # tmp <- .solveBrokenLayerTransition(obj = tmp)
+            
+          }
+          
+          ## Se a profundidade foi padronizada, então deve ser definida como tipo 'Real'
+          if (standardization$plus.sign != "keep" || standardization$transition != "keep") {
+            tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
+          }
+          
+          # PADRONIZAÇÃO II
+          ## Unidade de medida e número de casas decimais
+          
           # if (soil.vars == 'fe') {
           #   fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
           #   fe_stand <- lapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y))
@@ -311,8 +263,9 @@ layers <-
           #   })
           # }
           
-          # HARMONIZATION ----
-          # Harmonizar dados de ferro
+          # HARMONIZAÇÃO I
+          ## 
+          
           # if (harmonization$level == 1) {
           #   new_colnames <- matrix(stringr::str_split_fixed(colnames(tmp[soil_vars]), "_", 3)[, 1:2], ncol = 2)
           #   new_colnames <- apply(new_colnames, 1, paste, collapse = "_", sep = "")
@@ -326,47 +279,50 @@ layers <-
           #   colnames(tmp)[colnames(tmp) %in% soil_vars] <- new_colnames
           # }
           
-          # STACKING ----
-          # If tables are to be stacked, then id.cols must be of type character
-          if (stack) {
-            # tmp[opts$layers$id.cols] <- sapply(tmp[opts$layers$id.cols], as.character)
-            
-            # If tables are to be stacked and depth data has not been standardized, then depth.cols must be 
-            # of type character. Otherwise depth.cols must be of type numeric.
-            # if (standardization$plus.sign == "keep" || standardization$transition == "keep") {
-            #   tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.character)
-            # } else {
-            #   tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
-            # }
-          }
           
-          # Adicionar 'dataset_id' às camadas processadas.
-          res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
-          
-          # Se as tabelas não são empilhadas, adicionar informação sobre unidade de medida
+          # IDENTIFICAÇÃO
+          ## Código de identificação do conjunto de dados
+          ## Se os conjuntos de dados não são empilhados, adicionar unidades de medida
+          res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)[cols]
           if (!stack) {
             a <- attributes(res[[i]])
             a$units <- c(rep("unitless", 2), gsub("-", "unitless", as.character(unit)[-1]))
             attributes(res[[i]]) <- a
           }
+          
+          if (progress) {
+            utils::setTxtProgressBar(pb, i)
+          }
+          
+        } else {
+          res[[i]] <- data.frame()
+          m <- glue::glue("All layers in {dts} are missing data. None will be returned.")
+          message(m)
         }
-      }
-      if (progress) {
-        utils::setTxtProgressBar(pb, i)
+      } else {
+        res[[i]] <- data.frame()
+        m <- glue::glue("All layers in {dts} are missing depth. None will be returned.")
+        message(m)
       }
     }
     if (progress) {
       close(pb)
     }
-    # Se necessário, empilhar tabelas, adicionando informações sobre as unidades de medida
+    
+    # FINAL
+    ## Empilhar conjuntos de dados
+    ## Adicionar unidades de medida
     if (stack) {
       res <- suppressWarnings(dplyr::bind_rows(res))
-      soil_vars <- colnames(res)[grep("^fe_", colnames(res))]
-      fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
-      fe_stand <- sapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y)$unit)
-      a <- attributes(res)
-      a$units <- c(rep("unitless", 5), rep("cm", 2), as.character(fe_stand))
-      attributes(res) <- a
+      # soil_vars <- colnames(res)[grep("^fe_", colnames(res))]
+      # fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
+      # fe_stand <- sapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y)$unit)
+      # a <- attributes(res)
+      # a$units <- c(rep("unitless", 5), rep("cm", 2), as.character(fe_stand))
+      # attributes(res) <- a
+    } else if (n == 1) {
+      res <- res[[1]]
     }
+    
     return (res)
-}
+  }
