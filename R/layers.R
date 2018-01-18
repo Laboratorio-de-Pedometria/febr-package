@@ -121,11 +121,11 @@ layers <-
     # Variáveis padrão
     std_cols <- opts$layers$std.cols
     
-    # Descarregar chaves de identificação das planilhas do repositório
+    # Descarregar chaves de identificação das tabelas
     sheets_keys <- .getSheetsKeys(dataset = dataset)
     n <- nrow(sheets_keys)
     
-    # Descarregar planilhas com camadas
+    # Descarregar tabelas com camadas
     if (progress) {
       pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$camada), style = 3)
     }

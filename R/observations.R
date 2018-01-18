@@ -106,7 +106,7 @@ observations <-
     std_cols <- opts$observations$std.cols
     
     # CHAVES
-    ## Descarregar chaves de identificação das planilhas do repositório
+    ## Descarregar chaves de identificação das tabelas
     sheets_keys <- .getSheetsKeys(dataset = dataset)
     n <- nrow(sheets_keys)
     

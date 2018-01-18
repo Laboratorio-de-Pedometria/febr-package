@@ -37,7 +37,8 @@
     res <- suppressMessages(
       googlesheets::gs_read_csv(
         ss = res, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, n_max = 1))
-    return (tmp)
+
+    return (res)
   }
 
 # Which datasets should be downloaded? ----
