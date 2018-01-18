@@ -36,9 +36,7 @@
 #'
 #' @param harmonization List with definitions on how to \emph{harmonize} soil layer-specific data.
 #' \itemize{
-#' \item \code{level} Should data on soil variables be harmonized based only on the extraction method, 
-#'       \code{level = 1}, or on both extraction and measurement methods, \code{level = 2} (default)? See 
-#'       \code{\link[febr]{standards}}.
+#' \item \code{level} Level of harmonization. Defautls to \code{level = 5}. See \code{\link[febr]{standards}}.
 #' }
 #'
 #' @param progress Show download progress bar?
@@ -57,8 +55,6 @@
 #' \item \code{amostra_codigo}. Laboratory number of the soil samples.
 #' \item \code{profund_sup}. Upper boundary of soil layers (cm).
 #' \item \code{profund_inf}. Lower boundary of soil layers (cm).
-# \item \code{fe_xxx_yyy}. Soil iron content data, with \code{xxx} being a given extraction method and
-# \code{yyy} being a given measurement method.
 #' }
 #' }
 #' @return A list or data.frame with soil layer-specific data.
@@ -78,7 +74,7 @@ layers <-
             stack = FALSE, missing = list(depth = "keep", data = "keep"),
             standardization = list(
               plus.sign = "keep", plus.depth = 0, transition = "keep", smoothing.fun = "mean"),
-            harmonization = list(level = 2),
+            harmonization = list(level = 5),
             progress = TRUE, verbose = TRUE) {
     
     # Opções
@@ -264,29 +260,31 @@ layers <-
           # }
           
           # HARMONIZAÇÃO I
-          ## 
+          ## Harmonização baseada nos níveis dos códigos de identificação
+          new_colnames <- stringr::str_split_fixed(string = extra_cols, pattern = "_", n = Inf)
+          n_new_colnames <- seq(min(harmonization$level, ncol(new_colnames)))
+          new_colnames <- new_colnames[, n_new_colnames]
+          if (n_new_colnames > 1) {
+            new_colnames <- apply(new_colnames, 1, function (x) paste(x[!x == ""], collapse = "_", sep = ""))  
+          }
           
-          # if (harmonization$level == 1) {
-          #   new_colnames <- matrix(stringr::str_split_fixed(colnames(tmp[soil_vars]), "_", 3)[, 1:2], ncol = 2)
-          #   new_colnames <- apply(new_colnames, 1, paste, collapse = "_", sep = "")
-          #   
-          #   # Nomes idênticos são gerados para variáveis definidas pelo mesmo extrator. Nesses casos mantém-se
-          #   # os nomes originais das respectivas colunas.
-          #   if (any(duplicated(new_colnames))) {
-          #     idx <- c(which(duplicated(new_colnames)), which(duplicated(new_colnames, fromLast = TRUE)))
-          #     new_colnames[idx] <- soil_vars[idx]
-          #   }
-          #   colnames(tmp)[colnames(tmp) %in% soil_vars] <- new_colnames
-          # }
-          
+          ## No caso de nomes idênticos, manter o nome original
+          if (any(duplicated(new_colnames))) {
+            idx <- c(which(duplicated(new_colnames)), which(duplicated(new_colnames, fromLast = TRUE)))
+            new_colnames[idx] <- extra_cols[idx]
+          }
+          cols[cols %in% extra_cols] <- new_colnames
+          colnames(tmp) <- cols
           
           # IDENTIFICAÇÃO
           ## Código de identificação do conjunto de dados
+          res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
+          
+          # ATTRIBUTOS
           ## Se os conjuntos de dados não são empilhados, adicionar unidades de medida
-          res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)[cols]
           if (!stack) {
             a <- attributes(res[[i]])
-            a$units <- c(rep("unitless", 2), gsub("-", "unitless", as.character(unit)[-1]))
+            a$units <- c(rep("unitless", 2), gsub("^-$", "unitless", as.character(unit)[-1]))
             attributes(res[[i]]) <- a
           }
           
