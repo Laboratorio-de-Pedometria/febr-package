@@ -209,6 +209,13 @@ layers <-
       ## e linhas com NAs.
       if (n_rows >= 1 && missing(variable) || length(extra_cols) >= 1) {
         
+        # TIPO DE DADOS
+        ## "observacao_id", "camada_numero", "camada_nome", "amostra_codigo", "profund_sup" e "profund_inf"
+        ## precisam estar no formato de carácter para evitar erros durante o empilhamento das tabelas
+        ## devido ao tipo de dado.
+        ## Nota: esse processamento deve ser feito via Google Sheets.
+        tmp[std_cols] <- sapply(tmp[std_cols], as.character)
+        
         # PADRONIZAÇÃO I
         ## Profundidade e transição entre as camadas
         
@@ -225,11 +232,15 @@ layers <-
           tmp <- .solveIrregularLayerTransition(obj = tmp, smoothing.fun = standardization$smoothing.fun)
           
           # What to do with broken layer transitions?
-          # if (length(extra_cols) > 0) {
-          #   tmp <- .solveBrokenLayerTransition(obj = tmp)
-          # }
+          # tmp <- .solveBrokenLayerTransition(obj = tmp)
+          
         }
-       
+        
+        ## Se a profundidade foi padronizada, então deve ser definida como tipo 'Real'
+        if (standardization$plus.sign != "keep" || standardization$transition != "keep") {
+          tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
+        }
+        
         # PADRONIZAÇÃO II
         ## Unidade de medida e número de casas decimais
         
@@ -318,15 +329,15 @@ layers <-
           # STACKING ----
           # If tables are to be stacked, then id.cols must be of type character
           if (stack) {
-            tmp[opts$layers$id.cols] <- sapply(tmp[opts$layers$id.cols], as.character)
+            # tmp[opts$layers$id.cols] <- sapply(tmp[opts$layers$id.cols], as.character)
             
             # If tables are to be stacked and depth data has not been standardized, then depth.cols must be 
             # of type character. Otherwise depth.cols must be of type numeric.
-            if (standardization$plus.sign == "keep" || standardization$transition == "keep") {
-              tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.character)
-            } else {
-              tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
-            }
+            # if (standardization$plus.sign == "keep" || standardization$transition == "keep") {
+            #   tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.character)
+            # } else {
+            #   tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
+            # }
           }
           
           # Adicionar 'dataset_id' às camadas processadas.
