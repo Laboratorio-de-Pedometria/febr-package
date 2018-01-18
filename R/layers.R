@@ -36,7 +36,7 @@
 #'
 #' @param harmonization List with definitions on how to \emph{harmonize} soil layer-specific data.
 #' \itemize{
-#' \item \code{level} Level of harmonization. Defautls to \code{level = 5}. See \code{\link[febr]{standards}}.
+#' \item \code{level} Level of harmonization. Defaults to \code{level = 5}. See \code{\link[febr]{standards}}.
 #' }
 #'
 #' @param progress Show download progress bar?
@@ -140,13 +140,16 @@ layers <-
       }
       
       # DESCARREGAMENTO
-      tmp <- googlesheets::gs_key(sheets_keys$camada[i], verbose = opts$gs$verbose)
-      unit <- suppressMessages(
-        googlesheets::gs_read_csv(tmp, locale = opts$gs$locale, verbose = opts$gs$verbose, n_max = 1))
+      ## Cabeçalho com unidades de medida
+      unit <- .getHeader(x = sheets_keys$camada[i])
+      # tmp <- googlesheets::gs_key(x = sheets_keys$camada[i], verbose = opts$gs$verbose)
+      # unit <- suppressMessages(
+      #   googlesheets::gs_read_csv(ss = tmp, locale = opts$gs$locale, verbose = opts$gs$verbose, n_max = 1))
+      
       # Solução rápida e suja enquanto as unidade de medida não são padronizadas
       unit <- as.data.frame(unit)
       unit[which(unit %in% "???")] <- "g/kg"
-      unit[which(unit %in% "mg/dm3")] <- "mg/dm^3" 
+      unit[which(unit %in% "mg/dm3")] <- "mg/dm^3"
       
       tmp <- suppressMessages(
         googlesheets::gs_read_csv(
@@ -243,12 +246,12 @@ layers <-
           #   fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
           #   fe_stand <- lapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y))
           #   fe_stand <- do.call(rbind, fe_stand)
-          #   
+          # 
           #   # 1. Se necessário, padronizar unidades de medida
           #   idx_unit <- which(!unit[, soil_vars] %in% unique(standards(soil.var = "fe")$unit))
           #   if (length(idx_unit) >= 1) {
           #     conv_factor <- lapply(1:length(fe_type[idx_unit]), function (j) {
-          #       conversion(source = unlist(unit[, soil_vars[idx_unit]])[[j]], target = fe_stand$unit[idx_unit][j])
+          #       conversion(source=unlist(unit[, soil_vars[idx_unit]])[[j]],target=fe_stand$unit[idx_unit][j])
           #     })
           #     conv_factor <- do.call(rbind, conv_factor)
           #     tmp[soil_vars[idx_unit]] <- t(t(tmp[soil_vars[idx_unit]]) * conv_factor$factor)

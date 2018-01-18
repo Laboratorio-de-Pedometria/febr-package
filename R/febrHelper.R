@@ -30,6 +30,16 @@
       )
     )
   }
+# Descarregar cabeçalho das tabelas 'camada' e observacao' ----
+.getHeader <- 
+  function (x) {
+    res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+    res <- suppressMessages(
+      googlesheets::gs_read_csv(
+        ss = res, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, n_max = 1))
+    return (tmp)
+  }
+
 # Which datasets should be downloaded? ----
 .getDataset <-
   function (sheets_keys, dataset) {
