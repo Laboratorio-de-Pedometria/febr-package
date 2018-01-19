@@ -51,12 +51,12 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' res <- layers(dataset = paste("ctb000", 4:9, sep = ""))
+#' res <- layer(dataset = paste("ctb000", 4:9, sep = ""))
 #' str(res)
 #' }
 # dataset <- "ctb0029"
 ###############################################################################################################
-layers <-
+layer <-
   function (dataset, variable,
             stack = FALSE, missing = list(depth = "keep", data = "keep"),
             standardization = list(

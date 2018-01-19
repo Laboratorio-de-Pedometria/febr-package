@@ -52,11 +52,11 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' res <- observations(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
+#' res <- observation(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
 #' str(res)
 #' }
 ###############################################################################################################
-observations <-
+observation <-
   function (dataset, variable, 
             stack = FALSE, missing = list(coord = "keep", data = "keep"), crs = NULL,
             progress = TRUE, verbose = TRUE) {
