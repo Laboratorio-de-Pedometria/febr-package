@@ -2,30 +2,36 @@
 #'
 #' Download layer-specific data (sampling depth, layer designation, among others) contained in the
 #' Free Brazilian Repository for Open Soil Data -- \pkg{febr}, \url{http://www.ufsm.br/febr}. In \pkg{febr},
-#' these data are stored using a table named \code{"camada"}. Use \code{\link[febr]{header}} if you want 
-#' to check what are the variables contained in a dataset before downloading it.
-
+#' layer-specific data are stored using a table named \code{"camada"}. Use \code{\link[febr]{header}} if you
+#' want to check what are the layer-specific variables contained in a dataset before downloading it.
+#' 
 #' @template data_template
 #' @template metadata_template
 #'
-#' @param missing List with named arguments specifying what should be done with layers missing depth, 
-#' \code{depth}, or data on variables, \code{data}? Options are \code{"keep"} (default) and \code{"drop"}.
+#' @param missing List with named sub-arguments specifying what should be done with a layer missing data on 
+#' sampling depth, \code{depth}, or data on variable(s), \code{data}? Options are \code{"keep"} (default) and
+#' \code{"drop"}.
 #' 
-#' @param standardization List with definitions on how to \emph{standardize} layer-specific data.
+#' @param standardization List named sub-arguments specifying how to \emph{standardize} layer-specific data.
 #' \itemize{
 #' \item \code{plus.sign} What should be done with the plus sign ('+') commonly used along with the inferior 
 #'       limit of the bottom layer of an observation? Options are \code{"keep"} (default), \code{"add"},
 #'       and \code{"remove"}.
 #' \item \code{plus.depth} Depth increment (in centimetres) when processing the plus sign ('+') with 
-#'       \code{plus.sign = "add"}. Defaults to \code{plus.depth = 0}.
+#'       \code{plus.sign = "add"}. Defaults to \code{plus.depth = 2.5}.
 #' \item \code{transition} What should be done about wavy, irregular, and broken transitions between layers in
 #'       an observation? Options are \code{"keep"} (default) and \code{"smooth"}.
 #' \item \code{smoothing.fun} Function that should be used to smooth wavy and irregular transitions between 
 #'       layers in an observation when \code{transition = "smooth"}. Options are \code{"mean"} (default),
-#'       \code{"min"}, \code{"max"}, and \code{"median"}. 
+#'       \code{"min"}, \code{"max"}, and \code{"median"}.
+#' \item \code{units} Should the values of the real and integer variable(s) be converted to the standard 
+#'       measurement unit(s)? Defaults to \code{units = FALSE}, i.e. no conversion is performed.
+#' \item \code{round} Should the values of the real and integer variable(s) be rounded to the standard number 
+#'       of decimal places? Effective only when \code{units = TRUE}. Defaults to \code{round = FALSE}, i.e. 
+#'       no rounding is performed.
 #' }
 #'
-#' @param harmonization List with definitions on how to \emph{harmonize} layer-specific data.
+#' @param harmonization List with named sub-arguments specifying how to \emph{harmonize} layer-specific data.
 #' \itemize{
 #' \item \code{level} Level of harmonization. Defaults to \code{level = 5}. See \code{\link[febr]{standards}}.
 #' }
@@ -34,8 +40,7 @@
 #' \subsection{Standard columns}{
 #' Standard columns and their content are as follows:
 #' \itemize{
-#' \item \code{dataset_id}. Identification code of the dataset(s) in \pkg{febr} to which an observation 
-#' belongs.
+#' \item \code{dataset_id}. Identification code of the dataset in \pkg{febr} to which an observation belongs.
 #' \item \code{observacao_id}. Identification code of an observation in \pkg{febr}.
 #' \item \code{camada_numero}. Sequential layer number, from top to bottom.
 #' \item \code{camada_nome}. Layer designation according to some standard description guide.
@@ -43,8 +48,11 @@
 #' \item \code{profund_sup}. Upper boundary of a layer (cm).
 #' \item \code{profund_inf}. Lower boundary of a layer (cm).
 #' }
+#' Further details about the content of the standard columns can be found in \url{http://www.ufsm.br/febr/book/}
+#' (in Portuguese).
 #' }
-#' @return A list or data.frame with layer-specific data of the chosen dataset(s).
+#' @return A list of data frames or a data frame with layer-specific data on the chosen variable(s) of 
+#' the chosen dataset(s).
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \code{\link[febr]{observations}}, \code{\link[febr]{standards}}, \code{\link[febr]{conversion}}
@@ -60,7 +68,9 @@ layer <-
   function (dataset, variable,
             stack = FALSE, missing = list(depth = "keep", data = "keep"),
             standardization = list(
-              plus.sign = "keep", plus.depth = 0, transition = "keep", smoothing.fun = "mean"),
+              plus.sign = "keep", plus.depth = 2.5, 
+              transition = "keep", smoothing.fun = "mean",
+              units = FALSE, round = FALSE),
             harmonization = list(level = 5),
             progress = TRUE, verbose = TRUE) {
     
@@ -218,35 +228,35 @@ layer <-
             
           }
           
-          ## Se a profundidade foi padronizada, então deve ser definida como tipo 'Real'
+          ## Se a profundidade foi padronizada, então os dados devem ser definidos como tipo 'Real'
           if (standardization$plus.sign != "keep" || standardization$transition != "keep") {
             tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
           }
           
           # PADRONIZAÇÃO II
           ## Unidade de medida e número de casas decimais
-          
-          
-          
-          # if (soil.vars == 'fe') {
-          #   fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
-          #   fe_stand <- lapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y))
-          #   fe_stand <- do.call(rbind, fe_stand)
-          # 
-          #   # 1. Se necessário, padronizar unidades de medida
-          #   idx_unit <- which(!unit[, soil_vars] %in% unique(standards(soil.var = "fe")$unit))
-          #   if (length(idx_unit) >= 1) {
-          #     conv_factor <- lapply(1:length(fe_type[idx_unit]), function (j) {
-          #       conversion(source=unlist(unit[, soil_vars[idx_unit]])[[j]],target=fe_stand$unit[idx_unit][j])
-          #     })
-          #     conv_factor <- do.call(rbind, conv_factor)
-          #     tmp[soil_vars[idx_unit]] <- t(t(tmp[soil_vars[idx_unit]]) * conv_factor$factor)
-          #   }
-          #   # 2. Padronizar número de casas decimais
-          #   tmp[, soil_vars] <- sapply(1:length(soil_vars), function (j) {
-          #     round(tmp[, soil_vars[j]], digits = fe_stand$digits[j])
-          #   })
-          # }
+          if (standardization$units) {
+            # fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
+            # fe_stand <- lapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y))
+            # fe_stand <- do.call(rbind, fe_stand)
+            # 
+            # # 1. Se necessário, padronizar unidades de medida
+            # idx_unit <- which(!unit[, soil_vars] %in% unique(standards(soil.var = "fe")$unit))
+            # if (length(idx_unit) >= 1) {
+            #   conv_factor <- lapply(1:length(fe_type[idx_unit]), function (j) {
+            #     conversion(source=unlist(unit[, soil_vars[idx_unit]])[[j]],target=fe_stand$unit[idx_unit][j])
+            #   })
+            #   conv_factor <- do.call(rbind, conv_factor)
+            #   tmp[soil_vars[idx_unit]] <- t(t(tmp[soil_vars[idx_unit]]) * conv_factor$factor)
+            # }
+            # 
+            # # 2. Padronizar número de casas decimais
+            # if (standardization$round) {
+            #   tmp[, soil_vars] <- sapply(1:length(soil_vars), function (j) {
+            #     round(tmp[, soil_vars[j]], digits = fe_stand$digits[j])
+            #   }) 
+            # }
+          }
           
           # HARMONIZAÇÃO I
           ## Harmonização baseada nos níveis dos códigos de identificação
