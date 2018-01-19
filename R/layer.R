@@ -31,9 +31,12 @@
 #'       no rounding is performed.
 #' }
 #'
-#' @param harmonization List with named sub-arguments specifying how to \emph{harmonize} layer-specific data.
+#' @param harmonization List with named sub-arguments specifying if and how to \emph{harmonize} layer-specific
+#' data.
 #' \itemize{
-#' \item \code{level} Level of harmonization. Defaults to \code{level = 5}. See \code{\link[febr]{standards}}.
+#' \item \code{harmonize} Should data be harmonized? Defaults to \code{harmonize = FALSE}, i.e. no 
+#'       harmonization is performed.
+#' \item \code{level} Level of harmonization. Defaults to \code{level = 2}. See \code{\link[febr]{standards}}.
 #' }
 #'
 #' @details
@@ -70,7 +73,7 @@ layer <-
               plus.sign = "keep", plus.depth = 2.5, 
               transition = "keep", smoothing.fun = "mean",
               units = FALSE, round = FALSE),
-            harmonization = list(level = 5),
+            harmonization = list(harmonize = FALSE, level = 2),
             progress = TRUE, verbose = TRUE) {
     
     # Opções
@@ -242,21 +245,25 @@ layer <-
           }
           
           # HARMONIZAÇÃO I
-          ## Harmonização baseada nos níveis dos códigos de identificação
-          new_colnames <- stringr::str_split_fixed(string = extra_cols, pattern = "_", n = Inf)
-          n_new_colnames <- seq(min(harmonization$level, ncol(new_colnames)))
-          new_colnames <- new_colnames[, n_new_colnames]
-          if (n_new_colnames > 1) {
-            new_colnames <- apply(new_colnames, 1, function (x) paste(x[!x == ""], collapse = "_", sep = ""))  
+          ## Harmonização dos dados das colunas adicionais
+          if (harmonization$harmonize) {
+            ## Harmonização baseada nos níveis dos códigos de identificação
+            new_colnames <- stringr::str_split_fixed(string = extra_cols, pattern = "_", n = Inf)
+            n_new_colnames <- seq(min(harmonization$level, ncol(new_colnames)))
+            new_colnames <- new_colnames[, n_new_colnames]
+            if (n_new_colnames > 1) {
+              new_colnames <- 
+                apply(new_colnames, 1, function (x) paste(x[!x == ""], collapse = "_", sep = ""))  
+            }
+            
+            ## No caso de nomes idênticos, manter o nome original
+            if (any(duplicated(new_colnames))) {
+              idx <- c(which(duplicated(new_colnames)), which(duplicated(new_colnames, fromLast = TRUE)))
+              new_colnames[idx] <- extra_cols[idx]
+            }
+            cols[cols %in% extra_cols] <- new_colnames
+            colnames(tmp) <- cols
           }
-          
-          ## No caso de nomes idênticos, manter o nome original
-          if (any(duplicated(new_colnames))) {
-            idx <- c(which(duplicated(new_colnames)), which(duplicated(new_colnames, fromLast = TRUE)))
-            new_colnames[idx] <- extra_cols[idx]
-          }
-          cols[cols %in% extra_cols] <- new_colnames
-          colnames(tmp) <- cols
           
           # IDENTIFICAÇÃO
           ## Código de identificação do conjunto de dados

@@ -278,6 +278,27 @@ observation <-
             }
           }
           
+          # HARMONIZAÇÃO I
+          ## Harmonização dos dados das colunas adicionais
+          if (harmonization$harmonize) {
+            ## Harmonização baseada nos níveis dos códigos de identificação
+            new_colnames <- stringr::str_split_fixed(string = extra_cols, pattern = "_", n = Inf)
+            n_new_colnames <- seq(min(harmonization$level, ncol(new_colnames)))
+            new_colnames <- new_colnames[, n_new_colnames]
+            if (n_new_colnames > 1) {
+              new_colnames <- 
+                apply(new_colnames, 1, function (x) paste(x[!x == ""], collapse = "_", sep = ""))  
+            }
+            
+            ## No caso de nomes idênticos, manter o nome original
+            if (any(duplicated(new_colnames))) {
+              idx <- c(which(duplicated(new_colnames)), which(duplicated(new_colnames, fromLast = TRUE)))
+              new_colnames[idx] <- extra_cols[idx]
+            }
+            cols[cols %in% extra_cols] <- new_colnames
+            colnames(tmp) <- cols
+          }
+          
           # IDENTIFICAÇÃO
           ## Código de identificação do conjunto de dados
           res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)[cols]
