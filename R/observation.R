@@ -12,10 +12,19 @@
 #' spatial coordinates, \code{coord}, or data on variables, \code{data}? Options are \code{"keep"} (default) 
 #' and \code{"drop"}.
 #'
-#' @param crs EPSG code defining the target coordinate reference system (CRS) to which spatial coordinates
-#' should be transformed. For example, \code{crs = "EPSG:4674"}, i.e. SIRGAS 2000, the standard CRS for
-#' Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. Defaults to \code{crs = NULL}, i.e. no
-#' transformation is performed.
+#' @param standardization List named sub-arguments specifying how to \emph{standardize} observation-specific
+#' data.
+#' \itemize{
+#' \item \code{crs} EPSG code defining the target coordinate reference system (CRS) to which spatial 
+#'       coordinates should be transformed. For example, \code{crs = "EPSG:4674"}, i.e. SIRGAS 2000, the 
+#'       standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. Defaults to
+#'       \code{crs = NULL}, i.e. no transformation is performed.
+#' \item \code{units} Should the values of the real and integer variable(s) be converted to the standard 
+#'       measurement unit(s)? Defaults to \code{units = FALSE}, i.e. no conversion is performed.
+#' \item \code{round} Should the values of the real and integer variable(s) be rounded to the standard number 
+#'       of decimal places? Effective only when \code{units = TRUE}. Defaults to \code{round = FALSE}, i.e. 
+#'       no rounding is performed.
+#' }
 #' 
 #' @details 
 #' \subsection{Standard columns}{
@@ -59,7 +68,8 @@
 ###############################################################################################################
 observation <-
   function (dataset, variable, 
-            stack = FALSE, missing = list(coord = "keep", data = "keep"), crs = NULL,
+            stack = FALSE, missing = list(coord = "keep", data = "keep"),
+            standardization = list(crs = NULL, units = FALSE, round = FALSE),
             progress = TRUE, verbose = TRUE) {
     
     # Options
@@ -178,10 +188,12 @@ observation <-
             tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
           }
           
-          # SISTEMA DE REFERÊNCIA DE COORDENADAS
+          # PADRONIZAÇÃO I
+          ## Sistema de referência de coordenadas
+          
           ## Verificar se existem observações com coordenadas e se o SRC deve ser transformado
           na_coord <- max(apply(tmp[c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
-          if (n_rows > na_coord && !is.null(crs)) {
+          if (n_rows > na_coord && !is.null(standardization$crs)) {
             
             ## Identificar as observações com coordenadas
             id_coords <- which(!is.na(tmp$coord_x))
@@ -245,6 +257,14 @@ observation <-
             ## Agrupar observações com e sem coordenadas
             tmp <- rbind(tmp_obs, tmp[-id_coords, ])
             
+          }
+          
+          # PADRONIZAÇÃO II
+          ## Unidade de medida e número de casas decimais
+          if (standardization$units) {
+            if (standardization$round) {
+              #
+            }
           }
           
           # IDENTIFICAÇÃO
