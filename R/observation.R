@@ -90,11 +90,18 @@ observation <-
     if (!is.logical(stack)) {
       stop (paste("Unknown value '", stack, "' passed to parameter stack", sep = ""))
     }
+    
     if (!missing(variable)) {
-      if (variable == "all" && stack == TRUE) {
-        stop ("data cannot be stacked when downloading all variables")
+      if (variable == "all") {
+        if (stack) {
+          stop ("data cannot be stacked when downloading all variables")
+        }
+        if (harmonization$harmonize) {
+          stop ("data cannot be harmonized when downloading all variables")
+        }
       }
     }
+    
     if (!missing$coord %in% c("drop", "keep")) {
       stop (paste("Unknown value '", missing$coord, "' passed to parameter missing$coord", sep = ""))
     }

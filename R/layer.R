@@ -81,10 +81,16 @@ layer <-
     
     # Verificar consistência dos parâmetros
     if (!missing(variable)) {
-      if (variable == "all" && stack == TRUE) {
-        stop ("data cannot be stacked when downloading all variables")
+      if (variable == "all") {
+        if (stack) {
+          stop ("data cannot be stacked when downloading all variables")
+        }
+        if (harmonization$harmonize) {
+          stop ("data cannot be harmonized when downloading all variables")
+        }
       }
     }
+    
     if (!missing.data %in% c("drop", "keep")) {
       stop (paste("Unknown value '", missing.data, "' passed to 'missing.data", sep = ""))
     }
