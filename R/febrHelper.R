@@ -37,11 +37,12 @@
     # Alterar nomes das colunas
     new_colnames <- stringr::str_split_fixed(string = extra_cols, pattern = "_", n = Inf)
     n_new_colnames <- seq(min(harmonization$level, ncol(new_colnames)))
-    new_colnames <- new_colnames[, n_new_colnames]
-    if (n_new_colnames > 1) {
+    new_colnames <- matrix(new_colnames[, n_new_colnames], nrow = nrow(new_colnames))
+    
+    # if (n_new_colnames > 1) {
       new_colnames <- 
-        apply(new_colnames, 1, function (x) paste(x[!x == ""], collapse = "_", sep = ""))  
-    }
+        apply(new_colnames, 1, function (x) paste(x[!x == ""], collapse = "_", sep = ""))
+    # }
     
     # No caso de nomes idênticos, manter o nome original
     if (any(duplicated(new_colnames))) {
