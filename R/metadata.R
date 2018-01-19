@@ -3,14 +3,7 @@
 #' Download metadata-specific data contained in the Free Brazilian Repository for Open Soil Data --
 #' \url{http://www.ufsm.br/febr}.
 #'
-#' @param dataset Identification code of the dataset (or datasets) for which soil metadata-specific data should
-#' be downloaded -- see \url{http://www.ufsm.br/febr/book}. Use \code{dataset = "all"} to download data from 
-#' all existing datasets.
-#' 
-#' @param progress Show progress bar?
-#'
-#' @param verbose Show informative messages? Generally useful identify datasets with any inconsistent data. 
-#' Please report to \email{febr-forum@@googlegroups.com} if you find any issue.
+#' @template metadata_template
 #' 
 #' @return A list with metadata-specific data.
 #'

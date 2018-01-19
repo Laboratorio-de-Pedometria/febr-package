@@ -2,53 +2,57 @@
 % Please edit documentation in R/observations.R
 \name{observations}
 \alias{observations}
-\title{Get soil observations}
+\title{Get observation data}
 \usage{
-observations(dataset, variable, stack.obs = TRUE, missing.coords = "drop",
-  target.crs = "EPSG:4674", progress = TRUE, verbose = TRUE)
+observations(dataset, variable, stack = FALSE, missing = list(coord =
+  "keep", data = "keep"), crs = NULL, progress = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{dataset}{Identification code of the dataset (or datasets). Use \code{dataset = "all"} to download 
 all datasets.}
 
-\item{variable}{Name(s) of the variable(s). If missing, then a set of standard columns is downloaded. Use
-\code{variable = "all"} to download all variables. See \sQuote{Details} for more information.}
+\item{variable}{Name(s) of the variable(s). If missing, then a set of standard identification variables is
+downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{Details} for more information.}
 
-\item{stack.obs}{Should soil observations from different datasets be stacked on a single data frame for
-output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.obs = TRUE}.}
+\item{stack}{Should tables from different datasets be stacked on a single table for output? Defaults to
+\code{stack = FALSE}, the output being a list of tables.}
 
-\item{missing.coords}{What should be done with soil observations missing spatial coordinates? Options are
-\code{"drop"} (default) and \code{"keep"}.}
+\item{missing}{List with named sub-arguments specifying what should be done with observations missing 
+spatial coordinates, \code{coord}, or data on variables, \code{data}? Options are \code{"keep"} (default) 
+and \code{"drop"}.}
 
-\item{target.crs}{EPSG code defining the target coordinate reference system to which spatial coordinates
-should be transformed. Defaults to \code{target.crs = "EPSG:4674"}, i.e. SIRGAS 2000, the standard CRS for
-Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. If set to \code{target.crs = NULL} then
-the native spatial coordinates are returned.}
+\item{crs}{EPSG code defining the target coordinate reference system to which spatial coordinates
+should be transformed. For example, \code{crs = "EPSG:4674"}, i.e. SIRGAS 2000, the standard CRS for
+Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. Defaults to \code{crs = NULL}, i.e. no
+transformation is performed.}
 
 \item{progress}{Show download progress bar?}
 
-\item{verbose}{Show informative messages? Generally useful to identify datasets with any inconsistent data. 
+\item{verbose}{Show informative messages? Generally useful to identify datasets with inconsistent data. 
 Please report to \email{febr-forum@googlegroups.com} if you find any issue.}
 }
 \value{
-A list or data.frame with soil observation-specific data.
+A list or data.frame with observation-specific data of the chosen dataset(s).
 }
 \description{
-Download soil observation-specific data contained in the Free Brazilian Repository for Open Soil Data --
-\url{http://www.ufsm.br/febr}.
+Download observation-specific data (spatial coordinates, observation date, among others) contained in the
+Free Brazilian Repository for Open Soil Data -- \pkg{febr}, \url{http://www.ufsm.br/febr}. In \pkg{febr},
+these data are stored using a table named \code{"observacao"}. Use \code{\link[febr]{header}} if you want 
+to check what are the variables contained in a dataset before downloading it.
 }
 \details{
 \subsection{Standard columns}{
 Standard columns and their content are as follows:
 \itemize{
-\item \code{dataset_id}. Identification code of the datasets in febr to which soil observations belong.
-\item \code{observacao_id}. Identification code of soil observations in febr.
-\item \code{sisb_id}. Identification code of soil observations in the Brazilian Soil Information System
+\item \code{dataset_id}. Identification code of the dataset(s) in \pkg{febr} to which an observation 
+belongs.
+\item \code{observacao_id}. Identification code of an observation in \pkg{febr}.
+\item \code{sisb_id}. Identification code of an observation in the Brazilian Soil Information System
 maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
 \url{https://www.bdsolos.cnptia.embrapa.br/consulta_publica.html}.
-\item \code{ibge_id}. Identification code of soil observations in the database of the Brazilian Institute
+\item \code{ibge_id}. Identification code of an observation in the database of the Brazilian Institute
 of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/downloads_geociencias.htm#}.
-\item \code{observacao_data}. Date (dd-mm-yyyy) in which soil observations were made.
+\item \code{observacao_data}. Date (dd-mm-yyyy) in which an observation was made.
 \item \code{coord_sistema}. EPSG code of the coordinate reference system -- see more at
 \url{http://spatialreference.org/ref/epsg/}.
 \item \code{coord_x}. Longitude (°) or Easting (m).
@@ -56,10 +60,10 @@ of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/down
 \item \code{coord_precisao}. Precision with which x- and y-coordinates were determined (m).
 \item \code{coord_fonte}. Source of the x- and y-coordinates.
 \item \code{pais_id}. Country code (ISO 3166-1 alpha-2), i.e. \code{"BR"}.
-\item \code{estado_id}. Code of the Brazilian federative unit where soil observations were made.
-\item \code{municipio_id}. Name of the Brazilian county where soil observations were made.
-\item \code{amostra_tipo}. Type of soil sample taken, i.e. simple or composed.
-\item \code{amostra_quanti}. Number of soil samples taken.
+\item \code{estado_id}. Code of the Brazilian federative unit where an observation was made.
+\item \code{municipio_id}. Name of the Brazilian county where as observation was made.
+\item \code{amostra_tipo}. Type of sample taken, i.e. simple or composed.
+\item \code{amostra_quanti}. Number of samples taken.
 \item \code{amostra_area}. Sampling area.
 }
 }

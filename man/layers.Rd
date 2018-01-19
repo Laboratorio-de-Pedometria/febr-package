@@ -2,75 +2,71 @@
 % Please edit documentation in R/layers.R
 \name{layers}
 \alias{layers}
-\title{Get soil layers}
+\title{Get layer data}
 \usage{
-layers(dataset, which.cols = "standard", soil.vars, stack.datasets = TRUE,
-  missing.data = "drop", standardization = list(plus.sign = "add",
-  plus.depth = 2.5, transition = "smooth", smoothing.fun = "mean"),
-  harmonization = list(level = 1), progress = TRUE, verbose = TRUE)
+layers(dataset, variable, stack = FALSE, missing = list(depth = "keep", data
+  = "keep"), standardization = list(plus.sign = "keep", plus.depth = 0,
+  transition = "keep", smoothing.fun = "mean"), harmonization = list(level =
+  5), progress = TRUE, verbose = TRUE)
 }
 \arguments{
-\item{dataset}{Identification code of the dataset or datasets for which soil layer-specific data should be
-downloaded -- see \url{http://www.ufsm.br/febr/book}. Use \code{dataset = "all"} to download data from all
-existing datasets.}
+\item{dataset}{Identification code of the dataset (or datasets). Use \code{dataset = "all"} to download 
+all datasets.}
 
-\item{which.cols}{Which columns should be returned? Options are \code{"standard"} (default) and
-\code{"all"}. See \sQuote{Details} for a description of the standard columns.}
+\item{variable}{Name(s) of the variable(s). If missing, then a set of standard identification variables is
+downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{Details} for more information.}
 
-\item{soil.vars}{Identification code of the soil variables for which soil layer-specific data should be
-downloaded.}
+\item{stack}{Should tables from different datasets be stacked on a single table for output? Defaults to
+\code{stack = FALSE}, the output being a list of tables.}
 
-\item{stack.datasets}{Should soil layers from different datasets be stacked on a single data frame for
-output? Used only with \code{which.cols = "standard"}. Defaults to \code{stack.datasets = TRUE}.}
+\item{missing}{List with named arguments specifying what should be done with layers missing depth, 
+\code{depth}, or data on variables, \code{data}? Options are \code{"keep"} (default) and \code{"drop"}.}
 
-\item{missing.data}{What should be done with soil layers missing any iron data? Options are \code{"drop"}
-(default) and \code{"keep"}.}
-
-\item{standardization}{List with definitions on how to \emph{standardize} soil layer-specific data. Only 
-works when \code{soil.vars = 'fe'}.
+\item{standardization}{List with definitions on how to \emph{standardize} layer-specific data.
 \itemize{
 \item \code{plus.sign} What should be done with the plus sign ('+') commonly used along with the inferior 
-      limit of the bottom layer of soil observations? Options are \code{"add"} (default), \code{"remove"},
-      and \code{"keep"}.
+      limit of the bottom layer of an observation? Options are \code{"keep"} (default), \code{"add"},
+      and \code{"remove"}.
 \item \code{plus.depth} Depth increment (in centimetres) when processing the plus sign ('+') with 
-      \code{plus.sign = "add"}. Defaults to \code{plus.depth = 2.5}.
+      \code{plus.sign = "add"}. Defaults to \code{plus.depth = 0}.
 \item \code{transition} What should be done about wavy, irregular, and broken transitions between layers in
-      a soil observation? Options are \code{"smooth"} (default) and \code{"keep"}.
+      an observation? Options are \code{"keep"} (default) and \code{"smooth"}.
 \item \code{smoothing.fun} Function that should be used to smooth wavy and irregular transitions between 
-      layers in a soil observation when \code{transition = "smooth"}. Options are \code{"mean"} (default),
+      layers in an observation when \code{transition = "smooth"}. Options are \code{"mean"} (default),
       \code{"min"}, \code{"max"}, and \code{"median"}. 
 }}
 
-\item{harmonization}{List with definitions on how to \emph{harmonize} soil layer-specific data.
+\item{harmonization}{List with definitions on how to \emph{harmonize} layer-specific data.
 \itemize{
-\item \code{level} Should data on soil variables be harmonized based only on the extraction method, 
-      \code{level = 1} (default), or on both extraction and measurement methods, \code{level = 2}? See 
-      \code{\link[febr]{standards}}.
+\item \code{level} Level of harmonization. Defaults to \code{level = 5}. See \code{\link[febr]{standards}}.
 }}
 
 \item{progress}{Show download progress bar?}
 
-\item{verbose}{Show informative messages? Generally useful identify datasets with any inconsistent data. 
+\item{verbose}{Show informative messages? Generally useful to identify datasets with inconsistent data. 
 Please report to \email{febr-forum@googlegroups.com} if you find any issue.}
 }
 \value{
-A list or data.frame with soil layer-specific data.
+A list or data.frame with layer-specific data of the chosen dataset(s).
 }
 \description{
-Download soil layer-specific data contained in the Free Brazilian Repository for Open Soil Data --
-\url{http://www.ufsm.br/febr}.
+Download layer-specific data (sampling depth, layer designation, among others) contained in the
+Free Brazilian Repository for Open Soil Data -- \pkg{febr}, \url{http://www.ufsm.br/febr}. In \pkg{febr},
+these data are stored using a table named \code{"camada"}. Use \code{\link[febr]{header}} if you want 
+to check what are the variables contained in a dataset before downloading it.
 }
 \details{
 \subsection{Standard columns}{
 Standard columns and their content are as follows:
 \itemize{
-\item \code{dataset_id}. Identification code of the datasets in febr to which soil observations belong.
-\item \code{observacao_id}. Identification code of soil observations in febr.
+\item \code{dataset_id}. Identification code of the dataset(s) in \pkg{febr} to which an observation 
+belongs.
+\item \code{observacao_id}. Identification code of an observation in \pkg{febr}.
 \item \code{camada_numero}. Sequential layer number, from top to bottom.
-\item \code{camada_nome}. Layer designation according to some standard soil description guidelines.
-\item \code{amostra_codigo}. Laboratory number of the soil samples.
-\item \code{profund_sup}. Upper boundary of soil layers (cm).
-\item \code{profund_inf}. Lower boundary of soil layers (cm).
+\item \code{camada_nome}. Layer designation according to some standard description guide.
+\item \code{amostra_codigo}. Laboratory number of a sample.
+\item \code{profund_sup}. Upper boundary of a layer (cm).
+\item \code{profund_inf}. Lower boundary of a layer (cm).
 }
 }
 }

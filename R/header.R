@@ -1,25 +1,17 @@
 #' Get table header
 #'
-#' Download table header data (column names and measurement units).
+#' Download header data (column names and measurement units) from table(s) containing layer or 
+#' observation-specific data. This is useful to check what are the variables contained in a dataset before
+#' downloading it via \code{\link[febr]{layers}} or \code{\link[febr]{observations}}.
 #'
-#' @param dataset Identification code of the dataset (or datasets). Use \code{dataset = "all"} to download 
-#' all datasets.
+#' @template data_template
+#' @template metadata_template
 #' 
-#' @param table Table from which header data should be downloaded, with options \code{"camada"} (layer) and
-#' \code{"observacao"} (observation).
+#' @param table Table from which header data should be downloaded, with options \code{"camada"} 
+#' (layer-specific header data) and \code{"observacao"} (observation-specific header data).
 #' 
-#' @param variable Name(s) of the variable(s). If missing, then a set of standard columns is downloaded. Use
-#' \code{variable = "all"} to download all variables.
-#' 
-#' @param stack Should tables from different datasets be stacked on a single table for output? Defaults to
-#' \code{stack = FALSE}, the output being a list of tables.
-#'
-#' @param progress Show download progress bar?
-#'
-#' @param verbose Show informative messages? Generally useful to identify datasets with any inconsistent data. 
-#' Please report to \email{febr-forum@@googlegroups.com} if you find any issue.
-#' 
-#' @return A list or data.frame with header data (column names and measurement units) from the chosen table(s).
+#' @return A list or data.frame with table header data (column names and measurement units) of the chosen 
+#' dataset(s).
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \code{\link[febr]{layers}}, \code{\link[febr]{observations}}
@@ -27,8 +19,9 @@
 #' @examples
 #' \dontrun{
 #' res <- header(dataset = "all", table = "camada", variable = "ferro", stack = TRUE)
-#' id <- grep("^ferro_", colnames(res))
-#' colnames(res)[id]
+#' id <- grep("ferro_", colnames(res))
+#' col <- colnames(res)[id]
+#' col[order(col)]
 #' }
 header <-
   function (dataset, table, variable, stack = FALSE, progress = TRUE, verbose = TRUE) {

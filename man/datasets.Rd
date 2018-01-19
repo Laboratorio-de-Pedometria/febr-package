@@ -7,13 +7,12 @@
 datasets(dataset, progress = TRUE, verbose = TRUE)
 }
 \arguments{
-\item{dataset}{Identification code of the dataset (or datasets) for which soil dataset-specific data should 
-be downloaded -- see \url{http://www.ufsm.br/febr/book}. Use \code{dataset = "all"} to download data from 
-all existing datasets.}
+\item{dataset}{Identification code of the dataset (or datasets). Use \code{dataset = "all"} to download 
+all datasets.}
 
-\item{progress}{Show progress bar?}
+\item{progress}{Show download progress bar?}
 
-\item{verbose}{Show informative messages? Generally useful identify datasets with any inconsistent data. 
+\item{verbose}{Show informative messages? Generally useful to identify datasets with inconsistent data. 
 Please report to \email{febr-forum@googlegroups.com} if you find any issue.}
 }
 \value{

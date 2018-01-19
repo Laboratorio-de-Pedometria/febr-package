@@ -1,63 +1,50 @@
-#' Get soil layers
+#' Get layer data
 #'
-#' Download soil layer-specific data contained in the Free Brazilian Repository for Open Soil Data --
-#' \url{http://www.ufsm.br/febr}.
-#' 
-#' @param dataset Identification code of the dataset or datasets for which soil layer-specific data should be
-#' downloaded -- see \url{http://www.ufsm.br/febr/book}. Use \code{dataset = "all"} to download data from all
-#' existing datasets.
-#' 
-#' @param variable Name(s) of the variable(s). If missing, then a set of standard columns is downloaded. Use
-#' \code{variable = "all"} to download all variables. See \sQuote{Details} for more information.
-#'
-#' @param stack Should soil layers from different datasets be stacked on a single data frame for
-#' output? Defaults to \code{stack = FALSE}, the output being a list of data frames.
+#' Download layer-specific data (sampling depth, layer designation, among others) contained in the
+#' Free Brazilian Repository for Open Soil Data -- \pkg{febr}, \url{http://www.ufsm.br/febr}. In \pkg{febr},
+#' these data are stored using a table named \code{"camada"}. Use \code{\link[febr]{header}} if you want 
+#' to check what are the variables contained in a dataset before downloading it.
+
+#' @template data_template
+#' @template metadata_template
 #'
 #' @param missing List with named arguments specifying what should be done with layers missing depth, 
-#' \code{depth}, or data, \code{data}? Options are \code{"keep"} (default) and \code{"drop"}.
+#' \code{depth}, or data on variables, \code{data}? Options are \code{"keep"} (default) and \code{"drop"}.
 #' 
-#' @param missing List with named a argument specifying what should be done with layers missing data, 
-#' \code{data}? Options are \code{"keep"} (default) and \code{"drop"}.
-#' 
-#' @param standardization List with definitions on how to \emph{standardize} soil layer-specific data. Only 
-#' works when \code{soil.vars = 'fe'}.
+#' @param standardization List with definitions on how to \emph{standardize} layer-specific data.
 #' \itemize{
 #' \item \code{plus.sign} What should be done with the plus sign ('+') commonly used along with the inferior 
-#'       limit of the bottom layer of soil observations? Options are \code{"keep"} (default), \code{"add"},
+#'       limit of the bottom layer of an observation? Options are \code{"keep"} (default), \code{"add"},
 #'       and \code{"remove"}.
 #' \item \code{plus.depth} Depth increment (in centimetres) when processing the plus sign ('+') with 
 #'       \code{plus.sign = "add"}. Defaults to \code{plus.depth = 0}.
 #' \item \code{transition} What should be done about wavy, irregular, and broken transitions between layers in
-#'       a soil observation? Options are \code{"keep"} (default) and \code{"smooth"}.
+#'       an observation? Options are \code{"keep"} (default) and \code{"smooth"}.
 #' \item \code{smoothing.fun} Function that should be used to smooth wavy and irregular transitions between 
-#'       layers in a soil observation when \code{transition = "smooth"}. Options are \code{"mean"} (default),
+#'       layers in an observation when \code{transition = "smooth"}. Options are \code{"mean"} (default),
 #'       \code{"min"}, \code{"max"}, and \code{"median"}. 
 #' }
 #'
-#' @param harmonization List with definitions on how to \emph{harmonize} soil layer-specific data.
+#' @param harmonization List with definitions on how to \emph{harmonize} layer-specific data.
 #' \itemize{
 #' \item \code{level} Level of harmonization. Defaults to \code{level = 5}. See \code{\link[febr]{standards}}.
 #' }
-#'
-#' @param progress Show download progress bar?
-#' 
-#' @param verbose Show informative messages? Generally useful identify datasets with any inconsistent data. 
-#' Please report to \email{febr-forum@@googlegroups.com} if you find any issue.
 #'
 #' @details
 #' \subsection{Standard columns}{
 #' Standard columns and their content are as follows:
 #' \itemize{
-#' \item \code{dataset_id}. Identification code of the datasets in febr to which soil observations belong.
-#' \item \code{observacao_id}. Identification code of soil observations in febr.
+#' \item \code{dataset_id}. Identification code of the dataset(s) in \pkg{febr} to which an observation 
+#' belongs.
+#' \item \code{observacao_id}. Identification code of an observation in \pkg{febr}.
 #' \item \code{camada_numero}. Sequential layer number, from top to bottom.
-#' \item \code{camada_nome}. Layer designation according to some standard soil description guidelines.
-#' \item \code{amostra_codigo}. Laboratory number of the soil samples.
-#' \item \code{profund_sup}. Upper boundary of soil layers (cm).
-#' \item \code{profund_inf}. Lower boundary of soil layers (cm).
+#' \item \code{camada_nome}. Layer designation according to some standard description guide.
+#' \item \code{amostra_codigo}. Laboratory number of a sample.
+#' \item \code{profund_sup}. Upper boundary of a layer (cm).
+#' \item \code{profund_inf}. Lower boundary of a layer (cm).
 #' }
 #' }
-#' @return A list or data.frame with soil layer-specific data.
+#' @return A list or data.frame with layer-specific data of the chosen dataset(s).
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \code{\link[febr]{observations}}, \code{\link[febr]{standards}}, \code{\link[febr]{conversion}}
@@ -142,9 +129,6 @@ layers <-
       # DESCARREGAMENTO
       ## Cabeçalho com unidades de medida
       unit <- .getHeader(x = sheets_keys$camada[i])
-      # tmp <- googlesheets::gs_key(x = sheets_keys$camada[i], verbose = opts$gs$verbose)
-      # unit <- suppressMessages(
-      #   googlesheets::gs_read_csv(ss = tmp, locale = opts$gs$locale, verbose = opts$gs$verbose, n_max = 1))
       
       # Solução rápida e suja enquanto as unidade de medida não são padronizadas
       unit <- as.data.frame(unit)
@@ -241,6 +225,8 @@ layers <-
           
           # PADRONIZAÇÃO II
           ## Unidade de medida e número de casas decimais
+          
+          
           
           # if (soil.vars == 'fe') {
           #   fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
