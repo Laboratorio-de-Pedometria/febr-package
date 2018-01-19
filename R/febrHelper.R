@@ -30,6 +30,32 @@
       )
     )
   }
+# Eliminação de linhas sem dados nas tabelas 'camada' e 'observacao' ----
+.cleanRows <-
+  function (obj, missing, extra_cols) {
+    
+    # Remover linhas sem dados em uma ou mais colunas
+    if (length(extra_cols) >= 1 && missing$data == "drop") {
+      idx_keep <- is.na(obj[extra_cols])
+      idx_keep <- rowSums(idx_keep) < ncol(idx_keep)
+      obj <- obj[idx_keep, ]
+    }
+    
+    # Tabela 'observacao': remover linhas sem dados de coordenadas
+    if (!is.null(missing$coord) && missing$coord == "drop") {
+      na_coord_id <- apply(obj[c("coord_x", "coord_y")], 1, function (x) sum(is.na(x))) >= 1
+      obj <- obj[!na_coord_id, ]
+    }
+    
+    # Tabela 'camada': remover linhas sem dados de profundidade
+    if (!is.null(missing$depth) && missing$depth == "drop") {
+      na_depth_id <- apply(obj[c("profund_sup", "profund_inf")], 1, function (x) sum(is.na(x))) >= 1
+      obj <- obj[!na_depth_id, ]
+    }
+    
+    return (obj)
+  }
+
 # Descarregar cabeçalho das tabelas 'camada' e observacao' ----
 .getHeader <- 
   function (x) {

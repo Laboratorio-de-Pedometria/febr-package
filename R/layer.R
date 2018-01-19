@@ -160,12 +160,10 @@ layer <-
         cols <- in_cols[in_cols %in% std_cols]
         extra_cols <- vector()
         if (!missing(variable)) {
-          
           if (variable == "all") {
             extra_cols <- in_cols[!in_cols %in% std_cols]
             idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
             extra_cols <- extra_cols[!idx_na]
-            
           } else {
             extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)])
             extra_cols <- unlist(extra_cols)
@@ -179,15 +177,7 @@ layer <-
         
         # LINHAS
         ## Definir as linhas a serem mantidas
-        if (length(extra_cols) >= 1 && missing$data == "drop") {
-          idx_keep <- is.na(tmp[extra_cols])
-          idx_keep <- rowSums(idx_keep) < ncol(idx_keep)
-          tmp <- tmp[idx_keep, ]
-        }
-        if (missing$depth == "drop") {
-          na_depth_id <- apply(tmp[c("profund_sup", "profund_inf")], 1, function (x) sum(is.na(x))) >= 1
-          tmp <- tmp[!na_depth_id, ]
-        }
+        tmp <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols)
         n_rows <- nrow(tmp)
         
         # PROCESSAMENTO II
