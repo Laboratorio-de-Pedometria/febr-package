@@ -26,6 +26,14 @@
 #'       no rounding is performed.
 #' }
 #' 
+#' @param harmonization List with named sub-arguments specifying if and how to \emph{harmonize} 
+#' observation-specific data.
+#' \itemize{
+#' \item \code{harmonize} Should data be harmonized? Defaults to \code{harmonize = FALSE}, i.e. no 
+#'       harmonization is performed.
+#' \item \code{level} Level of harmonization. Defaults to \code{level = 2}. See \code{\link[febr]{standards}}.
+#' }
+#'
 #' @details 
 #' \subsection{Standard columns}{
 #' Standard columns and their content are as follows:
@@ -69,7 +77,10 @@
 observation <-
   function (dataset, variable, 
             stack = FALSE, missing = list(coord = "keep", data = "keep"),
-            standardization = list(crs = NULL, units = FALSE, round = FALSE),
+            standardization = list(
+              crs = NULL, 
+              units = FALSE, round = FALSE),
+            harmonization = list(harmonize = FALSE, level = 2),
             progress = TRUE, verbose = TRUE) {
     
     # Options
