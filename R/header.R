@@ -2,7 +2,7 @@
 #'
 #' Download header data (column names and measurement units) from table(s) containing layer or 
 #' observation-specific data. This is useful to check what are the variables contained in a dataset before
-#' downloading it via \code{\link[febr]{layers}} or \code{\link[febr]{observations}}.
+#' downloading it via \code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
 #'
 #' @template data_template
 #' @template metadata_template
@@ -10,8 +10,14 @@
 #' @param table Table from which header data should be downloaded, with options \code{"camada"} 
 #' (layer-specific header data) and \code{"observacao"} (observation-specific header data).
 #' 
-#' @return A list or data.frame with table header data (column names and measurement units) of the chosen 
-#' dataset(s).
+#' @details 
+#' \subsection{Standard columns}{
+#' Standard columns and their content depend on the chosen \code{table}. See documentation of 
+#' \code{\link[febr]{layer}} and \code{\link[febr]{observation}}.
+#' }
+#' 
+#' @return A list of data frames or a data frame with table header data (column names and measurement units) on
+#' the chosen variable(s) of the chosen dataset(s).
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \code{\link[febr]{layers}}, \code{\link[febr]{observations}}

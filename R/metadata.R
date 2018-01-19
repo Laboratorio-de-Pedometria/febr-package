@@ -5,7 +5,7 @@
 #'
 #' @template metadata_template
 #' 
-#' @return A list with metadata-specific data.
+#' @return A list of data frames with metadata-specific data.
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \url{http://www.ufsm.br/febr}

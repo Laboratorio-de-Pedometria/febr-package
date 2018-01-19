@@ -7,8 +7,8 @@
 metadata(dataset = "ctb0001", progress = TRUE, verbose = TRUE)
 }
 \arguments{
-\item{dataset}{Identification code of the dataset (or datasets). Use \code{dataset = "all"} to download 
-all datasets.}
+\item{dataset}{Identification code of the dataset (or datasets) as recorded in 
+\url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
 
 \item{progress}{Show download progress bar?}
 
@@ -16,7 +16,7 @@ all datasets.}
 Please report to \email{febr-forum@googlegroups.com} if you find any issue.}
 }
 \value{
-A list with metadata-specific data.
+A list of data frames with metadata-specific data.
 }
 \description{
 Download metadata-specific data contained in the Free Brazilian Repository for Open Soil Data --

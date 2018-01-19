@@ -2,17 +2,17 @@
 #'
 #' Download observation-specific data (spatial coordinates, observation date, among others) contained in the
 #' Free Brazilian Repository for Open Soil Data -- \pkg{febr}, \url{http://www.ufsm.br/febr}. In \pkg{febr},
-#' these data are stored using a table named \code{"observacao"}. Use \code{\link[febr]{header}} if you want 
-#' to check what are the variables contained in a dataset before downloading it.
+#' observation-specific data are stored using a table named \code{"observacao"}. Use \code{\link[febr]{header}}
+#' if you want to check what are the variables contained in a dataset before downloading it.
 #'
 #' @template data_template
 #' @template metadata_template
 #' 
-#' @param missing List with named sub-arguments specifying what should be done with observations missing 
+#' @param missing List with named sub-arguments specifying what should be done with an observation missing 
 #' spatial coordinates, \code{coord}, or data on variables, \code{data}? Options are \code{"keep"} (default) 
 #' and \code{"drop"}.
 #'
-#' @param crs EPSG code defining the target coordinate reference system to which spatial coordinates
+#' @param crs EPSG code defining the target coordinate reference system (CRS) to which spatial coordinates
 #' should be transformed. For example, \code{crs = "EPSG:4674"}, i.e. SIRGAS 2000, the standard CRS for
 #' Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. Defaults to \code{crs = NULL}, i.e. no
 #' transformation is performed.
@@ -21,8 +21,7 @@
 #' \subsection{Standard columns}{
 #' Standard columns and their content are as follows:
 #' \itemize{
-#' \item \code{dataset_id}. Identification code of the dataset(s) in \pkg{febr} to which an observation 
-#' belongs.
+#' \item \code{dataset_id}. Identification code of the dataset in \pkg{febr} to which an observation belongs.
 #' \item \code{observacao_id}. Identification code of an observation in \pkg{febr}.
 #' \item \code{sisb_id}. Identification code of an observation in the Brazilian Soil Information System
 #' maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
@@ -30,22 +29,24 @@
 #' \item \code{ibge_id}. Identification code of an observation in the database of the Brazilian Institute
 #' of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/downloads_geociencias.htm#}.
 #' \item \code{observacao_data}. Date (dd-mm-yyyy) in which an observation was made.
-#' \item \code{coord_sistema}. EPSG code of the coordinate reference system -- see more at
-#' \url{http://spatialreference.org/ref/epsg/}.
+#' \item \code{coord_sistema}. EPSG code of the coordinate reference system.
 #' \item \code{coord_x}. Longitude (°) or Easting (m).
 #' \item \code{coord_y}. Latitude (°) or Northing (m).
 #' \item \code{coord_precisao}. Precision with which x- and y-coordinates were determined (m).
 #' \item \code{coord_fonte}. Source of the x- and y-coordinates.
-#' \item \code{pais_id}. Country code (ISO 3166-1 alpha-2), i.e. \code{"BR"}.
+#' \item \code{pais_id}. Country code (ISO 3166-1 alpha-2).
 #' \item \code{estado_id}. Code of the Brazilian federative unit where an observation was made.
 #' \item \code{municipio_id}. Name of the Brazilian county where as observation was made.
-#' \item \code{amostra_tipo}. Type of sample taken, i.e. simple or composed.
+#' \item \code{amostra_tipo}. Type of sample taken.
 #' \item \code{amostra_quanti}. Number of samples taken.
 #' \item \code{amostra_area}. Sampling area.
 #' }
+#' Further details about the content of the standard columns can be found in \url{http://www.ufsm.br/febr/book/}
+#' (in Portuguese).
 #' }
 #'
-#' @return A list or data.frame with observation-specific data of the chosen dataset(s).
+#' @return A list of data frames or a data frame with observation-specific data on the chosen variable(s) of 
+#' the chosen dataset(s).
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \code{\link[febr]{layers}}

@@ -8,11 +8,11 @@ header(dataset, table, variable, stack = FALSE, progress = TRUE,
   verbose = TRUE)
 }
 \arguments{
-\item{dataset}{Identification code of the dataset (or datasets). Use \code{dataset = "all"} to download 
-all datasets.}
+\item{dataset}{Identification code of the dataset (or datasets) as recorded in 
+\url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
 
-\item{table}{Table from which header data should be downloaded, with options \code{"camada"} (layer) and
-\code{"observacao"} (observation).}
+\item{table}{Table from which header data should be downloaded, with options \code{"camada"} 
+(layer-specific header data) and \code{"observacao"} (observation-specific header data).}
 
 \item{variable}{Name(s) of the variable(s). If missing, then a set of standard identification variables is
 downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{Details} for more information.}
@@ -26,13 +26,19 @@ downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{D
 Please report to \email{febr-forum@googlegroups.com} if you find any issue.}
 }
 \value{
-A list or data.frame with table header data (column names and measurement units) of the chosen 
-dataset(s).
+A list of data frames or a data frame with table header data (column names and measurement units) on
+the chosen variable(s) of the chosen dataset(s).
 }
 \description{
 Download header data (column names and measurement units) from table(s) containing layer or 
 observation-specific data. This is useful to check what are the variables contained in a dataset before
-downloading it using \code{\link[febr]{layers}} or \code{\link[febr]{observations}}.
+downloading it via \code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
+}
+\details{
+\subsection{Standard columns}{
+Standard columns and their content depend on the chosen \code{table}. See documentation of 
+\code{\link[febr]{layer}} and \code{\link[febr]{observation}}.
+}
 }
 \examples{
 \dontrun{
