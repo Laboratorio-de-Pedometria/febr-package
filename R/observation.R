@@ -108,8 +108,8 @@ observation <-
       # SIRGAS 2000
       4674, 31972, 31978, 31973, 31979, 31974, 31980, 31981, 31982, 31983, 31984, 31985
     ), sep = "")
-    if (!is.null(crs) && !toupper(crs) %in% crs_list) {
-      stop (paste("Unknown value '", crs, "' passed to parameter crs", sep = ""))
+    if (!is.null(standardization$crs) && !toupper(standardization$crs) %in% crs_list) {
+      stop (paste("Unknown value '", standardization$crs, "' passed to parameter crs", sep = ""))
     }
     if (!is.logical(progress)) {
       stop (paste("Unknown value '", progress, "' passed to parameter progress", sep = ""))
@@ -215,7 +215,7 @@ observation <-
             if (any(is_na_crs)) {
               is_degree <- nchar(round(abs(tmp_obs$coord_x))) <= 2
               is_na_crs <- which(is_na_crs[is_degree])
-              tmp_obs$coord_sistema[is_na_crs] <- crs
+              tmp_obs$coord_sistema[is_na_crs] <- standardization$crs
             }
             
             ## Verificar se o SRC é o SAD69
@@ -229,7 +229,7 @@ observation <-
             ## Nota: Isso deve ser feito no Google Sheets
             is_sirgas <- tmp_obs$coord_sistema %in% "SIRGAS"
             if (any(is_sirgas)) {
-              tmp_obs$coord_sistema[is_sirgas] <- crs 
+              tmp_obs$coord_sistema[is_sirgas] <- standardization$crs 
             }
             
             ## Verificar quantos são os SRC usados
@@ -239,8 +239,8 @@ observation <-
               tmp_obs <- split(tmp_obs, as.factor(tmp_obs$coord_sistema))
               
               ## Verificar se algum dos SRC é igual ao alvo
-              if (toupper(crs) %in% names(tmp_obs)) {
-                j <- which(!names(tmp_obs) %in% toupper(crs))
+              if (toupper(standardization$crs) %in% names(tmp_obs)) {
+                j <- which(!names(tmp_obs) %in% toupper(standardization$crs))
               } else {
                 j <- 1:n_crs
               }
@@ -249,20 +249,20 @@ observation <-
               tmp_obs[j] <- lapply(tmp_obs[j], function (x) {
                 sp::coordinates(x) <- c("coord_x", "coord_y")
                 sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
-                x <- sp::spTransform(x, sp::CRS(paste("+init=", tolower(crs), sep = "")))
+                x <- sp::spTransform(x, sp::CRS(paste("+init=", tolower(standardization$crs), sep = "")))
                 as.data.frame(x)
               })
               tmp_obs <- suppressWarnings(dplyr::bind_rows(tmp_obs))
-              tmp_obs$coord_sistema <- toupper(crs)
+              tmp_obs$coord_sistema <- toupper(standardization$crs)
               
-            } else if (tmp_obs$coord_sistema[1] != toupper(crs)) {
+            } else if (tmp_obs$coord_sistema[1] != toupper(standardization$crs)) {
               
               ## Transformar o SRC
               sp::coordinates(tmp_obs) <- c("coord_x", "coord_y")
               sp::proj4string(tmp_obs) <- sp::CRS(paste("+init=", tolower(tmp_obs$coord_sistema[1]), sep = ""))
-              tmp_obs <- sp::spTransform(tmp_obs, sp::CRS(paste("+init=", tolower(crs), sep = "")))
+              tmp_obs <- sp::spTransform(tmp_obs, sp::CRS(paste("+init=", tolower(standardization$crs), sep = "")))
               tmp_obs <- as.data.frame(tmp_obs)
-              tmp_obs$coord_sistema <- toupper(crs)
+              tmp_obs$coord_sistema <- toupper(standardization$crs)
             }
             
             ## Agrupar observações com e sem coordenadas
