@@ -37,7 +37,19 @@
     res <- suppressMessages(
       googlesheets::gs_read_csv(
         ss = res, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, n_max = 1))
+    res <- as.data.frame(res)
+    return (res)
+  }
 
+# Descarregar tabela 'camada' e 'observacao' ----
+.getTable <-
+  function (x) {
+    res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+    res <- suppressMessages(
+      googlesheets::gs_read_csv(
+        res, na = .opt()$gs$na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, 
+        comment = .opt()$gs$comment))
+    res <- as.data.frame(res)
     return (res)
   }
 

@@ -138,19 +138,12 @@ layer <-
       
       # DESCARREGAMENTO
       ## Cabeçalho com unidades de medida
+      ## Solução rápida e suja enquanto as unidade de medida não são padronizadas
       unit <- .getHeader(x = sheets_keys$camada[i])
-      
-      # Solução rápida e suja enquanto as unidade de medida não são padronizadas
-      unit <- as.data.frame(unit)
       unit[which(unit %in% "???")] <- "g/kg"
       unit[which(unit %in% "mg/dm3")] <- "mg/dm^3"
-      
-      
-      tmp <- suppressMessages(
-        googlesheets::gs_read_csv(
-          tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose, comment = opts$gs$comment)
-      )
-      tmp <- as.data.frame(tmp)
+      ## Dados
+      tmp <- .getTable(x = sheets_keys$camada[i])
       n_rows <- nrow(tmp)
       
       # PROCESSAMENTO I

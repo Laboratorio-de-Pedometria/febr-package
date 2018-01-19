@@ -118,14 +118,9 @@ observation <-
       
       # DESCARREGAMENTO
       ## Cabeçalho com unidades de medida
-      unit <- .getHeader(x = sheets_keys$camada[i])
-      
-      tmp <- googlesheets::gs_key(sheets_keys$observacao[i], verbose = opts$gs$verbose)
-      tmp <- suppressMessages(
-        googlesheets::gs_read_csv(
-          tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose, comment = opts$gs$comment)
-      )
-      tmp <- as.data.frame(tmp)
+      unit <- .getHeader(x = sheets_keys$observacao[i])
+      ## Dados
+      tmp <- .getTable(x = sheets_keys$observacao[i])
       n_rows <- nrow(tmp)
       
       # PROCESSAMENTO I
