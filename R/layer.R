@@ -1,50 +1,48 @@
 #' Get layer data
 #'
 #' Download layer-specific data (sampling depth, layer designation, among others) contained in the
-#' Free Brazilian Repository for Open Soil Data -- \pkg{febr}, \url{http://www.ufsm.br/febr}. In \pkg{febr},
-#' layer-specific data are stored using a table named \code{"camada"}. Use \code{\link[febr]{header}} if you
+#' Free Brazilian Repository for Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}. In ___febr___,
+#' layer-specific data are stored using a table named `"camada"`. Use \code{\link[febr]{header}} if you
 #' want to check what are the layer-specific variables contained in a dataset before downloading it.
 #' 
 #' @template data_template
 #' @template metadata_template
 #'
 #' @param missing List with named sub-arguments specifying what should be done with a layer missing data on 
-#' sampling depth, \code{depth}, or data on variable(s), \code{data}? Options are \code{"keep"} (default) and
-#' \code{"drop"}.
+#' sampling depth, `depth`, or data on variable(s), `data`? Options are `"keep"` (default) and `"drop"`.
 #' 
-#' @param standardization List named sub-arguments specifying how to \emph{standardize} layer-specific data.
+#' @param standardization List named sub-arguments specifying how to perform data standardization.
 #' \itemize{
-#' \item \code{plus.sign} What should be done with the plus sign ('+') commonly used along with the inferior 
-#'       limit of the bottom layer of an observation? Options are \code{"keep"} (default), \code{"add"},
-#'       and \code{"remove"}.
-#' \item \code{plus.depth} Depth increment (in centimetres) when processing the plus sign ('+') with 
-#'       \code{plus.sign = "add"}. Defaults to \code{plus.depth = 2.5}.
-#' \item \code{transition} What should be done about wavy, irregular, and broken transitions between layers in
-#'       an observation? Options are \code{"keep"} (default) and \code{"smooth"}.
-#' \item \code{smoothing.fun} Function that should be used to smooth wavy and irregular transitions between 
-#'       layers in an observation when \code{transition = "smooth"}. Options are \code{"mean"} (default),
-#'       \code{"min"}, \code{"max"}, and \code{"median"}.
-#' \item \code{units} Should the values of the real and integer variable(s) be converted to the standard 
-#'       measurement unit(s)? Defaults to \code{units = FALSE}, i.e. no conversion is performed.
-#' \item \code{round} Should the values of the real and integer variable(s) be rounded to the standard number 
-#'       of decimal places? Effective only when \code{units = TRUE}. Defaults to \code{round = FALSE}, i.e. 
+#' \item `plus.sign` What should be done with the plus sign (`+`) commonly used along with the inferior 
+#'       limit of the bottom layer of an observation? Options are `"keep"` (default), `"add"`, and `"remove"`.
+#' \item `plus.depth` Depth increment (in centimetres) when processing the plus sign (`+`) with 
+#'       `plus.sign = "add"`. Defaults to `plus.depth = 2.5`.
+#' \item `transition` What should be done about wavy, irregular, and broken transitions between layers in an 
+#'        observation? Options are `"keep"` (default) and `"smooth"`.
+#' \item `smoothing.fun` Function that should be used to smooth wavy and irregular transitions between 
+#'       layers in an observation when `transition = "smooth"`. Options are `"mean"` (default), `"min"`, 
+#'       `"max"`, and `"median"`.
+#' \item `units` Should the values of the real and integer variable(s) be converted to the standard 
+#'       measurement unit(s)? Defaults to `units = FALSE`, i.e. no conversion is performed.
+#' \item `round` Should the values of the real and integer variable(s) be rounded to the standard number 
+#'       of decimal places? Effective only when `units = TRUE`. Defaults to `round = FALSE`, i.e. 
 #'       no rounding is performed.
 #' }
 #'
-#' @param harmonization List with named sub-arguments specifying if and how to \emph{harmonize} layer-specific
-#' data.
+#' @param harmonization List with named sub-arguments specifying if and how to perform data harmonization.
 #' \itemize{
-#' \item \code{harmonize} Should data be harmonized? Defaults to \code{harmonize = FALSE}, i.e. no 
+#' \item `harmonize` Should data be harmonized? Defaults to `harmonize = FALSE`, i.e. no 
 #'       harmonization is performed.
-#' \item \code{level} Level of harmonization. Defaults to \code{level = 2}. See \code{\link[febr]{standards}}.
+#' \item `level` Number of levels of the identification code of the variables that should be considered 
+#'       for harmonization. Defaults to `level = 2`. See \sQuote{Details} for more information.
 #' }
 #'
 #' @details
 #' \subsection{Standard columns}{
-#' Standard columns and their content are as follows:
+#' Standard columns and their content (in Portuguese) are as follows:
 #' \itemize{
-#' \item \code{dataset_id}. Identification code of the dataset in \pkg{febr} to which an observation belongs.
-#' \item \code{observacao_id}. Identification code of an observation in \pkg{febr}.
+#' \item \code{dataset_id}. Identification code of the dataset in ___febr___ to which an observation belongs.
+#' \item \code{observacao_id}. Identification code of an observation in ___febr___.
 #' \item \code{camada_numero}. Sequential layer number, from top to bottom.
 #' \item \code{camada_nome}. Layer designation according to some standard description guide.
 #' \item \code{amostra_codigo}. Laboratory number of a sample.
@@ -54,6 +52,22 @@
 #' Further details about the content of the standard columns can be found in \url{http://www.ufsm.br/febr/book/}
 #' (in Portuguese).
 #' }
+#' 
+#' \subsection{Harmonization}{
+#' Data harmonization consists of converting the values of a variable determined using some method *B* so 
+#' that they are (approximately) equivalent to the values that would have been obtained if the standard method
+#' *A* had been used instead. For example, converting carbon content values obtained using a wet digestion
+#' method to the standard dry combustion method is data harmonization.
+#' 
+#' A heuristic data harmonization procedure is implemented **febr**. It consists of grouping variables 
+#' based on a chosen number of levels of their identification code. For example, consider a variable with an 
+#' identification code composed of four levels, `aaa_bbb_ccc_ddd`, where `aaa` is the first level and
+#' `ddd` is the fouth level. Now consider a related variable, `aaa_bbb_eee_fff`. If the harmonization
+#' is to consider all four coding levels (`level = 4`), then these two variables will remain coded as
+#' separate variables. But if `level = 2`, then both variables will be recoded to `aaa_bbb`, thus becoming the
+#' same variable.
+#' }
+#' 
 #' @return A list of data frames or a data frame with layer-specific data on the chosen variable(s) of 
 #' the chosen dataset(s).
 #'

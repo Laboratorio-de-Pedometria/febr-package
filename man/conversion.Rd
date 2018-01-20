@@ -16,7 +16,7 @@ conversion(source, target)
 A data.frame with source and target measurement units and their corresponding conversion factor.
 }
 \description{
-Factors for converting measurement units of soil variables in the Free Brazilian Repository for Open Soil 
+Factors for converting measurement units of soil variables in the Free Brazilian Repository for Open Soil
 Data -- \url{http://www.ufsm.br/febr}.
 }
 \details{

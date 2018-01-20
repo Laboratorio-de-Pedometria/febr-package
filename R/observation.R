@@ -12,8 +12,7 @@
 #' spatial coordinates, \code{coord}, or data on variables, \code{data}? Options are \code{"keep"} (default) 
 #' and \code{"drop"}.
 #'
-#' @param standardization List named sub-arguments specifying how to \emph{standardize} observation-specific
-#' data.
+#' @param standardization List named sub-arguments specifying how to perform data standardization.
 #' \itemize{
 #' \item \code{crs} EPSG code defining the target coordinate reference system (CRS) to which spatial 
 #'       coordinates should be transformed. For example, \code{crs = "EPSG:4674"}, i.e. SIRGAS 2000, the 
@@ -26,17 +25,17 @@
 #'       no rounding is performed.
 #' }
 #' 
-#' @param harmonization List with named sub-arguments specifying if and how to \emph{harmonize} 
-#' observation-specific data.
+#' @param harmonization List with named sub-arguments specifying if and how to perform data harmonization.
 #' \itemize{
 #' \item \code{harmonize} Should data be harmonized? Defaults to \code{harmonize = FALSE}, i.e. no 
 #'       harmonization is performed.
-#' \item \code{level} Level of harmonization. Defaults to \code{level = 2}. See \code{\link[febr]{standards}}.
+#' \item \code{level} Number of levels of the identification code of the variables that should be considered 
+#'       for harmonization. Defaults to \code{level = 2}. See \sQuote{Details} for more information.
 #' }
 #'
 #' @details 
 #' \subsection{Standard columns}{
-#' Standard columns and their content are as follows:
+#' Standard columns and their content (in Portuguese) are as follows:
 #' \itemize{
 #' \item \code{dataset_id}. Identification code of the dataset in \pkg{febr} to which an observation belongs.
 #' \item \code{observacao_id}. Identification code of an observation in \pkg{febr}.
@@ -60,6 +59,21 @@
 #' }
 #' Further details about the content of the standard columns can be found in \url{http://www.ufsm.br/febr/book/}
 #' (in Portuguese).
+#' }
+#' 
+#' \subsection{Harmonization}{
+#' Data harmonization consists of converting the values of a variable determined using some method *B* so 
+#' that they are (approximately) equivalent to the values that would have been obtained if the standard method
+#' *A* had been used instead. For example, converting carbon content values obtained using a wet digestion
+#' method to the standard dry combustion method is data harmonization.
+#' 
+#' A heuristic data harmonization procedure is implemented **febr**. It consists of grouping variables 
+#' based on a chosen number of levels of their identification code. For example, consider a variable with an 
+#' identification code composed of four levels, `aaa_bbb_ccc_ddd`, where `aaa` is the first level and
+#' `ddd` is the fouth level. Now consider a related variable, `aaa_bbb_eee_fff`. If the harmonization
+#' is to consider all four coding levels (`level = 4`), then these two variables will remain coded as
+#' separate variables. But if `level = 2`, then both variables will be recoded to `aaa_bbb`, thus becoming the
+#' same variable.
 #' }
 #'
 #' @return A list of data frames or a data frame with observation-specific data on the chosen variable(s) of 

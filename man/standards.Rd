@@ -7,7 +7,7 @@
 standards(soil.var = "fe", extraction.method)
 }
 \arguments{
-\item{soil.var}{Identification code of the soil variable. The only currently available option is 
+\item{soil.var}{Identification code of the soil variable. The only currently available option is
 \code{soil.var = "fe"}.}
 
 \item{extraction.method}{Identification code of the extraction method. See \sQuote{Details}.}
@@ -16,12 +16,12 @@ standards(soil.var = "fe", extraction.method)
 A data.frame.
 }
 \description{
-Definitions of standards for soil variables in the Free Brazilian Repository for Open Soil Data -- 
+Definitions of standards for soil variables in the Free Brazilian Repository for Open Soil Data --
 \url{http://www.ufsm.br/febr}.
 }
 \details{
 Standards for soil variables are defined according to the third edition of the Manual of Methods of Soil
-Analysis published by Embrapa Soils in 2011. They include the measurement units and number of digital 
+Analysis published by Embrapa Soils in 2011. They include the measurement units and number of digital
 places that should be used with a soil variable as defined by the extraction method.
 }
 \examples{
