@@ -11,19 +11,11 @@
       layers = list(
         std.cols = 
           c("observacao_id", "camada_numero", "camada_nome", "amostra_codigo",
-            "profund_sup", "profund_inf"),
-        soil.vars = c(
-          # Variáveis químicas
-          # c(alumínio = 'al', cálcio = 'ca', carbono = 'c', 
-            ferro = 'fe'
-            # magnésio = 'mg', potássio = 'k', sódio = 'na'),
-          # Variáveis físicas
-          # c(areia = 'areia', argila = 'argila', densidade = 'densidade')
-        )
+            "profund_sup", "profund_inf")
       ),
       gs = list(
         comment = "#unidade",
-        locale = readr::locale(decimal_mark = ","),
+        locale = readr::locale(date_names = "pt", decimal_mark = ","),
         na = c("NA", "-", ""),
         verbose = FALSE
         
