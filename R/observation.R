@@ -88,8 +88,6 @@
 #' res <- observation(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
 #' str(res)
 #' }
-res <- observation(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon", 
-                   standardization = list(crs = "EPSG:4674", units = FALSE, round = FALSE))
 ###############################################################################################################
 observation <-
   function (dataset, variable, 
@@ -100,47 +98,102 @@ observation <-
             harmonization = list(harmonize = FALSE, level = 2),
             progress = TRUE, verbose = TRUE) {
     
-    # Options
+    # OPÇÕES E PADRÕES
     opts <- .opt()
+    std_cols <- opts$observation$std.cols
     
-    # Verificar consistência dos parâmetros
-    if (!is.logical(stack)) {
-      stop (paste("Unknown value '", stack, "' passed to parameter stack", sep = ""))
+    # ARGUMENTOS
+    ## dataset
+    if (missing(dataset)) {
+      stop ("argument 'dataset' is missing")
+    } else if (!is.character(dataset)) {
+      stop (glue::glue("object of class '{class(dataset)}' passed to argument 'dataset'"))
     }
     
-    if (!missing(variable)) {
-      if (variable == "all") {
-        if (stack) {
-          stop ("data cannot be stacked when downloading all variables")
-        }
-        if (harmonization$harmonize) {
-          stop ("data cannot be harmonized when downloading all variables")
-        }
+    ## variable
+    if (!missing(variable) && !is.character(variable)) {
+      stop (glue::glue("object of class '{class(variable)}' passed to argument 'variable'"))
+    }
+    
+    ## stack
+    if (!is.logical(stack)) {
+      stop (glue::glue("object of class '{class(stack)}' passed to argument 'stack'"))
+    }
+    
+    ## missing
+    if (!missing(missing)) {
+      if (is.null(missing$coord)) {
+        missing$coord <- "keep"
+      } else if (!missing$coord %in% c("drop", "keep")) {
+        stop (glue::glue("unknown value '{missing$coord}' passed to subargument 'missing$coord'"))
+      }
+      if (is.null(missing$data)) {
+        missing$data <- "keep"
+      } else if (!missing$data %in% c("drop", "keep")) {
+        stop (glue::glue("unknown value '{missing$data}' passed to subargument 'missing$data'"))
       }
     }
     
-    if (!missing$coord %in% c("drop", "keep")) {
-      stop (paste("Unknown value '", missing$coord, "' passed to parameter missing$coord", sep = ""))
-    }
-    crs_list <- paste("EPSG:", c(
-      # Córrego Alegre
-      4225, 22521, 22522, 22523, 22524, 22525,
-      # SAD69
-      4618 , 29168, 29188, 29169, 29189, 29170, 29190, 29191, 29192, 29193, 29194, 29195,
-      # WGS 84
-      4326, 32618, 32718, 32619, 32719, 32620, 32720, 32721, 32722, 32723, 32724, 32725,
-      # SIRGAS 2000
-      4674, 31972, 31978, 31973, 31979, 31974, 31980, 31981, 31982, 31983, 31984, 31985
-    ), sep = "")
-    if (!is.null(standardization$crs) && !toupper(standardization$crs) %in% crs_list) {
-      stop (paste("Unknown value '", standardization$crs, "' passed to parameter crs", sep = ""))
-    }
-    if (!is.logical(progress)) {
-      stop (paste("Unknown value '", progress, "' passed to parameter progress", sep = ""))
+    ## standardization
+    if (!missing(standardization)) {
+      if (is.null(standardization$crs)) {
+        standardization$crs <- NULL
+      } else if (!is.character(standardization$crs)) {
+        y <- class(standardization$crs)
+        stop (glue::glue("object of class '{y}' passed to subargument 'standardization$crs'"))
+      } else if (!toupper(standardization$crs) %in% opts$crs) {
+        y <- standardization$crs
+        stop (glue::glue("unknown value '{y}' passed to subparameter 'standardization$crs'"))
+      }
+      if (is.null(standardization$units)) {
+        standardization$units <- FALSE
+      } else if (!is.logical(standardization$units)) {
+        y <- class(standardization$units)
+        stop (glue::glue("object of class '{y}' passed to subargument 'standardization$units'"))
+      }
+      if (is.null(standardization$round)) {
+        standardization$round <- FALSE
+      } else if (!is.logical(standardization$round)) {
+        y <- class(standardization$round)
+        stop (glue::glue("object of class '{y}' passed to subargument 'standardization$round'"))
+      }
     }
     
-    # Variáveis padrão
-    std_cols <- opts$observations$std.cols
+    ## harmonization
+    if (!missing(harmonization)) {
+      if (is.null(harmonization$harmonize)) {
+        harmonization$harmonize <- FALSE
+      } else if (!is.logical(harmonization$harmonize)) {
+        y <- class(harmonization$harmonize)
+        stop (glue::glue("object of class '{y}' passed to subargument 'harmonization$harmonize'"))
+      }
+      if (is.null(harmonization$level)) {
+        harmonization$level <- 2
+      } else if (!pedometrics::isNumint(harmonization$level)) {
+        y <- class(harmonization$level)
+        stop (glue::glue("object of class '{y}' passed to subargument 'harmonization$level'"))
+      }
+    }
+    
+    ## progress
+    if (!is.logical(progress)) {
+      stop (glue::glue("object of class '{class(progress)}' passed to argument 'progress'"))
+    }
+    
+    ## verbose
+    if (!is.logical(verbose)) {
+      stop (glue::glue("object of class '{class(verbose)}' passed to argument 'verbose'"))
+    }
+    
+    ## variable + stack || variable + harmonization
+    if (!missing(variable) && variable == "all") {
+      if (stack) {
+        stop ("data cannot be stacked when downloading all variables")
+      }
+      if (harmonization$harmonize) {
+        stop ("data cannot be harmonized when downloading all variables")
+      }
+    }
     
     # CHAVES
     ## Descarregar chaves de identificação das tabelas

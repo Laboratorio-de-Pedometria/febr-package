@@ -19,9 +19,22 @@
 dataset <-
   function (dataset, progress = TRUE, verbose = TRUE) {
 
-    # Verificar consistência dos parâmetros
+    # ARGUMENTOS
+    ## dataset
+    if (missing(dataset)) {
+      stop ("argument 'dataset' is missing")
+    } else if (!is.character(dataset)) {
+      stop (glue::glue("object of class '{class(dataset)}' passed to argument 'dataset'"))
+    }
+    
+    ## progress
     if (!is.logical(progress)) {
-      stop (paste("unknown value '", progress, "' passed to parameter progress", sep = ""))
+      stop (glue::glue("object of class '{class(progress)}' passed to argument 'progress'"))
+    }
+    
+    ## verbose
+    if (!is.logical(verbose)) {
+      stop (glue::glue("object of class '{class(verbose)}' passed to argument 'verbose'"))
     }
 
     # Descarregar chaves de identificação das planilhas do repositório

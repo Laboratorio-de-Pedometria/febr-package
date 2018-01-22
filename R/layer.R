@@ -91,57 +91,120 @@ layer <-
             harmonization = list(harmonize = FALSE, level = 2),
             progress = TRUE, verbose = TRUE) {
     
-    # Opções
+    # OPÇÕES E PADRÕES
     opts <- .opt()
+    std_cols <- opts$observation$std.cols
     
-    # Verificar consistência dos parâmetros
-    if (!missing(variable)) {
-      if (variable == "all") {
-        if (stack) {
-          stop ("data cannot be stacked when downloading all variables")
-        }
-        if (harmonization$harmonize) {
-          stop ("data cannot be harmonized when downloading all variables")
-        }
+    # ARGUMENTOS
+    ## dataset
+    if (missing(dataset)) {
+      stop ("argument 'dataset' is missing")
+    } else if (!is.character(dataset)) {
+      stop (glue::glue("object of class '{class(dataset)}' passed to argument 'dataset'"))
+    }
+    
+    ## variable
+    if (!missing(variable) && !is.character(variable)) {
+      stop (glue::glue("object of class '{class(variable)}' passed to argument 'variable'"))
+    }
+    
+    ## stack
+    if (!is.logical(stack)) {
+      stop (glue::glue("object of class '{class(stack)}' passed to argument 'stack'"))
+    }
+    
+    ## missing
+    if (!missing(missing)) {
+      if (is.null(missing$depth)) {
+        missing$depth <- "keep"
+      } else if (!missing$depth %in% c("drop", "keep")) {
+        stop (glue::glue("unknown value '{missing$depth}' passed to subargument 'missing$depth'"))
+      }
+      if (is.null(missing$data)) {
+        missing$data <- "keep"
+      } else if (!missing$data %in% c("drop", "keep")) {
+        stop (glue::glue("unknown value '{missing$data}' passed to subargument 'missing$data'"))
       }
     }
     
-    if (!missing.data %in% c("drop", "keep")) {
-      stop (paste("Unknown value '", missing.data, "' passed to 'missing.data", sep = ""))
+    ## standardization
+    if (!missing(standardization)) {
+      if (is.null(standardization$plus.sign)) {
+        standardization$plus.sign <- "keep"
+      } else if (!standardization$plus.sign %in% c("add", "remove", "keep")) {
+        y <- standardization$plus.sign
+        stop (glue::glue("unknown value '{y}' passed to subargument 'standardization$plus.sign'"))
+      }
+      if (is.null(standardization$plus.depth)) {
+        standardization$plus.depth <- 2.5  
+      } else if (standardization$plus.depth > 100 || standardization$plus.depth < 0) {
+        y <- standardization$plus.depth
+        stop (glue::glue("unlikely value '{y}' passed to subargument 'standardization$plus.depth'"))
+      }
+      if (is.null(standardization$transition)) {
+        standardization$transition <- "keep"
+      } else if (!standardization$transition %in% c("smooth", "keep")) {
+        y <- standardization$transition
+        stop (glue::glue("unknown value '{y}' passed to subargument 'standardization$transition'"))
+      }
+      if (is.null(standardization$smoothing.fun)) {
+        standardization$smoothing.fun <- "mean"
+      } else if (!standardization$smoothing.fun %in% c("mean", "min", "max", "median")) {
+        y <- standardization$smoothing.fun
+        stop(glue::glue("unknown value '{y}' passed to subargument 'standardization$smoothing.fun'"))
+      }
+      if (is.null(standardization$units)) {
+        standardization$units <- FALSE
+      } else if (!is.logical(standardization$units)) {
+        y <- class(standardization$units)
+        stop (glue::glue("object of class '{y}' passed to subargument 'standardization$units'"))
+      }
+      if (is.null(standardization$round)) {
+        standardization$round <- FALSE
+      } else if (!is.logical(standardization$round)) {
+        y <- class(standardization$round)
+        stop (glue::glue("object of class '{y}' passed to subargument 'standardization$round'"))
+      }
     }
-    if (!standardization$plus.sign %in% c("add", "remove", "keep")) {
-      stop (
-        paste("Unknown value '", standardization$plus.sign, "' passed to 'standardization$plus.sign'", 
-              sep = ""))
+    
+    ## harmonization
+    if (!missing(harmonization)) {
+      if (is.null(harmonization$harmonize)) {
+        harmonization$harmonize <- FALSE
+      } else if (!is.logical(harmonization$harmonize)) {
+        y <- class(harmonization$harmonize)
+        stop (glue::glue("object of class '{y}' passed to subargument 'harmonization$harmonize'"))
+      }
+      if (is.null(harmonization$level)) {
+        harmonization$level <- 2
+      } else if (!pedometrics::isNumint(harmonization$level)) {
+        y <- class(harmonization$level)
+        stop (glue::glue("object of class '{y}' passed to subargument 'harmonization$level'"))
+      }
     }
-    if (standardization$plus.depth > 100 || standardization$plus.depth < 0) {
-      stop (
-        paste("Unlikely value '", standardization$plus.depth, "' passed to 'standardization$plus.depth'", 
-              sep = "")
-      )
-    }
-    if (!standardization$transition %in% c("smooth", "keep")) {
-      stop (
-        paste("Unknown value '", standardization$transition, "' passed to 'standardization$transition'", 
-              sep = ""))
-    }
-    if (!standardization$smoothing.fun %in% c("mean", "min", "max", "median")) {
-      stop(
-        paste("Unknown value '", standardization$smoothing.fun, "' passed to 'standardization$smoothing.fun'", 
-              sep = ""))
-    }
-    if (!harmonization$level %in% c(1, 2)) {
-      stop (
-        paste("Unknown value '", harmonization$level, "' passed to 'harmonization$level'", sep = ""))
-    }
+    
+    ## progress
     if (!is.logical(progress)) {
-      stop (paste("Unknown value '", progress, "' passed to 'progress'", sep = ""))
+      stop (glue::glue("object of class '{class(progress)}' passed to argument 'progress'"))
     }
     
-    # Variáveis padrão
-    std_cols <- opts$layers$std.cols
+    ## verbose
+    if (!is.logical(verbose)) {
+      stop (glue::glue("object of class '{class(verbose)}' passed to argument 'verbose'"))
+    }
     
-    # Descarregar chaves de identificação das tabelas
+    ## variable + stack || variable + harmonization
+    if (!missing(variable) && variable == "all") {
+      if (stack) {
+        stop ("data cannot be stacked when downloading all variables")
+      }
+      if (harmonization$harmonize) {
+        stop ("data cannot be harmonized when downloading all variables")
+      }
+    }
+    
+    # CHAVES
+    ## Descarregar chaves de identificação das tabelas
     sheets_keys <- .getSheetsKeys(dataset = dataset)
     n <- nrow(sheets_keys)
     

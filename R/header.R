@@ -32,11 +32,52 @@
 header <-
   function (dataset, table, variable, stack = FALSE, progress = TRUE, verbose = TRUE) {
     
+    # ARGUMENTOS
+    ## dataset
+    if (missing(dataset)) {
+      stop ("argument 'dataset' is missing")
+    } else if (!is.character(dataset)) {
+      stop (glue::glue("object of class '{class(dataset)}' passed to argument 'dataset'"))
+    }
+    
+    if (missing(table)) {
+      stop ("argument 'table' is missing")
+    } else if (!table %in% c("observacao", "camada")) {
+      stop (glue::glue("unknown value '{table}' passed to subargument 'table'"))
+    }
+    
+    ## variable
+    if (!missing(variable) && !is.character(variable)) {
+      stop (glue::glue("object of class '{class(variable)}' passed to argument 'variable'"))
+    }
+    
+    ## stack
+    if (!is.logical(stack)) {
+      stop (glue::glue("object of class '{class(stack)}' passed to argument 'stack'"))
+    }
+    
+    ## progress
+    if (!is.logical(progress)) {
+      stop (glue::glue("object of class '{class(progress)}' passed to argument 'progress'"))
+    }
+    
+    ## verbose
+    if (!is.logical(verbose)) {
+      stop (glue::glue("object of class '{class(verbose)}' passed to argument 'verbose'"))
+    }
+    
+    ## variable + stack
+    if (!missing(variable) && variable == "all") {
+      if (stack) {
+        stop ("data cannot be stacked when downloading all variables")
+      }
+    }
+    
     # Variáveis padrão
     if (table == "observacao") {
-      std_cols <- .opt()[["observations"]]$std.cols
+      std_cols <- .opt()[["observation"]]$std.cols
     } else if (table == "camada") {
-      std_cols <- .opt()[["layers"]]$std.cols
+      std_cols <- .opt()[["layer"]]$std.cols
     }
     
     # Descarregar chaves de identificação das tabelas
