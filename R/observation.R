@@ -19,10 +19,11 @@
 #'       standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. Defaults to
 #'       \code{crs = NULL}, i.e. no transformation is performed.
 #' \item \code{units} Should the values of the real and integer variable(s) be converted to the standard 
-#'       measurement unit(s)? Defaults to \code{units = FALSE}, i.e. no conversion is performed.
+#'       measurement unit(s)? Defaults to \code{units = FALSE}, i.e. no conversion is performed. (NOT AVAILABLE
+#'       AT THE MOMENT!)
 #' \item \code{round} Should the values of the real and integer variable(s) be rounded to the standard number 
 #'       of decimal places? Effective only when \code{units = TRUE}. Defaults to \code{round = FALSE}, i.e. 
-#'       no rounding is performed.
+#'       no rounding is performed. (NOT AVAILABLE AT THE MOMENT!)
 #' }
 #' 
 #' @param harmonization List with named sub-arguments specifying if and how to perform data harmonization.
@@ -294,8 +295,9 @@ observation <-
           # PADRONIZAÇÃO II
           ## Unidade de medida e número de casas decimais
           if (standardization$units) {
+            message("Standardization of measurement units is not available yet")
             if (standardization$round) {
-              #
+              message("Standardization of decimal places is not available yet")
             }
           }
           

@@ -23,10 +23,11 @@
 #'       layers in an observation when `transition = "smooth"`. Options are `"mean"` (default), `"min"`, 
 #'       `"max"`, and `"median"`.
 #' \item `units` Should the values of the real and integer variable(s) be converted to the standard 
-#'       measurement unit(s)? Defaults to `units = FALSE`, i.e. no conversion is performed.
+#'       measurement unit(s)? Defaults to `units = FALSE`, i.e. no conversion is performed. (NOT AVAILABLE AT
+#'       THE MOMENT!)
 #' \item `round` Should the values of the real and integer variable(s) be rounded to the standard number 
 #'       of decimal places? Effective only when `units = TRUE`. Defaults to `round = FALSE`, i.e. 
-#'       no rounding is performed.
+#'       no rounding is performed. (NOT AVAILABLE AT THE MOMENT!)
 #' }
 #'
 #' @param harmonization List with named sub-arguments specifying if and how to perform data harmonization.
@@ -160,10 +161,7 @@ layer <-
       
       # DESCARREGAMENTO
       ## Cabeçalho com unidades de medida
-      ## Solução rápida e suja enquanto as unidade de medida não são padronizadas
       unit <- .getHeader(x = sheets_keys$camada[i])
-      unit[which(unit %in% "???")] <- "g/kg"
-      unit[which(unit %in% "mg/dm3")] <- "mg/dm^3"
       ## Dados
       tmp <- .getTable(x = sheets_keys$camada[i])
       n_rows <- nrow(tmp)
@@ -242,6 +240,7 @@ layer <-
           # PADRONIZAÇÃO II
           ## Unidade de medida e número de casas decimais
           if (standardization$units) {
+            message("Standardization of measurement units is not available yet")
             # fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
             # fe_stand <- lapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y))
             # fe_stand <- do.call(rbind, fe_stand)
@@ -256,12 +255,13 @@ layer <-
             #   tmp[soil_vars[idx_unit]] <- t(t(tmp[soil_vars[idx_unit]]) * conv_factor$factor)
             # }
             # 
-            # # 2. Padronizar número de casas decimais
-            # if (standardization$round) {
+            # 2. Padronizar número de casas decimais
+            if (standardization$round) {
+              message("Standardization of decimal places is not available yet")
             #   tmp[, soil_vars] <- sapply(1:length(soil_vars), function (j) {
             #     round(tmp[, soil_vars[j]], digits = fe_stand$digits[j])
             #   }) 
-            # }
+            }
           }
           
           # HARMONIZAÇÃO I
