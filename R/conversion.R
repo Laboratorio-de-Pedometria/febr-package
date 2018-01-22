@@ -20,7 +20,7 @@
 #' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \url{http://www.ufsm.br/febr}
-#' @export
+# @export
 #' @examples
 #' conversion(source = "%", target = "g/kg")
 #' 
