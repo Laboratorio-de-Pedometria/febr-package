@@ -21,7 +21,7 @@
 #' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \url{http://www.ufsm.br/febr}
-#' @export
+# @export
 #' @examples
 #' # All standards
 #' standards()
@@ -33,7 +33,7 @@
 standard <-
   function (table, variable, unit, precision, expr) {
 
-    # Descarregar tablela com padrões
+    # Descarregar tabela com padrões
     std <- .getTable(x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI")
 
     # Selecionar por tabela_id
