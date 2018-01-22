@@ -22,6 +22,77 @@
       )
     )
   }
+# Transformação do sistema de referência de coordenadas ----
+.crsTransform <- 
+  function (obj, crs, xy = c("coord_x", "coord_y")) {
+    
+    crs_lower <- tolower(crs)
+    crs_upper <- toupper(crs)
+    
+    ## Identificar as observações com coordenadas
+    id_coords <- which(apply(obj[xy], 1, function (x) sum(is.na(x))) == 0)
+    tmp_obj <- obj[id_coords, ]
+    
+    ## Verificar se o SRC está faltando
+    is_na_crs <- is.na(tmp_obj$coord_sistema)
+    if (any(is_na_crs)) {
+      is_degree <- nchar(round(abs(tmp_obj$coord_x))) <= 2
+      is_na_crs <- which(is_na_crs[is_degree])
+      tmp_obj$coord_sistema[is_na_crs] <- crs
+    }
+    
+    ## Verificar se o SRC é o SAD69
+    ## Nota: Isso deve ser feito no Google Sheets
+    is_sad69 <- tmp_obj$coord_sistema %in% "SAD69"
+    if (any(is_sad69)) {
+      tmp_obj$coord_sistema[is_sad69] <- "EPSG:4618" 
+    }
+    
+    ## Verificar se o SRC é o SIRGAS
+    ## Nota: Isso deve ser feito no Google Sheets
+    is_sirgas <- tmp_obj$coord_sistema %in% "SIRGAS"
+    if (any(is_sirgas)) {
+      tmp_obj$coord_sistema[is_sirgas] <- crs 
+    }
+    
+    ## Verificar quantos são os SRC usados
+    n_crs <- nlevels(as.factor(tmp_obj$coord_sistema))
+    
+    if (n_crs > 1) {
+      tmp_obj <- split(tmp_obj, as.factor(tmp_obj$coord_sistema))
+      
+      ## Verificar se algum dos SRC é igual ao alvo
+      if (crs_upper %in% names(tmp_obj)) {
+        j <- which(!names(tmp_obj) %in% crs_upper)
+      } else {
+        j <- 1:n_crs
+      }
+      
+      ## Transformar os SRC
+      tmp_obj[j] <- lapply(tmp_obj[j], function (x) {
+        sp::coordinates(x) <- c("coord_x", "coord_y")
+        sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
+        x <- sp::spTransform(x, sp::CRS(paste("+init=", crs_lower, sep = "")))
+        as.data.frame(x)
+      })
+      tmp_obj <- suppressWarnings(dplyr::bind_rows(tmp_obj))
+      tmp_obj$coord_sistema <- crs_upper
+      
+    } else if (tmp_obj$coord_sistema[1] != crs_upper) {
+      
+      ## Transformar o SRC
+      sp::coordinates(tmp_obj) <- xy
+      sp::proj4string(tmp_obj) <- sp::CRS(paste("+init=", tolower(tmp_obj$coord_sistema[1]), sep = ""))
+      tmp_obj <- sp::spTransform(tmp_obj, sp::CRS(paste("+init=", crs_lower, sep = "")))
+      tmp_obj <- as.data.frame(tmp_obj)
+      tmp_obj$coord_sistema <- crs_upper
+    }
+    
+    ## Agrupar observações com e sem coordenadas
+    res <- rbind(tmp_obj, obj[-id_coords, ])
+    
+    return (res)
+  }
 # Harmonização baseada nos níveis dos códigos de identificação ----
 .harmonizeByName <-
   function (obj, extra_cols, harmonization) {

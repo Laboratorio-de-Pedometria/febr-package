@@ -88,6 +88,8 @@
 #' res <- observation(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
 #' str(res)
 #' }
+res <- observation(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon", 
+                   standardization = list(crs = "EPSG:4674", units = FALSE, round = FALSE))
 ###############################################################################################################
 observation <-
   function (dataset, variable, 
@@ -223,73 +225,10 @@ observation <-
           
           # PADRONIZAÇÃO I
           ## Sistema de referência de coordenadas
-          
-          ## Verificar se existem observações com coordenadas e se o SRC deve ser transformado
+          ## Primeiro verificar se existem observações com coordenadas e se o SRC deve ser transformado
           na_coord <- max(apply(tmp[c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
           if (n_rows > na_coord && !is.null(standardization$crs)) {
-            
-            ## Identificar as observações com coordenadas
-            id_coords <- which(!is.na(tmp$coord_x))
-            tmp_obs <- tmp[id_coords, ]
-            
-            ## Verificar se o SRC está faltando
-            is_na_crs <- is.na(tmp_obs$coord_sistema)
-            if (any(is_na_crs)) {
-              is_degree <- nchar(round(abs(tmp_obs$coord_x))) <= 2
-              is_na_crs <- which(is_na_crs[is_degree])
-              tmp_obs$coord_sistema[is_na_crs] <- standardization$crs
-            }
-            
-            ## Verificar se o SRC é o SAD69
-            ## Nota: Isso deve ser feito no Google Sheets
-            is_sad69 <- tmp_obs$coord_sistema %in% "SAD69"
-            if (any(is_sad69)) {
-              tmp_obs$coord_sistema[is_sad69] <- "EPSG:4618" 
-            }
-            
-            ## Verificar se o SRC é o SIRGAS
-            ## Nota: Isso deve ser feito no Google Sheets
-            is_sirgas <- tmp_obs$coord_sistema %in% "SIRGAS"
-            if (any(is_sirgas)) {
-              tmp_obs$coord_sistema[is_sirgas] <- standardization$crs 
-            }
-            
-            ## Verificar quantos são os SRC usados
-            n_crs <- nlevels(as.factor(tmp_obs$coord_sistema))
-            
-            if (n_crs > 1) {
-              tmp_obs <- split(tmp_obs, as.factor(tmp_obs$coord_sistema))
-              
-              ## Verificar se algum dos SRC é igual ao alvo
-              if (toupper(standardization$crs) %in% names(tmp_obs)) {
-                j <- which(!names(tmp_obs) %in% toupper(standardization$crs))
-              } else {
-                j <- 1:n_crs
-              }
-              
-              ## Transformar os SRC
-              tmp_obs[j] <- lapply(tmp_obs[j], function (x) {
-                sp::coordinates(x) <- c("coord_x", "coord_y")
-                sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
-                x <- sp::spTransform(x, sp::CRS(paste("+init=", tolower(standardization$crs), sep = "")))
-                as.data.frame(x)
-              })
-              tmp_obs <- suppressWarnings(dplyr::bind_rows(tmp_obs))
-              tmp_obs$coord_sistema <- toupper(standardization$crs)
-              
-            } else if (tmp_obs$coord_sistema[1] != toupper(standardization$crs)) {
-              
-              ## Transformar o SRC
-              sp::coordinates(tmp_obs) <- c("coord_x", "coord_y")
-              sp::proj4string(tmp_obs) <- sp::CRS(paste("+init=", tolower(tmp_obs$coord_sistema[1]), sep = ""))
-              tmp_obs <- sp::spTransform(tmp_obs, sp::CRS(paste("+init=", tolower(standardization$crs), sep = "")))
-              tmp_obs <- as.data.frame(tmp_obs)
-              tmp_obs$coord_sistema <- toupper(standardization$crs)
-            }
-            
-            ## Agrupar observações com e sem coordenadas
-            tmp <- rbind(tmp_obs, tmp[-id_coords, ])
-            
+            tmp <- .crsTransform(obj = tmp, crs = standardization$crs)
           }
           
           # PADRONIZAÇÃO II
