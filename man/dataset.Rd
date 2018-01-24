@@ -2,34 +2,33 @@
 % Please edit documentation in R/dataset.R
 \name{dataset}
 \alias{dataset}
-\title{Get soil datasets}
+\title{Get \emph{dataset} table}
 \usage{
 dataset(dataset, progress = TRUE, verbose = TRUE)
 }
 \arguments{
-\item{dataset}{Identification code of the dataset (or datasets) as recorded in 
-\url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
+\item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
+in \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
 
-\item{progress}{Show download progress bar?}
+\item{progress}{(optional) Logical value indicating if a download progress bar should be displayed.}
 
-\item{verbose}{Show informative messages? Generally useful to identify datasets with inconsistent data. 
-Please report to \email{febr-forum@googlegroups.com} if you find any issue.}
+\item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally 
+useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com} 
+if you find any issue.}
 }
 \value{
-A list with dataset-specific data.
+A list of data frames or a data frame with data of the chosen dataset(s).
 }
 \description{
-Download soil dataset-specific data contained in the Free Brazilian Repository for Open Soil Data --
-\url{http://www.ufsm.br/febr}.
+Download data from the \emph{dataset} ("dataset") table of one or more datasets contained in the Free Brazilian
+Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This includes dataset name and
+description, author and institution names, dataset licence, and much more.
 }
 \examples{
 \dontrun{
 res <- dataset()
 str(res)
 }
-}
-\seealso{
-\url{http://www.ufsm.br/febr}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

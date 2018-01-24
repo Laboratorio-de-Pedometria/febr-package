@@ -1,14 +1,14 @@
-#' Get soil metadata
-#'
-#' Download metadata-specific data contained in the Free Brazilian Repository for Open Soil Data --
-#' \url{http://www.ufsm.br/febr}.
+#' Get *metadata* table
+#' 
+#' Download data from the *metadata* ("metadado") table of one or more datasets contained in the Free Brazilian
+#' Repository for Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}. This includes variable names,
+#' description of analytical methods, and identification of analysis laboratories.
 #'
 #' @template metadata_template
 #' 
-#' @return A list of data frames with metadata-specific data.
+#' @return A list of data frames or a data frame with metadata of the chosen dataset(s).
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso \url{http://www.ufsm.br/febr}
 #' @export
 #' @examples
 #' \dontrun{

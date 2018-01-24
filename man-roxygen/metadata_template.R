@@ -1,7 +1,8 @@
-#' @param dataset Identification code of the dataset (or datasets) as recorded in 
-#' \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.
+#' @param dataset Character vector indicating one or more datasets. Identification codes should be as recorded
+#' in \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.
 #' 
-#' @param progress Show download progress bar?
+#' @param progress (optional) Logical value indicating if a download progress bar should be displayed.
 #'
-#' @param verbose Show informative messages? Generally useful to identify datasets with inconsistent data. 
-#' Please report to \email{febr-forum@@googlegroups.com} if you find any issue.
+#' @param verbose (optional) Logical value indicating if informative messages should be displayed. Generally 
+#' useful to identify datasets with inconsistent data. Please report to \email{febr-forum@@googlegroups.com} 
+#' if you find any issue.

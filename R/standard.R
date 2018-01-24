@@ -1,4 +1,4 @@
-#' Standards for soil variables
+#' Get *standard* table
 #'
 #' Definitions of standards for soil variables in the Free Brazilian Repository for Open Soil Data -- 
 #' \url{http://www.ufsm.br/febr}.
@@ -29,7 +29,7 @@
 #' # Specific stantdard
 #' standards(extraction.method = "sulfurico")
 #' 
-# Definir unidade e número de casas decimais para cada tipo de dado de ferro ##################################
+###############################################################################################################
 standard <-
   function (table, variable, unit, precision, expr) {
 

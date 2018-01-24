@@ -1,62 +1,67 @@
-#' Get observation data
+#' Get *observation* table
 #'
-#' Download observation-specific data (spatial coordinates, observation date, among others) contained in the
-#' Free Brazilian Repository for Open Soil Data -- \pkg{febr}, \url{http://www.ufsm.br/febr}. In \pkg{febr},
-#' observation-specific data are stored using a table named \code{"observacao"}. Use \code{\link[febr]{header}}
-#' if you want to check what are the variables contained in a dataset before downloading it.
-#'
+#' Download data from the *observation* ("observacao") table of one or more datasets contained in the Free
+#' Brazilian Repository for Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}. This includes spatial
+#' coordinates, observation date, and variables such as geology, land use and vegetation, local topography, and
+#' much more. Use \code{\link[febr]{header}} if you want to check what are the variables contained in the 
+#' *observation* table of a dataset before downloading it.
+#' 
 #' @template data_template
 #' @template metadata_template
 #' 
-#' @param missing List with named sub-arguments specifying what should be done with an observation missing 
-#' spatial coordinates, \code{coord}, or data on variables, \code{data}? Options are \code{"keep"} (default) 
-#' and \code{"drop"}.
+#' @param missing (optional) List with named sub-arguments indicating what should be done with an observation
+#' missing spatial coordinates, `coord`, or data on variables, `data`? Options are `"keep"` (default) and
+#' `"drop"`.
 #'
-#' @param standardization List named sub-arguments specifying how to perform data standardization.
+#' @param standardization (optional) List with named sub-arguments indicating how to perform data 
+#' standardization.
 #' \itemize{
-#' \item \code{crs} EPSG code defining the target coordinate reference system (CRS) to which spatial 
-#'       coordinates should be transformed. For example, \code{crs = "EPSG:4674"}, i.e. SIRGAS 2000, the 
-#'       standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. Defaults to
-#'       \code{crs = NULL}, i.e. no transformation is performed.
-#' \item \code{units} Should the values of the real and integer variable(s) be converted to the standard 
-#'       measurement unit(s)? Defaults to \code{units = FALSE}, i.e. no conversion is performed. (NOT AVAILABLE
-#'       AT THE MOMENT!)
-#' \item \code{round} Should the values of the real and integer variable(s) be rounded to the standard number 
-#'       of decimal places? Effective only when \code{units = TRUE}. Defaults to \code{round = FALSE}, i.e. 
-#'       no rounding is performed. (NOT AVAILABLE AT THE MOMENT!)
+#' \item `crs` Character string indicating the EPSG code of the coordinate reference system (CRS) to which
+#'       spatial coordinates should be transformed. For example, `crs = "EPSG:4674"`, i.e. SIRGAS 2000, the
+#'       standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. Defaults to 
+#'       `crs = NULL`, i.e. no transformation is performed.
+#' \item `units` Logical value indicating if the measurement units of the real and integer variable(s) should be
+#'       converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
+#'       performed. See \code{\link[febr]{standard}} for more information. (NOT AVAILABLE AT THE MOMENT!)
+#' \item `round` Logical value indicating if the values of the real and integer variable(s) should be rounded  
+#'       to the standard number of decimal places. Effective only when `units = TRUE`. Defaults to 
+#'       `round = FALSE`, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more information.
+#'       (NOT AVAILABLE AT THE MOMENT!)
 #' }
 #' 
-#' @param harmonization List with named sub-arguments specifying if and how to perform data harmonization.
+#' @param harmonization (optional) List with named sub-arguments indicating if and how to perform data 
+#' harmonization.
 #' \itemize{
-#' \item \code{harmonize} Should data be harmonized? Defaults to \code{harmonize = FALSE}, i.e. no 
-#'       harmonization is performed.
-#' \item \code{level} Number of levels of the identification code of the variables that should be considered 
-#'       for harmonization. Defaults to \code{level = 2}. See \sQuote{Details} for more information.
+#' \item `harmonize` Logical value indicating if data should be harmonized? Defaults to `harmonize = FALSE`,
+#'       i.e. no harmonization is performed.
+#' \item `level` Integer value indicating the number of levels of the identification code of the variable(s) 
+#'       that should be considered for harmonization. Defaults to `level = 2`. See \sQuote{Details} for more
+#'       information.
 #' }
 #'
 #' @details 
 #' \subsection{Standard columns}{
 #' Standard columns and their content (in Portuguese) are as follows:
 #' \itemize{
-#' \item \code{dataset_id}. Identification code of the dataset in \pkg{febr} to which an observation belongs.
-#' \item \code{observacao_id}. Identification code of an observation in \pkg{febr}.
-#' \item \code{sisb_id}. Identification code of an observation in the Brazilian Soil Information System
+#' \item `dataset_id`. Identification code of the dataset in ___febr___ to which an observation belongs.
+#' \item `observacao_id`. Identification code of an observation in ___febr___.
+#' \item `sisb_id`. Identification code of an observation in the Brazilian Soil Information System
 #' maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
 #' \url{https://www.bdsolos.cnptia.embrapa.br/consulta_publica.html}.
-#' \item \code{ibge_id}. Identification code of an observation in the database of the Brazilian Institute
+#' \item `ibge_id`. Identification code of an observation in the database of the Brazilian Institute
 #' of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/downloads_geociencias.htm#}.
-#' \item \code{observacao_data}. Date (dd-mm-yyyy) in which an observation was made.
-#' \item \code{coord_sistema}. EPSG code of the coordinate reference system.
-#' \item \code{coord_x}. Longitude (°) or Easting (m).
-#' \item \code{coord_y}. Latitude (°) or Northing (m).
-#' \item \code{coord_precisao}. Precision with which x- and y-coordinates were determined (m).
-#' \item \code{coord_fonte}. Source of the x- and y-coordinates.
-#' \item \code{pais_id}. Country code (ISO 3166-1 alpha-2).
-#' \item \code{estado_id}. Code of the Brazilian federative unit where an observation was made.
-#' \item \code{municipio_id}. Name of the Brazilian county where as observation was made.
-#' \item \code{amostra_tipo}. Type of sample taken.
-#' \item \code{amostra_quanti}. Number of samples taken.
-#' \item \code{amostra_area}. Sampling area.
+#' \item `observacao_data`. Date (dd-mm-yyyy) in which an observation was made.
+#' \item `coord_sistema`. EPSG code of the coordinate reference system.
+#' \item `coord_x`. Longitude (°) or Easting (m).
+#' \item `coord_y`. Latitude (°) or Northing (m).
+#' \item `coord_precisao`. Precision with which x- and y-coordinates were determined (m).
+#' \item `coord_fonte`. Source of the x- and y-coordinates.
+#' \item `pais_id`. Country code (ISO 3166-1 alpha-2).
+#' \item `estado_id`. Code of the Brazilian federative unit where an observation was made.
+#' \item `municipio_id`. Name of the Brazilian county where as observation was made.
+#' \item `amostra_tipo`. Type of sample taken.
+#' \item `amostra_quanti`. Number of samples taken.
+#' \item `amostra_area`. Sampling area.
 #' }
 #' Further details about the content of the standard columns can be found in \url{http://www.ufsm.br/febr/book/}
 #' (in Portuguese).
@@ -77,11 +82,10 @@
 #' same variable.
 #' }
 #'
-#' @return A list of data frames or a data frame with observation-specific data on the chosen variable(s) of 
-#' the chosen dataset(s).
+#' @return A list of data frames or a data frame with data on the chosen variable(s) of the chosen dataset(s).
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso \code{\link[febr]{layers}}
+#' @seealso \code{\link[febr]{layer}}, \code{\link[febr]{standard}}
 #' @export
 #' @examples
 #' \dontrun{
@@ -125,12 +129,12 @@ observation <-
       if (is.null(missing$coord)) {
         missing$coord <- "keep"
       } else if (!missing$coord %in% c("drop", "keep")) {
-        stop (glue::glue("unknown value '{missing$coord}' passed to subargument 'missing$coord'"))
+        stop (glue::glue("unknown value '{missing$coord}' passed to sub-argument 'missing$coord'"))
       }
       if (is.null(missing$data)) {
         missing$data <- "keep"
       } else if (!missing$data %in% c("drop", "keep")) {
-        stop (glue::glue("unknown value '{missing$data}' passed to subargument 'missing$data'"))
+        stop (glue::glue("unknown value '{missing$data}' passed to sub-argument 'missing$data'"))
       }
     }
     
@@ -140,22 +144,22 @@ observation <-
         standardization$crs <- NULL
       } else if (!is.character(standardization$crs)) {
         y <- class(standardization$crs)
-        stop (glue::glue("object of class '{y}' passed to subargument 'standardization$crs'"))
+        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$crs'"))
       } else if (!toupper(standardization$crs) %in% opts$crs) {
         y <- standardization$crs
-        stop (glue::glue("unknown value '{y}' passed to subparameter 'standardization$crs'"))
+        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$crs'"))
       }
       if (is.null(standardization$units)) {
         standardization$units <- FALSE
       } else if (!is.logical(standardization$units)) {
         y <- class(standardization$units)
-        stop (glue::glue("object of class '{y}' passed to subargument 'standardization$units'"))
+        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$units'"))
       }
       if (is.null(standardization$round)) {
         standardization$round <- FALSE
       } else if (!is.logical(standardization$round)) {
         y <- class(standardization$round)
-        stop (glue::glue("object of class '{y}' passed to subargument 'standardization$round'"))
+        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$round'"))
       }
     }
     
@@ -165,13 +169,13 @@ observation <-
         harmonization$harmonize <- FALSE
       } else if (!is.logical(harmonization$harmonize)) {
         y <- class(harmonization$harmonize)
-        stop (glue::glue("object of class '{y}' passed to subargument 'harmonization$harmonize'"))
+        stop (glue::glue("object of class '{y}' passed to sub-argument 'harmonization$harmonize'"))
       }
       if (is.null(harmonization$level)) {
         harmonization$level <- 2
       } else if (!pedometrics::isNumint(harmonization$level)) {
         y <- class(harmonization$level)
-        stop (glue::glue("object of class '{y}' passed to subargument 'harmonization$level'"))
+        stop (glue::glue("object of class '{y}' passed to sub-argument 'harmonization$level'"))
       }
     }
     

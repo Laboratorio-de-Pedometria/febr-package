@@ -8,31 +8,35 @@ header(dataset, table, variable, stack = FALSE, progress = TRUE,
   verbose = TRUE)
 }
 \arguments{
-\item{dataset}{Identification code of the dataset (or datasets) as recorded in 
-\url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
+\item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
+in \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
 
-\item{table}{Table from which header data should be downloaded, with options \code{"camada"}
-(layer-specific header data) and \code{"observacao"} (observation-specific header data).}
+\item{table}{Character string indicating a table, i.e. the \emph{layer} table, \code{"camada"}, or the \emph{observation}
+table, \code{"observacao"}.}
 
-\item{variable}{Name(s) of the variable(s). If missing, then a set of standard identification variables is
-downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{Details} for more information.}
+\item{variable}{(optional) Character vector indicating one or more variables. Accepts only general 
+identification codes, e.g. `"ferro"` and `"carbono"`. If missing, then a set of standard identification 
+variables is downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{Details} for 
+more information.}
 
-\item{stack}{Should tables from different datasets be stacked on a single table for output? Defaults to
-\code{stack = FALSE}, the output being a list of tables.}
+\item{stack}{(optional) Logical value indicating if tables from different datasets should be stacked on a 
+single table for output. Defaults to \code{stack = FALSE}, the output being a list of tables.}
 
-\item{progress}{Show download progress bar?}
+\item{progress}{(optional) Logical value indicating if a download progress bar should be displayed.}
 
-\item{verbose}{Show informative messages? Generally useful to identify datasets with inconsistent data. 
-Please report to \email{febr-forum@googlegroups.com} if you find any issue.}
+\item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally 
+useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com} 
+if you find any issue.}
 }
 \value{
 A list of data frames or a data frame with table header data (column names and measurement units) on
 the chosen variable(s) of the chosen dataset(s).
 }
 \description{
-Download header data (column names and measurement units) from table(s) containing layer or
-observation-specific data. This is useful to check what are the variables contained in a dataset before
-downloading it via \code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
+Download header data (column names and measurement units) from the \emph{layer} ("camada") or \emph{observation}
+("observacao") table of one or more datasets contained in the Free Brazilian Repository for Open Soil Data
+-- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This is useful to check what are the variables contained in a
+dataset before downloading it via \code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
 }
 \details{
 \subsection{Standard columns}{
@@ -49,7 +53,7 @@ col[order(col)]
 }
 }
 \seealso{
-\code{\link[febr]{layers}}, \code{\link[febr]{observations}}
+\code{\link[febr]{layer}}, \code{\link[febr]{observation}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

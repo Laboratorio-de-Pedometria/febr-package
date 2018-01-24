@@ -28,6 +28,7 @@
             obj[idx_plus, depth.cols[2]] <- gsub("+", "", obj[idx_plus, depth.cols[2]], fixed = TRUE)
           },
           # Add a given quantity
+          # NOTA: É PRECISO VERIFICAR A UNIDADE DE MEDIDA!
           add = {
             obj[idx_plus, depth.cols[2]] <-
               gsub("+", paste(" +", plus.depth), obj[idx_plus, depth.cols[2]], fixed = TRUE)

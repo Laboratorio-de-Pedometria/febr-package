@@ -2,34 +2,33 @@
 % Please edit documentation in R/metadata.R
 \name{metadata}
 \alias{metadata}
-\title{Get soil metadata}
+\title{Get \emph{metadata} table}
 \usage{
-metadata(dataset = "ctb0001", progress = TRUE, verbose = TRUE)
+metadata(dataset, progress = TRUE, verbose = TRUE)
 }
 \arguments{
-\item{dataset}{Identification code of the dataset (or datasets) as recorded in 
-\url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
+\item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
+in \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
 
-\item{progress}{Show download progress bar?}
+\item{progress}{(optional) Logical value indicating if a download progress bar should be displayed.}
 
-\item{verbose}{Show informative messages? Generally useful to identify datasets with inconsistent data. 
-Please report to \email{febr-forum@googlegroups.com} if you find any issue.}
+\item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally 
+useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com} 
+if you find any issue.}
 }
 \value{
-A list of data frames with metadata-specific data.
+A list of data frames or a data frame with metadata of the chosen dataset(s).
 }
 \description{
-Download metadata-specific data contained in the Free Brazilian Repository for Open Soil Data --
-\url{http://www.ufsm.br/febr}.
+Download data from the \emph{metadata} ("metadado") table of one or more datasets contained in the Free Brazilian
+Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This includes variable names,
+description of analytical methods, and identification of analysis laboratories.
 }
 \examples{
 \dontrun{
 res <- metadata()
 str(res)
 }
-}
-\seealso{
-\url{http://www.ufsm.br/febr}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

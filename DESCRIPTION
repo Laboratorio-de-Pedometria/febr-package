@@ -6,7 +6,7 @@ Date: 2018-01-13
 Author: Alessandro Samuel-Rosa
 Maintainer: Alessandro Samuel-Rosa <alessandrosamuelrosa@gmail.com>
 Description: 
-  Make the access to the open soil data in the Free Brazilian Repository for Open Soil Data as easy as possible.
+  Making the access to the Free Brazilian Repository for Open Soil Data as easy as possible.
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports:
@@ -14,6 +14,7 @@ Imports:
   dplyr,
   glue,
   googlesheets,
+  pedometrics,
   readr,
   sp,
   stringr

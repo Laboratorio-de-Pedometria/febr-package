@@ -1,18 +1,19 @@
 #' Get table header
 #'
-#' Download header data (column names and measurement units) from table(s) containing layer or 
-#' observation-specific data. This is useful to check what are the variables contained in a dataset before
-#' downloading it via \code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
+#' Download header data (column names and measurement units) from the *layer* ("camada") or *observation* 
+#' ("observacao") table of one or more datasets contained in the Free Brazilian Repository for Open Soil Data 
+#' -- ___febr___, \url{http://www.ufsm.br/febr}. This is useful to check what are the variables contained in a
+#' dataset before downloading it via \code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
 #'
 #' @template data_template
 #' @template metadata_template
 #' 
-#' @param table Table from which header data should be downloaded, with options \code{"camada"} 
-#' (layer-specific header data) and \code{"observacao"} (observation-specific header data).
+#' @param table Character string indicating a table, i.e. the *layer* table, `"camada"`, or the *observation*
+#' table, `"observacao"`.
 #' 
 #' @details 
 #' \subsection{Standard columns}{
-#' Standard columns and their content depend on the chosen \code{table}. See documentation of 
+#' Standard columns and their content depend on the chosen `table`. See documentation of 
 #' \code{\link[febr]{layer}} and \code{\link[febr]{observation}}.
 #' }
 #' 
@@ -20,7 +21,7 @@
 #' the chosen variable(s) of the chosen dataset(s).
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso \code{\link[febr]{layers}}, \code{\link[febr]{observations}}
+#' @seealso \code{\link[febr]{layer}}, \code{\link[febr]{observation}}
 #' @export
 #' @examples
 #' \dontrun{
@@ -29,6 +30,7 @@
 #' col <- colnames(res)[id]
 #' col[order(col)]
 #' }
+###############################################################################################################
 header <-
   function (dataset, table, variable, stack = FALSE, progress = TRUE, verbose = TRUE) {
     
@@ -40,10 +42,11 @@ header <-
       stop (glue::glue("object of class '{class(dataset)}' passed to argument 'dataset'"))
     }
     
+    ## table
     if (missing(table)) {
       stop ("argument 'table' is missing")
     } else if (!table %in% c("observacao", "camada")) {
-      stop (glue::glue("unknown value '{table}' passed to subargument 'table'"))
+      stop (glue::glue("unknown value '{table}' passed to argument 'table'"))
     }
     
     ## variable

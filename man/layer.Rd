@@ -2,7 +2,7 @@
 % Please edit documentation in R/layer.R
 \name{layer}
 \alias{layer}
-\title{Get layer data}
+\title{Get \emph{layer} table}
 \usage{
 layer(dataset, variable, stack = FALSE, missing = list(depth = "keep", data
   = "keep"), standardization = list(plus.sign = "keep", plus.depth = 2.5,
@@ -11,58 +11,67 @@ layer(dataset, variable, stack = FALSE, missing = list(depth = "keep", data
   verbose = TRUE)
 }
 \arguments{
-\item{dataset}{Identification code of the dataset (or datasets) as recorded in 
-\url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
+\item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
+in \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
 
-\item{variable}{Name(s) of the variable(s). If missing, then a set of standard identification variables is
-downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{Details} for more information.}
+\item{variable}{(optional) Character vector indicating one or more variables. Accepts only general 
+identification codes, e.g. `"ferro"` and `"carbono"`. If missing, then a set of standard identification 
+variables is downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{Details} for 
+more information.}
 
-\item{stack}{Should tables from different datasets be stacked on a single table for output? Defaults to
-\code{stack = FALSE}, the output being a list of tables.}
+\item{stack}{(optional) Logical value indicating if tables from different datasets should be stacked on a 
+single table for output. Defaults to \code{stack = FALSE}, the output being a list of tables.}
 
-\item{missing}{List with named sub-arguments specifying what should be done with a layer missing data on
-sampling depth, \code{depth}, or data on variable(s), \code{data}? Options are \code{"keep"} (default) and \code{"drop"}.}
+\item{missing}{(optional) List with named sub-arguments indicating what should be done with a layer missing
+data on sampling depth, \code{depth}, or data on variable(s), \code{data}? Options are \code{"keep"} (default) and \code{"drop"}.}
 
-\item{standardization}{List named sub-arguments specifying how to perform data standardization.
+\item{standardization}{(optional) List with named sub-arguments indicating how to perform data
+standardization.
 \itemize{
-\item \code{plus.sign} What should be done with the plus sign (\code{+}) commonly used along with the inferior
-limit of the bottom layer of an observation? Options are \code{"keep"} (default), \code{"add"}, and \code{"remove"}.
-\item \code{plus.depth} Depth increment (in centimetres) when processing the plus sign (\code{+}) with
-\code{plus.sign = "add"}. Defaults to \code{plus.depth = 2.5}.
-\item \code{transition} What should be done about wavy, irregular, and broken transitions between layers in an
-observation? Options are \code{"keep"} (default) and \code{"smooth"}.
-\item \code{smoothing.fun} Function that should be used to smooth wavy and irregular transitions between
-layers in an observation when \code{transition = "smooth"}. Options are \code{"mean"} (default), \code{"min"},
-\code{"max"}, and \code{"median"}.
-\item \code{units} Should the values of the real and integer variable(s) be converted to the standard
-measurement unit(s)? Defaults to \code{units = FALSE}, i.e. no conversion is performed.
-\item \code{round} Should the values of the real and integer variable(s) be rounded to the standard number
-of decimal places? Effective only when \code{units = TRUE}. Defaults to \code{round = FALSE}, i.e.
-no rounding is performed.
+\item \code{plus.sign} Character string indicating what should be done with the plus sign (\code{+}) commonly used
+along with the inferior limit of the bottom layer of an observation. Options are \code{"keep"} (default),
+\code{"add"}, and \code{"remove"}.
+\item \code{plus.depth} Numeric value indicating the depth increment (in centimetres) when processing the plus
+sign (\code{+}) with \code{plus.sign = "add"}. Defaults to \code{plus.depth = 2.5}.
+\item \code{transition} Character string indicating what should be done about wavy, irregular, and broken
+transitions between layers in an observation? Options are \code{"keep"} (default) and \code{"smooth"}.
+\item \code{smoothing.fun} Character string indicating the function that should be used to smooth wavy and
+irregular transitions between layers in an observation when \code{transition = "smooth"}. Options are
+\code{"mean"} (default), \code{"min"}, \code{"max"}, and \code{"median"}.
+\item \code{units} Logical value indicating if the measurement units of the real and integer variable(s) should be
+converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no conversion is
+performed. See \code{\link[febr]{standard}} for more information. (NOT AVAILABLE AT THE MOMENT!)
+\item \code{round} Logical value indicating if the values of the real and integer variable(s) should be rounded
+to the standard number of decimal places. Effective only when \code{units = TRUE}. Defaults to
+\code{round = FALSE}, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more information.
+(NOT AVAILABLE AT THE MOMENT!)
 }}
 
-\item{harmonization}{List with named sub-arguments specifying if and how to perform data harmonization.
+\item{harmonization}{(optional) List with named sub-arguments indicating if and how to perform data
+harmonization.
 \itemize{
-\item \code{harmonize} Should data be harmonized? Defaults to \code{harmonize = FALSE}, i.e. no
-harmonization is performed.
-\item \code{level} Number of levels of the identification code of the variables that should be considered
-for harmonization. Defaults to \code{level = 2}. See \sQuote{Details} for more information.
+\item \code{harmonize} Logical value indicating if data should be harmonized? Defaults to \code{harmonize = FALSE},
+i.e. no harmonization is performed.
+\item \code{level} Integer value indicating the number of levels of the identification code of the variable(s)
+that should be considered for harmonization. Defaults to \code{level = 2}. See \sQuote{Details} for more
+information.
 }}
 
-\item{progress}{Show download progress bar?}
+\item{progress}{(optional) Logical value indicating if a download progress bar should be displayed.}
 
-\item{verbose}{Show informative messages? Generally useful to identify datasets with inconsistent data. 
-Please report to \email{febr-forum@googlegroups.com} if you find any issue.}
+\item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally 
+useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com} 
+if you find any issue.}
 }
 \value{
-A list of data frames or a data frame with layer-specific data on the chosen variable(s) of
-the chosen dataset(s).
+A list of data frames or a data frame with data on the chosen variable(s) of the chosen dataset(s).
 }
 \description{
-Download layer-specific data (sampling depth, layer designation, among others) contained in the
-Free Brazilian Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. In \emph{\strong{febr}},
-layer-specific data are stored using a table named \code{"camada"}. Use \code{\link[febr]{header}} if you
-want to check what are the layer-specific variables contained in a dataset before downloading it.
+Download data from the \emph{layer} ("camada") table of one or more datasets contained in the Free Brazilian
+Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This includes sampling depth,
+horizon designation, and variables such as pH, carbon content, clay content, and much more. Use
+\code{\link[febr]{header}} if you want to check what are the variables contained in the \emph{layer} table of a
+dataset before downloading it.
 }
 \details{
 \subsection{Standard columns}{
@@ -102,7 +111,7 @@ str(res)
 }
 }
 \seealso{
-\code{\link[febr]{observations}}, \code{\link[febr]{standards}}, \code{\link[febr]{conversion}}
+\code{\link[febr]{observation}}, \code{\link[febr]{standard}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

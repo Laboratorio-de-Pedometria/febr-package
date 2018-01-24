@@ -2,7 +2,7 @@
 % Please edit documentation in R/observation.R
 \name{observation}
 \alias{observation}
-\title{Get observation data}
+\title{Get \emph{observation} table}
 \usage{
 observation(dataset, variable, stack = FALSE, missing = list(coord = "keep",
   data = "keep"), standardization = list(crs = NULL, units = FALSE, round =
@@ -10,61 +10,69 @@ observation(dataset, variable, stack = FALSE, missing = list(coord = "keep",
   progress = TRUE, verbose = TRUE)
 }
 \arguments{
-\item{dataset}{Identification code of the dataset (or datasets) as recorded in 
-\url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
+\item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
+in \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
 
-\item{variable}{Name(s) of the variable(s). If missing, then a set of standard identification variables is
-downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{Details} for more information.}
+\item{variable}{(optional) Character vector indicating one or more variables. Accepts only general 
+identification codes, e.g. `"ferro"` and `"carbono"`. If missing, then a set of standard identification 
+variables is downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{Details} for 
+more information.}
 
-\item{stack}{Should tables from different datasets be stacked on a single table for output? Defaults to
-\code{stack = FALSE}, the output being a list of tables.}
+\item{stack}{(optional) Logical value indicating if tables from different datasets should be stacked on a 
+single table for output. Defaults to \code{stack = FALSE}, the output being a list of tables.}
 
-\item{missing}{List with named sub-arguments specifying what should be done with an observation missing
-spatial coordinates, \code{coord}, or data on variables, \code{data}? Options are \code{"keep"} (default)
-and \code{"drop"}.}
+\item{missing}{(optional) List with named sub-arguments indicating what should be done with an observation
+missing spatial coordinates, \code{coord}, or data on variables, \code{data}? Options are \code{"keep"} (default) and
+\code{"drop"}.}
 
-\item{standardization}{List named sub-arguments specifying how to perform data standardization.
+\item{standardization}{(optional) List with named sub-arguments indicating how to perform data
+standardization.
 \itemize{
-\item \code{crs} EPSG code defining the target coordinate reference system (CRS) to which spatial
-coordinates should be transformed. For example, \code{crs = "EPSG:4674"}, i.e. SIRGAS 2000, the
+\item \code{crs} Character string indicating the EPSG code of the coordinate reference system (CRS) to which
+spatial coordinates should be transformed. For example, \code{crs = "EPSG:4674"}, i.e. SIRGAS 2000, the
 standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. Defaults to
 \code{crs = NULL}, i.e. no transformation is performed.
-\item \code{units} Should the values of the real and integer variable(s) be converted to the standard
-measurement unit(s)? Defaults to \code{units = FALSE}, i.e. no conversion is performed.
-\item \code{round} Should the values of the real and integer variable(s) be rounded to the standard number
-of decimal places? Effective only when \code{units = TRUE}. Defaults to \code{round = FALSE}, i.e.
-no rounding is performed.
+\item \code{units} Logical value indicating if the measurement units of the real and integer variable(s) should be
+converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no conversion is
+performed. See \code{\link[febr]{standard}} for more information. (NOT AVAILABLE AT THE MOMENT!)
+\item \code{round} Logical value indicating if the values of the real and integer variable(s) should be rounded
+to the standard number of decimal places. Effective only when \code{units = TRUE}. Defaults to
+\code{round = FALSE}, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more information.
+(NOT AVAILABLE AT THE MOMENT!)
 }}
 
-\item{harmonization}{List with named sub-arguments specifying if and how to perform data harmonization.
+\item{harmonization}{(optional) List with named sub-arguments indicating if and how to perform data
+harmonization.
 \itemize{
-\item \code{harmonize} Should data be harmonized? Defaults to \code{harmonize = FALSE}, i.e. no
-harmonization is performed.
-\item \code{level} Number of levels of the identification code of the variables that should be considered
-for harmonization. Defaults to \code{level = 2}. See \sQuote{Details} for more information.
+\item \code{harmonize} Logical value indicating if data should be harmonized? Defaults to \code{harmonize = FALSE},
+i.e. no harmonization is performed.
+\item \code{level} Integer value indicating the number of levels of the identification code of the variable(s)
+that should be considered for harmonization. Defaults to \code{level = 2}. See \sQuote{Details} for more
+information.
 }}
 
-\item{progress}{Show download progress bar?}
+\item{progress}{(optional) Logical value indicating if a download progress bar should be displayed.}
 
-\item{verbose}{Show informative messages? Generally useful to identify datasets with inconsistent data. 
-Please report to \email{febr-forum@googlegroups.com} if you find any issue.}
+\item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally 
+useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com} 
+if you find any issue.}
 }
 \value{
-A list of data frames or a data frame with observation-specific data on the chosen variable(s) of
-the chosen dataset(s).
+A list of data frames or a data frame with data on the chosen variable(s) of the chosen dataset(s).
 }
 \description{
-Download observation-specific data (spatial coordinates, observation date, among others) contained in the
-Free Brazilian Repository for Open Soil Data -- \pkg{febr}, \url{http://www.ufsm.br/febr}. In \pkg{febr},
-observation-specific data are stored using a table named \code{"observacao"}. Use \code{\link[febr]{header}}
-if you want to check what are the variables contained in a dataset before downloading it.
+Download data from the \emph{observation} ("observacao") table of one or more datasets contained in the Free
+Brazilian Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This includes spatial
+coordinates, observation date, and variables such as geology, land use and vegetation, local topography, and
+much more. Use \code{\link[febr]{header}} if you want to check what are the variables contained in the
+\emph{observation} table of a dataset before downloading it.
 }
 \details{
 \subsection{Standard columns}{
 Standard columns and their content (in Portuguese) are as follows:
 \itemize{
-\item \code{dataset_id}. Identification code of the dataset in \pkg{febr} to which an observation belongs.
-\item \code{observacao_id}. Identification code of an observation in \pkg{febr}.
+\item \code{dataset_id}. Identification code of the dataset in \emph{\strong{febr}} to which an observation belongs.
+\item \code{observacao_id}. Identification code of an observation in \emph{\strong{febr}}.
 \item \code{sisb_id}. Identification code of an observation in the Brazilian Soil Information System
 maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
 \url{https://www.bdsolos.cnptia.embrapa.br/consulta_publica.html}.
@@ -109,7 +117,7 @@ str(res)
 }
 }
 \seealso{
-\code{\link[febr]{layers}}
+\code{\link[febr]{layer}}, \code{\link[febr]{standard}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

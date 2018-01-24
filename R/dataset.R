@@ -1,14 +1,14 @@
-#' Get soil datasets
+#' Get *dataset* table
 #'
-#' Download soil dataset-specific data contained in the Free Brazilian Repository for Open Soil Data --
-#' \url{http://www.ufsm.br/febr}.
+#' Download data from the *dataset* ("dataset") table of one or more datasets contained in the Free Brazilian
+#' Repository for Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}. This includes dataset name and
+#' description, author and institution names, dataset licence, and much more.
 #'
 #' @template metadata_template
 #'
-#' @return A list with dataset-specific data.
+#' @return A list of data frames or a data frame with data of the chosen dataset(s).
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso \url{http://www.ufsm.br/febr}
 #' @export
 #' @examples
 #' \dontrun{

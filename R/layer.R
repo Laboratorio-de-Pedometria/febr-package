@@ -1,41 +1,47 @@
-#' Get layer data
+#' Get *layer* table
 #'
-#' Download layer-specific data (sampling depth, layer designation, among others) contained in the
-#' Free Brazilian Repository for Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}. In ___febr___,
-#' layer-specific data are stored using a table named `"camada"`. Use \code{\link[febr]{header}} if you
-#' want to check what are the layer-specific variables contained in a dataset before downloading it.
+#' Download data from the *layer* ("camada") table of one or more datasets contained in the Free Brazilian
+#' Repository for Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}. This includes sampling depth,
+#' horizon designation, and variables such as pH, carbon content, clay content, and much more. Use 
+#' \code{\link[febr]{header}} if you want to check what are the variables contained in the *layer* table of a
+#' dataset before downloading it.
 #' 
 #' @template data_template
 #' @template metadata_template
 #'
-#' @param missing List with named sub-arguments specifying what should be done with a layer missing data on 
-#' sampling depth, `depth`, or data on variable(s), `data`? Options are `"keep"` (default) and `"drop"`.
+#' @param missing (optional) List with named sub-arguments indicating what should be done with a layer missing
+#' data on sampling depth, `depth`, or data on variable(s), `data`? Options are `"keep"` (default) and `"drop"`.
 #' 
-#' @param standardization List named sub-arguments specifying how to perform data standardization.
+#' @param standardization (optional) List with named sub-arguments indicating how to perform data 
+#' standardization.
 #' \itemize{
-#' \item `plus.sign` What should be done with the plus sign (`+`) commonly used along with the inferior 
-#'       limit of the bottom layer of an observation? Options are `"keep"` (default), `"add"`, and `"remove"`.
-#' \item `plus.depth` Depth increment (in centimetres) when processing the plus sign (`+`) with 
-#'       `plus.sign = "add"`. Defaults to `plus.depth = 2.5`.
-#' \item `transition` What should be done about wavy, irregular, and broken transitions between layers in an 
-#'        observation? Options are `"keep"` (default) and `"smooth"`.
-#' \item `smoothing.fun` Function that should be used to smooth wavy and irregular transitions between 
-#'       layers in an observation when `transition = "smooth"`. Options are `"mean"` (default), `"min"`, 
-#'       `"max"`, and `"median"`.
-#' \item `units` Should the values of the real and integer variable(s) be converted to the standard 
-#'       measurement unit(s)? Defaults to `units = FALSE`, i.e. no conversion is performed. (NOT AVAILABLE AT
-#'       THE MOMENT!)
-#' \item `round` Should the values of the real and integer variable(s) be rounded to the standard number 
-#'       of decimal places? Effective only when `units = TRUE`. Defaults to `round = FALSE`, i.e. 
-#'       no rounding is performed. (NOT AVAILABLE AT THE MOMENT!)
+#' \item `plus.sign` Character string indicating what should be done with the plus sign (`+`) commonly used
+#'        along with the inferior limit of the bottom layer of an observation. Options are `"keep"` (default),
+#'        `"add"`, and `"remove"`.
+#' \item `plus.depth` Numeric value indicating the depth increment (in centimetres) when processing the plus
+#'        sign (`+`) with `plus.sign = "add"`. Defaults to `plus.depth = 2.5`.
+#' \item `transition` Character string indicating what should be done about wavy, irregular, and broken
+#'        transitions between layers in an observation? Options are `"keep"` (default) and `"smooth"`.
+#' \item `smoothing.fun` Character string indicating the function that should be used to smooth wavy and
+#'       irregular transitions between layers in an observation when `transition = "smooth"`. Options are 
+#'       `"mean"` (default), `"min"`, `"max"`, and `"median"`.
+#' \item `units` Logical value indicating if the measurement units of the real and integer variable(s) should be
+#'       converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
+#'       performed. See \code{\link[febr]{standard}} for more information. (NOT AVAILABLE AT THE MOMENT!)
+#' \item `round` Logical value indicating if the values of the real and integer variable(s) should be rounded  
+#'       to the standard number of decimal places. Effective only when `units = TRUE`. Defaults to 
+#'       `round = FALSE`, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more information.
+#'       (NOT AVAILABLE AT THE MOMENT!)
 #' }
 #'
-#' @param harmonization List with named sub-arguments specifying if and how to perform data harmonization.
+#' @param harmonization (optional) List with named sub-arguments indicating if and how to perform data 
+#' harmonization.
 #' \itemize{
-#' \item `harmonize` Should data be harmonized? Defaults to `harmonize = FALSE`, i.e. no 
-#'       harmonization is performed.
-#' \item `level` Number of levels of the identification code of the variables that should be considered 
-#'       for harmonization. Defaults to `level = 2`. See \sQuote{Details} for more information.
+#' \item `harmonize` Logical value indicating if data should be harmonized? Defaults to `harmonize = FALSE`, 
+#'       i.e. no harmonization is performed.
+#' \item `level` Integer value indicating the number of levels of the identification code of the variable(s) 
+#'       that should be considered for harmonization. Defaults to `level = 2`. See \sQuote{Details} for more
+#'       information.
 #' }
 #'
 #' @details
@@ -69,11 +75,11 @@
 #' same variable.
 #' }
 #' 
-#' @return A list of data frames or a data frame with layer-specific data on the chosen variable(s) of 
-#' the chosen dataset(s).
+#' @return A list of data frames or a data frame with data on the chosen variable(s) of the chosen dataset(s).
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso \code{\link[febr]{observations}}, \code{\link[febr]{standards}}, \code{\link[febr]{conversion}}
+#' @seealso \code{\link[febr]{observation}}, \code{\link[febr]{standard}}
+# \code{\link[febr]{conversion}}
 #' @export
 #' @examples
 #' \dontrun{
@@ -118,12 +124,12 @@ layer <-
       if (is.null(missing$depth)) {
         missing$depth <- "keep"
       } else if (!missing$depth %in% c("drop", "keep")) {
-        stop (glue::glue("unknown value '{missing$depth}' passed to subargument 'missing$depth'"))
+        stop (glue::glue("unknown value '{missing$depth}' passed to sub-argument 'missing$depth'"))
       }
       if (is.null(missing$data)) {
         missing$data <- "keep"
       } else if (!missing$data %in% c("drop", "keep")) {
-        stop (glue::glue("unknown value '{missing$data}' passed to subargument 'missing$data'"))
+        stop (glue::glue("unknown value '{missing$data}' passed to sub-argument 'missing$data'"))
       }
     }
     
@@ -133,37 +139,37 @@ layer <-
         standardization$plus.sign <- "keep"
       } else if (!standardization$plus.sign %in% c("add", "remove", "keep")) {
         y <- standardization$plus.sign
-        stop (glue::glue("unknown value '{y}' passed to subargument 'standardization$plus.sign'"))
+        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$plus.sign'"))
       }
       if (is.null(standardization$plus.depth)) {
         standardization$plus.depth <- 2.5  
       } else if (standardization$plus.depth > 100 || standardization$plus.depth < 0) {
         y <- standardization$plus.depth
-        stop (glue::glue("unlikely value '{y}' passed to subargument 'standardization$plus.depth'"))
+        stop (glue::glue("unlikely value '{y}' passed to sub-argument 'standardization$plus.depth'"))
       }
       if (is.null(standardization$transition)) {
         standardization$transition <- "keep"
       } else if (!standardization$transition %in% c("smooth", "keep")) {
         y <- standardization$transition
-        stop (glue::glue("unknown value '{y}' passed to subargument 'standardization$transition'"))
+        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$transition'"))
       }
       if (is.null(standardization$smoothing.fun)) {
         standardization$smoothing.fun <- "mean"
       } else if (!standardization$smoothing.fun %in% c("mean", "min", "max", "median")) {
         y <- standardization$smoothing.fun
-        stop(glue::glue("unknown value '{y}' passed to subargument 'standardization$smoothing.fun'"))
+        stop(glue::glue("unknown value '{y}' passed to sub-argument 'standardization$smoothing.fun'"))
       }
       if (is.null(standardization$units)) {
         standardization$units <- FALSE
       } else if (!is.logical(standardization$units)) {
         y <- class(standardization$units)
-        stop (glue::glue("object of class '{y}' passed to subargument 'standardization$units'"))
+        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$units'"))
       }
       if (is.null(standardization$round)) {
         standardization$round <- FALSE
       } else if (!is.logical(standardization$round)) {
         y <- class(standardization$round)
-        stop (glue::glue("object of class '{y}' passed to subargument 'standardization$round'"))
+        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$round'"))
       }
     }
     
@@ -173,13 +179,13 @@ layer <-
         harmonization$harmonize <- FALSE
       } else if (!is.logical(harmonization$harmonize)) {
         y <- class(harmonization$harmonize)
-        stop (glue::glue("object of class '{y}' passed to subargument 'harmonization$harmonize'"))
+        stop (glue::glue("object of class '{y}' passed to sub-argument 'harmonization$harmonize'"))
       }
       if (is.null(harmonization$level)) {
         harmonization$level <- 2
       } else if (!pedometrics::isNumint(harmonization$level)) {
         y <- class(harmonization$level)
-        stop (glue::glue("object of class '{y}' passed to subargument 'harmonization$level'"))
+        stop (glue::glue("object of class '{y}' passed to sub-argument 'harmonization$level'"))
       }
     }
     
