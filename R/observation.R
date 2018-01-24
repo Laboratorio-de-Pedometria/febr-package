@@ -262,7 +262,9 @@ observation <-
         # PROCESSAMENTO II
         ## A continuação do processamento dos dados depende das presença de dados após a eliminação de colunas
         ## e linhas com NAs.
-        if (n_rows >= 1 && missing(variable) || length(extra_cols) >= 1) {
+        if (n_rows >= 1 && missing(variable) || length(extra_cols) >= 1 || missing$data == "keep") {
+          
+          # missing$data == "keep" || missing$coord == "drop" && na_coord < n_rows
           
           # TIPO DE DADOS
           ## 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros

@@ -272,7 +272,7 @@ layer <-
         # PROCESSAMENTO II
         ## A continuação do processamento dos dados depende das presença de dados após a eliminação de colunas
         ## e linhas com NAs.
-        if (n_rows >= 1 && missing(variable) || length(extra_cols) >= 1) {
+        if (n_rows >= 1 && missing(variable) || length(extra_cols) >= 1 || missing$data == "keep") {
           
           # TIPO DE DADOS
           ## "observacao_id", "camada_numero", "camada_nome", "amostra_codigo", "profund_sup" e "profund_inf"
