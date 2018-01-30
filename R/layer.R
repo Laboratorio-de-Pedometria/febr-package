@@ -99,7 +99,7 @@ layer <-
     
     # OPÇÕES E PADRÕES
     opts <- .opt()
-    std_cols <- opts$observation$std.cols
+    std_cols <- opts$layer$std.cols
     
     # ARGUMENTOS
     ## dataset
