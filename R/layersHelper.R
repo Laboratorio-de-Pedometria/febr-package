@@ -185,3 +185,80 @@
     }
     return (res)
   }
+# Repetições de laboratório
+.solveLayerRepetition <-
+  function (obj, observation.id = "observacao_id", layer.id = "camada_numero", sample.id = "amostra_codigo",
+            combine.fun = "mean") {
+    
+    # Dividir camadas por 'observacao_id'
+    split_obj <- split(x = obj, f = obj[[observation.id]])
+    
+    # Duas ou mais camadas possuem valor idêntico de 'camada_numero'
+    has_rep <- sapply(split_obj, function (x) any(duplicated(x[[layer.id]])))
+    if (length(has_rep) >= 1) {
+      
+      id_class <- lapply(obj, class)
+      
+      res <- split_obj
+      res[has_rep] <- lapply(split_obj[has_rep], function (obj) {
+        
+        # Quais camadas possuem o mesmo 'camada_numero'?
+        idx <-  match(obj[[layer.id]], obj[[layer.id]])
+        
+        # Dividir camadas por 'camada_numero'
+        new_obj <- split(x = obj, f = idx)
+        idx2 <- sapply(new_obj, function (x) nrow(x) > 1)
+          
+        # Processar os dados
+        # Usar a primeira camada para armazenar os dados
+        new_obj[idx2] <- lapply(new_obj[idx2], function (x) {
+          
+          # Número de camadas
+          n <- nrow(x)
+          i <- sample(x = seq(n), size = 1)
+          
+          # Variáveis contínuas
+          id_con <- which(id_class %in% c("numeric", "integer"))
+          if (length(id_con) >= 1) {
+            switch(
+              smoothing.fun,
+              mean = {
+                x[1, id_con] <- apply(x[id_con], 2, mean, na.rm = TRUE)
+              },
+              min = {
+                x[1, id_con] <- apply(x[id_con], 2, min, na.rm = TRUE)
+              },
+              max = {
+                x[1, id_con] <- apply(x[id_con], 2, max, na.rm = TRUE)
+              },
+              median = {
+                x[1, id_con] <- apply(x[id_con], 2, stats::median, na.rm = TRUE)
+              }
+            )
+          }
+          
+          # Variáveis categóricas
+          id_cat <- which(id_class %in% c("logical", "factor", "character"))
+          if (length(id_cat) >= 1) {
+            if (n >= 3) {
+              x[1, id_cat] <- apply(x[id_cat], 2, function (y) names(sort(table(y), decreasing = TRUE))[1])
+            } else {
+              x[1, id_cat] <- apply(x[id_cat], 2, function (y) y[i])
+            }
+          }
+          
+          # Remover 'amostra_codigo'
+          x[1, sample.id] <- NA
+          
+          # Retornar apenas a primeira camada
+          x[1, ]
+        })
+        do.call(rbind, new_obj)
+      })
+      res <- do.call(rbind, c(res, make.row.names = FALSE, stringsAsFactors = FALSE))  
+      
+    } else {
+      res <- obj
+    }
+    return (res)
+  }

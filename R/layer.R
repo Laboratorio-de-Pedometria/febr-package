@@ -16,12 +16,17 @@
 #' standardization.
 #' \itemize{
 #' \item `plus.sign` Character string indicating what should be done with the plus sign (`+`) commonly used
-#'        along with the inferior limit of the bottom layer of an observation. Options are `"keep"` (default),
-#'        `"add"`, and `"remove"`.
+#'       along with the inferior limit of the bottom layer of an observation. Options are `"keep"` (default),
+#'       `"add"`, and `"remove"`.
 #' \item `plus.depth` Numeric value indicating the depth increment (in centimetres) when processing the plus
-#'        sign (`+`) with `plus.sign = "add"`. Defaults to `plus.depth = 2.5`.
+#'       sign (`+`) with `plus.sign = "add"`. Defaults to `plus.depth = 2.5`.
+#' \item `repetition` Character string indicating what should be done with repetitions, i.e. repeated
+#'       measurements of layers in an observation. Options are `"keep"` (default) and `"combine"`.
+#' \item `combine.fun` Character string indicating the function that should be used to combine repeated 
+#'       measurements of layers in an observation when `repetition = "combine"`. Options are `"mean"` 
+#'       (default), `"min"`, `"max"`, and `"median"`.
 #' \item `transition` Character string indicating what should be done about wavy, irregular, and broken
-#'        transitions between layers in an observation? Options are `"keep"` (default) and `"smooth"`.
+#'        transitions between layers in an observation. Options are `"keep"` (default) and `"smooth"`.
 #' \item `smoothing.fun` Character string indicating the function that should be used to smooth wavy and
 #'       irregular transitions between layers in an observation when `transition = "smooth"`. Options are 
 #'       `"mean"` (default), `"min"`, `"max"`, and `"median"`.
@@ -91,7 +96,8 @@ layer <-
   function (dataset, variable,
             stack = FALSE, missing = list(depth = "keep", data = "keep"),
             standardization = list(
-              plus.sign = "keep", plus.depth = 2.5, 
+              plus.sign = "keep", plus.depth = 2.5,
+              repetition = "keep", combine.fun = "mean",
               transition = "keep", smoothing.fun = "mean",
               units = FALSE, round = FALSE),
             harmonization = list(harmonize = FALSE, level = 2),
@@ -146,6 +152,18 @@ layer <-
       } else if (standardization$plus.depth > 100 || standardization$plus.depth < 0) {
         y <- standardization$plus.depth
         stop (glue::glue("unlikely value '{y}' passed to sub-argument 'standardization$plus.depth'"))
+      }
+      if (is.null(standardization$repetition)) {
+        standardization$repetition <- "keep"
+      } else if (!standardization$repetition %in% c("combine", "keep")) {
+        y <- standardization$repetition
+        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$repetition'"))
+      }
+      if (is.null(standardization$combine.fun)) {
+        standardization$combine.fun <- "mean"
+      } else if (!standardization$combine.fun %in% c("mean", "min", "max", "median")) {
+        y <- standardization$combine.fun
+        stop(glue::glue("unknown value '{y}' passed to sub-argument 'standardization$combine.fun'"))
       }
       if (is.null(standardization$transition)) {
         standardization$transition <- "keep"
@@ -289,6 +307,13 @@ layer <-
           if (standardization$plus.sign != "keep") {
             tmp <- .setMaximumObservationDepth(
               obj = tmp, plus.sign = standardization$plus.sign, plus.depth = standardization$plus.depth)
+          }
+          
+          ## Repetições de laboratório
+          ## O padrão consiste em manter as repetições de laboratório
+          ## A coluna 'camada_numero' é a chave para o processamento dos dados
+          if (standardization$repetition != "keep") {
+            tmp <- .solveLayerRepetition(obj = tmp, combine.fun = standardization$combine.fun)
           }
           
           ## Transição ondulada ou irregular
