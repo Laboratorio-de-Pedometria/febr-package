@@ -36,6 +36,7 @@
 #' \item `smoothing.fun` Character string indicating the function that should be used to smooth wavy and
 #'       irregular transitions between layers in an observation when `transition = "smooth"`. Options are 
 #'       `"mean"` (default), `"min"`, `"max"`, and `"median"`.
+#' \item `merge.fun` ...
 #' \item `units` Logical value indicating if the measurement units of the real and integer variable(s) should be
 #'       converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
 #'       performed. See \code{\link[febr]{standard}} for more information. (NOT AVAILABLE AT THE MOMENT!)
@@ -105,7 +106,7 @@ layer <-
               plus.sign = "keep", plus.depth = 2.5,
               lessthan.sign = "keep", lessthan.frac = 0.5,
               repetition = "keep", combine.fun = "mean",
-              transition = "keep", smoothing.fun = "mean",
+              transition = "keep", smoothing.fun = "mean", merge.fun = "wmean",
               units = FALSE, round = FALSE),
             harmonization = list(harmonize = FALSE, level = 2),
             progress = TRUE, verbose = TRUE) {
@@ -349,7 +350,7 @@ layer <-
             tmp <- .solveIrregularLayerTransition(obj = tmp, smoothing.fun = standardization$smoothing.fun)
             
             # What to do with broken layer transitions?
-            # tmp <- .solveBrokenLayerTransition(obj = tmp)
+            tmp <- .solveBrokenLayerTransition(obj = tmp, merge.fun = standardization$merge.fun)
             
           }
           

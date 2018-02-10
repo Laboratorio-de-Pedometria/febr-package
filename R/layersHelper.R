@@ -162,8 +162,9 @@
 # rm(list = ls())
 # source("R/layers.R")
 # source("R/standards.R")
-# res <- layers("ctb0643", missing.data = "keep")
-# res[res$observacao_id == "Perfil-01", ]
+# res <- febr::layer("ctb0643", variable = "all")
+# obj <- res[res$observacao_id == "Perfil-01", ]
+# .solveBrokenLayerTransition(obj[c(1:7, 52)])
 # res <- .solveBrokenLayerTransition(res)
 # res[res$observacao_id == "Perfil-01", ]
 # res[res$observacao_id == "Perfil-10", ]
@@ -172,45 +173,93 @@
 # res
 # res <- .solveBrokenLayerTransition(res)
 # res
+.weightedTable <-
+  function (x, w) {
+    res <- by(data = w, INDICES = x, FUN = sum)
+    res <- names(which.max(res))
+    return (res)
+  }
 .solveBrokenLayerTransition <-
-  function (obj, id.cols = c("observacao_id", "camada_numero", "camada_nome", "amostra_codigo"),
-            depth.cols = c("profund_sup", "profund_inf")) {
+  function (obj, depth.cols = c("profund_sup", "profund_inf"), merge.fun = "wmean",
+            id.cols = c("observacao_id", "camada_numero", "camada_nome", "amostra_codigo")) {
     
-    # Identificar colunas potencialmente com dados de ferro
-    fe_cols <- colnames(obj)[grep("^fe_", colnames(obj))]
+    # Dividir camadas por 'observacao_id' 
+    split_obj <- split(x = obj, f = obj[[id.cols[1]]])
     
-    # Split layers by observation for further processing 
-    split_obj <- split(obj, obj$observacao_id)
+    # Tipo 1.
+    # Uma ou mais camadas possuem valores idênticos de 'profund_sup' (mas não necessariamente de 
+    # 'profund_inf'), indicando que elas começam na mesma profundidade (mas não necessariamente terminam na
+    # mesma profundidade).
+    has_broken1 <- sapply(split_obj, function (x) any(duplicated(x[depth.cols[1]])))
     
-    # Type 1.
-    # Two or more layers have equal values for 'profund_sup' (but not necessarilly for 'profund_inf'),  
-    # meaning that they start at the same depth (but not necessarilly end at the same depth).
-    broken1 <- any(sapply(split_obj, function (x) any(duplicated(x[depth.cols[1]]))))
-    if (broken1) {
-      res <- lapply(split_obj, function (obj) {
+    if (length(has_broken1) >= 1) {
+      
+      id_class <- lapply(obj, class)
+      
+      res <- split_obj
+      res[has_broken1] <- lapply(split_obj[has_broken1], function (obj) {
         
         # Which layers share the same 'profund_sup'?
-        idx <-  match(obj[, depth.cols[1]], obj[, depth.cols[1]])
+        idx <-  match(obj[[depth.cols[1]]], obj[[depth.cols[1]]])
 
-        # Split layers by 'profund_sup'
-        new_obj <- split(obj, idx)
+        # Dividir camadas por 'profund_sup'
+        new_obj <- split(x = obj, f = idx)
         idx2 <- sapply(new_obj, function (x) nrow(x) > 1)
           
-        # Process data
+        # Processar os dados
+        # Usar a primeira camada para armazenar os dados
         new_obj[idx2] <- lapply(new_obj[idx2], function (x) {
           
-          width <- as.numeric(x$profund_inf) - as.numeric(x$profund_sup)
-          total <- sum(width)
-          width <- width / total
-          id_top <- which.min(as.numeric(x$profund_sup))
-          id_bottom <- which.max(as.numeric(x$profund_inf))
+          # Número de camadas
+          n <- nrow(x)
+          i <- sample(x = seq(n), size = 1)
           
-          # Use the first layer to stare new data
+          # Calcular espessura das camadas
+          thick <- as.numeric(x[[depth.cols[2]]]) - as.numeric(x[[depth.cols[1]]])
+          total <- sum(thick)
+          thick <- thick / total
+          id_top <- which.min(as.numeric(x[[depth.cols[1]]]))
+          id_bottom <- which.max(as.numeric(x[[depth.cols[2]]]))
+          
+          # Atualizar nomes das colunas de identificação e profundidades
           x[1, id.cols[-1]] <- apply(x[id.cols[-1]], 2, paste, collapse = "+")
           x[1, depth.cols] <- c(x[id_top, depth.cols[1]], x[id_bottom, depth.cols[2]])
-          x[1, fe_cols] <- colSums(x[fe_cols] * width)
           
-          # Return only the first layer
+          # Variáveis contínuas
+          id_con <- which(id_class %in% c("numeric", "integer"))
+          if (length(id_con) >= 1) {
+            switch(
+              merge.fun,
+              wmean = {
+                x[1, id_con] <- colSums(x[id_con] * thick, na.rm = TRUE)
+              },
+              mean = {
+                x[1, id_con] <- apply(x[id_con], 2, mean, na.rm = TRUE)
+              },
+              min = {
+                x[1, id_con] <- apply(x[id_con], 2, min, na.rm = TRUE)
+              },
+              max = {
+                x[1, id_con] <- apply(x[id_con], 2, max, na.rm = TRUE)
+              },
+              median = {
+                x[1, id_con] <- apply(x[id_con], 2, stats::median, na.rm = TRUE)
+              }
+            )
+          }
+          
+          # Variáveis categóricas
+          id_cat <- which(id_class %in% c("logical", "factor", "character"))
+          id_cat <- id_cat[!names(id_class[id_cat]) %in% c("dataset_id", id.cols, depth.cols)]
+          if (length(id_cat) >= 1) {
+            if (n >= 3) {
+              x[1, id_cat] <- apply(x[id_cat], 2, function (y) .weightedTable(x = y, w = thick))
+            } else {
+              x[1, id_cat] <- apply(x[id_cat], 2, function (y) y[i])
+            }
+          }
+          
+          # Retornar apenas a primeira camada
           x[1, ]
         })
         do.call(rbind, new_obj)
