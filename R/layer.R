@@ -20,13 +20,19 @@
 #'       `"add"`, and `"remove"`.
 #' \item `plus.depth` Numeric value indicating the depth increment (in centimetres) when processing the plus
 #'       sign (`+`) with `plus.sign = "add"`. Defaults to `plus.depth = 2.5`.
+#' \item `lessthan.sign` Character string indicating what should be done with the less-than sign (`<`) used
+#'       to indicate that the value of a variable is below the lower limit of detection. Options are `"keep"`
+#'       (default), `"subtract"`, and `"remove"`.
+#' \item `lessthan.frac` Numeric value between 0 and 1 (a fraction) by which the lower limit of detection 
+#'       should be subtracted when `lessthan.sign = "subtract"`. Defaults to `lessthan.frac = 0.5`, i.e. 
+#'       subtract 50% from the lower limit of detection.
 #' \item `repetition` Character string indicating what should be done with repetitions, i.e. repeated
 #'       measurements of layers in an observation. Options are `"keep"` (default) and `"combine"`.
 #' \item `combine.fun` Character string indicating the function that should be used to combine repeated 
 #'       measurements of layers in an observation when `repetition = "combine"`. Options are `"mean"` 
 #'       (default), `"min"`, `"max"`, and `"median"`.
 #' \item `transition` Character string indicating what should be done about wavy, irregular, and broken
-#'        transitions between layers in an observation. Options are `"keep"` (default) and `"smooth"`.
+#'       transitions between layers in an observation. Options are `"keep"` (default) and `"smooth"`.
 #' \item `smoothing.fun` Character string indicating the function that should be used to smooth wavy and
 #'       irregular transitions between layers in an observation when `transition = "smooth"`. Options are 
 #'       `"mean"` (default), `"min"`, `"max"`, and `"median"`.
@@ -97,6 +103,7 @@ layer <-
             stack = FALSE, missing = list(depth = "keep", data = "keep"),
             standardization = list(
               plus.sign = "keep", plus.depth = 2.5,
+              lessthan.sign = "keep", lessthan.frac = 0.5,
               repetition = "keep", combine.fun = "mean",
               transition = "keep", smoothing.fun = "mean",
               units = FALSE, round = FALSE),
@@ -152,6 +159,18 @@ layer <-
       } else if (standardization$plus.depth > 100 || standardization$plus.depth < 0) {
         y <- standardization$plus.depth
         stop (glue::glue("unlikely value '{y}' passed to sub-argument 'standardization$plus.depth'"))
+      }
+      if (is.null(standardization$lessthan.sign)) {
+        standardization$lessthan.sign <- "keep"
+      } else if (!standardization$lessthan.sign %in% c("add", "remove", "keep")) {
+        y <- standardization$lessthan.sign
+        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$lessthan.sign'"))
+      }
+      if (is.null(standardization$lessthan.frac)) {
+        standardization$lessthan.frac <- 0.5  
+      } else if (standardization$lessthan.frac > 1 || standardization$lessthan.frac < 0) {
+        y <- standardization$lessthan.frac
+        stop (glue::glue("unlikely value '{y}' passed to sub-argument 'standardization$lessthan.frac'"))
       }
       if (is.null(standardization$repetition)) {
         standardization$repetition <- "keep"
@@ -309,6 +328,14 @@ layer <-
               obj = tmp, plus.sign = standardization$plus.sign, plus.depth = standardization$plus.depth)
           }
           
+          ## Símbolo indicador do limite inferior de detecção do método de determinação (<)
+          ## O padrão consiste em manter o símbolo
+          if (standardization$lessthan.sign != "keep") {
+            tmp <- .setLowestMeasuredValue(
+              obj = tmp, lessthan.sign = standardization$lessthan.sign, 
+              lessthan.frac = standardization$lessthan.frac)
+          }
+          
           ## Repetições de laboratório
           ## O padrão consiste em manter as repetições de laboratório
           ## A coluna 'camada_numero' é a chave para o processamento dos dados
@@ -326,7 +353,7 @@ layer <-
             
           }
           
-          ## Se a profundidade foi padronizada, então os dados devem ser definidos como tipo 'Real'
+          ## Se a profundidade foi padronizada, então os dados devem ser definidos como tipo 'numeric'
           if (standardization$plus.sign != "keep" || standardization$transition != "keep") {
             tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
           }

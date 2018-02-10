@@ -39,6 +39,42 @@
       }
     return (obj)
   }
+
+# Símbolo indicador do limite inferior de detecção do método de determinação (<) ##############################
+.setLowestMeasuredValue <-
+  function (obj, lessthan.sign = "add", lessthan.frac = 0.5) {
+    
+    # Variáveis contínuas interpretadas como corrente de caracteres
+    id_class <- lapply(obj, class)
+    id_cha <- which(id_class %in% "character")
+    # A corrente de caracteres começa com o símbolo '<', seguido de um ou mais dígitos, não podendo haver
+    # qualquer caracter alfabético
+    idx_lessthan <- which(sapply(obj, function (x) any(grep(pattern = "\\b<[0-9]+[^:alpha:]$", x = x))))
+    
+    # Processar dados
+    if (length(idx_lessthan >= 1)) {
+      switch(
+        lessthan.sign,
+        
+        # Remover o sinal '<'
+        remove = {
+          obj[idx_lessthan] <- 
+            sapply(obj[idx_lessthan], function (x) {
+              as.numeric(gsub(pattern = "\\b<", replacement = "", x = x))
+            })
+        },
+        
+        # Subtrair uma dada quantidade (fração)
+        subtract = {
+          obj[idx_lessthan] <- 
+            sapply(obj[idx_lessthan], function (x) {
+              as.numeric(gsub(pattern = "\\b<", replacement = "", x = x)) * (1 - lessthan.frac)
+            })
+        }
+      )
+    }
+    return (obj)
+  }
 # What to do with wavy and irregular layer transitions?
 # 
 # Note that we can only deal with thansitions after we have dealt with the plus sign
@@ -185,7 +221,7 @@
     }
     return (res)
   }
-# Repetições de laboratório
+# Repetições de laboratório ###################################################################################
 .solveLayerRepetition <-
   function (obj, observation.id = "observacao_id", layer.id = "camada_numero", sample.id = "amostra_codigo",
             combine.fun = "mean") {
@@ -221,7 +257,7 @@
           id_con <- which(id_class %in% c("numeric", "integer"))
           if (length(id_con) >= 1) {
             switch(
-              smoothing.fun,
+              combine.fun,
               mean = {
                 x[1, id_con] <- apply(x[id_con], 2, mean, na.rm = TRUE)
               },
