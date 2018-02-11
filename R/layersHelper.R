@@ -41,38 +41,56 @@
   }
 
 # Símbolo indicador do limite inferior de detecção do método de determinação (<) ##############################
+# obj <- febr::layer(dataset = "ctb0018", variable = "prata")
+# obj <- data.frame(a = c("<50a", "5,0"), stringsAsFactors = FALSE)
+# .setLowestMeasuredValue(obj = obj, lessthan.frac = 0.5)
+.hasLessThanSign <-
+  function (x) {
+    all(grepl(pattern = "^<[0-9]+", x = x) && nchar(x = x) <= 5 && !grepl(pattern = "[:alpha:]", x = x))
+  }
 .setLowestMeasuredValue <-
-  function (obj, lessthan.sign = "add", lessthan.frac = 0.5) {
+  function (obj, lessthan.sign = "subtract", lessthan.frac = 0.5) {
     
     # Variáveis contínuas interpretadas como corrente de caracteres
-    id_class <- lapply(obj, class)
-    id_cha <- which(id_class %in% "character")
+    id_class <- sapply(obj, class)
+    id_class <- id_class[!names(id_class) %in% c("dataset_id", .opt()$layer$std.cols)]
+    id_cha <- names(id_class[id_class %in% "character"])
+    
     # A corrente de caracteres começa com o símbolo '<', seguido de um ou mais dígitos, não podendo haver
     # qualquer caracter alfabético
-    idx_lessthan <- which(sapply(obj, function (x) any(grep(pattern = "\\b<[0-9]+[^:alpha:]$", x = x))))
-    
-    # Processar dados
-    if (length(idx_lessthan >= 1)) {
-      switch(
-        lessthan.sign,
-        
-        # Remover o sinal '<'
-        remove = {
-          obj[idx_lessthan] <- 
-            sapply(obj[idx_lessthan], function (x) {
-              as.numeric(gsub(pattern = "\\b<", replacement = "", x = x))
-            })
-        },
-        
-        # Subtrair uma dada quantidade (fração)
-        subtract = {
-          obj[idx_lessthan] <- 
-            sapply(obj[idx_lessthan], function (x) {
-              as.numeric(gsub(pattern = "\\b<", replacement = "", x = x)) * (1 - lessthan.frac)
-            })
-        }
-      )
+    if (length(id_cha) >= 1) {
+      idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(.hasLessThanSign(x)))))
+      
+      # Processar dados
+      if (length(idx_lessthan >= 1)) {
+        switch(
+          lessthan.sign,
+          
+          # Remover o sinal '<'
+          # Precisa substituir vírgula por ponto como separador decimal
+          remove = {
+            obj[idx_lessthan] <- 
+              sapply(obj[idx_lessthan], function (x) {
+                out <- gsub(pattern = "^<", replacement = "", x = x)
+                out <- gsub(pattern = "(.),(.)", replacement = "\\1.\\2", x = out)
+                as.numeric(out)
+              })
+          },
+          
+          # Subtrair uma dada quantidade (fração)
+          # Precisa substituir vírgula por ponto como separador decimal
+          subtract = {
+            obj[idx_lessthan] <-
+              sapply(obj[idx_lessthan], function (x) {
+                out <- gsub(pattern = "^<", replacement = glue::glue("{1 - lessthan.frac}*"), x = x)
+                out <- gsub(pattern = "(.),(.)", replacement = "\\1.\\2", x = out)
+                sapply(out, function (out) eval(parse(text = out)), USE.NAMES = FALSE)
+              })
+          }
+        )
+      }
     }
+    
     return (obj)
   }
 # What to do with wavy and irregular layer transitions?
