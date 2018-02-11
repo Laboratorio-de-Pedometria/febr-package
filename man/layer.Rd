@@ -6,7 +6,9 @@
 \usage{
 layer(dataset, variable, stack = FALSE, missing = list(depth = "keep", data
   = "keep"), standardization = list(plus.sign = "keep", plus.depth = 2.5,
-  transition = "keep", smoothing.fun = "mean", units = FALSE, round = FALSE),
+  lessthan.sign = "keep", lessthan.frac = 0.5, repetition = "keep", combine.fun
+  = "mean", wavy.transition = "keep", smoothing.fun = "mean", broken.transition
+  = "keep", merge.fun = "weighted.mean", units = FALSE, round = FALSE),
   harmonization = list(harmonize = FALSE, level = 2), progress = TRUE,
   verbose = TRUE)
 }
@@ -33,14 +35,38 @@ along with the inferior limit of the bottom layer of an observation. Options are
 \code{"add"}, and \code{"remove"}.
 \item \code{plus.depth} Numeric value indicating the depth increment (in centimetres) when processing the plus
 sign (\code{+}) with \code{plus.sign = "add"}. Defaults to \code{plus.depth = 2.5}.
-\item \code{transition} Character string indicating what should be done about wavy, irregular, and broken
-transitions between layers in an observation? Options are \code{"keep"} (default) and \code{"smooth"}.
-\item \code{smoothing.fun} Character string indicating the function that should be used to smooth wavy and
-irregular transitions between layers in an observation when \code{transition = "smooth"}. Options are
-\code{"mean"} (default), \code{"min"}, \code{"max"}, and \code{"median"}.
+
+\item \code{lessthan.sign} Character string indicating what should be done with the less-than sign (\code{<}) used
+to indicate that the value of a variable is below the lower limit of detection. Options are \code{"keep"}
+(default), \code{"subtract"}, and \code{"remove"}.
+\item \code{lessthan.frac} Numeric value between 0 and 1 (a fraction) by which the lower limit of detection
+should be subtracted when \code{lessthan.sign = "subtract"}. Defaults to \code{lessthan.frac = 0.5}, i.e.
+subtract 50% from the lower limit of detection.
+
+\item \code{repetition} Character string indicating what should be done with repetitions, i.e. repeated
+measurements of layers in an observation. Options are \code{"keep"} (default) and \code{"combine"}.
+\item \code{combine.fun} Character string indicating the function that should be used to combine repeated
+measurements of layers in an observation when \code{repetition = "combine"}. Options are \code{"mean"}
+(default), \code{"min"}, \code{"max"}, and \code{"median"}.
+
+\item \code{wavy.transition} Character string indicating what should be done about the wavy (and irregular)
+transition between subsequent layers in an observation. Options are \code{"keep"} (default) and
+\code{"smooth"}.
+\item \code{smoothing.fun} Character string indicating the function that should be used to smooth wavy (and
+irregular) transitions between subsequent layers in an observation when \code{wavy.transition = "smooth"}.
+Options are \code{"mean"} (default), \code{"min"}, \code{"max"}, and \code{"median"}.
+
+\item \code{broken.transition} Character string indicating what should be done about the broken transition
+between intermingled, disrupted layers in an observation. Options are \code{"keep"} (default) and
+\code{"merge"}.
+\item \code{merge.fun} Character string indicating the function that should be used to merge intermingled,
+disrupted layers (also called broken transition) in an observation when \code{broken.transition = "merge"}.
+Options are \code{"weighted.mean"} (default), \code{"mean"}, \code{"min"}, \code{"max"}, and \code{"median"}.
+
 \item \code{units} Logical value indicating if the measurement units of the real and integer variable(s) should be
 converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no conversion is
 performed. See \code{\link[febr]{standard}} for more information. (NOT AVAILABLE AT THE MOMENT!)
+
 \item \code{round} Logical value indicating if the values of the real and integer variable(s) should be rounded
 to the standard number of decimal places. Effective only when \code{units = TRUE}. Defaults to
 \code{round = FALSE}, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more information.

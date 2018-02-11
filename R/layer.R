@@ -20,26 +20,38 @@
 #'       `"add"`, and `"remove"`.
 #' \item `plus.depth` Numeric value indicating the depth increment (in centimetres) when processing the plus
 #'       sign (`+`) with `plus.sign = "add"`. Defaults to `plus.depth = 2.5`.
+#'       
 #' \item `lessthan.sign` Character string indicating what should be done with the less-than sign (`<`) used
 #'       to indicate that the value of a variable is below the lower limit of detection. Options are `"keep"`
 #'       (default), `"subtract"`, and `"remove"`.
 #' \item `lessthan.frac` Numeric value between 0 and 1 (a fraction) by which the lower limit of detection 
 #'       should be subtracted when `lessthan.sign = "subtract"`. Defaults to `lessthan.frac = 0.5`, i.e. 
 #'       subtract 50% from the lower limit of detection.
+#'       
 #' \item `repetition` Character string indicating what should be done with repetitions, i.e. repeated
 #'       measurements of layers in an observation. Options are `"keep"` (default) and `"combine"`.
 #' \item `combine.fun` Character string indicating the function that should be used to combine repeated 
 #'       measurements of layers in an observation when `repetition = "combine"`. Options are `"mean"` 
 #'       (default), `"min"`, `"max"`, and `"median"`.
-#' \item `transition` Character string indicating what should be done about wavy, irregular, and broken
-#'       transitions between layers in an observation. Options are `"keep"` (default) and `"smooth"`.
-#' \item `smoothing.fun` Character string indicating the function that should be used to smooth wavy and
-#'       irregular transitions between layers in an observation when `transition = "smooth"`. Options are 
-#'       `"mean"` (default), `"min"`, `"max"`, and `"median"`.
-#' \item `merge.fun` ...
+#'       
+#' \item `wavy.transition` Character string indicating what should be done about the wavy (and irregular) 
+#'       transition between subsequent layers in an observation. Options are `"keep"` (default) and 
+#'       `"smooth"`.
+#' \item `smoothing.fun` Character string indicating the function that should be used to smooth wavy (and
+#'       irregular) transitions between subsequent layers in an observation when `wavy.transition = "smooth"`.
+#'       Options are `"mean"` (default), `"min"`, `"max"`, and `"median"`.
+#'       
+#' \item `broken.transition` Character string indicating what should be done about the broken transition
+#'       between intermingled, disrupted layers in an observation. Options are `"keep"` (default) and 
+#'       `"merge"`.
+#' \item `merge.fun` Character string indicating the function that should be used to merge intermingled,
+#'       disrupted layers (also called broken transition) in an observation when `broken.transition = "merge"`.
+#'       Options are `"weighted.mean"` (default), `"mean"`, `"min"`, `"max"`, and `"median"`.
+#'       
 #' \item `units` Logical value indicating if the measurement units of the real and integer variable(s) should be
 #'       converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
 #'       performed. See \code{\link[febr]{standard}} for more information. (NOT AVAILABLE AT THE MOMENT!)
+#'       
 #' \item `round` Logical value indicating if the values of the real and integer variable(s) should be rounded  
 #'       to the standard number of decimal places. Effective only when `units = TRUE`. Defaults to 
 #'       `round = FALSE`, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more information.
@@ -106,7 +118,8 @@ layer <-
               plus.sign = "keep", plus.depth = 2.5,
               lessthan.sign = "keep", lessthan.frac = 0.5,
               repetition = "keep", combine.fun = "mean",
-              transition = "keep", smoothing.fun = "mean", merge.fun = "wmean",
+              wavy.transition = "keep", smoothing.fun = "mean", 
+              broken.transition = "keep", merge.fun = "weighted.mean",
               units = FALSE, round = FALSE),
             harmonization = list(harmonize = FALSE, level = 2),
             progress = TRUE, verbose = TRUE) {
@@ -185,11 +198,12 @@ layer <-
         y <- standardization$combine.fun
         stop(glue::glue("unknown value '{y}' passed to sub-argument 'standardization$combine.fun'"))
       }
-      if (is.null(standardization$transition)) {
-        standardization$transition <- "keep"
-      } else if (!standardization$transition %in% c("smooth", "keep")) {
-        y <- standardization$transition
-        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$transition'"))
+      
+      if (is.null(standardization$wavy.transition)) {
+        standardization$wavy.transition <- "keep"
+      } else if (!standardization$wavy.transition %in% c("smooth", "keep")) {
+        y <- standardization$wavy.transition
+        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$wavy.transition'"))
       }
       if (is.null(standardization$smoothing.fun)) {
         standardization$smoothing.fun <- "mean"
@@ -197,6 +211,20 @@ layer <-
         y <- standardization$smoothing.fun
         stop(glue::glue("unknown value '{y}' passed to sub-argument 'standardization$smoothing.fun'"))
       }
+      
+      if (is.null(standardization$broken.transition)) {
+        standardization$broken.transition <- "keep"
+      } else if (!standardization$broken.transition %in% c("merge", "keep")) {
+        y <- standardization$broken.transition
+        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$broken.transition'"))
+      }
+      if (is.null(standardization$merge.fun)) {
+        standardization$merge.fun <- "weighted.mean"
+      } else if (!standardization$merge.fun %in% c("weighted.mean", "mean", "min", "max", "median")) {
+        y <- standardization$merge.fun
+        stop(glue::glue("unknown value '{y}' passed to sub-argument 'standardization$merge.fun'"))
+      }
+      
       if (is.null(standardization$units)) {
         standardization$units <- FALSE
       } else if (!is.logical(standardization$units)) {
@@ -346,16 +374,18 @@ layer <-
           
           ## Transição ondulada ou irregular
           ## O padrão consiste em manter a transição ondulada ou irregular.
-          if (standardization$transition != "keep") {
-            tmp <- .solveIrregularLayerTransition(obj = tmp, smoothing.fun = standardization$smoothing.fun)
-            
-            # What to do with broken layer transitions?
-            tmp <- .solveBrokenLayerTransition(obj = tmp, merge.fun = standardization$merge.fun)
-            
+          if (standardization$wavy.transition != "keep") {
+            tmp <- .solveWavyLayerTransition(obj = tmp, smoothing.fun = standardization$smoothing.fun)
+          }
+          
+          ## Transição quebrada
+          ## O padrão consiste em manter a transição quebrada
+          if (standardization$broken.transition != "keep") {
+            tmp <- .solveBrokenLayerTransition(obj = tmp, merge.fun = standardization$merge.fun) 
           }
           
           ## Se a profundidade foi padronizada, então os dados devem ser definidos como tipo 'numeric'
-          if (standardization$plus.sign != "keep" || standardization$transition != "keep") {
+          if (standardization$plus.sign != "keep" || standardization$wavy.transition != "keep") {
             tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
           }
           

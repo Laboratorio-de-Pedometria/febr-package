@@ -106,7 +106,7 @@
 # source("R/layers.R")
 # res <- layers("ctb0011", missing.data = "keep")
 # res[, c("profund_sup", "profund_inf")]
-# res <- .solveIrregularLayerTransition(res)
+# res <- .solveWavyLayerTransition(res)
 # res[, c("profund_sup", "profund_inf")]
 # 
 # Example 2 (many):
@@ -116,7 +116,7 @@
 # res[, c("profund_sup", "profund_inf")]
 # res <- .setMaximumObservationDepth(res)
 # res[, c("profund_sup", "profund_inf")]
-# res2 <- .solveIrregularLayerTransition(res)
+# res2 <- .solveWavyLayerTransition(res)
 # cbind(res[, c("profund_sup", "profund_inf")], res2[, c("profund_sup", "profund_inf")])
 # 
 # Example 2 different length for sup and inf:
@@ -126,11 +126,11 @@
 # source("R/febrHelper.R")
 # res <- layers("ctb0025", missing.data = "keep")
 # res[, c("profund_sup", "profund_inf")]
-# res2 <- .solveIrregularLayerTransition(res)
+# res2 <- .solveWavyLayerTransition(res)
 # cbind(res[, c("profund_sup", "profund_inf")], res2[, c("profund_sup", "profund_inf")])
 # 
 #' @importFrom stats median 
-.solveIrregularLayerTransition <-
+.solveWavyLayerTransition <-
   function (obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
             smoothing.fun = "mean") {
     
@@ -181,7 +181,7 @@
 # source("R/layers.R")
 # source("R/standards.R")
 # res <- febr::layer("ctb0643", variable = "all")
-# obj <- res[res$observacao_id == "Perfil-01", ]
+# obj <- res[res$observacao_id == "Perfil-01", 1:10]
 # .solveBrokenLayerTransition(obj[c(1:7, 52)])
 # res <- .solveBrokenLayerTransition(res)
 # res[res$observacao_id == "Perfil-01", ]
@@ -191,6 +191,30 @@
 # res
 # res <- .solveBrokenLayerTransition(res)
 # res
+# # tipo 1:
+# obj <- data.frame(
+#   observacao_id  = "a",
+#   camada_numero  = letters[1:4],
+#   amostra_codigo = letters[1:4],
+#   camada_nome    = letters[1:4],
+#   profund_sup    = c(0, 10, 10, 20), 
+#   profund_inf    = c(10, 15, 20, 30), 
+#   con            = c(1, 2, 3, 4), 
+#   cat            = letters[1:4], 
+#   stringsAsFactors = FALSE)
+# .solveBrokenLayerTransition(obj)
+# # tipo 2:
+# obj <- data.frame(
+#   observacao_id  = "a",
+#   camada_numero  = letters[1:4],
+#   amostra_codigo = letters[1:4],
+#   camada_nome    = letters[1:4],
+#   profund_sup    = c(0, 10, 15, 20), 
+#   profund_inf    = c(10, 20, 20, 30), 
+#   con            = c(1, 2, 3, 4), 
+#   cat            = letters[1:4], 
+#   stringsAsFactors = FALSE)
+# .solveBrokenLayerTransition(obj)
 .weightedTable <-
   function (x, w) {
     res <- by(data = w, INDICES = x, FUN = sum)
@@ -198,23 +222,28 @@
     return (res)
   }
 .solveBrokenLayerTransition <-
-  function (obj, depth.cols = c("profund_sup", "profund_inf"), merge.fun = "wmean",
+  function (obj, depth.cols = c("profund_sup", "profund_inf"), merge.fun = "weighted.mean",
             id.cols = c("observacao_id", "camada_numero", "camada_nome", "amostra_codigo")) {
     
     # Dividir camadas por 'observacao_id' 
     split_obj <- split(x = obj, f = obj[[id.cols[1]]])
     
-    # Tipo 1.
-    # Uma ou mais camadas possuem valores idênticos de 'profund_sup' (mas não necessariamente de 
+    # Tipo 1: Uma ou mais camadas possuem valores idênticos de 'profund_sup' (mas não necessariamente de 
     # 'profund_inf'), indicando que elas começam na mesma profundidade (mas não necessariamente terminam na
     # mesma profundidade).
     has_broken1 <- sapply(split_obj, function (x) any(duplicated(x[depth.cols[1]])))
+    
+    # Tipo 2: Uma ou mais camadas possuem valores idênticos de 'profund_inf' (mas não necessariamente de 
+    # 'profund_sup'), indicando que elas terminam na mesma profundidade (mas não necessariamente começam na
+    # mesma profundidade).
+    has_broken2 <- sapply(split_obj, function (x) any(duplicated(x[depth.cols[2]])))
     
     if (length(has_broken1) >= 1) {
       
       id_class <- lapply(obj, class)
       
       res <- split_obj
+      
       res[has_broken1] <- lapply(split_obj[has_broken1], function (obj) {
         
         # Which layers share the same 'profund_sup'?
@@ -248,8 +277,9 @@
           if (length(id_con) >= 1) {
             switch(
               merge.fun,
-              wmean = {
-                x[1, id_con] <- colSums(x[id_con] * thick, na.rm = TRUE)
+              weighted.mean = {
+                x[1, id_con] <- 
+                  apply(x[id_con], 2, function (y) stats::weighted.mean(x = y, w = thick, na.rm = TRUE))
               },
               mean = {
                 x[1, id_con] <- apply(x[id_con], 2, mean, na.rm = TRUE)
