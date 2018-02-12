@@ -191,133 +191,110 @@
 # res
 # res <- .solveBrokenLayerTransition(res)
 # res
-# # tipo 1:
-# obj <- data.frame(
-#   observacao_id  = "a",
-#   camada_numero  = letters[1:4],
-#   amostra_codigo = letters[1:4],
-#   camada_nome    = letters[1:4],
-#   profund_sup    = c(0, 10, 10, 20), 
-#   profund_inf    = c(10, 15, 20, 30), 
-#   con            = c(1, 2, 3, 4), 
-#   cat            = letters[1:4], 
-#   stringsAsFactors = FALSE)
 # .solveBrokenLayerTransition(obj)
-# # tipo 2:
-# obj <- data.frame(
-#   observacao_id  = "a",
-#   camada_numero  = letters[1:4],
-#   amostra_codigo = letters[1:4],
-#   camada_nome    = letters[1:4],
-#   profund_sup    = c(0, 10, 15, 20), 
-#   profund_inf    = c(10, 20, 20, 30), 
-#   con            = c(1, 2, 3, 4), 
-#   cat            = letters[1:4], 
-#   stringsAsFactors = FALSE)
-# .solveBrokenLayerTransition(obj)
-.weightedTable <-
-  function (x, w) {
-    res <- by(data = w, INDICES = x, FUN = sum)
-    res <- names(which.max(res))
-    return (res)
-  }
-.solveBrokenLayerTransition <-
-  function (obj, depth.cols = c("profund_sup", "profund_inf"), merge.fun = "weighted.mean",
-            id.cols = c("observacao_id", "camada_numero", "camada_nome", "amostra_codigo")) {
-    
-    # Dividir camadas por 'observacao_id' 
-    split_obj <- split(x = obj, f = obj[[id.cols[1]]])
-    
-    # Tipo 1: Uma ou mais camadas possuem valores idênticos de 'profund_sup' (mas não necessariamente de 
-    # 'profund_inf'), indicando que elas começam na mesma profundidade (mas não necessariamente terminam na
-    # mesma profundidade).
-    has_broken1 <- sapply(split_obj, function (x) any(duplicated(x[depth.cols[1]])))
-    
-    # Tipo 2: Uma ou mais camadas possuem valores idênticos de 'profund_inf' (mas não necessariamente de 
-    # 'profund_sup'), indicando que elas terminam na mesma profundidade (mas não necessariamente começam na
-    # mesma profundidade).
-    has_broken2 <- sapply(split_obj, function (x) any(duplicated(x[depth.cols[2]])))
-    
-    if (length(has_broken1) >= 1) {
-      
-      id_class <- lapply(obj, class)
-      
-      res <- split_obj
-      
-      res[has_broken1] <- lapply(split_obj[has_broken1], function (obj) {
-        
-        # Which layers share the same 'profund_sup'?
-        idx <-  match(obj[[depth.cols[1]]], obj[[depth.cols[1]]])
-
-        # Dividir camadas por 'profund_sup'
-        new_obj <- split(x = obj, f = idx)
-        idx2 <- sapply(new_obj, function (x) nrow(x) > 1)
-          
-        # Processar os dados
-        # Usar a primeira camada para armazenar os dados
-        new_obj[idx2] <- lapply(new_obj[idx2], function (x) {
-          
-          # Número de camadas
-          n <- nrow(x)
-          i <- sample(x = seq(n), size = 1)
-          
-          # Calcular espessura das camadas
-          thick <- as.numeric(x[[depth.cols[2]]]) - as.numeric(x[[depth.cols[1]]])
-          total <- sum(thick)
-          thick <- thick / total
-          id_top <- which.min(as.numeric(x[[depth.cols[1]]]))
-          id_bottom <- which.max(as.numeric(x[[depth.cols[2]]]))
-          
-          # Atualizar nomes das colunas de identificação e profundidades
-          x[1, id.cols[-1]] <- apply(x[id.cols[-1]], 2, paste, collapse = "+")
-          x[1, depth.cols] <- c(x[id_top, depth.cols[1]], x[id_bottom, depth.cols[2]])
-          
-          # Variáveis contínuas
-          id_con <- which(id_class %in% c("numeric", "integer"))
-          if (length(id_con) >= 1) {
-            switch(
-              merge.fun,
-              weighted.mean = {
-                x[1, id_con] <- 
-                  apply(x[id_con], 2, function (y) stats::weighted.mean(x = y, w = thick, na.rm = TRUE))
-              },
-              mean = {
-                x[1, id_con] <- apply(x[id_con], 2, mean, na.rm = TRUE)
-              },
-              min = {
-                x[1, id_con] <- apply(x[id_con], 2, min, na.rm = TRUE)
-              },
-              max = {
-                x[1, id_con] <- apply(x[id_con], 2, max, na.rm = TRUE)
-              },
-              median = {
-                x[1, id_con] <- apply(x[id_con], 2, stats::median, na.rm = TRUE)
-              }
-            )
-          }
-          
-          # Variáveis categóricas
-          id_cat <- which(id_class %in% c("logical", "factor", "character"))
-          id_cat <- id_cat[!names(id_class[id_cat]) %in% c("dataset_id", id.cols, depth.cols)]
-          if (length(id_cat) >= 1) {
-            if (n >= 3) {
-              x[1, id_cat] <- apply(x[id_cat], 2, function (y) .weightedTable(x = y, w = thick))
-            } else {
-              x[1, id_cat] <- apply(x[id_cat], 2, function (y) y[i])
-            }
-          }
-          
-          # Retornar apenas a primeira camada
-          x[1, ]
-        })
-        do.call(rbind, new_obj)
-      })
-      res <- do.call(rbind, c(res, make.row.names = FALSE, stringsAsFactors = FALSE))  
-    } else {
-      res <- obj
-    }
-    return (res)
-  }
+# .weightedTable <-
+#   function (x, w) {
+#     res <- by(data = w, INDICES = x, FUN = sum)
+#     res <- names(which.max(res))
+#     return (res)
+#   }
+# .solveBrokenLayerTransition <-
+#   function (obj, depth.cols = c("profund_sup", "profund_inf"), merge.fun = "weighted.mean",
+#             id.cols = c("observacao_id", "camada_numero", "camada_nome", "amostra_codigo")) {
+#     
+#     # Dividir camadas por 'observacao_id' 
+#     split_obj <- split(x = obj, f = obj[[id.cols[1]]])
+#     
+#     # Tipo 1: Uma ou mais camadas possuem valores idênticos de 'profund_sup' (mas não necessariamente de 
+#     # 'profund_inf'), indicando que elas começam na mesma profundidade (mas não necessariamente terminam na
+#     # mesma profundidade).
+#     has_broken1 <- sapply(split_obj, function (x) any(duplicated(x[depth.cols[1]])))
+#     
+#     # Tipo 2: Uma ou mais camadas possuem valores idênticos de 'profund_inf' (mas não necessariamente de 
+#     # 'profund_sup'), indicando que elas terminam na mesma profundidade (mas não necessariamente começam na
+#     # mesma profundidade).
+#     has_broken2 <- sapply(split_obj, function (x) any(duplicated(x[depth.cols[2]])))
+#     
+#     if (length(has_broken1) >= 1) {
+#       
+#       id_class <- lapply(obj, class)
+#       
+#       res <- split_obj
+#       
+#       res[has_broken1] <- lapply(split_obj[has_broken1], function (obj) {
+#         
+#         # Which layers share the same 'profund_sup'?
+#         idx <-  match(obj[[depth.cols[1]]], obj[[depth.cols[1]]])
+# 
+#         # Dividir camadas por 'profund_sup'
+#         new_obj <- split(x = obj, f = idx)
+#         idx2 <- sapply(new_obj, function (x) nrow(x) > 1)
+#           
+#         # Processar os dados
+#         # Usar a primeira camada para armazenar os dados
+#         new_obj[idx2] <- lapply(new_obj[idx2], function (x) {
+#           
+#           # Número de camadas
+#           n <- nrow(x)
+#           i <- sample(x = seq(n), size = 1)
+#           
+#           # Calcular espessura das camadas
+#           thick <- as.numeric(x[[depth.cols[2]]]) - as.numeric(x[[depth.cols[1]]])
+#           total <- sum(thick)
+#           thick <- thick / total
+#           id_top <- which.min(as.numeric(x[[depth.cols[1]]]))
+#           id_bottom <- which.max(as.numeric(x[[depth.cols[2]]]))
+#           
+#           # Atualizar nomes das colunas de identificação e profundidades
+#           x[1, id.cols[-1]] <- apply(x[id.cols[-1]], 2, paste, collapse = "+")
+#           x[1, depth.cols] <- c(x[id_top, depth.cols[1]], x[id_bottom, depth.cols[2]])
+#           
+#           # Variáveis contínuas
+#           id_con <- which(id_class %in% c("numeric", "integer"))
+#           if (length(id_con) >= 1) {
+#             switch(
+#               merge.fun,
+#               weighted.mean = {
+#                 x[1, id_con] <- 
+#                   apply(x[id_con], 2, function (y) stats::weighted.mean(x = y, w = thick, na.rm = TRUE))
+#               },
+#               mean = {
+#                 x[1, id_con] <- apply(x[id_con], 2, mean, na.rm = TRUE)
+#               },
+#               min = {
+#                 x[1, id_con] <- apply(x[id_con], 2, min, na.rm = TRUE)
+#               },
+#               max = {
+#                 x[1, id_con] <- apply(x[id_con], 2, max, na.rm = TRUE)
+#               },
+#               median = {
+#                 x[1, id_con] <- apply(x[id_con], 2, stats::median, na.rm = TRUE)
+#               }
+#             )
+#           }
+#           
+#           # Variáveis categóricas
+#           id_cat <- which(id_class %in% c("logical", "factor", "character"))
+#           id_cat <- id_cat[!names(id_class[id_cat]) %in% c("dataset_id", id.cols, depth.cols)]
+#           if (length(id_cat) >= 1) {
+#             if (n >= 3) {
+#               x[1, id_cat] <- apply(x[id_cat], 2, function (y) .weightedTable(x = y, w = thick))
+#             } else {
+#               x[1, id_cat] <- apply(x[id_cat], 2, function (y) y[i])
+#             }
+#           }
+#           
+#           # Retornar apenas a primeira camada
+#           x[1, ]
+#         })
+#         do.call(rbind, new_obj)
+#       })
+#       res <- do.call(rbind, c(res, make.row.names = FALSE, stringsAsFactors = FALSE))  
+#     } else {
+#       res <- obj
+#     }
+#     return (res)
+#   }
 # Repetições de laboratório ###################################################################################
 .solveLayerRepetition <-
   function (obj, observation.id = "observacao_id", layer.id = "camada_numero", sample.id = "amostra_codigo",

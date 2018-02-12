@@ -41,12 +41,12 @@
 #'       irregular) transitions between subsequent layers in an observation when `wavy.transition = "smooth"`.
 #'       Options are `"mean"` (default), `"min"`, `"max"`, and `"median"`.
 #'       
-#' \item `broken.transition` Character string indicating what should be done about the broken transition
-#'       between intermingled, disrupted layers in an observation. Options are `"keep"` (default) and 
-#'       `"merge"`.
-#' \item `merge.fun` Character string indicating the function that should be used to merge intermingled,
-#'       disrupted layers (also called broken transition) in an observation when `broken.transition = "merge"`.
-#'       Options are `"weighted.mean"` (default), `"mean"`, `"min"`, `"max"`, and `"median"`.
+# \item `broken.transition` Character string indicating what should be done about the broken transition
+#       between intermingled, disrupted layers in an observation. Options are `"keep"` (default) and
+#       `"merge"`.
+# \item `merge.fun` Character string indicating the function that should be used to merge intermingled,
+#       disrupted layers (also called broken transition) in an observation when `broken.transition = "merge"`.
+#       Options are `"weighted.mean"` (default), `"mean"`, `"min"`, `"max"`, and `"median"`.
 #'       
 #' \item `units` Logical value indicating if the measurement units of the real and integer variable(s) should be
 #'       converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
@@ -119,7 +119,7 @@ layer <-
               lessthan.sign = "keep", lessthan.frac = 0.5,
               repetition = "keep", combine.fun = "mean",
               wavy.transition = "keep", smoothing.fun = "mean", 
-              broken.transition = "keep", merge.fun = "weighted.mean",
+              # broken.transition = "keep", merge.fun = "weighted.mean",
               units = FALSE, round = FALSE),
             harmonization = list(harmonize = FALSE, level = 2),
             progress = TRUE, verbose = TRUE) {
@@ -212,18 +212,18 @@ layer <-
         stop(glue::glue("unknown value '{y}' passed to sub-argument 'standardization$smoothing.fun'"))
       }
       
-      if (is.null(standardization$broken.transition)) {
-        standardization$broken.transition <- "keep"
-      } else if (!standardization$broken.transition %in% c("merge", "keep")) {
-        y <- standardization$broken.transition
-        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$broken.transition'"))
-      }
-      if (is.null(standardization$merge.fun)) {
-        standardization$merge.fun <- "weighted.mean"
-      } else if (!standardization$merge.fun %in% c("weighted.mean", "mean", "min", "max", "median")) {
-        y <- standardization$merge.fun
-        stop(glue::glue("unknown value '{y}' passed to sub-argument 'standardization$merge.fun'"))
-      }
+      # if (is.null(standardization$broken.transition)) {
+      #   standardization$broken.transition <- "keep"
+      # } else if (!standardization$broken.transition %in% c("merge", "keep")) {
+      #   y <- standardization$broken.transition
+      #   stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$broken.transition'"))
+      # }
+      # if (is.null(standardization$merge.fun)) {
+      #   standardization$merge.fun <- "weighted.mean"
+      # } else if (!standardization$merge.fun %in% c("weighted.mean", "mean", "min", "max", "median")) {
+      #   y <- standardization$merge.fun
+      #   stop(glue::glue("unknown value '{y}' passed to sub-argument 'standardization$merge.fun'"))
+      # }
       
       if (is.null(standardization$units)) {
         standardization$units <- FALSE
@@ -380,12 +380,13 @@ layer <-
           
           ## Transição quebrada
           ## O padrão consiste em manter a transição quebrada
-          if (standardization$broken.transition != "keep") {
-            tmp <- .solveBrokenLayerTransition(obj = tmp, merge.fun = standardization$merge.fun) 
-          }
+          # if (standardization$broken.transition != "keep") {
+          #   tmp <- .solveBrokenLayerTransition(obj = tmp, merge.fun = standardization$merge.fun) 
+          # }
           
-          ## Se a profundidade foi padronizada, então os dados devem ser definidos como tipo 'numeric'
-          if (standardization$plus.sign != "keep" || standardization$wavy.transition != "keep") {
+          ## Se a profundidade foi padronizada e as tabelas serão empilhadas, então os dados devem ser 
+          ## definidos como tipo 'numeric'
+          if (standardization$plus.sign != "keep" && standardization$wavy.transition != "keep") {
             tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
           }
           
