@@ -161,6 +161,7 @@
       googlesheets::gs_read_csv(
         ss = res, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, n_max = 1))
     res <- as.data.frame(res)
+    res[1, ] <- gsub("#unidade", "-", res[1, ])
     return (res)
   }
 

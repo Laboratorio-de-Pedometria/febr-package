@@ -34,11 +34,11 @@
 #'       measurements of layers in an observation when `repetition = "combine"`. Options are `"mean"` 
 #'       (default), `"min"`, `"max"`, and `"median"`.
 #'       
-#' \item `wavy.transition` Character string indicating what should be done about the wavy (and irregular) 
+#' \item `transition` Character string indicating what should be done about the wavy and irregular 
 #'       transition between subsequent layers in an observation. Options are `"keep"` (default) and 
 #'       `"smooth"`.
-#' \item `smoothing.fun` Character string indicating the function that should be used to smooth wavy (and
-#'       irregular) transitions between subsequent layers in an observation when `wavy.transition = "smooth"`.
+#' \item `smoothing.fun` Character string indicating the function that should be used to smooth wavy and
+#'       irregular transitions between subsequent layers in an observation when `transition = "smooth"`.
 #'       Options are `"mean"` (default), `"min"`, `"max"`, and `"median"`.
 #'       
 # \item `broken.transition` Character string indicating what should be done about the broken transition
@@ -48,11 +48,10 @@
 #       disrupted layers (also called broken transition) in an observation when `broken.transition = "merge"`.
 #       Options are `"weighted.mean"` (default), `"mean"`, `"min"`, `"max"`, and `"median"`.
 #'       
-#' \item `units` Logical value indicating if the measurement units of the real and integer variable(s) should be
-#'       converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
+#' \item `units` Logical value indicating if the measurement units of the continuous variable(s) should
+#'       be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
 #'       performed. See \code{\link[febr]{standard}} for more information. (NOT AVAILABLE AT THE MOMENT!)
-#'       
-#' \item `round` Logical value indicating if the values of the real and integer variable(s) should be rounded  
+#' \item `round` Logical value indicating if the values of the continuous variable(s) should be rounded  
 #'       to the standard number of decimal places. Effective only when `units = TRUE`. Defaults to 
 #'       `round = FALSE`, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more information.
 #'       (NOT AVAILABLE AT THE MOMENT!)
@@ -118,7 +117,7 @@ layer <-
               plus.sign = "keep", plus.depth = 2.5,
               lessthan.sign = "keep", lessthan.frac = 0.5,
               repetition = "keep", combine.fun = "mean",
-              wavy.transition = "keep", smoothing.fun = "mean", 
+              transition = "keep", smoothing.fun = "mean", 
               # broken.transition = "keep", merge.fun = "weighted.mean",
               units = FALSE, round = FALSE),
             harmonization = list(harmonize = FALSE, level = 2),
@@ -199,11 +198,11 @@ layer <-
         stop(glue::glue("unknown value '{y}' passed to sub-argument 'standardization$combine.fun'"))
       }
       
-      if (is.null(standardization$wavy.transition)) {
-        standardization$wavy.transition <- "keep"
-      } else if (!standardization$wavy.transition %in% c("smooth", "keep")) {
-        y <- standardization$wavy.transition
-        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$wavy.transition'"))
+      if (is.null(standardization$transition)) {
+        standardization$transition <- "keep"
+      } else if (!standardization$transition %in% c("smooth", "keep")) {
+        y <- standardization$transition
+        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$transition'"))
       }
       if (is.null(standardization$smoothing.fun)) {
         standardization$smoothing.fun <- "mean"
@@ -275,6 +274,13 @@ layer <-
       }
     }
     
+    # PADRÕES
+    ## Descarregar tabela com unidades de medida e número de casas decimais
+    if (standardization$units) {
+      febr_stds <- .getTable(x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI")
+      febr_unit <- .getTable(x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo")
+    }
+    
     # CHAVES
     ## Descarregar chaves de identificação das tabelas
     sheets_keys <- .getSheetsKeys(dataset = dataset)
@@ -286,7 +292,7 @@ layer <-
     }
     res <- list()
     for (i in 1:length(sheets_keys$camada)) {
-      
+      # i <- 1
       # Informative messages
       dts <- sheets_keys$ctb[i]
       if (verbose) {
@@ -329,6 +335,7 @@ layer <-
         }
         cols <- c(cols, extra_cols)
         tmp <- tmp[, cols]
+        unit <- unit[names(unit) %in% cols]
         
         # LINHAS
         ## Definir as linhas a serem mantidas
@@ -350,15 +357,18 @@ layer <-
           # PADRONIZAÇÃO I
           ## Profundidade e transição entre as camadas
           
-          ## Sinal positivo em 'profund_inf' indicando maior profundidade do abaixo da última camada
-          ## O padrão consiste em manter o sinal positivo.
+          ## Sinal positivo em 'profund_inf' indicando maior profundidade abaixo da última camada
+          ## O padrão consiste em manter o sinal positivo. Os dados não são definidos como classe 'numeric' 
+          ## porque pode haver transição ondulada ou irregular entre as camadas -- solucionada abaixo. Por 
+          ## enquanto se assume que a profundidade está em centímetros a partir da superfície.
           if (standardization$plus.sign != "keep") {
             tmp <- .setMaximumObservationDepth(
               obj = tmp, plus.sign = standardization$plus.sign, plus.depth = standardization$plus.depth)
           }
           
           ## Símbolo indicador do limite inferior de detecção do método de determinação (<)
-          ## O padrão consiste em manter o símbolo
+          ## O padrão consiste em manter o símbolo. O resultado é convertido para classe 'numeric' a fim de 
+          ## que seja possível, se demandado, padronizar a unidade de medida e o número de casas decimais.
           if (standardization$lessthan.sign != "keep") {
             tmp <- .setLowestMeasuredValue(
               obj = tmp, lessthan.sign = standardization$lessthan.sign, 
@@ -366,15 +376,17 @@ layer <-
           }
           
           ## Repetições de laboratório
-          ## O padrão consiste em manter as repetições de laboratório
-          ## A coluna 'camada_numero' é a chave para o processamento dos dados
+          ## O padrão consiste em manter as repetições de laboratório. A coluna 'camada_numero' é a chave para
+          ## o processamento dos dados. Note que é necessário que o tipo de dados das variáveis esteja 
+          ## corretamente definido, sobretudo no caso de variáveis contínuas. A solução prévia do símbolo
+          ## indicador do limite inferior de detecção geralmente é necessária.
           if (standardization$repetition != "keep") {
             tmp <- .solveLayerRepetition(obj = tmp, combine.fun = standardization$combine.fun)
           }
           
           ## Transição ondulada ou irregular
           ## O padrão consiste em manter a transição ondulada ou irregular.
-          if (standardization$wavy.transition != "keep") {
+          if (standardization$transition != "keep") {
             tmp <- .solveWavyLayerTransition(obj = tmp, smoothing.fun = standardization$smoothing.fun)
           }
           
@@ -386,34 +398,47 @@ layer <-
           
           ## Se a profundidade foi padronizada e as tabelas serão empilhadas, então os dados devem ser 
           ## definidos como tipo 'numeric'
-          if (standardization$plus.sign != "keep" && standardization$wavy.transition != "keep") {
+          if (standardization$plus.sign != "keep" && standardization$transition != "keep") {
             tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
           }
           
           # PADRONIZAÇÃO II
           ## Unidade de medida e número de casas decimais
           if (standardization$units) {
-            message("Standardization of measurement units is not available yet")
-            # fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
-            # fe_stand <- lapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y))
-            # fe_stand <- do.call(rbind, fe_stand)
-            # 
-            # # 1. Se necessário, padronizar unidades de medida
-            # idx_unit <- which(!unit[, soil_vars] %in% unique(standards(soil.var = "fe")$unit))
-            # if (length(idx_unit) >= 1) {
-            #   conv_factor <- lapply(1:length(fe_type[idx_unit]), function (j) {
-            #     conversion(source=unlist(unit[, soil_vars[idx_unit]])[[j]],target=fe_stand$unit[idx_unit][j])
-            #   })
-            #   conv_factor <- do.call(rbind, conv_factor)
-            #   tmp[soil_vars[idx_unit]] <- t(t(tmp[soil_vars[idx_unit]]) * conv_factor$factor)
-            # }
-            # 
-            # 2. Padronizar número de casas decimais
-            if (standardization$round) {
-              message("Standardization of decimal places is not available yet")
-            #   tmp[, soil_vars] <- sapply(1:length(soil_vars), function (j) {
-            #     round(tmp[, soil_vars[j]], digits = fe_stand$digits[j])
-            #   }) 
+            
+            ## Identificar variáveis contínuas (classe 'numeric' e 'integer')
+            id_class <- sapply(tmp, class)
+            id_con <- which(id_class %in% c("numeric", "integer"))
+            if (length(id_con) >= 1) {
+              tmp_stds <- match(cols[id_con], febr_stds$campo_id)
+              tmp_stds <- febr_stds[tmp_stds, c("campo_id", "campo_unidade", "campo_precisao")]
+              
+              ## 1. Se necessário, padronizar unidades de medida
+              idx_unit <- unit[cols[id_con]] != tmp_stds$campo_unidade
+              if (any(idx_unit)) {
+                idx_unit <- colnames(idx_unit)[idx_unit]
+                source <- unit[idx_unit]
+                target <- tmp_stds$campo_unidade[match(idx_unit, tmp_stds$campo_id)]
+                
+                ## Identificar constante
+                k <- lapply(seq_along(source), function (i) {
+                  # i <- 2
+                  idx <- febr_unit$unidade_origem %in% source[i] + febr_unit$unidade_destino %in% target[i]
+                  febr_unit[idx == 2, ] 
+                })
+                k <- do.call(rbind, k)
+                
+                ## Processar dados
+                tmp[idx_unit] <- mapply(`*`, tmp[idx_unit], k$unidade_constante)
+                unit[idx_unit] <- k$unidade_destino
+              }
+              
+              ## 2. Se necessário, padronizar número de casas decimais
+              if (standardization$round) {
+                tmp[tmp_stds$campo_id] <- 
+                  lapply(seq(nrow(tmp_stds)), function (i) 
+                    round(x = tmp[tmp_stds$campo_id[i]], digits = tmp_stds$campo_precisao[i]))
+              }
             }
           }
           
@@ -434,7 +459,10 @@ layer <-
           ## Se os conjuntos de dados não são empilhados, adicionar unidades de medida
           if (!stack) {
             a <- attributes(res[[i]])
-            a$units <- c(rep("unitless", 2), gsub("^-$", "unitless", as.character(unit)[-1]))
+            a$units <- c("unitless", as.character(unit[names(unit) %in% a$names]))
+            a$units <- gsub("^-$", "unitless", a$units)
+            a$units <- gsub("#unidade", "unitless", a$units)
+            # a$units <- c(rep("unitless", 2), gsub("^-$", "unitless", as.character(unit)[-1]))
             attributes(res[[i]]) <- a
           }
           
