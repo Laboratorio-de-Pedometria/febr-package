@@ -493,13 +493,7 @@ layer <-
     ## Empilhar conjuntos de dados
     ## Adicionar unidades de medida
     if (stack) {
-      stack_unit <- lapply(res, function (x) do.call(rbind, attributes(x)[c("names", "units")]))
-      stack_unit <- do.call(cbind, stack_unit)
-      stack_unit <- stack_unit[, !duplicated(stack_unit["names", ])]
-      res <- suppressWarnings(dplyr::bind_rows(res))
-      a <- attributes(res)
-      a$units <- stack_unit["units", ][match(stack_unit["names", ], colnames(res))]
-      attributes(res) <- a
+      res <- .stackTables(obj = res)
     } else if (n == 1) {
       res <- res[[1]]
     }

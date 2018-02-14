@@ -32,6 +32,26 @@
         ), sep = "")
     )
   }
+# Empilhar tabelas ----
+.stackTables <-
+  function (obj) {
+    
+    # Organizar unidades de medida
+    stack_unit <- lapply(obj, function (x) do.call(rbind, attributes(x)[c("names", "units")]))
+    stack_unit <- do.call(cbind, stack_unit)
+    stack_unit <- stack_unit[, !duplicated(stack_unit["names", ])]
+    
+    # Empilhar tabelas
+    res <- suppressWarnings(dplyr::bind_rows(obj))
+    
+    # Definir novos atributos
+    a <- attributes(res)
+    a$units <- stack_unit["units", ][match(stack_unit["names", ], colnames(res))]
+    attributes(res) <- a
+    
+    # Resultado
+    return (res)
+  }
 # Transformação do sistema de referência de coordenadas ----
 .crsTransform <- 
   function (obj, crs, xy = c("coord_x", "coord_y")) {
