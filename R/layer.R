@@ -26,10 +26,11 @@
 #'       (default), `"subtract"`, and `"remove"`.
 #' \item `lessthan.frac` Numeric value between 0 and 1 (a fraction) by which the lower limit of detection 
 #'       should be subtracted when `lessthan.sign = "subtract"`. Defaults to `lessthan.frac = 0.5`, i.e. 
-#'       subtract 50% from the lower limit of detection.
+#'       subtract 50\% from the lower limit of detection.
 #'       
 #' \item `repetition` Character string indicating what should be done with repetitions, i.e. repeated
-#'       measurements of layers in an observation. Options are `"keep"` (default) and `"combine"`.
+#'       measurements of layers in an observation. Options are `"keep"` (default) and `"combine"`. In the 
+#'       latter case, it is recommended to set `lessthan.sign = "subtract"` or `lessthan.sign = "remove"`.
 #' \item `combine.fun` Character string indicating the function that should be used to combine repeated 
 #'       measurements of layers in an observation when `repetition = "combine"`. Options are `"mean"` 
 #'       (default), `"min"`, `"max"`, and `"median"`.
@@ -50,11 +51,10 @@
 #'       
 #' \item `units` Logical value indicating if the measurement units of the continuous variable(s) should
 #'       be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
-#'       performed. See \code{\link[febr]{standard}} for more information. (NOT AVAILABLE AT THE MOMENT!)
+#'       performed. See \code{\link[febr]{standard}} for more information.
 #' \item `round` Logical value indicating if the values of the continuous variable(s) should be rounded  
-#'       to the standard number of decimal places. Effective only when `units = TRUE`. Defaults to 
-#'       `round = FALSE`, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more information.
-#'       (NOT AVAILABLE AT THE MOMENT!)
+#'       to the standard number of decimal places. Requires `units = TRUE`. Defaults to `round = FALSE`, i.e. 
+#'       no rounding is performed. See \code{\link[febr]{standard}} for more information.
 #' }
 #'
 #' @param harmonization (optional) List with named sub-arguments indicating if and how to perform data 
@@ -68,8 +68,8 @@
 #' }
 #'
 #' @details
-#' \subsection{Standard columns}{
-#' Standard columns and their content (in Portuguese) are as follows:
+#' \subsection{Standard identification variables}{
+#' Standard identification variables and their content are as follows:
 #' \itemize{
 #' \item \code{dataset_id}. Identification code of the dataset in ___febr___ to which an observation belongs.
 #' \item \code{observacao_id}. Identification code of an observation in ___febr___.
@@ -79,8 +79,8 @@
 #' \item \code{profund_sup}. Upper boundary of a layer (cm).
 #' \item \code{profund_inf}. Lower boundary of a layer (cm).
 #' }
-#' Further details about the content of the standard columns can be found in \url{http://www.ufsm.br/febr/book/}
-#' (in Portuguese).
+#' Further details about the content of the standard identification variables can be found in 
+#' \url{http://www.ufsm.br/febr/book/} (in Portuguese).
 #' }
 #' 
 #' \subsection{Harmonization}{
@@ -89,7 +89,8 @@
 #' *A* had been used instead. For example, converting carbon content values obtained using a wet digestion
 #' method to the standard dry combustion method is data harmonization.
 #' 
-#' A heuristic data harmonization procedure is implemented **febr**. It consists of grouping variables 
+#' A heuristic data harmonization procedure is implemented in the **febr** package. It consists of grouping
+#' variables 
 #' based on a chosen number of levels of their identification code. For example, consider a variable with an 
 #' identification code composed of four levels, `aaa_bbb_ccc_ddd`, where `aaa` is the first level and
 #' `ddd` is the fouth level. Now consider a related variable, `aaa_bbb_eee_fff`. If the harmonization
@@ -274,6 +275,11 @@ layer <-
       }
     }
     
+    ## stack + stadardization
+    if (stack && !standardization$units) {
+      stop ("data cannot be stacked when measurement units are not standardized")
+    }
+    
     # PADRÕES
     ## Descarregar tabela com unidades de medida e número de casas decimais
     if (standardization$units) {
@@ -316,7 +322,7 @@ layer <-
         ## Definir as colunas a serem mantidas
         ## As colunas padrão são sempre mantidas.
         ## No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados, assim sendo
-        ## ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.  
+        ## ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.
         in_cols <- colnames(tmp)
         cols <- in_cols[in_cols %in% std_cols]
         extra_cols <- vector()
@@ -349,7 +355,7 @@ layer <-
           
           # TIPO DE DADOS
           ## "observacao_id", "camada_numero", "camada_nome", "amostra_codigo", "profund_sup" e "profund_inf"
-          ## precisam estar no formato de carácter para evitar erros durante o empilhamento das tabelas
+          ## precisam estar no formato de caracter para evitar erros durante o empilhamento das tabelas
           ## devido ao tipo de dado.
           ## Nota: esse processamento deve ser feito via Google Sheets.
           tmp[std_cols] <- sapply(tmp[std_cols], as.character)
@@ -367,8 +373,9 @@ layer <-
           }
           
           ## Símbolo indicador do limite inferior de detecção do método de determinação (<)
-          ## O padrão consiste em manter o símbolo. O resultado é convertido para classe 'numeric' a fim de 
-          ## que seja possível, se demandado, padronizar a unidade de medida e o número de casas decimais.
+          ## O padrão consiste em manter o símbolo. Do contrário, o resultado é convertido para classe 
+          ## 'numeric' a fim de que seja possível, se demandado, padronizar as unidades de medida e o número 
+          ## de casas decimais.
           if (standardization$lessthan.sign != "keep") {
             tmp <- .setLowestMeasuredValue(
               obj = tmp, lessthan.sign = standardization$lessthan.sign, 
@@ -376,10 +383,10 @@ layer <-
           }
           
           ## Repetições de laboratório
-          ## O padrão consiste em manter as repetições de laboratório. A coluna 'camada_numero' é a chave para
-          ## o processamento dos dados. Note que é necessário que o tipo de dados das variáveis esteja 
-          ## corretamente definido, sobretudo no caso de variáveis contínuas. A solução prévia do símbolo
-          ## indicador do limite inferior de detecção geralmente é necessária.
+          ## O padrão consiste em manter as repetições de laboratório. Do contrário, a coluna 'camada_numero' 
+          ## é a chave para o processamento dos dados. Note que é necessário que o tipo de dado das variáveis
+          ## esteja corretamente definido, sobretudo no caso de variáveis contínuas. A solução prévia do 
+          ## símbolo indicador do limite inferior de detecção geralmente é necessária.
           if (standardization$repetition != "keep") {
             tmp <- .solveLayerRepetition(obj = tmp, combine.fun = standardization$combine.fun)
           }
@@ -396,8 +403,8 @@ layer <-
           #   tmp <- .solveBrokenLayerTransition(obj = tmp, merge.fun = standardization$merge.fun) 
           # }
           
-          ## Se a profundidade foi padronizada e as tabelas serão empilhadas, então os dados devem ser 
-          ## definidos como tipo 'numeric'
+          ## Se a profundidade foi padronizada e as tabelas serão empilhadas, então os dados de profundidade
+          ## devem ser definidos como classe 'numeric'
           if (standardization$plus.sign != "keep" && standardization$transition != "keep") {
             tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
           }
@@ -406,9 +413,10 @@ layer <-
           ## Unidade de medida e número de casas decimais
           if (standardization$units) {
             
-            ## Identificar variáveis contínuas (classe 'numeric' e 'integer')
+            ## Identificar variáveis contínuas (classe 'numeric' e 'integer'), excluíndo variáveis de 
+            ## identificação padrão
             id_class <- sapply(tmp, class)
-            id_con <- which(id_class %in% c("numeric", "integer"))
+            id_con <- which(id_class %in% c("numeric", "integer") & !names(id_class) %in% std_cols)
             if (length(id_con) >= 1) {
               tmp_stds <- match(cols[id_con], febr_stds$campo_id)
               tmp_stds <- febr_stds[tmp_stds, c("campo_id", "campo_unidade", "campo_precisao")]
@@ -456,15 +464,11 @@ layer <-
           res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
           
           # ATTRIBUTOS
-          ## Se os conjuntos de dados não são empilhados, adicionar unidades de medida
-          if (!stack) {
-            a <- attributes(res[[i]])
-            a$units <- c("unitless", as.character(unit[names(unit) %in% a$names]))
-            a$units <- gsub("^-$", "unitless", a$units)
-            a$units <- gsub("#unidade", "unitless", a$units)
-            # a$units <- c(rep("unitless", 2), gsub("^-$", "unitless", as.character(unit)[-1]))
-            attributes(res[[i]]) <- a
-          }
+          ## Adicionar unidades de medida
+          a <- attributes(res[[i]])
+          a$units <- c("unitless", as.character(unit[names(unit) %in% a$names]))
+          a$units <- gsub("^-$", "unitless", a$units)
+          attributes(res[[i]]) <- a
           
           if (progress) {
             utils::setTxtProgressBar(pb, i)
@@ -489,13 +493,13 @@ layer <-
     ## Empilhar conjuntos de dados
     ## Adicionar unidades de medida
     if (stack) {
+      stack_unit <- lapply(res, function (x) do.call(rbind, attributes(x)[c("names", "units")]))
+      stack_unit <- do.call(cbind, stack_unit)
+      stack_unit <- stack_unit[, !duplicated(stack_unit["names", ])]
       res <- suppressWarnings(dplyr::bind_rows(res))
-      # soil_vars <- colnames(res)[grep("^fe_", colnames(res))]
-      # fe_type <- stringr::str_split_fixed(soil_vars, "_", n = 3)[, 2]
-      # fe_stand <- sapply(fe_type, function (y) standards(soil.var = "fe", extraction.method = y)$unit)
-      # a <- attributes(res)
-      # a$units <- c(rep("unitless", 5), rep("cm", 2), as.character(fe_stand))
-      # attributes(res) <- a
+      a <- attributes(res)
+      a$units <- stack_unit["units", ][match(stack_unit["names", ], colnames(res))]
+      attributes(res) <- a
     } else if (n == 1) {
       res <- res[[1]]
     }
