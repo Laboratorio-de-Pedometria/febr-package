@@ -44,14 +44,14 @@ metadata <-
     # Opções
     opts <- .opt()
 
-    # Descarregar planilhas com camadas
+    # Descarregar planilhas
     if (progress) {
       pb <- utils::txtProgressBar(min = 0, max = length(stats::na.omit(sheets_keys$metadado)), style = 3)
     }
     obs <- list()
     for (i in 1:length(stats::na.omit(sheets_keys$metadado))) {
       
-      # Informative messages
+      # Mensagens informativas
       dts <- sheets_keys$ctb[i]
       if (verbose) {
         par <- ifelse(progress, "\n", "")
@@ -63,7 +63,7 @@ metadata <-
         googlesheets::gs_read_csv(tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
       )
 
-      # Observações processadas
+      # Dados processadas
       obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
       if (progress) {
         utils::setTxtProgressBar(pb, i)

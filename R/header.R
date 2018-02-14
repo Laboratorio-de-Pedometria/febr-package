@@ -12,8 +12,8 @@
 #' table, `"observacao"`.
 #' 
 #' @details 
-#' \subsection{Standard columns}{
-#' Standard columns and their content depend on the chosen `table`. See documentation of 
+#' \subsection{Standard identification variables}{
+#' Standard identification variables and their content depend on the chosen `table`. See documentation of 
 #' \code{\link[febr]{layer}} and \code{\link[febr]{observation}}.
 #' }
 #' 

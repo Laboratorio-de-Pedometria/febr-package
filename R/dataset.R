@@ -44,14 +44,14 @@ dataset <-
     # Opções
     opts <- .opt()
     
-    # Descarregar planilhas com camadas
+    # Descarregar planilhas
     if (progress) {
       pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$dataset), style = 3)
     }
     obs <- list()
     for (i in 1:length(sheets_keys$dataset)) {
       
-      # Informative messages
+      # Mensagens informativas
       dts <- sheets_keys$ctb[i]
       if (verbose) {
         par <- ifelse(progress, "\n", "")
@@ -63,7 +63,7 @@ dataset <-
         googlesheets::gs_read_csv(tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
       )
 
-      # Observações processadas
+      # Dados processados
       obs[[i]] <- as.data.frame(tmp)
       if (progress) {
         utils::setTxtProgressBar(pb, i)
