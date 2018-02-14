@@ -147,6 +147,43 @@
     colnames(obj)[colnames(obj) %in% extra_cols] <- new_colnames
     return (obj)
   }
+# Formatar data de observação ----
+.formatObservationDate <- 
+  function (obj, time.format) {
+    
+    # Identificar formatação da data
+    time_sep <- ifelse(all(grepl("/", na.omit(obj$observacao_data))), "/", "-")
+    time_form <- glue::glue("%d{time_sep}%m{time_sep}%Y")
+    
+    # Verificar se falta data para alguma observação
+    time_miss <- grepl("xx", obj$observacao_data)
+    if (any(time_miss)) {
+      
+      ## Falta dia
+      miss_day <- grepl(glue::glue("^xx{time_sep}"), obj$observacao_data)
+      if (any(miss_day)) {
+        obj$observacao_data[miss_day] <-
+          gsub(pattern = glue::glue("^xx{time_sep}"),
+               replacement = glue::glue("{format(Sys.Date(), '%d')}{time_sep}"),
+               x = obj$observacao_data[miss_day])
+      }
+      
+      # Falta mês
+      miss_month <- grepl(glue::glue("{time_sep}xx{time_sep}"), obj$observacao_data)
+      if (any(miss_month)) {
+        obj$observacao_data[miss_month] <-
+          gsub(pattern = glue::glue("{time_sep}xx{time_sep}"),
+               replacement = glue::glue("{time_sep}{format(Sys.Date(), '%m')}{time_sep}"),
+               x = obj$observacao_data[miss_month])
+      }
+    }
+    
+    # Formatar data
+    obj$observacao_data <- as.Date(x = obj$observacao_data, format = time_form)
+    obj$observacao_data <- format(obj$observacao_data, time.format)
+    
+    return (obj)
+  }
 # Eliminação de linhas sem dados nas tabelas 'camada' e 'observacao' ----
 .cleanRows <-
   function (obj, missing, extra_cols) {
@@ -162,6 +199,12 @@
     if (!is.null(missing$coord) && missing$coord == "drop") {
       na_coord_id <- apply(obj[c("coord_x", "coord_y")], 1, function (x) sum(is.na(x))) >= 1
       obj <- obj[!na_coord_id, ]
+    }
+    
+    # Tabela 'observacao': remover linhas sem dados de data de observação
+    if (!is.null(missing$time) && missing$time == "drop") {
+      na_time_id <- is.na(obj$observacao_data)
+      obj <- obj[!na_time_id, ]
     }
     
     # Tabela 'camada': remover linhas sem dados de profundidade

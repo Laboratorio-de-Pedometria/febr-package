@@ -10,8 +10,8 @@
 #' @template metadata_template
 #' 
 #' @param missing (optional) List with named sub-arguments indicating what should be done with an observation
-#' missing spatial coordinates, `coord`, or data on variables, `data`? Options are `"keep"` (default) and
-#' `"drop"`.
+#' missing spatial coordinates, `coord`, date of observation, `time`, or data on variables, `data`? Options are
+#' `"keep"` (default) and `"drop"`.
 #'
 #' @param standardization (optional) List with named sub-arguments indicating how to perform data 
 #' standardization.
@@ -20,6 +20,9 @@
 #'       spatial coordinates should be transformed. For example, `crs = "EPSG:4674"`, i.e. SIRGAS 2000, the
 #'       standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. Defaults to 
 #'       `crs = NULL`, i.e. no transformation is performed.
+#' \item `time.format` Character string indicating hoe to format dates. For example, `time.format = "$d-%m-%Y"`,
+#'       i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to `time.format = NULL`, i.e. no formating is 
+#'       performed.
 #' \item `units` Logical value indicating if the measurement units of the continuous variable(s) should
 #'       be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
 #'       performed. See \code{\link[febr]{standard}} for more information.
@@ -76,7 +79,7 @@
 #' variables 
 #' based on a chosen number of levels of their identification code. For example, consider a variable with an 
 #' identification code composed of four levels, `aaa_bbb_ccc_ddd`, where `aaa` is the first level and
-#' `ddd` is the fouth level. Now consider a related variable, `aaa_bbb_eee_fff`. If the harmonization
+#' `ddd` is the fourth level. Now consider a related variable, `aaa_bbb_eee_fff`. If the harmonization
 #' is to consider all four coding levels (`level = 4`), then these two variables will remain coded as
 #' separate variables. But if `level = 2`, then both variables will be recoded to `aaa_bbb`, thus becoming the
 #' same variable.
@@ -95,9 +98,9 @@
 ###############################################################################################################
 observation <-
   function (dataset, variable, 
-            stack = FALSE, missing = list(coord = "keep", data = "keep"),
+            stack = FALSE, missing = list(coord = "keep", time = "keep", data = "keep"),
             standardization = list(
-              crs = NULL, 
+              crs = NULL, time.format = NULL,
               units = FALSE, round = FALSE),
             harmonization = list(harmonize = FALSE, level = 2),
             progress = TRUE, verbose = TRUE) {
@@ -149,6 +152,14 @@ observation <-
         y <- standardization$crs
         stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$crs'"))
       }
+      
+      if (is.null(standardization$time.format)) {
+        standardization$time.format <- NULL
+      } else if (!is.character(standardization$time.format)) {
+        y <- class(standardization$time.format)
+        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$time.format'"))
+      }
+      
       if (is.null(standardization$units)) {
         standardization$units <- FALSE
       } else if (!is.logical(standardization$units)) {
@@ -235,7 +246,7 @@ observation <-
     }
     res <- list()
     for (i in 1:length(sheets_keys$observacao)) {
-      
+      # i <- 1
       # Informative messages
       dts <- sheets_keys$ctb[i]
       if (verbose) {
@@ -251,9 +262,13 @@ observation <-
       n_rows <- nrow(tmp)
       
       # PROCESSAMENTO I
-      ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas coordenadas.
+      ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas coordenadas e
+      ## na data.
       na_coord <- max(apply(tmp[c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
-      if (missing$coord == "keep" || missing$coord == "drop" && na_coord < n_rows) {
+      na_time <- is.na(tmp$observacao_data)
+      # if (missing$coord == "keep" || missing$coord == "drop" && na_coord < n_rows) {
+      if (missing$coord == "keep" && missing$time == "keep" || 
+          missing$coord == "drop" && na_coord < n_rows && missing$time == "drop" && na_time < n_rows) {
         
         # COLUNAS
         ## Definir as colunas a serem mantidas
@@ -317,6 +332,12 @@ observation <-
           }
           
           # PADRONIZAÇÃO II
+          ## Data de observação
+          if (n_rows > na_time && !is.null(standardization$time.format)) {
+            tmp <- .formatObservationDate(obj = tmp, time.format = standardization$time.format)
+          }
+          
+          # PADRONIZAÇÃO III
           ## Unidade de medida e número de casas decimais
           if (standardization$units) {
             
@@ -388,7 +409,11 @@ observation <-
         }
       } else {
         res[[i]] <- data.frame()
-        m <- glue::glue("All observations in {dts} are missing coordinates. None will be returned.")
+        if (na_coord == n_rows) {
+          m <- glue::glue("All observations in {dts} are missing coordinates. None will be returned.")  
+        } else if (na_time == n_rows) {
+          m <- glue::glue("All observations in {dts} are missing date. None will be returned.")  
+        }
         message(m)
       }
     }
