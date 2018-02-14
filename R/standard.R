@@ -24,11 +24,11 @@
 #' @return A data frame with standards for selected variable(s).
 #'
 #' @references
-#' Donagemma, G. K., Campos, D. V. B., Calderano, S. B., Teixeira, W. G. and Viana, J. H. M. (2011)
-#' *Manual de Métodos de Análise de Solo*. Rio de Janeiro: Embrapa Solos.
+#' Teixeira, P. C., Donagemma, G. K., Fontana, A., Teixeira, W. G. (2017)
+#' *Manual de Métodos de Análise de Solo*. Brasília: Embrapa.
 #' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso The *standard* table at \url{https://goo.gl/mwwZN9}
+#' @seealso The *standard* table at \url{https://goo.gl/hi77sB}
 #' @export
 #' @examples
 #' \dontrun{

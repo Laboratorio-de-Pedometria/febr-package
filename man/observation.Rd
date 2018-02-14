@@ -5,9 +5,10 @@
 \title{Get \emph{observation} table}
 \usage{
 observation(dataset, variable, stack = FALSE, missing = list(coord = "keep",
-  data = "keep"), standardization = list(crs = NULL, units = FALSE, round =
-  FALSE), harmonization = list(harmonize = FALSE, level = 2),
-  progress = TRUE, verbose = TRUE)
+  time = "keep", data = "keep"), standardization = list(crs = NULL,
+  time.format = NULL, units = FALSE, round = FALSE),
+  harmonization = list(harmonize = FALSE, level = 2), progress = TRUE,
+  verbose = TRUE)
 }
 \arguments{
 \item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
@@ -19,11 +20,12 @@ variables is downloaded. Use \code{variable = "all"} to download all variables. 
 more information.}
 
 \item{stack}{(optional) Logical value indicating if tables from different datasets should be stacked on a 
-single table for output. Defaults to \code{stack = FALSE}, the output being a list of tables.}
+single table for output. Requires `standardization = list(units = TRUE)` -- see below. Defaults to 
+\code{stack = FALSE}, the output being a list of tables.}
 
 \item{missing}{(optional) List with named sub-arguments indicating what should be done with an observation
-missing spatial coordinates, \code{coord}, or data on variables, \code{data}? Options are \code{"keep"} (default) and
-\code{"drop"}.}
+missing spatial coordinates, \code{coord}, date of observation, \code{time}, or data on variables, \code{data}? Options are
+\code{"keep"} (default) and \code{"drop"}.}
 
 \item{standardization}{(optional) List with named sub-arguments indicating how to perform data
 standardization.
@@ -32,13 +34,15 @@ standardization.
 spatial coordinates should be transformed. For example, \code{crs = "EPSG:4674"}, i.e. SIRGAS 2000, the
 standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. Defaults to
 \code{crs = NULL}, i.e. no transformation is performed.
-\item \code{units} Logical value indicating if the measurement units of the real and integer variable(s) should be
-converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no conversion is
-performed. See \code{\link[febr]{standard}} for more information. (NOT AVAILABLE AT THE MOMENT!)
-\item \code{round} Logical value indicating if the values of the real and integer variable(s) should be rounded
-to the standard number of decimal places. Effective only when \code{units = TRUE}. Defaults to
-\code{round = FALSE}, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more information.
-(NOT AVAILABLE AT THE MOMENT!)
+\item \code{time.format} Character string indicating hoe to format dates. For example,
+\code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to
+\code{time.format = NULL}, i.e. no formating is performed. See \code{\link[base]{as.Date}} for more details.
+\item \code{units} Logical value indicating if the measurement units of the continuous variable(s) should
+be converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no conversion is
+performed. See \code{\link[febr]{standard}} for more information.
+\item \code{round} Logical value indicating if the values of the continuous variable(s) should be rounded
+to the standard number of decimal places. Requires \code{units = TRUE}. Defaults to \code{round = FALSE}, i.e.
+no rounding is performed. See \code{\link[febr]{standard}} for more information.
 }}
 
 \item{harmonization}{(optional) List with named sub-arguments indicating if and how to perform data
@@ -68,8 +72,8 @@ much more. Use \code{\link[febr]{header}} if you want to check what are the vari
 \emph{observation} table of a dataset before downloading it.
 }
 \details{
-\subsection{Standard columns}{
-Standard columns and their content (in Portuguese) are as follows:
+\subsection{Standard identification variables}{
+Standard identification variables and their content are as follows:
 \itemize{
 \item \code{dataset_id}. Identification code of the dataset in \emph{\strong{febr}} to which an observation belongs.
 \item \code{observacao_id}. Identification code of an observation in \emph{\strong{febr}}.
@@ -91,8 +95,8 @@ of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/down
 \item \code{amostra_quanti}. Number of samples taken.
 \item \code{amostra_area}. Sampling area.
 }
-Further details about the content of the standard columns can be found in \url{http://www.ufsm.br/febr/book/}
-(in Portuguese).
+Further details about the content of the standard identification variables can be found in
+\url{http://www.ufsm.br/febr/book/} (in Portuguese).
 }
 
 \subsection{Harmonization}{
@@ -101,10 +105,11 @@ that they are (approximately) equivalent to the values that would have been obta
 \emph{A} had been used instead. For example, converting carbon content values obtained using a wet digestion
 method to the standard dry combustion method is data harmonization.
 
-A heuristic data harmonization procedure is implemented \strong{febr}. It consists of grouping variables
+A heuristic data harmonization procedure is implemented in the \strong{febr} package. It consists of grouping
+variables
 based on a chosen number of levels of their identification code. For example, consider a variable with an
 identification code composed of four levels, \code{aaa_bbb_ccc_ddd}, where \code{aaa} is the first level and
-\code{ddd} is the fouth level. Now consider a related variable, \code{aaa_bbb_eee_fff}. If the harmonization
+\code{ddd} is the fourth level. Now consider a related variable, \code{aaa_bbb_eee_fff}. If the harmonization
 is to consider all four coding levels (\code{level = 4}), then these two variables will remain coded as
 separate variables. But if \code{level = 2}, then both variables will be recoded to \code{aaa_bbb}, thus becoming the
 same variable.

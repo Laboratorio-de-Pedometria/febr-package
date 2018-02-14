@@ -38,11 +38,11 @@ a <- standard(variable = "ferro")
 }
 }
 \references{
-Donagemma, G. K., Campos, D. V. B., Calderano, S. B., Teixeira, W. G. and Viana, J. H. M. (2011)
-\emph{Manual de Métodos de Análise de Solo}. Rio de Janeiro: Embrapa Solos.
+Teixeira, P. C., Donagemma, G. K., Fontana, A., Teixeira, W. G. (2017)
+\emph{Manual de Métodos de Análise de Solo}. Brasília: Embrapa.
 }
 \seealso{
-The \emph{standard} table at \url{https://goo.gl/mwwZN9}
+The \emph{standard} table at \url{https://goo.gl/hi77sB}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

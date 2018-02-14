@@ -20,7 +20,8 @@ variables is downloaded. Use \code{variable = "all"} to download all variables. 
 more information.}
 
 \item{stack}{(optional) Logical value indicating if tables from different datasets should be stacked on a 
-single table for output. Defaults to \code{stack = FALSE}, the output being a list of tables.}
+single table for output. Requires `standardization = list(units = TRUE)` -- see below. Defaults to 
+\code{stack = FALSE}, the output being a list of tables.}
 
 \item{progress}{(optional) Logical value indicating if a download progress bar should be displayed.}
 

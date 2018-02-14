@@ -7,10 +7,9 @@
 layer(dataset, variable, stack = FALSE, missing = list(depth = "keep", data
   = "keep"), standardization = list(plus.sign = "keep", plus.depth = 2.5,
   lessthan.sign = "keep", lessthan.frac = 0.5, repetition = "keep", combine.fun
-  = "mean", wavy.transition = "keep", smoothing.fun = "mean", broken.transition
-  = "keep", merge.fun = "weighted.mean", units = FALSE, round = FALSE),
-  harmonization = list(harmonize = FALSE, level = 2), progress = TRUE,
-  verbose = TRUE)
+  = "mean", transition = "keep", smoothing.fun = "mean", units = FALSE, round =
+  FALSE), harmonization = list(harmonize = FALSE, level = 2),
+  progress = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
@@ -22,7 +21,8 @@ variables is downloaded. Use \code{variable = "all"} to download all variables. 
 more information.}
 
 \item{stack}{(optional) Logical value indicating if tables from different datasets should be stacked on a 
-single table for output. Defaults to \code{stack = FALSE}, the output being a list of tables.}
+single table for output. Requires `standardization = list(units = TRUE)` -- see below. Defaults to 
+\code{stack = FALSE}, the output being a list of tables.}
 
 \item{missing}{(optional) List with named sub-arguments indicating what should be done with a layer missing
 data on sampling depth, \code{depth}, or data on variable(s), \code{data}? Options are \code{"keep"} (default) and \code{"drop"}.}
@@ -41,36 +41,28 @@ to indicate that the value of a variable is below the lower limit of detection. 
 (default), \code{"subtract"}, and \code{"remove"}.
 \item \code{lessthan.frac} Numeric value between 0 and 1 (a fraction) by which the lower limit of detection
 should be subtracted when \code{lessthan.sign = "subtract"}. Defaults to \code{lessthan.frac = 0.5}, i.e.
-subtract 50% from the lower limit of detection.
+subtract 50\% from the lower limit of detection.
 
 \item \code{repetition} Character string indicating what should be done with repetitions, i.e. repeated
-measurements of layers in an observation. Options are \code{"keep"} (default) and \code{"combine"}.
+measurements of layers in an observation. Options are \code{"keep"} (default) and \code{"combine"}. In the
+latter case, it is recommended to set \code{lessthan.sign = "subtract"} or \code{lessthan.sign = "remove"}.
 \item \code{combine.fun} Character string indicating the function that should be used to combine repeated
 measurements of layers in an observation when \code{repetition = "combine"}. Options are \code{"mean"}
 (default), \code{"min"}, \code{"max"}, and \code{"median"}.
 
-\item \code{wavy.transition} Character string indicating what should be done about the wavy (and irregular)
+\item \code{transition} Character string indicating what should be done about the wavy and irregular
 transition between subsequent layers in an observation. Options are \code{"keep"} (default) and
 \code{"smooth"}.
-\item \code{smoothing.fun} Character string indicating the function that should be used to smooth wavy (and
-irregular) transitions between subsequent layers in an observation when \code{wavy.transition = "smooth"}.
+\item \code{smoothing.fun} Character string indicating the function that should be used to smooth wavy and
+irregular transitions between subsequent layers in an observation when \code{transition = "smooth"}.
 Options are \code{"mean"} (default), \code{"min"}, \code{"max"}, and \code{"median"}.
 
-\item \code{broken.transition} Character string indicating what should be done about the broken transition
-between intermingled, disrupted layers in an observation. Options are \code{"keep"} (default) and
-\code{"merge"}.
-\item \code{merge.fun} Character string indicating the function that should be used to merge intermingled,
-disrupted layers (also called broken transition) in an observation when \code{broken.transition = "merge"}.
-Options are \code{"weighted.mean"} (default), \code{"mean"}, \code{"min"}, \code{"max"}, and \code{"median"}.
-
-\item \code{units} Logical value indicating if the measurement units of the real and integer variable(s) should be
-converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no conversion is
-performed. See \code{\link[febr]{standard}} for more information. (NOT AVAILABLE AT THE MOMENT!)
-
-\item \code{round} Logical value indicating if the values of the real and integer variable(s) should be rounded
-to the standard number of decimal places. Effective only when \code{units = TRUE}. Defaults to
-\code{round = FALSE}, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more information.
-(NOT AVAILABLE AT THE MOMENT!)
+\item \code{units} Logical value indicating if the measurement units of the continuous variable(s) should
+be converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no conversion is
+performed. See \code{\link[febr]{standard}} for more information.
+\item \code{round} Logical value indicating if the values of the continuous variable(s) should be rounded
+to the standard number of decimal places. Requires \code{units = TRUE}. Defaults to \code{round = FALSE}, i.e.
+no rounding is performed. See \code{\link[febr]{standard}} for more information.
 }}
 
 \item{harmonization}{(optional) List with named sub-arguments indicating if and how to perform data
@@ -100,8 +92,8 @@ horizon designation, and variables such as pH, carbon content, clay content, and
 dataset before downloading it.
 }
 \details{
-\subsection{Standard columns}{
-Standard columns and their content (in Portuguese) are as follows:
+\subsection{Standard identification variables}{
+Standard identification variables and their content are as follows:
 \itemize{
 \item \code{dataset_id}. Identification code of the dataset in \emph{\strong{febr}} to which an observation belongs.
 \item \code{observacao_id}. Identification code of an observation in \emph{\strong{febr}}.
@@ -111,8 +103,8 @@ Standard columns and their content (in Portuguese) are as follows:
 \item \code{profund_sup}. Upper boundary of a layer (cm).
 \item \code{profund_inf}. Lower boundary of a layer (cm).
 }
-Further details about the content of the standard columns can be found in \url{http://www.ufsm.br/febr/book/}
-(in Portuguese).
+Further details about the content of the standard identification variables can be found in
+\url{http://www.ufsm.br/febr/book/} (in Portuguese).
 }
 
 \subsection{Harmonization}{
@@ -121,10 +113,11 @@ that they are (approximately) equivalent to the values that would have been obta
 \emph{A} had been used instead. For example, converting carbon content values obtained using a wet digestion
 method to the standard dry combustion method is data harmonization.
 
-A heuristic data harmonization procedure is implemented \strong{febr}. It consists of grouping variables
+A heuristic data harmonization procedure is implemented in the \strong{febr} package. It consists of grouping
+variables
 based on a chosen number of levels of their identification code. For example, consider a variable with an
 identification code composed of four levels, \code{aaa_bbb_ccc_ddd}, where \code{aaa} is the first level and
-\code{ddd} is the fouth level. Now consider a related variable, \code{aaa_bbb_eee_fff}. If the harmonization
+\code{ddd} is the fourth level. Now consider a related variable, \code{aaa_bbb_eee_fff}. If the harmonization
 is to consider all four coding levels (\code{level = 4}), then these two variables will remain coded as
 separate variables. But if \code{level = 2}, then both variables will be recoded to \code{aaa_bbb}, thus becoming the
 same variable.
