@@ -20,13 +20,12 @@
 #'       spatial coordinates should be transformed. For example, `crs = "EPSG:4674"`, i.e. SIRGAS 2000, the
 #'       standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. Defaults to 
 #'       `crs = NULL`, i.e. no transformation is performed.
-#' \item `units` Logical value indicating if the measurement units of the real and integer variable(s) should be
-#'       converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
-#'       performed. See \code{\link[febr]{standard}} for more information. (NOT AVAILABLE AT THE MOMENT!)
-#' \item `round` Logical value indicating if the values of the real and integer variable(s) should be rounded  
-#'       to the standard number of decimal places. Effective only when `units = TRUE`. Defaults to 
-#'       `round = FALSE`, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more information.
-#'       (NOT AVAILABLE AT THE MOMENT!)
+#' \item `units` Logical value indicating if the measurement units of the continuous variable(s) should
+#'       be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
+#'       performed. See \code{\link[febr]{standard}} for more information.
+#' \item `round` Logical value indicating if the values of the continuous variable(s) should be rounded  
+#'       to the standard number of decimal places. Requires `units = TRUE`. Defaults to `round = FALSE`, i.e. 
+#'       no rounding is performed. See \code{\link[febr]{standard}} for more information.
 #' }
 #' 
 #' @param harmonization (optional) List with named sub-arguments indicating if and how to perform data 
@@ -40,8 +39,8 @@
 #' }
 #'
 #' @details 
-#' \subsection{Standard columns}{
-#' Standard columns and their content (in Portuguese) are as follows:
+#' \subsection{Standard identification variables}{
+#' Standard identification variables and their content are as follows:
 #' \itemize{
 #' \item `dataset_id`. Identification code of the dataset in ___febr___ to which an observation belongs.
 #' \item `observacao_id`. Identification code of an observation in ___febr___.
@@ -63,8 +62,8 @@
 #' \item `amostra_quanti`. Number of samples taken.
 #' \item `amostra_area`. Sampling area.
 #' }
-#' Further details about the content of the standard columns can be found in \url{http://www.ufsm.br/febr/book/}
-#' (in Portuguese).
+#' Further details about the content of the standard identification variables can be found in 
+#' \url{http://www.ufsm.br/febr/book/} (in Portuguese).
 #' }
 #' 
 #' \subsection{Harmonization}{
@@ -73,7 +72,8 @@
 #' *A* had been used instead. For example, converting carbon content values obtained using a wet digestion
 #' method to the standard dry combustion method is data harmonization.
 #' 
-#' A heuristic data harmonization procedure is implemented **febr**. It consists of grouping variables 
+#' A heuristic data harmonization procedure is implemented in the **febr** package. It consists of grouping
+#' variables 
 #' based on a chosen number of levels of their identification code. For example, consider a variable with an 
 #' identification code composed of four levels, `aaa_bbb_ccc_ddd`, where `aaa` is the first level and
 #' `ddd` is the fouth level. Now consider a related variable, `aaa_bbb_eee_fff`. If the harmonization
@@ -161,6 +161,19 @@ observation <-
         y <- class(standardization$round)
         stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$round'"))
       }
+      
+      if (is.null(standardization$units)) {
+        standardization$units <- FALSE
+      } else if (!is.logical(standardization$units)) {
+        y <- class(standardization$units)
+        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$units'"))
+      }
+      if (is.null(standardization$round)) {
+        standardization$round <- FALSE
+      } else if (!is.logical(standardization$round)) {
+        y <- class(standardization$round)
+        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$round'"))
+      }
     }
     
     ## harmonization
@@ -197,6 +210,18 @@ observation <-
       if (harmonization$harmonize) {
         stop ("data cannot be harmonized when downloading all variables")
       }
+    }
+    
+    ## stack + stadardization
+    if (stack && !standardization$units) {
+      stop ("data cannot be stacked when measurement units are not standardized")
+    }
+    
+    # PADRÕES
+    ## Descarregar tabela com unidades de medida e número de casas decimais
+    if (standardization$units) {
+      febr_stds <- .getTable(x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI")
+      febr_unit <- .getTable(x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo")
     }
     
     # CHAVES
@@ -253,6 +278,7 @@ observation <-
         }
         cols <- c(cols, extra_cols)
         tmp <- tmp[, cols]
+        unit <- unit[names(unit) %in% cols]
         
         # LINHAS
         ## Definir as linhas a serem mantidas
@@ -293,9 +319,41 @@ observation <-
           # PADRONIZAÇÃO II
           ## Unidade de medida e número de casas decimais
           if (standardization$units) {
-            message("Standardization of measurement units is not available yet")
-            if (standardization$round) {
-              message("Standardization of decimal places is not available yet")
+            
+            ## Identificar variáveis contínuas (classe 'numeric' e 'integer'), excluíndo variáveis de 
+            ## identificação padrão
+            id_class <- sapply(tmp, class)
+            id_con <- which(id_class %in% c("numeric", "integer") & !names(id_class) %in% std_cols)
+            if (length(id_con) >= 1) {
+              tmp_stds <- match(cols[id_con], febr_stds$campo_id)
+              tmp_stds <- febr_stds[tmp_stds, c("campo_id", "campo_unidade", "campo_precisao")]
+              
+              ## 1. Se necessário, padronizar unidades de medida
+              idx_unit <- unit[cols[id_con]] != tmp_stds$campo_unidade
+              if (any(idx_unit)) {
+                idx_unit <- colnames(idx_unit)[idx_unit]
+                source <- unit[idx_unit]
+                target <- tmp_stds$campo_unidade[match(idx_unit, tmp_stds$campo_id)]
+                
+                ## Identificar constante
+                k <- lapply(seq_along(source), function (i) {
+                  # i <- 2
+                  idx <- febr_unit$unidade_origem %in% source[i] + febr_unit$unidade_destino %in% target[i]
+                  febr_unit[idx == 2, ] 
+                })
+                k <- do.call(rbind, k)
+                
+                ## Processar dados
+                tmp[idx_unit] <- mapply(`*`, tmp[idx_unit], k$unidade_constante)
+                unit[idx_unit] <- k$unidade_destino
+              }
+              
+              ## 2. Se necessário, padronizar número de casas decimais
+              if (standardization$round) {
+                tmp[tmp_stds$campo_id] <- 
+                  lapply(seq(nrow(tmp_stds)), function (i) 
+                    round(x = tmp[tmp_stds$campo_id[i]], digits = tmp_stds$campo_precisao[i]))
+              }
             }
           }
           
@@ -311,6 +369,13 @@ observation <-
           # IDENTIFICAÇÃO
           ## Código de identificação do conjunto de dados
           res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
+          
+          # ATTRIBUTOS
+          ## Adicionar unidades de medida
+          a <- attributes(res[[i]])
+          a$units <- c("unitless", as.character(unit[names(unit) %in% a$names]))
+          a$units <- gsub("^-$", "unitless", a$units)
+          attributes(res[[i]]) <- a
           
           if (progress) {
             utils::setTxtProgressBar(pb, i)
@@ -333,8 +398,9 @@ observation <-
     
     # FINAL
     ## Empilhar conjuntos de dados
+    ## Adicionar unidades de medida
     if (stack) {
-      res <- suppressWarnings(dplyr::bind_rows(res))
+      res <- .stackTables(obj = res)
     } else if (n == 1) {
       res <- res[[1]]
     }
