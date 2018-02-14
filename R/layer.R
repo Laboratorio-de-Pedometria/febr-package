@@ -93,7 +93,7 @@
 #' variables 
 #' based on a chosen number of levels of their identification code. For example, consider a variable with an 
 #' identification code composed of four levels, `aaa_bbb_ccc_ddd`, where `aaa` is the first level and
-#' `ddd` is the fouth level. Now consider a related variable, `aaa_bbb_eee_fff`. If the harmonization
+#' `ddd` is the fourth level. Now consider a related variable, `aaa_bbb_eee_fff`. If the harmonization
 #' is to consider all four coding levels (`level = 4`), then these two variables will remain coded as
 #' separate variables. But if `level = 2`, then both variables will be recoded to `aaa_bbb`, thus becoming the
 #' same variable.
