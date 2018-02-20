@@ -1,0 +1,79 @@
+#' Get all dataset tables
+#' 
+#' Download data from the *dataset* ("dataset"), *observation* ("observacao"), *layer* ("camada"), and 
+#' *metadata* ("metadado") tables of a datasets contained in the Free Brazilian Repository for Open Soil Data 
+#' -- ___febr___, \url{http://www.ufsm.br/febr}.
+#' 
+#' @template metadata_template
+#' 
+#' @param merge (optional) Logical value indicating if the *observation* ("observacao") and *layer* ("camada")
+#' tables should be merged. Detaults to `merge = FALSE`. See \code{\link[base]{merge}} for more details.
+#' 
+#' @param ... (optional) Arguments passed to \code{\link[febr]{observation}} and \code{\link[febr]{layer}}.
+#' 
+#' @return A list of data frames with data on the chosen dataset.
+#'
+#' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
+#' @seealso \code{\link[febr]{dataset}}, \code{\link[febr]{observation}}, \code{\link[febr]{layer}}, 
+#' \code{\link[febr]{metadata}}
+#' @export
+#' @examples
+#' \dontrun{ 
+#' tmp <- febr(dataset = "ctb0003", join = TRUE, variable = "all")
+#' }
+febr <- 
+  function (dataset, merge = FALSE, progress = TRUE, verbose = TRUE, ...) {
+    
+    # ARGUMENTOS
+    ## dataset
+    if (missing(dataset)) {
+      stop ("argument 'dataset' is missing")
+    } else if (!is.character(dataset)) {
+      stop (glue::glue("object of class '{class(dataset)}' passed to argument 'dataset'"))
+    } else if (length(dataset) > 1 || dataset == "all") {
+      stop ("cannot donwload data from more than on dataset")
+    }
+    
+    ## merge
+    if (!is.logical(merge)) {
+      stop (glue::glue("object of class '{class(merge)}' passed to argument 'merge'"))
+    }
+    
+    # DESCARREGAMENTO
+    ## Descarregar tabela 'dataset'
+    if (verbose) {
+      message(glue::glue("Downloading table {dataset}-dataset..."))
+    }
+    dts <- dataset(dataset = dataset, progress = progress, verbose = FALSE)
+    
+    ## Descarregar tabela 'observacao'
+    if (verbose) {
+      message(glue::glue("Downloading table {dataset}-observacao..."))
+    }
+    obs <- observation(dataset = dataset, progress = progress, verbose = FALSE, ...)
+    
+    ## Descarregar tabela 'camada'
+    if (verbose) {
+      message(glue::glue("Downloading table {dataset}-camada..."))
+    }
+    lyr <- layer(dataset = dataset, progress = progress, verbose = FALSE, ...)
+    
+    ## Descarregar tabela 'metadado'
+    if (verbose) {
+      message(glue::glue("Downloading table {dataset}-metadado..."))
+    }
+    mtd <- metadata(dataset = dataset, progress = progress, verbose = FALSE)
+    
+    # PROCESSAMENTO
+    ## Fundir tabelas se necessário
+    if (merge) {
+      res <- list(dataset = dts, 
+                  data = merge(x = obs, y = lyr, by = c("dataset_id", "observacao_id")), 
+                  metadata = mtd)
+    } else {
+      res <- list(dataset = dts, observation = obs, layer = lyr, metadata = mtd)
+    }
+    
+    # FINAL
+    return (res)
+  }
