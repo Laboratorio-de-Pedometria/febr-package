@@ -93,7 +93,7 @@ header <-
     }
     res <- list()
     for (i in seq(n)) {
-      
+      # i <- 1
       # Informative messages
       dts <- sheets_keys$ctb[i]
       if (verbose) {
@@ -112,7 +112,7 @@ header <-
       cols <- in_cols[in_cols %in% std_cols]
       extra_cols <- vector()
       if (!missing(variable)) {
-        if (variable == "all") {
+        if (length(variable) == 1 && variable == "all") {
           extra_cols <- in_cols[!in_cols %in% std_cols]
         } else {
           extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)])
