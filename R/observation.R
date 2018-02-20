@@ -272,8 +272,9 @@ observation <-
       na_coord <- max(apply(tmp[c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
       na_time <- is.na(tmp$observacao_data)
       # if (missing$coord == "keep" || missing$coord == "drop" && na_coord < n_rows) {
-      if (missing$coord == "keep" && missing$time == "keep" || 
-          missing$coord == "drop" && na_coord < n_rows && missing$time == "drop" && na_time < n_rows) {
+      if (missing$coord == "keep" && missing$time == "keep" ||
+          missing$coord == "drop" && na_coord < n_rows && missing$time == "keep" ||
+          missing$coord == "keep" && missing$time == "drop" && length(na_time) < n_rows) {
         
         # COLUNAS
         ## Definir as colunas a serem mantidas
@@ -416,7 +417,7 @@ observation <-
         res[[i]] <- data.frame()
         if (na_coord == n_rows) {
           m <- glue::glue("All observations in {dts} are missing coordinates. None will be returned.")  
-        } else if (na_time == n_rows) {
+        } else if (length(na_time) == n_rows) {
           m <- glue::glue("All observations in {dts} are missing date. None will be returned.")  
         }
         message(m)
