@@ -122,7 +122,7 @@ str(res)
 }
 }
 \seealso{
-\code{\link[febr]{layer}}, \code{\link[febr]{standard}}
+\code{\link[febr]{layer}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

@@ -40,8 +40,8 @@ Download header data (column names and measurement units) from the \emph{layer} 
 dataset before downloading it via \code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
 }
 \details{
-\subsection{Standard columns}{
-Standard columns and their content depend on the chosen \code{table}. See documentation of
+\subsection{Standard identification variables}{
+Standard identification variables and their content depend on the chosen \code{table}. See documentation of
 \code{\link[febr]{layer}} and \code{\link[febr]{observation}}.
 }
 }

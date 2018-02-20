@@ -130,7 +130,7 @@ str(res)
 }
 }
 \seealso{
-\code{\link[febr]{observation}}, \code{\link[febr]{standard}}
+\code{\link[febr]{observation}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}
