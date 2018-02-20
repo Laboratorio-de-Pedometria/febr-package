@@ -1,8 +1,8 @@
 Package: febr
 Type: Package
 Title: Free Brazilian Repository for Open Soil Data
-Version: 0.7-0
-Date: 2018-02-14
+Version: 0.7-1
+Date: 2018-02-20
 Author: Alessandro Samuel-Rosa
 Maintainer: Alessandro Samuel-Rosa <alessandrosamuelrosa@gmail.com>
 Description: 
@@ -14,6 +14,7 @@ Imports:
   dplyr,
   glue,
   googlesheets,
+  knitr,
   pedometrics,
   readr,
   sp,

@@ -8,6 +8,7 @@
           pkg.info["Title"],                                                  " \n",
           "febr version ", pkg.info["Version"],                               " \n",
           "(built on ", pkg.info["Date"], ") is now loaded                      \n",
+          "                                                                     \n",
           "Making the access to the Free Brazilian Repository for Open Soil Data\n",
           "as easy as possible. Access http://www.ufsm.br/febr/.                \n",
           "Contact febr-forum@googlegroups.com for more information             \n",
