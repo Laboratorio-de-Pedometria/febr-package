@@ -229,9 +229,9 @@ observation <-
     }
     
     ## stack + stadardization
-    if (stack && !standardization$units) {
-      stop ("data cannot be stacked when measurement units are not standardized")
-    }
+    # if (stack && !standardization$units) {
+    #   stop ("data cannot be stacked when measurement units are not standardized")
+    # }
     
     # PADRÕES
     ## Descarregar tabela com unidades de medida e número de casas decimais
