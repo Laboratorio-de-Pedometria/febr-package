@@ -152,7 +152,7 @@
   function (obj, time.format) {
     
     # Identificar formatação da data
-    time_sep <- ifelse(all(grepl("/", na.omit(obj$observacao_data))), "/", "-")
+    time_sep <- ifelse(all(grepl("/", stats::na.omit(obj$observacao_data))), "/", "-")
     time_form <- glue::glue("%d{time_sep}%m{time_sep}%Y")
     
     # Verificar se falta data para alguma observação
