@@ -124,28 +124,28 @@ header <-
       tmp <- tmp[, cols]
       
       # TIPO DE DADOS
-      if (table == "observacao") {
+      # if (table == "observacao") {
         ## 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros
         ## durante o empilhamento das tabelas devido ao tipo de dado.
         ## Nota: esse processamento deve ser feito via Google Sheets.
-        tmp$observacao_id <- as.character(tmp$observacao_id)
-        if ("sisb_id" %in% cols) {
-          tmp$sisb_id <- as.character(tmp$sisb_id)
-        }
-        if ("ibge_id" %in% cols) {
-          tmp$ibge_id <- as.character(tmp$ibge_id)
-        }
+        # tmp$observacao_id <- as.character(tmp$observacao_id)
+        # if ("sisb_id" %in% cols) {
+        #   tmp$sisb_id <- as.character(tmp$sisb_id)
+        # }
+        # if ("ibge_id" %in% cols) {
+        #   tmp$ibge_id <- as.character(tmp$ibge_id)
+        # }
         # 'coord_precisao' precisa estar no formato numérico ao invés de inteiro
-        if ("coord_precisao" %in% colnames(tmp)) {
-          tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
-        }
-      } else if (table == "camada") {
+        # if ("coord_precisao" %in% colnames(tmp)) {
+          # tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
+        # }
+      # } else if (table == "camada") {
         ## "observacao_id", "camada_numero", "camada_nome", "amostra_codigo", "profund_sup" e "profund_inf"
         ## precisam estar no formato de carácter para evitar erros durante o empilhamento das tabelas
         ## devido ao tipo de dado.
         ## Nota: esse processamento deve ser feito via Google Sheets.
-        tmp[std_cols] <- sapply(tmp[std_cols], as.character)
-      }
+        # tmp[std_cols] <- sapply(tmp[std_cols], as.character)
+      # }
       
       # IDENTIFICAÇÃO
       ## Código de identificação do conjunto de dados
