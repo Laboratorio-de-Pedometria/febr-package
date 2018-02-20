@@ -39,6 +39,12 @@ metadata <-
 
     # Descarregar chaves de identificação das planilhas do repositório
     sheets_keys <- .getSheetsKeys(dataset = dataset)
+    if (length(stats::na.omit(sheets_keys$metadado)) == 0) {
+      m <- glue::glue(
+        "metadata for dataset {dataset} has not been published yet
+        Contact febr-forum@googlegroups.com for more info and learn how to help")
+      stop (m)
+    }
     n <- nrow(sheets_keys)
     
     # Opções
