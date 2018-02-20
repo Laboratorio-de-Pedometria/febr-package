@@ -21,6 +21,7 @@
 #' \dontrun{ 
 #' tmp <- febr(dataset = "ctb0003", join = TRUE, variable = "all")
 #' }
+###############################################################################################################
 febr <- 
   function (dataset, merge = FALSE, progress = TRUE, verbose = TRUE, ...) {
     
@@ -62,7 +63,7 @@ febr <-
     if (verbose) {
       message(glue::glue("Downloading table {dataset}-metadado..."))
     }
-    mtd <- metadata(dataset = dataset, progress = progress, verbose = FALSE)
+    mtd <- try(metadata(dataset = dataset, progress = progress, verbose = FALSE))
     
     # PROCESSAMENTO
     ## Fundir tabelas se necessário
