@@ -111,5 +111,6 @@ standard <-
     }
     
     # FINAL
+    rownames(std) <- NULL
     return (std)
   }

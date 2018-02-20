@@ -54,5 +54,6 @@ unit <-
     }
     
     # FINAL
+    rownames(res) <- NULL
     return (res)
   }
