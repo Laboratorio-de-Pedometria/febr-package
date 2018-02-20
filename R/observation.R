@@ -88,7 +88,7 @@
 #' @return A list of data frames or a data frame with data on the chosen variable(s) of the chosen dataset(s).
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso \code{\link[febr]{layer}}, \code{\link[febr]{standard}}
+#' @seealso \code{\link[febr]{layer}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
 #' @export
 #' @examples
 #' \dontrun{
