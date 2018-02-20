@@ -134,6 +134,11 @@ observation <-
       } else if (!missing$coord %in% c("drop", "keep")) {
         stop (glue::glue("unknown value '{missing$coord}' passed to sub-argument 'missing$coord'"))
       }
+      if (is.null(missing$time)) {
+        missing$time <- "keep"
+      } else if (!missing$time %in% c("drop", "keep")) {
+        stop (glue::glue("unknown value '{missing$time}' passed to sub-argument 'missing$time'"))
+      }
       if (is.null(missing$data)) {
         missing$data <- "keep"
       } else if (!missing$data %in% c("drop", "keep")) {
