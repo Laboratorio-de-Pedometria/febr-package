@@ -1,8 +1,8 @@
 Package: febr
 Type: Package
 Title: Free Brazilian Repository for Open Soil Data
-Version: 0.7-6
-Date: 2018-02-20
+Version: 0.7-7
+Date: 2018-02-23
 Author: Alessandro Samuel-Rosa
 Maintainer: Alessandro Samuel-Rosa <alessandrosamuelrosa@gmail.com>
 Description: 
@@ -19,7 +19,7 @@ Imports:
   readr,
   sp,
   stringr
-VignetteBuilder: knitr
+#VignetteBuilder: knitr
 LazyData: true
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
