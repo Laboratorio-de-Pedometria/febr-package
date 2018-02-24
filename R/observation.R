@@ -279,10 +279,11 @@ observation <-
       ## na data.
       na_coord <- max(apply(tmp[c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
       na_time <- is.na(tmp$observacao_data)
+      n_na_time <- length(na_time)
       # if (missing$coord == "keep" || missing$coord == "drop" && na_coord < n_rows) {
       if (missing$coord == "keep" && missing$time == "keep" ||
-          missing$coord == "drop" && na_coord < n_rows && missing$time == "keep" ||
-          missing$coord == "keep" && missing$time == "drop" && length(na_time) < n_rows) {
+          missing$coord == "drop" && na_coord < n_rows && missing$time == "keep" | missing$time == "drop" ||
+          missing$coord == "keep" | missing$coord == "drop" && missing$time == "drop" && n_na_time < n_rows) {
         
         # COLUNAS
         ## Definir as colunas a serem mantidas
