@@ -153,7 +153,7 @@
     
     # Identificar formatação da data
     time_sep <- ifelse(all(grepl("/", stats::na.omit(obj$observacao_data))), "/", "-")
-    time_form <- glue::glue("%d{time_sep}%m{time_sep}%Y")
+    time_form0 <- glue::glue("%d{time_sep}%m{time_sep}%Y")
     
     # Verificar se falta data para alguma observação
     time_miss <- grepl("xx", obj$observacao_data)
@@ -179,8 +179,8 @@
     }
     
     # Formatar data
-    obj$observacao_data <- as.Date(x = obj$observacao_data, format = time_form)
-    obj$observacao_data <- format(obj$observacao_data, time.format)
+    obj$observacao_data <- as.Date(x = obj$observacao_data, format = time_form0)
+    obj$observacao_data <- as.Date(x = obj$observacao_data, format = time.format)
     
     return (obj)
   }
