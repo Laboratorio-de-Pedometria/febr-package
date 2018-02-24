@@ -275,7 +275,8 @@ layer <-
     }
     
     ## stack + stadardization
-    if (stack && !standardization$units) {
+    ## Padronização não precisa ser feita no caso de descarregamento apenas das variáveis padrão
+    if (stack && !standardization$units && !missing(variable)) {
       stop ("data cannot be stacked when measurement units are not standardized")
     }
     
