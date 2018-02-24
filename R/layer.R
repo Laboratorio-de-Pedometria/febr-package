@@ -449,6 +449,11 @@ layer <-
             }
           }
           
+          # ATTRIBUTOS I
+          ## Processar unidades de medida
+          unit <- c("unitless", as.character(unit[names(unit) %in% cols]))
+          unit <- gsub("^-$", "unitless", unit)
+          
           # HARMONIZAÇÃO I
           ## Harmonização dos dados das colunas adicionais
           if (harmonization$harmonize) {
@@ -462,11 +467,12 @@ layer <-
           ## Código de identificação do conjunto de dados
           res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
           
-          # ATTRIBUTOS
+          # ATTRIBUTOS II
           ## Adicionar unidades de medida
           a <- attributes(res[[i]])
-          a$units <- c("unitless", as.character(unit[names(unit) %in% a$names]))
-          a$units <- gsub("^-$", "unitless", a$units)
+          # a$units <- c("unitless", as.character(unit[names(unit) %in% a$names]))
+          a$units <- unit
+          # a$units <- gsub("^-$", "unitless", a$units)
           attributes(res[[i]]) <- a
           
           if (progress) {
