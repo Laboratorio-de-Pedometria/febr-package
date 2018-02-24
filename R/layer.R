@@ -274,17 +274,24 @@ layer <-
       }
     }
     
-    ## stack + stadardization
-    ## Padronização não precisa ser feita no caso de descarregamento apenas das variáveis padrão
-    if (stack && !standardization$units && !missing(variable)) {
-      stop ("data cannot be stacked when measurement units are not standardized")
-    }
-    
     # PADRÕES
     ## Descarregar tabela com unidades de medida e número de casas decimais
     if (standardization$units) {
       febr_stds <- .getTable(x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI")
       febr_unit <- .getTable(x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo")
+    }
+    
+    ## stack + stadardization
+    ## Padronização não precisa ser feita no caso de descarregamento apenas das variáveis padrão
+    ## Também não precisa ser feita no caso de variáveis de tipo 'texto'
+    if (stack && !standardization$units && !missing(variable) && variable != "all") {
+      tmp_var <- glue::glue("^{variable}")
+      idx <- lapply(tmp_var, function (pattern) grep(pattern = pattern, x = febr_stds$campo_id))
+      idx <- unlist(idx)
+      is_all_text <- all(febr_stds$campo_tipo[idx] == "texto")
+      if (!is_all_text) {
+        stop ("data cannot be stacked when measurement units are not standardized")
+      }
     }
     
     # CHAVES
