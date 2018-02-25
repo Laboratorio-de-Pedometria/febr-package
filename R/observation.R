@@ -229,8 +229,9 @@ observation <-
     }
     
     # PADRÕES
-    ## Descarregar tabela com unidades de medida e número de casas decimais
-    if (standardization$units) {
+    ## Descarregar tabela com unidades de medida e número de casas decimais quando padronização é solicitada
+    ## ou quando empilhamento é solicitado
+    if (standardization$units || stack) {
       febr_stds <- .getTable(x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI")
       febr_unit <- .getTable(x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo")
     }
