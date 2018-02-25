@@ -191,7 +191,8 @@
     # Remover linhas sem dados em uma ou mais colunas
     if (length(extra_cols) >= 1 && missing$data == "drop") {
       idx_keep <- is.na(obj[extra_cols])
-      idx_keep <- rowSums(idx_keep) < ncol(idx_keep)
+      # idx_keep <- rowSums(idx_keep) < ncol(idx_keep)
+      idx_keep <- rowSums(idx_keep) == 0
       obj <- obj[idx_keep, ]
     }
     
