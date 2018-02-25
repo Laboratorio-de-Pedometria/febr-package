@@ -175,7 +175,7 @@ layer <-
       }
       if (is.null(standardization$lessthan.sign)) {
         standardization$lessthan.sign <- "keep"
-      } else if (!standardization$lessthan.sign %in% c("add", "remove", "keep")) {
+      } else if (!standardization$lessthan.sign %in% c("subtract", "remove", "keep")) {
         y <- standardization$lessthan.sign
         stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$lessthan.sign'"))
       }
@@ -306,7 +306,7 @@ layer <-
     }
     res <- list()
     for (i in 1:length(sheets_keys$camada)) {
-      # i <- 2
+      # i <- 1
       # Informative messages
       dts <- sheets_keys$ctb[i]
       if (verbose) {

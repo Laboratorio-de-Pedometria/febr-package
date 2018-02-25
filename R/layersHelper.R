@@ -44,10 +44,10 @@
 # obj <- febr::layer(dataset = "ctb0018", variable = "prata")
 # obj <- data.frame(a = c("<50a", "5,0"), stringsAsFactors = FALSE)
 # .setLowestMeasuredValue(obj = obj, lessthan.frac = 0.5)
-.hasLessThanSign <-
-  function (x) {
-    all(grepl(pattern = "^<[0-9]+", x = x) && nchar(x = x) <= 5 && !grepl(pattern = "[:alpha:]", x = x))
-  }
+# .hasLessThanSign <-
+  # function (x) {
+    # all(grepl(pattern = "^<[0-9]+", x = x) && nchar(x = x) <= 5 && !grepl(pattern = "[:alpha:]", x = x))
+  # }
 .setLowestMeasuredValue <-
   function (obj, lessthan.sign = "subtract", lessthan.frac = 0.5) {
     
@@ -59,10 +59,11 @@
     # A corrente de caracteres começa com o símbolo '<', seguido de um ou mais dígitos, não podendo haver
     # qualquer caracter alfabético
     if (length(id_cha) >= 1) {
-      idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(.hasLessThanSign(x)))))
+      # idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(.hasLessThanSign(x)))))
+      idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(startsWith(x = x, prefix = "<")))))
       
       # Processar dados
-      if (length(idx_lessthan >= 1)) {
+      if (length(idx_lessthan) >= 1) {
         switch(
           lessthan.sign,
           
@@ -70,7 +71,7 @@
           # Precisa substituir vírgula por ponto como separador decimal
           remove = {
             obj[idx_lessthan] <- 
-              sapply(obj[idx_lessthan], function (x) {
+              lapply(obj[idx_lessthan], function (x) {
                 out <- gsub(pattern = "^<", replacement = "", x = x)
                 out <- gsub(pattern = "(.),(.)", replacement = "\\1.\\2", x = out)
                 as.numeric(out)
@@ -81,7 +82,7 @@
           # Precisa substituir vírgula por ponto como separador decimal
           subtract = {
             obj[idx_lessthan] <-
-              sapply(obj[idx_lessthan], function (x) {
+              lapply(obj[idx_lessthan], function (x) {
                 out <- gsub(pattern = "^<", replacement = glue::glue("{1 - lessthan.frac}*"), x = x)
                 out <- gsub(pattern = "(.),(.)", replacement = "\\1.\\2", x = out)
                 sapply(out, function (out) eval(parse(text = out)), USE.NAMES = FALSE)
