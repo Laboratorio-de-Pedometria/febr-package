@@ -453,7 +453,7 @@ layer <-
               ## 2. Se necessário, padronizar número de casas decimais
               if (standardization$round) {
                 tmp[tmp_stds$campo_id] <- 
-                  lapply(seq(nrow(tmp_stds)), function (i) 
+                  sapply(seq(nrow(tmp_stds)), function (i) 
                     round(x = tmp[tmp_stds$campo_id[i]], digits = tmp_stds$campo_precisao[i]))
               }
             }
