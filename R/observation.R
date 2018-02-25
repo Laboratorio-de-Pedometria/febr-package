@@ -295,7 +295,8 @@ observation <-
         cols <- in_cols[in_cols %in% std_cols]
         extra_cols <- vector()
         if (!missing(variable)) {
-          if (variable == "all") {
+          if (length(variable) == 1 && variable == "all") {
+          # if (variable == "all") {
             extra_cols <- in_cols[!in_cols %in% std_cols]
             idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
             extra_cols <- extra_cols[!idx_na]
