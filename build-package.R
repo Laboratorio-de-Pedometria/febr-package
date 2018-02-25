@@ -18,5 +18,8 @@ devtools::build_win()
 
 devtools::build()
 
+# Load package
+devtools::load_all()
+
 # turn on/off development mode
 # devtools::dev_mode()
