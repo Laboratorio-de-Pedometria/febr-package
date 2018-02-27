@@ -34,7 +34,7 @@ standardization.
 spatial coordinates should be transformed. For example, \code{crs = "EPSG:4674"}, i.e. SIRGAS 2000, the
 standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. Defaults to
 \code{crs = NULL}, i.e. no transformation is performed.
-\item \code{time.format} Character string indicating hoe to format dates. For example,
+\item \code{time.format} Character string indicating how to format dates. For example,
 \code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to
 \code{time.format = NULL}, i.e. no formating is performed. See \code{\link[base]{as.Date}} for more details.
 \item \code{units} Logical value indicating if the measurement units of the continuous variable(s) should
