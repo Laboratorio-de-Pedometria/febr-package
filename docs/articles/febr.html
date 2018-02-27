@@ -32,25 +32,19 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
+  <a href="../index.html">Início</a>
 </li>
 <li>
-  <a href="../articles/febr.html">Get Started</a>
+  <a href="../articles/febr.html">Como usar</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../news/index.html">News</a>
+  <a href="../reference/">Referência</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/febr-team/febr-package/">
-    <span class="fa fa-github fa-lg"></span>
+  <a href="https://github.com/febr-team/febr-package">
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -81,7 +75,7 @@
 <h1 class="hasAnchor">
 <a href="#apresentacao" class="anchor"></a>Apresentação</h1>
 <p>O Repositório Brasileiro Livre para Dados Abertos do Solo – <font face="Comfortaa">febr</font>, <a href="http://www.ufsm.br/febr/" class="uri">http://www.ufsm.br/febr/</a> – foi criado com o propósito de servir de plataforma para a compilação, organização e publicação de todos os tipos de dados do solo produzidos no Brasil. Para isso são usados padrões baseados em experiências internacionais, principalmente uma política de dados abertos, primando pela facilidade de acesso, manutenção e uso. A meta é constituir um repositório centralizado para armazenar e servir dados do solo em formato padronizado e harmonizado para várias aplicações. Estas incluem o desenvolvimento de bases de dados especializadas, a melhoria do Sistema Brasileiro de Classificação do Solo, a criação do Sistema Universal de Classificação do Solo, a construção de sistemas inteligentes de recomendação de fertilizantes, o desenvolvimento de experimentos agronômicos de larga escala espacial e temporal, e o suporte ao recém-lançado programa nacional de levantamento de solos (PronaSolos).</p>
-<p>O uso de uma instalação centralizada de armazenamento e compartilhamento de dados do solo <font face="Comfortaa">febr</font> reduz os esforços duplicados de recuperação de dados do solo. Isso permite que os já escassos recursos existentes sejam usados de maneira mais racional para maximizar a colaboração entre cientistas do solo. No longo prazo, isso deve alavancar o avanço do conhecimento sobre o solo. Para facilitar ainda mais a reutilização dos dados publicados no <font face="Comfortaa">febr</font>, os cientistas do solo têm à sua disposição o pacote <code>febr</code> para o R. Nesse documento demonstramos como esse pacote pode ser utilizado no dia-a-dia.</p>
+<p>O uso de uma instalação centralizada de armazenamento e compartilhamento de dados do solo <font face="Comfortaa">febr</font> reduz os esforços duplicados de recuperação de dados do solo. Isso permite que os já escassos recursos existentes sejam usados de maneira mais racional para maximizar a colaboração entre cientistas do solo. No longo prazo, isso deve alavancar o avanço do conhecimento sobre o solo. Para facilitar ainda mais a reutilização dos dados publicados no <font face="Comfortaa">febr</font>, os cientistas do solo têm à sua disposição o pacote <code>febr</code> para o R.</p>
 </div>
 <div id="uso-do-pacote" class="section level1">
 <h1 class="hasAnchor">
@@ -112,10 +106,10 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <pre><code>## The following object is masked from 'package:latticeExtra':
 ## 
 ##     layer</code></pre>
-<p>O pacote <code>febr</code> possui três grupos de funções (Tabela @ref(tab:functions)). As funções estruturais são usadas para descarregar informações sobre as tabelas de dados e os padrões usados no <font face="Comfortaa">febr</font>. As funções de acesso são usadas para descarregar dados dos conjuntos de dados publicados no <font face="Comfortaa">febr</font>. Já as funções auxiliares servem de apoio ao processamento e uso dos dados.</p>
+<p>O pacote <code>febr</code> possui três grupos de funções – veja tabela abaixo. As funções estruturais são usadas para descarregar informações sobre as tabelas de dados e os padrões usados no <font face="Comfortaa">febr</font>. As funções de acesso são usadas para descarregar dados dos conjuntos de dados publicados no <font face="Comfortaa">febr</font>. Já as funções auxiliares servem de apoio ao processamento e uso dos dados.</p>
 <p>Nas próximas seções são demonstradas aplicações dessas funções usando conjuntos de dados reais publicados no <font face="Comfortaa">febr</font>.</p>
 <table style="width:86%;" class="table">
-<caption>(#tab:functions) Descrição sumária das funções do pacote <code>febr</code>.</caption>
+<caption>Descrição sumária das funções do pacote <code>febr</code>.</caption>
 <colgroup>
 <col width="22%">
 <col width="19%">
@@ -189,13 +183,14 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <h3 class="hasAnchor">
 <a href="#cabecalho-das-tabelas" class="anchor"></a>Cabeçalho das tabelas</h3>
 <p>A função <code>header</code> serve para descarregar o cabeçalho – as duas primeiras linhas – de uma das duas tabelas de dados – <code>observacao</code> ou <code>camada</code> – de um conjunto de dados publicado no <font face="Comfortaa">febr</font>. Isso permite verificar quais são as variáveis incluídas num determinado conjunto de dados, os códigos de identificação utilizados, e as respectivas unidades de medida. Por exemplo, o cabeçalho da tabela <code>camada</code> do conjunto de dados <code>ctb0003</code> é o seguinte:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">febr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/febr/topics/header">header</a></span>(
-  <span class="dt">dataset =</span> <span class="st">"ctb0003"</span>, 
-  <span class="dt">table =</span> <span class="st">"camada"</span>, 
-  <span class="dt">variable =</span> <span class="st">"all"</span>,
-  <span class="dt">progress =</span> <span class="ot">FALSE</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">t</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">print</span>() -&gt;<span class="st"> </span>cab</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cab &lt;-<span class="st"> </span>
+<span class="st">  </span>febr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/febr/topics/header">header</a></span>(
+    <span class="dt">dataset =</span> <span class="st">"ctb0003"</span>, 
+    <span class="dt">table =</span> <span class="st">"camada"</span>, 
+    <span class="dt">variable =</span> <span class="st">"all"</span>,
+    <span class="dt">progress =</span> <span class="ot">FALSE</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">t</span>() 
+cab </code></pre></div>
 <pre><code>##                                 [,1]      
 ## dataset_id                      "ctb0003" 
 ## observacao_id                   "-"       
@@ -394,8 +389,8 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <pre><code>##   unidade_origem unidade_destino unidade_constante unidade_descricao
 ## 1         Mg/m^3         kg/dm^3                 1        Densidade;</code></pre>
 <p>A seguir são mostradas todas as unidades de medida e constantes de transformação disponíveis no <font face="Comfortaa">febr</font>. Adições podem ser feitas na forma de proposições diretamente na planilha <a href="https://goo.gl/Vvvsf2" class="uri">https://goo.gl/Vvvsf2</a> ou via mensagem de e-mail para o endereço <a href="mailto:febr-forum@googlegroups.com">febr-forum@googlegroups.com</a>.</p>
-<div id="htmlwidget-155d184bc217eee60395" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-155d184bc217eee60395">{"x":{"filter":"none","data":[["%","%","%","%","dag/kg","dag/kg","dag/kg","dag/kg","dm","g/cg","g/cg","g/cm^3","g/cm^3","g/kg","g/kg","g/kg","kg/dm^3","kg/dm^3","kg/kg","km","m","mg/dm^3","mg/dm^3","mg/kg","mg/kg","mg/kg","mg/kg","Mg/m^3","Mg/m^3","mmolc/kg","ppm","kPa","kPa","kPa","kPa","Bar","Bar","Bar","Bar","mca","mca","mca","mca","mm Hg","mm Hg","mm Hg","mm Hg","PSI","PSI","PSI","PSI"],["mg/kg","g/kg","g/cg","kg/kg","mg/kg","g/kg","%","kg/kg","cm","kg/kg","%","kg/dm^3","Mg/m^3","mg/kg","%","dag/kg","Mg/m^3","g/cm^3","g/cg","m","cm","mg/kg","g/kg","ppm","g/kg","dag/kg","%","kg/dm^3","g/cm^3","cmolc/kg","mg/kg","Bar","mca","mm Hg","PSI","kPa","mca","mm Hg","PSI","kPa","Bar","mm Hg","PSI","kPa","Bar","mca","PSI","kPa","Bar","mca","mm Hg"],[10000,10,1,0.01,10000,10,1,0.01,10,0.01,1,1,1,1000,0.1,0.1,1,1,100,1000,100,1,0.001,1,0.001,0.0001,0.0001,1,1,0.1,1,98,9.8,0.1333,6.8947,0.0102,0.1,0.0014,0.0704,0.102,10,0.0136,0.7035,7.5006,735.06,73.506,51.7149,0.14503,14.2137,1.4214,0.0193]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Unidade de origem<\/th>\n      <th>Unidade de destino<\/th>\n      <th>Constante de transformação<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"language":{"url":"//cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json"},"columnDefs":[{"className":"dt-right","targets":2}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-43b71e67c50f6cdff8c3" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-43b71e67c50f6cdff8c3">{"x":{"filter":"none","data":[["%","%","%","%","dag/kg","dag/kg","dag/kg","dag/kg","dm","g/cg","g/cg","g/cm^3","g/cm^3","g/kg","g/kg","g/kg","kg/dm^3","kg/dm^3","kg/kg","km","m","mg/dm^3","mg/dm^3","mg/kg","mg/kg","mg/kg","mg/kg","Mg/m^3","Mg/m^3","mmolc/kg","ppm","kPa","kPa","kPa","kPa","Bar","Bar","Bar","Bar","mca","mca","mca","mca","mm Hg","mm Hg","mm Hg","mm Hg","PSI","PSI","PSI","PSI"],["mg/kg","g/kg","g/cg","kg/kg","mg/kg","g/kg","%","kg/kg","cm","kg/kg","%","kg/dm^3","Mg/m^3","mg/kg","%","dag/kg","Mg/m^3","g/cm^3","g/cg","m","cm","mg/kg","g/kg","ppm","g/kg","dag/kg","%","kg/dm^3","g/cm^3","cmolc/kg","mg/kg","Bar","mca","mm Hg","PSI","kPa","mca","mm Hg","PSI","kPa","Bar","mm Hg","PSI","kPa","Bar","mca","PSI","kPa","Bar","mca","mm Hg"],[10000,10,1,0.01,10000,10,1,0.01,10,0.01,1,1,1,1000,0.1,0.1,1,1,100,1000,100,1,0.001,1,0.001,0.0001,0.0001,1,1,0.1,1,98,9.8,0.1333,6.8947,0.0102,0.1,0.0014,0.0704,0.102,10,0.0136,0.7035,7.5006,735.06,73.506,51.7149,0.14503,14.2137,1.4214,0.0193]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Unidade de origem<\/th>\n      <th>Unidade de destino<\/th>\n      <th>Constante de transformação<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"language":{"url":"//cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json"},"columnDefs":[{"className":"dt-right","targets":2}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="funcoes-de-acesso" class="section level2">

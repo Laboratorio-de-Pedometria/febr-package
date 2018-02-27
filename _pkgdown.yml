@@ -1,0 +1,13 @@
+navbar:
+  title: "febr"
+  type: default
+  left:
+    - text: "Início"
+      href: index.html
+    - text: "Como usar"
+      href: articles/febr.html
+    - text: "Referência"
+      href: "reference/"
+  right:
+    - icon: fa-github
+      href: https://github.com/febr-team/febr-package
