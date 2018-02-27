@@ -62,7 +62,7 @@
     # A corrente de caracteres começa com o símbolo '<', seguido de um ou mais dígitos, não podendo haver
     # qualquer caracter alfabético
     if (length(id_cha) >= 1) {
-      idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(.hasLessThanSign(na.omit(x))))))
+      idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(.hasLessThanSign(stats::na.omit(x))))))
       # idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(startsWith(x = x, prefix = "<")))))
       
       # Processar dados
