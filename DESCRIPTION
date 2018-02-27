@@ -3,8 +3,9 @@ Type: Package
 Title: Free Brazilian Repository for Open Soil Data
 Version: 0.8-0
 Date: 2018-02-25
-Author: Alessandro Samuel-Rosa
-Maintainer: Alessandro Samuel-Rosa <alessandrosamuelrosa@gmail.com>
+Authors@R: c(
+    person("Alessandro", "Samuel-Rosa", role = c("aut", "cre"), email = "alessandrosamuelrosa@gmail.com"),
+    person("Universidade Federal de Santa Maria", role = "fnd", email = "ppgcs@ufsm.br"))
 Description: 
   Making the access to the Free Brazilian Repository for Open Soil Data as easy as possible.
 License: GPL (>= 2)
