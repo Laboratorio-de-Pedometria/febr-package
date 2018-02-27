@@ -2,6 +2,7 @@
 
 export(dataset)
 export(febr)
+export(febr2sp)
 export(header)
 export(layer)
 export(metadata)
