@@ -55,7 +55,7 @@ Depois de instalado, o pacote `febr` pode ser carregado para a sessão de trabal
 library("febr")
 ```
 
-O pacote `febr` possui três grupos de funções (Tabela \@ref(tab:functions)). As funções estruturais são usadas para descarregar informações sobre as tabelas de dados e os padrões usados no `r febr`. As funções de acesso são usadas para descarregar dados dos conjuntos de dados publicados no `r febr`. Já as funções auxiliares servem de apoio ao processamento e uso dos dados.
+O pacote `febr` possui três grupos de funções -- veja tabela abaixo. As funções estruturais são usadas para descarregar informações sobre as tabelas de dados e os padrões usados no `r febr`. As funções de acesso são usadas para descarregar dados dos conjuntos de dados publicados no `r febr`. Já as funções auxiliares servem de apoio ao processamento e uso dos dados.
 
 Nas próximas seções são demonstradas aplicações dessas funções usando conjuntos de dados reais publicados no `r febr`.
 
@@ -73,7 +73,7 @@ rbind(
   c("febr2xlsx", "Auxiliar", "Escrever dados para arquivo XLSX.")
   ) %>% 
   pandoc.table(
-    caption = "(\\#tab:functions) Descrição sumária das funções do pacote `febr`.", 
+    caption = "Descrição sumária das funções do pacote `febr`.", 
     col.names = c("Função", "Grupo", "Descrição"))
 ```
 
@@ -86,12 +86,14 @@ As funções estruturais servem para conhecer a estrutura das tabelas dos conjun
 A função `header` serve para descarregar o cabeçalho -- as duas primeiras linhas -- de uma das duas tabelas de dados -- `observacao` ou `camada` -- de um conjunto de dados publicado no `r febr`. Isso permite verificar quais são as variáveis incluídas num determinado conjunto de dados, os códigos de identificação utilizados, e as respectivas unidades de medida. Por exemplo, o cabeçalho da tabela `camada` do conjunto de dados `ctb0003` é o seguinte:
 
 ```{r}
-header(dataset = "ctb0003", 
-       table = "camada", 
-       variable = "all",
-       progress = FALSE, verbose = FALSE) %>%
-  t() %>% 
-  print() -> cab
+cab <- 
+  febr::header(
+    dataset = "ctb0003", 
+    table = "camada", 
+    variable = "all",
+    progress = FALSE, verbose = FALSE) %>%
+  t() 
+cab 
 ```
 
 No código acima, o argumento `variable = "all"` faz com que o cabeçalho descarregado inclua todas as variáveis contidas na tabela `camada` do conjunto de dados `ctb0003`. Do contrário, se o argumento `variable` for deixado em branco, apenas um subconjunto de variáveis de identificação é descarregado, especificamente as sete primeiras variáveis: `r glue('{collapse(backtick(rownames(cab)[1:7]), sep = ", ", last = " e ")}')`.
@@ -99,7 +101,7 @@ No código acima, o argumento `variable = "all"` faz com que o cabeçalho descar
 Também é possível descarregar o cabeçalho de uma tabela de dados de dois ou mais conjuntos de dados. Para isso basta informar o código dos conjuntos de dados usando o argumento `dataset`. Nesse caso, o argumento `stack` pode ser usado para solicitar que os cabeçalhos dos conjuntos de dados sejam empilhados, o que resulta como saída um único objeto de classe `data.frame`. Do contrário, a função retorna um objeto de classe `list`, no qual cada cada cabeçalho consiste em um item individual. Por exemplo, o empilhamento do cabeçalho da tabela `camada` dos conjuntos de dados `ctb0003` e `ctb0036` é feito da seguinte maneira:
 
 ```{r}
-header(
+febr::header(
   dataset = c("ctb0003", "ctb0036"),
   table = "camada",
   variable = c("argila", "densidade", "carbono", "ph"),
@@ -114,7 +116,8 @@ O código acima mostra que a função `header` também permite selecionar as var
 A função `standard` fornece uma interface para descarregar informações sobre os padrões usados para as variáveis incluídas nas tabelas `observacao` e `camada` dos conjuntos de dados publicados no `r febr`. Isso inclui a codificação e nomenclatura, a descrição de cada variável, a unidade de medida e o número de casas decimais, o tipo de dado, e a categoria da variável. Para as quatro variáveis usadas acima, a codificação, nomenclatura e descrição são as seguintes:
 
 ```{r, results='asis'}
-standard(variable = c("argila", "densidade", "carbono", "ph")) %>%
+febr::standard(
+  variable = c("argila", "densidade", "carbono", "ph")) %>%
   dplyr::select(campo_id, campo_nome, campo_descricao) %>%
   pander(row.names = FALSE)
 ```
@@ -128,10 +131,9 @@ Cabe destacar que, para algumas variáveis, a codificação e/ou a nomenclatura 
 Acima, a função `header` serviu para conhecermos as variáveis contidas nos conjuntos de dados `ctb0003` e `ctb0036`, e suas respectivas unidades de medida. Todas as variáveis compartilhadas pelos dois conjuntos de dados possuem as mesmas unidades de medida: `g/kg` para `argila` e `carbono`, e `Mg/m^3` para `densidade`. Abaixo, vemos que a unidade de medida padrão para a `argila` e `carbono` é `g/kg`, e que `ph` não possui unidade de medida. Contudo, no caso da `densidade`, a unidade de medida padrão é `kg/dm^3` -- ao invés de `Mg/m^3`.
 
 ```{r, results='asis'}
-standard(
+febr::standard(
   variable = c(
-    "argila_naoh_esferas_pipeta", "densidade_solo_anel", "carbono_dicromato_30min150_mohr", "ph_h2o_25")
-  ) %>%
+    "argila_naoh_esferas_pipeta", "densidade_solo_anel", "carbono_dicromato_30min150_mohr", "ph_h2o_25")) %>%
   dplyr::select(campo_id, campo_unidade, campo_precisao) %>%
   pander()
 ```
@@ -139,13 +141,13 @@ standard(
 A função `unit` serve de interface para uma tabela contendo diversas unidades de medida e as constantes utilizadas para a conversão dos dados entre elas. No caso da variável `densidade`, a constante de transformação é igual a `1`. Isso significa que os valores expressos em `Mg/m^3` são equivalentes aos expressos em `kg/dm^3`. Essa informação será útil mais tarde quando formos descarregar os dados desses dois conjuntos de dados usando a função `layer`.
 
 ```{r}
-unit(source = "Mg/m^3", target = "kg/dm^3")
+febr::unit(source = "Mg/m^3", target = "kg/dm^3")
 ```
 
 A seguir são mostradas todas as unidades de medida e constantes de transformação disponíveis no `r febr`. Adições podem ser feitas na forma de proposições diretamente na planilha https://goo.gl/Vvvsf2 ou via mensagem de e-mail para o endereço febr-forum@googlegroups.com.
 
 ```{r, results='asis', echo=FALSE}
-unit() %>%
+febr::unit() %>%
   dplyr::select(unidade_origem, unidade_destino, unidade_constante) %>%
   DT::datatable(
     rownames = FALSE, colnames = c("Unidade de origem", "Unidade de destino", "Constante de transformação"),
@@ -163,9 +165,11 @@ As funções de acesso servem para efetivamente descarregar os dados dos conjunt
 Os dados sobre um conjunto de dados publicado no `r febr`, contidos na tabela `dataset`, podem ser descarregados usando uma função de mesmo nome. Por exemplo, o conteúdo da tabela `dataset` do conjunto de dados `ctb0003` é o seguinte:
 
 ```{r, results='asis'}
-dataset(dataset = "ctb0003", progress = FALSE, verbose = FALSE) %>%
+febr::dataset(
+  dataset = "ctb0003", progress = FALSE, verbose = FALSE) %>%
   na.omit() %>%
-  pandoc.table(row.names = FALSE, caption = "Dados sobre o conjunto de dados `ctb0003` contidos na tabela  `dataset`.")
+  pandoc.table(
+    row.names = FALSE, caption = "Dados sobre o conjunto de dados `ctb0003` contidos na tabela  `dataset`.")
 ```
 
 Uma das informações mais importantes contida na tabela `dataset` é a licença de uso do conjunto de dados (`dataset_licenca`). No caso de `ctb0003`, a licença de uso é [CC BY 4.0][cby], o que significa que o conjunto de dados pode ser distribuído, remixado, adaptado e usado para criar outros produtos, mesmo que para fins comerciais, desde que seja atribuído o devido crédito aos autores (`autor_nome`) do conjunto de dados original. A tabela `dataset` inclui ainda links para as publicações (`dataset_referencia_i`) onde o conjunto de dados foi inicialmente utilizado. Isso permite obter mais informações sobre o conjunto de dados caso aquelas contidas na tabela `dataset` se mostrem insuficientes e, também, para dar os devidos créditos aos seus autores.
@@ -176,12 +180,13 @@ Os dados sobre os dados contidos em um conjunto de dados, armazenados na tabela 
 
 ```{r, results='asis'}
 set.seed(2001)
-metadata(dataset = "ctb0003", progress = FALSE, verbose = FALSE) %>%
+febr::metadata(
+  dataset = "ctb0003", progress = FALSE, verbose = FALSE) %>%
   dplyr::select(dataset_id, tabela_id, campo_id, campo_nome, campo_descricao) %>% 
   group_by(tabela_id) %>%
   sample_n(5) %>%
-  pandoc.table(row.names = FALSE, 
-               caption = "Alguns dos dados sobre os dados contidos no conjunto de dados `ctb0003`.")
+  pandoc.table(
+    row.names = FALSE, caption = "Alguns dos dados sobre os dados contidos no conjunto de dados `ctb0003`.")
 ```
 
 As definições contidas na tabela `metadado` podem ser verificadas usando a função `standard` descrita mais acima.
@@ -193,16 +198,21 @@ Os dados das observações do solo, contidos na tabela `observacao` de um conjun
 Antes de descarregar a tabela `observacao` do conjunto de dados `ctb0003`, vamos usar a função `header` para conhecer o seu conteúdo:
 
 ```{r}
-header(dataset = "ctb0003", table = "observacao", variable = "all",
-       progress = FALSE, verbose = FALSE) %>%
+febr::header(
+  dataset = "ctb0003", 
+  table = "observacao", 
+  variable = "all",
+  progress = FALSE, verbose = FALSE) %>%
   t()
 ```
 
 Agora que conhecemos as variáveis contidas na tabela `observacao` do conjunto de dados `ctb0003`, é possível proceder com seu descarregamento usando a função `observation`. Vamos solicitar que seja retornada apenas a variável `taxon` para, em seguida, após criar um objeto de classe `SpatialPointsDataFrame` com a função `febr2sp`, visualizar sua distribuição espacial usando a função `spplot` do pacote `sp`:
 
 ```{r, fig.asp=1}
-observation(dataset = "ctb0003", variable = "taxon",
-            progress = FALSE, verbose = FALSE) %>% 
+febr::observation(
+  dataset = "ctb0003",
+  variable = "taxon",
+  progress = FALSE, verbose = FALSE) %>% 
   febr2sp() %>%
   spplot(zcol = "taxon_sibcs_2009", auto.key = list(columns = 3), scales = list(draw = TRUE)) +
   latticeExtra::layer(panel.grid(v = -1, h = -1))
@@ -211,9 +221,10 @@ observation(dataset = "ctb0003", variable = "taxon",
 Um argumento bastante útil da função `observation` é `missing`. Esse argumento aceita uma lista contendo especificações sobre como proceder caso alguma das observações não possua coordenadas espaciais (`coord`), data de observação (`time`), ou dados para uma ou mais das demais variáveis (`data`). O comportamento padrão do argumento `missing` consiste em retornar todas as observações, independentemente de possuírem ou não quaisquer dados. Alternativamente, pode-se solicitar que apenas as observações com dados sejam retornadas. Isso seria necessário, por exemplo, para o tratamento espacial dos dados do conjunto de dados `ctb0036`, que não possui coordenadas espaciais para algumas das suas observações. O valor `coord = "drop"` precisa ser passado para o argumento `missing` para que as observações sem coordenadas espaciais sejam excluídas -- definição equivalente é usada para excluir observações sem data de observação -- `time = "drop"` -- ou dados para uma ou mais variáveis -- `data = "drop"`. Vejamos a seguir como proceder:
 
 ```{r, fig.asp=1}
-observation(dataset = "ctb0036",
-            missing = list(coord = "drop", time = "drop"),
-            progress = FALSE, verbose = FALSE) %>%
+febr::observation(
+  dataset = "ctb0036",
+  missing = list(coord = "drop", time = "drop"),
+  progress = FALSE, verbose = FALSE) %>%
   febr2sp() %>%
   plot();box();grid();axis(1);axis(2)
 ```
@@ -224,11 +235,12 @@ A padronização do sistema de referência de coordenadas requer que seja inform
 
 ```{r}
 set.seed(2001)
-observation(dataset = c("ctb0003", "ctb0036"),
-            stack = TRUE,
-            missing = list(coord = "drop", time = "drop"),
-            standardization = list(crs = "EPSG:4674"),
-            progress = FALSE, verbose = FALSE) %>%
+febr::observation(
+  dataset = c("ctb0003", "ctb0036"),
+  stack = TRUE,
+  missing = list(coord = "drop", time = "drop"),
+  standardization = list(crs = "EPSG:4674"),
+  progress = FALSE, verbose = FALSE) %>%
   dplyr::select(dataset_id, observacao_id, observacao_data, coord_sistema, coord_x, coord_y) %>%
   group_by(dataset_id) %>%
   sample_n(3)
@@ -239,11 +251,12 @@ A data de observação (`observacao_data`) é outro dado que geralmente requer p
 ```{r}
 set.seed(2001)
 obs <- 
-  observation(dataset = c("ctb0003", "ctb0036"),
-              stack = TRUE,
-              missing = list(coord = "drop", time = "drop"),
-              standardization = list(crs = "EPSG:4674", time.format = "%Y-%m-%d"),
-              progress = FALSE, verbose = FALSE)
+  febr::observation(
+    dataset = c("ctb0003", "ctb0036"),
+    stack = TRUE,
+    missing = list(coord = "drop", time = "drop"),
+    standardization = list(crs = "EPSG:4674", time.format = "%Y-%m-%d"),
+    progress = FALSE, verbose = FALSE)
 obs %>% 
   dplyr::select(dataset_id, observacao_id, observacao_data, coord_sistema, coord_x, coord_y) %>%
   group_by(dataset_id) %>%
@@ -253,9 +266,10 @@ obs %>%
 Nos exemplos acima, apenas as variáveis de identificação contidas na tabela `observacao` dos conjuntos de dados `ctb0003` e `ctb0036` foram retornadas: `r glue('{collapse(backtick(colnames(obs)[1:14]), sep = ", ", last = " e ")}')`. Contudo, também é possível requerer que sejam retornadas outras variáveis de ambos conjuntos de dados. As variáveis contidas na tabela `observacao` do conjunto de dados `ctb0003` foram conhecidas acima. Abaixo são mostradas aquelas contidas na tabela `observacao` do conjunto de dados `ctb0036`:
 
 ```{r}
-header(dataset = "ctb0036", table = "observacao",
-       variable = "all",
-       progress = FALSE, verbose = FALSE) %>%
+febr::header(
+  dataset = "ctb0036", table = "observacao",
+  variable = "all",
+  progress = FALSE, verbose = FALSE) %>%
   t()
 ```
 
@@ -263,12 +277,13 @@ Dentre as variáveis compartilhadas por `ctb0003` e `ctb0036` está `taxon` -- a
 
 ```{r}
 set.seed(2001)
-observation(dataset = c("ctb0003", "ctb0036"),
-            variable = "taxon",
-            stack = TRUE,
-            missing = list(coord = "drop", time = "drop"),
-            standardization = list(crs = "EPSG:4674", time.format = "%Y-%m-%d"),
-            progress = FALSE, verbose = FALSE) %>%
+febr::observation(
+  dataset = c("ctb0003", "ctb0036"),
+  variable = "taxon",
+  stack = TRUE,
+  missing = list(coord = "drop", time = "drop"),
+  standardization = list(crs = "EPSG:4674", time.format = "%Y-%m-%d"),
+  progress = FALSE, verbose = FALSE) %>%
   dplyr::select(dataset_id, observacao_id, dplyr::starts_with("taxon")) %>%
   group_by(dataset_id) %>%
   sample_n(3)
@@ -278,13 +293,14 @@ A variável `taxon` dos conjuntos de dados `ctb0036` `ctb0003` consiste na class
 
 ```{r}
 set.seed(2001)
-observation(dataset = c("ctb0003", "ctb0036"),
-            variable = "taxon",
-            stack = TRUE,
-            missing = list(coord = "drop", time = "drop"),
-            standardization = list(crs = "EPSG:4674", time.format = "%Y-%m-%d"),
-            harmonization = list(harmonize = TRUE, level = 2),
-            progress = FALSE, verbose = FALSE) %>%
+febr::observation(
+  dataset = c("ctb0003", "ctb0036"),
+  variable = "taxon",
+  stack = TRUE,
+  missing = list(coord = "drop", time = "drop"),
+  standardization = list(crs = "EPSG:4674", time.format = "%Y-%m-%d"),
+  harmonization = list(harmonize = TRUE, level = 2),
+  progress = FALSE, verbose = FALSE) %>%
   dplyr::select(dataset_id, observacao_id, observacao_data, coord_x, coord_y, taxon_sibcs) %>%
   filter(!is.na(taxon_sibcs)) %>% 
   group_by(dataset_id) %>%
@@ -299,15 +315,16 @@ A função `layer` serve para descarregar os dados contidos na tabela `camada` d
 
 ```{r}
 lyr <- 
-  febr::layer(dataset = c("ctb0003", "ctb0036"),
-              variable = c("argila", "carbono", "densidade"),
-              stack = TRUE,
-              missing = list(depth = "drop", data = "drop"),
-              standardization = list(
-                repetition = "combine", combine.fun = "mean",
-                units = TRUE, round = TRUE),
-              harmonization = list(harmonize = TRUE, level = 1),
-              progress = FALSE, verbose = FALSE) %>%
+  febr::layer(
+    dataset = c("ctb0003", "ctb0036"),
+    variable = c("argila", "carbono", "densidade"),
+    stack = TRUE,
+    missing = list(depth = "drop", data = "drop"),
+    standardization = list(
+      repetition = "combine", combine.fun = "mean",
+      units = TRUE, round = TRUE),
+    harmonization = list(harmonize = TRUE, level = 1),
+    progress = FALSE, verbose = FALSE) %>%
   dplyr::select(dataset_id, observacao_id, argila, carbono, densidade)
 set.seed(2001)
 lyr %>%   
@@ -334,18 +351,20 @@ A presença dos símbolos `+` e `/` determina que os dados de profundidade sejam
 Os exemplos a seguir mostram o resultado da padronização dos dados da profundidade do solo usando uma observação do conjunto de dados `ctb0011`.
 
 ```{r}
-febr::layer("ctb0011",
-            progress = FALSE, verbose = FALSE) %>%
+febr::layer(
+  dataset = "ctb0011",
+  progress = FALSE, verbose = FALSE) %>%
   dplyr::select(dataset_id, observacao_id, camada_nome, profund_sup, profund_inf) %>%
   filter(observacao_id == "P4")
 ```
 
 ```{r}
-febr::layer("ctb0011",
-            standardization = list(
-              transition = "smooth", smoothing.fun = "mean",
-              plus.sign = "add", plus.depth = 2.5),
-            progress = FALSE, verbose = FALSE) %>%
+febr::layer(
+  dataset = "ctb0011",
+  standardization = list(
+    transition = "smooth", smoothing.fun = "mean",
+    plus.sign = "add", plus.depth = 2.5),
+  progress = FALSE, verbose = FALSE) %>%
   dplyr::select(dataset_id, observacao_id, camada_nome, profund_sup, profund_inf) %>%
   filter(observacao_id == "P4")
 ```
@@ -355,19 +374,21 @@ Por fim, a função `layer` também permite padronizar a forma de expressão dos
 Os exemplos a seguir mostram o resultado da manipulação do limite inferior de detecção dos métodos analíticos usando uma observação do conjunto de dados `ctb0018`:
 
 ```{r}
-febr::layer(dataset = "ctb0018",
-            variable = c("zinco_aquaregia_icpms", "cobre_aquaregia_icpoes"),
-            progress = FALSE, verbose = FALSE) %>%
+febr::layer(
+  dataset = "ctb0018",
+  variable = c("zinco_aquaregia_icpms", "cobre_aquaregia_icpoes"),
+  progress = FALSE, verbose = FALSE) %>%
   dplyr::select(dataset_id, observacao_id, zinco_aquaregia_icpms, cobre_aquaregia_icpoes) %>%
   filter(observacao_id == "1")
 ```
 
 ```{r}
-febr::layer(dataset = "ctb0018",
-            variable = c("zinco_aquaregia_icpms", "cobre_aquaregia_icpoes"),
-            standardization = list(
-              lessthan.sign = "subtract", lessthan.frac = 0.1),
-            progress = FALSE, verbose = FALSE) %>%
+febr::layer(
+  dataset = "ctb0018",
+  variable = c("zinco_aquaregia_icpms", "cobre_aquaregia_icpoes"),
+  standardization = list(
+    lessthan.sign = "subtract", lessthan.frac = 0.1),
+  progress = FALSE, verbose = FALSE) %>%
   dplyr::select(dataset_id, observacao_id, zinco_aquaregia_icpms, cobre_aquaregia_icpoes) %>%
   filter(observacao_id == "1")
 ```
@@ -378,10 +399,11 @@ A última função de acesso é `febr`. Ela serve para descarregar todos os dado
 
 ```{r, fig.asp=1}
 dts <-
-  febr::febr(dataset = "ctb0003", 
-             variable = "all",
-             merge = TRUE,
-             progress = FALSE, verbose = FALSE)
+  febr::febr(
+    dataset = "ctb0003", 
+    variable = "all",
+    merge = TRUE,
+    progress = FALSE, verbose = FALSE)
 dts$data %>% 
   mutate(carbono = carbono_dicromato_30min150_mohr - mean(carbono_dicromato_30min150_mohr)) %>% 
   febr2sp() %>% 
@@ -395,6 +417,6 @@ Um detalhe importante da função `febr` é que ela aceita os mesmos argumentos 
 Depois de descarregados, os dados de um conjunto de dados podem ser escritos para o disco rígido usando a função `febr2xlsx`. No caso da função `febr`, que tem como saída um objeto de classe `list` composto por vários objetos de classe `data.frame`, a função `febr2xlsx` faz com que cada `data.frame` seja escrito em uma planilha individual do mesmo arquivo XLSX.
 
 ```{r, eval=FALSE}
-febr2xlsx(x = dts, file = "ctb0003.xlsx")
+febr::febr2xlsx(x = dts, file = "ctb0003.xlsx")
 ```
 
