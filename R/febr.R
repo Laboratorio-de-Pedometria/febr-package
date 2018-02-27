@@ -68,9 +68,15 @@ febr <-
     # PROCESSAMENTO
     ## Fundir tabelas se necessário
     if (merge) {
+      a_obs <- attributes(obs)[["units"]]
+      a_lyr <- attributes(lyr)[["units"]]
+      a_mer <- c(a_obs, a_lyr[3:length(a_lyr)])
       res <- list(dataset = dts, 
                   data = merge(x = obs, y = lyr, by = c("dataset_id", "observacao_id")), 
                   metadata = mtd)
+      a <- attributes(res[[2]])
+      a$units <- a_mer
+      attributes(res[[2]]) <- a
     } else {
       res <- list(dataset = dts, observation = obs, layer = lyr, metadata = mtd)
     }
