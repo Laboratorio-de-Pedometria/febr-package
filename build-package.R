@@ -21,5 +21,8 @@ devtools::build()
 # Load package
 devtools::load_all()
 
+# Build package site
+pkgdown::build_site()
+
 # turn on/off development mode
 # devtools::dev_mode()
