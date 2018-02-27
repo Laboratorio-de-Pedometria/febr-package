@@ -44,10 +44,13 @@
 # obj <- febr::layer(dataset = "ctb0018", variable = "prata")
 # obj <- data.frame(a = c("<50a", "5,0"), stringsAsFactors = FALSE)
 # .setLowestMeasuredValue(obj = obj, lessthan.frac = 0.5)
-# .hasLessThanSign <-
-  # function (x) {
-    # all(grepl(pattern = "^<[0-9]+", x = x) && nchar(x = x) <= 5 && !grepl(pattern = "[:alpha:]", x = x))
-  # }
+# x <- tmp$zinco_aquaregia_icpms
+# .hasLessThanSign(x)
+.hasLessThanSign <-
+  function (x) {
+    all(any(grepl(pattern = "^<[0-9]+", x = x)) && all(!grepl(pattern = "[:alpha:]", x = x)))
+    # all(nchar(x = x) <= 10)
+  }
 .setLowestMeasuredValue <-
   function (obj, lessthan.sign = "subtract", lessthan.frac = 0.5) {
     
@@ -59,8 +62,8 @@
     # A corrente de caracteres começa com o símbolo '<', seguido de um ou mais dígitos, não podendo haver
     # qualquer caracter alfabético
     if (length(id_cha) >= 1) {
-      # idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(.hasLessThanSign(x)))))
-      idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(startsWith(x = x, prefix = "<")))))
+      idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(.hasLessThanSign(na.omit(x))))))
+      # idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(startsWith(x = x, prefix = "<")))))
       
       # Processar dados
       if (length(idx_lessthan) >= 1) {
