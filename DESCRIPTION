@@ -23,13 +23,11 @@ Imports:
   stringr,
   xlsx
 Suggests:
-  bookdown,
   DT,
   lattice,
   latticeExtra,
   magrittr,
-  pander,
-  rmarkdown
+  pander
 VignetteBuilder: knitr
 LazyData: true
 RoxygenNote: 6.0.1
