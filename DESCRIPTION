@@ -28,6 +28,7 @@ Suggests:
   latticeExtra,
   magrittr,
   pander,
+  rgdal,
   rmarkdown
 VignetteBuilder: knitr
 LazyData: true
