@@ -18,6 +18,7 @@ Imports:
   knitr,
   pedometrics,
   readr,
+  rgdal,
   sp,
   stringr,
   xlsx
@@ -28,7 +29,6 @@ Suggests:
   latticeExtra,
   magrittr,
   pander,
-  rgdal,
   rmarkdown
 VignetteBuilder: knitr
 LazyData: true

@@ -29,7 +29,7 @@ febr2sp <-
     n_crs <- length(crs)
     if (n_crs == 1) {
       sp::coordinates(obj) <- ~ coord_x + coord_y
-      sp::proj4string(obj = obj) <- sp::CRS(glue::glue("+init={tolower(crs)}"))
+      sp::proj4string(obj = obj) <- rgdal::CRS(glue::glue("+init={tolower(crs)}"))
       obj@data <- dplyr::select(obj@data, -coord_sistema)
     } else {
       stop ("spatial coordinates have not been standardized")
