@@ -3,6 +3,13 @@
 language: r
 warnings_are_errors: true
 sudo: required
+dist: trusty
+
+before_install:
+  - sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable --yes
+  - sudo apt-get --yes --force-yes update -qq
+  # rgdal dependencies:
+  - sudo apt-get install --yes libproj-dev libgdal-dev
 
 env:
  global:
