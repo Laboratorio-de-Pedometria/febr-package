@@ -5,6 +5,8 @@
 [![CRAN](https://www.r-pkg.org/badges/version/febr)](https://cran.r-project.org/package=febr)
 [![Rdoc](http://www.rdocumentation.org/badges/version/febr)](http://www.rdocumentation.org/packages/febr)
 
+## Apresentação
+
 O Repositório Brasileiro Livre para Dados Abertos do Solo -- <font face="Comfortaa">febr</font>, http://www.ufsm.br/febr/ -- foi criado com o propósito de servir de plataforma para a compilação e organização colaborativa, e publicação aberta de todos os tipos de dados do solo produzidos no Brasil. Para isso, são usados padrões definidos coletivamente, baseados em experiências internacionais, principalmente uma política de dados abertos, primando pela facilidade de acesso, manutenção e uso. A meta é constituir um repositório central para armazenar e servir dados do solo em formato padronizado e harmonizado para várias aplicações. Dentre estas estão:
 
 * Construção de sistemas inteligentes de recomendação de fertilizantes,
@@ -30,7 +32,7 @@ O uso de uma instalação central para o armazenamento coletivo e compartilhamen
 
 Para facilitar ainda mais a reutilização dos dados do solo publicados no <font face="Comfortaa">febr</font>, cientistas do solo têm à sua disposição o pacote `febr` para o R.
 
-# Instalação
+## Instalação
 
 O pacote `febr` ainda não está disponível no [CRAN][cran]. Mas a versão de desenvolvimento, disponível no [GitHub][github], pode ser instalada -- usando o pacote `devtools` -- da seguinte maneira:
 
@@ -44,7 +46,7 @@ if (!require(devtools)) {
 devtools::install_github(repo = "febr-team/febr-package")
 ```
 
-# Utilização
+## Utilização básica
 
 O pacote `febr` possui cinco funções para descarregamento de dados:
 
@@ -70,7 +72,7 @@ layers(dataset = "ctb0003", variable = "argila")
 
 retorna os dados de argila do conjunto de dados `ctb0003`. O código de identificação de todas as variáveis contidas nos conjuntos de dados publicados no <font face="Comfortaa">febr</font> estão catalogados em https://goo.gl/hi77sB.
 
-# Como colaborar
+## Como colaborar
 
 Nós usamos o modelo de desenvolvimento colaborativo *fork & pull*. Isso significa que você tem liberdade para fazer um cópia paralela -- *fork* -- deste repositório, alterar o código fonte conforme julgar necessário e depois empurrar -- *push* -- as alterações para a sua cópia pessoal deste repositório. Isso tudo sem que seja necessário pedir qualquer autorização. Caso as alterações que você realizou na sua cópia pessoal deste repositório sejam interessantes e você tem interesse em compartilhar as mesmas conosco, então basta solicitar que sejam puxadas -- *pull request* -- para este repositório. Depois de uma revisão das alterações, nós decidiremos se elas podem ser fundidas -- *merge* -- com o código fonte deste repositório.
 
