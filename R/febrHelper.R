@@ -101,8 +101,8 @@
       ## Transformar os SRC
       tmp_obj[j] <- lapply(tmp_obj[j], function (x) {
         sp::coordinates(x) <- c("coord_x", "coord_y")
-        sp::proj4string(x) <- rgdal::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
-        x <- rgdal::spTransform(x, rgdal::CRS(paste("+init=", crs_lower, sep = "")))
+        sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
+        x <- sp::spTransform(x, sp::CRS(paste("+init=", crs_lower, sep = "")))
         as.data.frame(x)
       })
       tmp_obj <- suppressWarnings(dplyr::bind_rows(tmp_obj))
@@ -112,8 +112,8 @@
       
       ## Transformar o SRC
       sp::coordinates(tmp_obj) <- xy
-      sp::proj4string(tmp_obj) <- rgdal::CRS(paste("+init=", tolower(tmp_obj$coord_sistema[1]), sep = ""))
-      tmp_obj <- rgdal::spTransform(tmp_obj, rgdal::CRS(paste("+init=", crs_lower, sep = "")))
+      sp::proj4string(tmp_obj) <- sp::CRS(paste("+init=", tolower(tmp_obj$coord_sistema[1]), sep = ""))
+      tmp_obj <- sp::spTransform(tmp_obj, sp::CRS(paste("+init=", crs_lower, sep = "")))
       tmp_obj <- as.data.frame(tmp_obj)
       tmp_obj$coord_sistema <- crs_upper
     }
