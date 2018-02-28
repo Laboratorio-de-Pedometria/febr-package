@@ -3,6 +3,8 @@
 language: r
 warnings_are_errors: true
 sudo: required
+install:
+  - Rscript -e 'install.packages("rgdal", repos = "http://cran.rstudio.com")'
 
 env:
  global:
