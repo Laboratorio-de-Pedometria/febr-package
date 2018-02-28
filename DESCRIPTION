@@ -22,6 +22,7 @@ Imports:
   stringr,
   xlsx
 Suggests:
+  bookdown,
   DT,
   lattice,
   latticeExtra,
