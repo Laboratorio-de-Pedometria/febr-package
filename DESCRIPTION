@@ -18,16 +18,17 @@ Imports:
   knitr,
   pedometrics,
   readr,
-  rgdal,
   sp,
   stringr,
   xlsx
 Suggests:
+  bookdown,
   DT,
   lattice,
   latticeExtra,
   magrittr,
-  pander
+  pander,
+  rgdal
 VignetteBuilder: knitr
 LazyData: true
 RoxygenNote: 6.0.1

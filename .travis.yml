@@ -3,8 +3,6 @@
 language: r
 warnings_are_errors: true
 sudo: required
-install:
-  - Rscript -e 'install.packages(c("knitr", "bookdown", "rmarkdown"), repos = "http://cran.rstudio.com")'
 
 env:
  global:

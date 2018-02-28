@@ -1,7 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 build-package.R
-README.Rmd
+README.md
 man-roxygen
+docs
 _pkgdown.yml
 .travis.yml
