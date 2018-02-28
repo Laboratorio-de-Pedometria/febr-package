@@ -1,9 +1,9 @@
 # Repositório Brasileiro Livre para Dados Abertos do Solo - pacote para R
 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/febr)](https://cran.r-project.org/package=febr)
-[![Licence](https://img.shields.io/badge/licence-GPL (>= 2)-lightgrey.svg)](http://choosealicense.com/)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
-[![Build Status](https://travis-ci.org/febr-team/febr-package.svg?branch=main)](https://travis-ci.org/febr-team/febr-package)
+[![Build Status](https://travis-ci.org/samuel-rosa/febr-package.svg?branch=master)](https://travis-ci.org/samuel-rosa/febr-package)
+[![CRAN](https://www.r-pkg.org/badges/version/febr)](https://cran.r-project.org/package=febr)
+[![Rdoc](http://www.rdocumentation.org/badges/version/febr)](http://www.rdocumentation.org/packages/febr)
 
 Olá! Esse é o ambiente de desenvolvimento do *pacote para R* do Repositório Brasileiro Livre para Dados Abertos do Solo, também conhecido como <font face="Comfortaa">febr</font>. Sinta-se à vontade para propor melhorias e estudar o código fonte. Afinal de contas, o <font face="Comfortaa">febr</font> é um repositório livre!
 
