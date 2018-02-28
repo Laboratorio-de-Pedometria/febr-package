@@ -9,16 +9,27 @@ Olá! Esse é o ambiente de desenvolvimento do *pacote para R* do Repositório B
 
 # Instalação
 
-Use o seguinte comando para instalar a última versão de desenvolvimento do pacote `febr`:
+O pacote `febr` ainda não está no CRAN. A versão atual de desenvolvimento, disponível no GitHub, pode ser instalada -- usando o pacote `devtools` -- da seguinte maneira:
 
-    devtools::install_github("febr-team/febr-package")
-    
+```R
+if (!require(devtools)) {
+  install.packages(pkgs = "devtools")
+}
+devtools::install_github(repo = "febr-team/febr-package")
+```
+
 # Utilização
 
-O pacote `febr` possui cinco funções para descarregamento de dados.
+O pacote `febr` possui cinco funções para descarregamento de dados:
 
 * `dataset`, para descarregar os dados sobre um conjunto de dados;
 * `observation`, para descarregar os dados das observações do solo de um conjunto de dados;
-* `layer`, para descarrgar os dados das camadas das observações do solo de um conjunto de dados;
+* `layer`, para descarregar os dados das camadas das observações do solo de um conjunto de dados;
 * `metadata`, para descarregar os dados sobre os dados de um conjunto de dados;
 * `febr`, para descarregar todos os dados e metadados de um conjunto de dados.
+
+O principal argumento dessas funções é `dataset`. Para esse argumento é passado o código de identificação de um ou mais conjuntos de dados publicados no <font face="Comfortaa">febr</font>. Isso descarrega os dados da tabela de dados indicada pela função escolhida. Por exemplo, `observation(dataset = "ctb0003")` descarrega os dados das observações do solo do conjunto de dados `ctb0003`. O segundo principal argumento das funções `observation`, `layer` e `febr` é `variable`. Para esse argumento é passado o código de identificação da(s) variável(is) cujos dados devem ser retornados pela função. Por exemplo, `layers(dataset = "ctb0003", variable = "argila")` retorna os dados de argila do conjunto de dados `ctb0003`.
+
+# Como colaborar
+
+Nós usamos o modelo de desenvolvimento colaborativo *fork & pull*. Isso significa que qualquer pessoa pode fazer um cópia paralela -- *fork* -- deste repositório, realizar alterações e depois empurrá-las -- *push* -- para a sua cópia pessoal do repositório. Isso tudo sem que seja necessário pedir qualquer autorização aos mantenedores deste repositório. Caso as alterações realizadas sejam interessantes, pode-se fazer um pedido para que as mesmas sejam puxadas -- *pull request* -- para o repositório original. Depois de uma revisão das alterações, nós decidiremos se elas devem ser fundidas -- *merge* -- com o código fonte do repositório original.
