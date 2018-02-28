@@ -26,21 +26,14 @@ library(latticeExtra)
 febr <- glue::glue('<font face="Comfortaa">febr</font>')
 ```
 
-# Apresentação
-
-O Repositório Brasileiro Livre para Dados Abertos do Solo -- `r febr`, http://www.ufsm.br/febr/ -- foi criado com o propósito de servir de plataforma para a compilação, organização e publicação de todos os tipos de dados do solo produzidos no Brasil. Para isso são usados padrões baseados em experiências internacionais, principalmente uma política de dados abertos, primando pela facilidade de acesso, manutenção e uso. A meta é constituir um repositório centralizado para armazenar e servir dados do solo em formato padronizado e harmonizado para várias aplicações. Estas incluem o desenvolvimento de bases de dados especializadas, a melhoria do Sistema Brasileiro de Classificação do Solo, a criação do Sistema Universal de Classificação do Solo, a construção de sistemas inteligentes de recomendação de fertilizantes, o desenvolvimento de experimentos agronômicos de larga escala espacial e temporal, e o suporte ao recém-lançado programa nacional de levantamento de solos (PronaSolos).
-
-O uso de uma instalação centralizada de armazenamento e compartilhamento de dados do solo `r febr` reduz os esforços duplicados de recuperação de dados do solo. Isso permite que os já escassos recursos existentes sejam usados de maneira mais racional para maximizar a colaboração entre cientistas do solo. No longo prazo, isso deve alavancar o avanço do conhecimento sobre o solo. Para facilitar ainda mais a reutilização dos dados publicados no `r febr`, os cientistas do solo têm à sua disposição o pacote `febr` para o R.
-
 # Uso do pacote
 
+O pacote `febr` ainda não está no CRAN.
 <!-- A versão mais estável do pacote `febr` é distribuída via the *Comprehensive R Archive Network* (CRAN) e está disponível no endereço https://CRAN.R-project.org/package=febr. Sua instalação pode ser feita da seguinte maneira: -->
-
 <!-- ```{r, eval=FALSE} -->
 <!-- install.packages(pkgs = "febr") -->
 <!-- ``` -->
-
-A versão atual de desenvolvimento do pacote `febr` está disponível no endereço https://github.com/febr-team/febr-package. Sua instalação pode ser feita -- usando o pacote `devtools` -- da seguinte maneira: 
+A versão atual de desenvolvimento está disponível no endereço https://github.com/febr-team/febr-package. Sua instalação pode ser feita -- usando o pacote `devtools` -- da seguinte maneira: 
 
 ```{r, eval=FALSE}
 if (!require(devtools)) {
@@ -69,8 +62,8 @@ rbind(
   c("`layer`", "De trabalho", "Descarregar dados das camadas das observações do solo de um conjunto de dados"),
   c("`metadata`", "De trabalho", "Descarregar metadados de um conjunto de dados"),
   c("`febr`", "De trabalho", "Descarregar todos os dados e metadados de um conjunto de dados"),
-  c("febr2sp", "Auxiliar", "Criar objeto de classe `SpatialPointsDataFrame`."),
-  c("febr2xlsx", "Auxiliar", "Escrever dados para arquivo XLSX.")
+  c("`febr2sp`", "Auxiliar", "Criar objeto de classe `SpatialPointsDataFrame`."),
+  c("`febr2xlsx`", "Auxiliar", "Escrever dados para arquivo XLSX.")
   ) %>% 
   pandoc.table(
     caption = "Descrição sumária das funções do pacote `febr`.", 
