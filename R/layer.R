@@ -352,15 +352,23 @@ layer <-
         tmp <- tmp[, cols]
         unit <- unit[names(unit) %in% cols]
         
-        # LINHAS
-        ## Definir as linhas a serem mantidas
-        tmp <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols)
-        n_rows <- nrow(tmp)
+        # LINHAS I
+        ## Avaliar limpeza das linhas
+        tmp_clean <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols)
+        n_rows <- nrow(tmp_clean)
         
         # PROCESSAMENTO II
         ## A continuação do processamento dos dados depende das presença de dados após a eliminação de colunas
         ## e linhas com NAs.
-        if (n_rows >= 1 && missing(variable) || length(extra_cols) >= 1 || missing$data == "keep") {
+        if (n_rows >= 1 && missing(variable) || 
+            # length(extra_cols) >= 1 || 
+            missing$data == "keep") {
+          
+          # LINHAS II
+          ## Definir as linhas a serem mantidas
+          if (missing$data == "drop") {
+            tmp <- tmp_clean
+          }
           
           # TIPO DE DADOS
           ## "observacao_id", "camada_numero", "camada_nome", "amostra_codigo", "profund_sup" e "profund_inf"

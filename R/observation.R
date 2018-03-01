@@ -312,17 +312,25 @@ observation <-
         tmp <- tmp[, cols]
         unit <- unit[names(unit) %in% cols]
         
-        # LINHAS
-        ## Definir as linhas a serem mantidas
-        tmp <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols)
-        n_rows <- nrow(tmp)
+        # LINHAS I
+        ## Avaliar limpeza das linhas
+        tmp_clean <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols)
+        n_rows <- nrow(tmp_clean)
         
         # PROCESSAMENTO II
         ## A continuação do processamento dos dados depende das presença de dados após a eliminação de colunas
         ## e linhas com NAs.
-        if (n_rows >= 1 && missing(variable) || length(extra_cols) >= 1 || missing$data == "keep") {
+        if (n_rows >= 1 && missing(variable) || 
+            # length(extra_cols) >= 1 || 
+            missing$data == "keep") {
           
           # missing$data == "keep" || missing$coord == "drop" && na_coord < n_rows
+          
+          # LINHAS II
+          ## Definir as linhas a serem mantidas
+          if (missing$data == "drop") {
+            tmp <- tmp_clean
+          }
           
           # TIPO DE DADOS
           ## 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros
