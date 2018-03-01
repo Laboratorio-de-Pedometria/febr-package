@@ -23,6 +23,9 @@ devtools::load_all()
 
 # Build package site
 pkgdown::build_site()
+pkgdown::build_home()
+pkgdown::build_reference()
+pkgdown::build_articles()
 
 # turn on/off development mode
 # devtools::dev_mode()
