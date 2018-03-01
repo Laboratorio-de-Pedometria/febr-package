@@ -10,7 +10,7 @@ navbar:
     - text: "Guia básico"
       href: articles/febr.html
     - text: "Funções"
-      href: "reference/"
+      href: reference/index.html
   right:
     - icon: fa-github
       href: https://github.com/febr-team/febr-package
@@ -39,8 +39,10 @@ reference:
       - febr
   - title: "Funções auxiliares"
     desc: >
-      Usadas para apoiar o processamento e uso dos dados descarregados do <font face="Comfortaa">febr</font>,
+      As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de acesso, 
+      assim apoiando o processamento e uso dos dados descarregados do <font face="Comfortaa">febr</font>,
       por exemplo, a criação de objetos de outras classes e a exportação dos dados.
     contents:
-      - febr2sp
+      - febr2spdf
       - febr2xlsx
+      - goto

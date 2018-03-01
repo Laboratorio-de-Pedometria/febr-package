@@ -16,12 +16,12 @@
 #' library(magrittr)
 #' observation(dataset = "ctb0003", variable = "taxon",
 #'             progress = FALSE, verbose = FALSE) %>% 
-#'   febr2sp() %>%
+#'   febr2spdf() %>%
 #'   spplot(zcol = "taxon_sibcs_2009", auto.key = list(columns = 3), scales = list(draw = TRUE)) +
 #'   latticeExtra::layer(panel.grid(v = -1, h = -1))
 #' }
 ###############################################################################################################
-febr2sp <-
+febr2spdf <-
   function (obj) {
     
     # Verificar sistema de referência de coordenadas
