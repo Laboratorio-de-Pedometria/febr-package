@@ -67,7 +67,7 @@ febr <-
     
     # PROCESSAMENTO
     ## Fundir tabelas se necessário
-    if (merge) {
+    if (nrow(obs) >= 1 && nrow(lyr) >= 1 && merge) {
       a_obs <- attributes(obs)[["units"]]
       a_lyr <- attributes(lyr)[["units"]]
       a_mer <- c(a_obs, a_lyr[3:length(a_lyr)])
