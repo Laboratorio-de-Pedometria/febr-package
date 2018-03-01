@@ -101,6 +101,6 @@ goto <-
     
     ## Lançar navegador
     if (!is.null(url)) {
-      browseURL(url)
+      utils::browseURL(url)
     }
   }

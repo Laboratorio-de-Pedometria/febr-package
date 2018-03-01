@@ -6,3 +6,4 @@ man-roxygen
 docs
 pkgdown
 .travis.yml
+vignettes/_febr.Rmd
