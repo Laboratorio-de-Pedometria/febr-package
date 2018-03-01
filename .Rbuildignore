@@ -4,5 +4,5 @@ build-package.R
 README.md
 man-roxygen
 docs
-_pkgdown.yml
+pkgdown
 .travis.yml

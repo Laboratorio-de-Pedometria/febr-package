@@ -1,0 +1,46 @@
+template:
+  params:
+    bootswatch: simplex
+navbar:
+  title: "febr"
+  type: default
+  left:
+    - icon: fa-home
+      href: index.html
+    - text: "Guia básico"
+      href: articles/febr.html
+    - text: "Funções"
+      href: "reference/"
+  right:
+    - icon: fa-github
+      href: https://github.com/febr-team/febr-package
+
+reference:
+  - title: "Funções estruturais"
+    desc: >
+      As funções estruturais servem para conhecer a estrutura das tabelas dos conjuntos de dados publicados 
+      no <font face="Comfortaa">febr</font>. Elas também servem para conhecer os padrões de codificação, 
+      nomenclatura, unidades de medida, número de casas decimais, entre outros, usados no 
+      <font face="Comfortaa">febr</font>.
+    contents: 
+      - header
+      - standard
+      - unit
+  - title: "Funções de acesso"
+    desc: >
+      As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados publicados no 
+      <font face="Comfortaa">febr</font>. Isso inclui as tabelas `dataset`, `observacao`, `camada`, e 
+      `metadado`.
+    contents:
+      - dataset
+      - observation
+      - layer
+      - metadata
+      - febr
+  - title: "Funções auxiliares"
+    desc: >
+      Usadas para apoiar o processamento e uso dos dados descarregados do <font face="Comfortaa">febr</font>,
+      por exemplo, a criação de objetos de outras classes e a exportação dos dados.
+    contents:
+      - febr2sp
+      - febr2xlsx
