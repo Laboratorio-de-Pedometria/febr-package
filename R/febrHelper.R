@@ -16,7 +16,7 @@
       gs = list(
         comment = "#unidade",
         locale = readr::locale(date_names = "pt", decimal_mark = ","),
-        na = c("NA", "-", ""),
+        na = c("NA", "-", "", "na"),
         verbose = FALSE
       ),
       crs = 
@@ -58,6 +58,9 @@
     
     crs_lower <- tolower(crs)
     crs_upper <- toupper(crs)
+    
+    # Registrar ordem das colunas
+    col_names <- colnames(obj)
     
     ## Identificar as observações com coordenadas
     id_coords <- which(apply(obj[xy], 1, function (x) sum(is.na(x))) == 0)
@@ -119,7 +122,9 @@
     }
     
     ## Agrupar observações com e sem coordenadas
+    ## Em seguida, organizar as colunas na ordem original de entrada
     res <- rbind(tmp_obj, obj[-id_coords, ])
+    res <- dplyr::select(res, col_names)
     
     return (res)
   }
@@ -196,22 +201,39 @@
       obj <- obj[idx_keep, ]
     }
     
-    # Tabela 'observacao': remover linhas sem dados de coordenadas
-    if (!is.null(missing$coord) && missing$coord == "drop") {
-      na_coord_id <- apply(obj[c("coord_x", "coord_y")], 1, function (x) sum(is.na(x))) >= 1
-      obj <- obj[!na_coord_id, ]
-    }
-    
-    # Tabela 'observacao': remover linhas sem dados de data de observação
-    if (!is.null(missing$time) && missing$time == "drop") {
-      na_time_id <- is.na(obj$observacao_data)
-      obj <- obj[!na_time_id, ]
-    }
-    
-    # Tabela 'camada': remover linhas sem dados de profundidade
-    if (!is.null(missing$depth) && missing$depth == "drop") {
-      na_depth_id <- apply(obj[c("profund_sup", "profund_inf")], 1, function (x) sum(is.na(x))) >= 1
-      obj <- obj[!na_depth_id, ]
+    # Continuar processamento apenas se restaram linhas
+    if (nrow(obj) >= 1) {
+      # Tabela 'observacao'
+      is_obs <- all(c("coord_x", "coord_y", "observacao_data") %in% colnames(obj))
+      if (is_obs) {
+        
+        ## remover linhas sem dados de coordenadas
+        if (!is.null(missing$coord) && missing$coord == "drop") {
+          na_coord_id <- apply(obj[c("coord_x", "coord_y")], 1, function (x) sum(is.na(x))) >= 1
+          obj <- obj[!na_coord_id, ]
+        }
+        
+        ## remover linhas sem dados de data de observação
+        if (!is.null(missing$time) && missing$time == "drop") {
+          na_time_id <- is.na(obj$observacao_data)
+          obj <- obj[!na_time_id, ]
+        }
+      }
+      
+      # Continuar processamento apenas se restaram linhas
+      if (nrow(obj) >= 1) {
+        
+        # Tabela 'camada'
+        is_lyr <- all(c("profund_sup", "profund_inf") %in% colnames(obj))
+        if (is_lyr) {
+          
+          ## remover linhas sem dados de profundidade
+          if (!is.null(missing$depth) && missing$depth == "drop") {
+            na_depth_id <- apply(obj[c("profund_sup", "profund_inf")], 1, function (x) sum(is.na(x))) >= 1
+            obj <- obj[!na_depth_id, ]
+          }
+        } 
+      }
     }
     
     return (obj)
