@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get <em>unit</em> table — unit • febr</title>
+<title>Create an object of class <code>SpatialPointsDataFrame</code> — febr2spdf • febr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -27,12 +27,11 @@
 <script src="../pkgdown.js"></script>
   
   
-<meta property="og:title" content="Get <em>unit</em> table — unit" />
+<meta property="og:title" content="Create an object of class <code>SpatialPointsDataFrame</code> — febr2spdf" />
 
-<meta property="og:description" content="Download data from the unit ("unidade") table of the Free Brazilian Repository for Open Soil Data --
-febr, http://www.ufsm.br/febr. This includes measurement units and conversion factors. This
-is used to standardize the data contained in a dataset when downloading it via layer or
-observation." />
+<meta property="og:description" content="Set spatial coordinates and projection attributes to create an object of class SpatialPointsDataFrame from
+the observation ("observacao") table of one or more standardized datasets contained in the Free Brazilian
+Repository for Open Soil Data -- febr, http://www.ufsm.br/febr." />
 <meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -92,48 +91,40 @@ observation." />
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get <em>unit</em> table</h1>
+    <h1>Create an object of class <code>SpatialPointsDataFrame</code></h1>
     </div>
 
     
-    <p>Download data from the <em>unit</em> ("unidade") table of the Free Brazilian Repository for Open Soil Data --
-<em><strong>febr</strong></em>, <a href='http://www.ufsm.br/febr'>http://www.ufsm.br/febr</a>. This includes measurement units and conversion factors. This
-is used to standardize the data contained in a dataset when downloading it via <code><a href='layer.html'>layer</a></code> or
-<code><a href='observation.html'>observation</a></code>.</p>
+    <p>Set spatial coordinates and projection attributes to create an object of class <code>SpatialPointsDataFrame</code> from
+the <em>observation</em> ("observacao") table of one or more standardized datasets contained in the Free Brazilian
+Repository for Open Soil Data -- <em><strong>febr</strong></em>, <a href='http://www.ufsm.br/febr'>http://www.ufsm.br/febr</a>.</p>
     
 
-    <pre class="usage"><span class='fu'>unit</span>(<span class='no'>source</span>, <span class='no'>target</span>)</pre>
+    <pre class="usage"><span class='fu'>febr2spdf</span>(<span class='no'>obj</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>source</th>
-      <td><p>(optional) Character vector indicating one or more source measurement units.</p></td>
-    </tr>
-    <tr>
-      <th>target</th>
-      <td><p>(optional) Character vector indicating one or more target measurement units.</p></td>
+      <th>obj</th>
+      <td><p>Object of class <code>data.frame</code> downloaded from <em><strong>febr</strong></em> using function
+<code><a href='observation.html'>observation</a></code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame with source and target measurement units and their corresponding conversion factors.</p>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Teixeira, P. C., Donagemma, G. K., Fontana, A., Teixeira, W. G. (2017)
-<em>Manual de Métodos de Análise de Solo</em>. Brasília: Embrapa.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p>The <em>unit</em> table at <a href='https://goo.gl/Vvvsf2'>https://goo.gl/Vvvsf2</a></p>
+    <p>An object of class <code>SpatialPointsDataFrame</code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>unit</span>(<span class='kw'>source</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"%"</span>, <span class='st'>"dag/kg"</span>), <span class='kw'>target</span> <span class='kw'>=</span> <span class='st'>"g/kg"</span>)
+<span class='fu'>library</span>(<span class='no'>magrittr</span>)
+<span class='fu'><a href='observation.html'>observation</a></span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0003"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"taxon"</span>,
+            <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>febr2spdf</span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>spplot</span>(<span class='kw'>zcol</span> <span class='kw'>=</span> <span class='st'>"taxon_sibcs_2009"</span>, <span class='kw'>auto.key</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>columns</span> <span class='kw'>=</span> <span class='fl'>3</span>), <span class='kw'>scales</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>draw</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) +
+  <span class='kw pkg'>latticeExtra</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/latticeExtra/topics/layer'>layer</a></span>(<span class='fu'>panel.grid</span>(<span class='kw'>v</span> <span class='kw'>=</span> -<span class='fl'>1</span>, <span class='kw'>h</span> <span class='kw'>=</span> -<span class='fl'>1</span>))
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -142,10 +133,6 @@ is used to standardize the data contained in a dataset when downloading it via <
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

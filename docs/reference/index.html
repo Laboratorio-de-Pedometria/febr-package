@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -55,13 +55,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">Início</a>
+  <a href="../index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="../articles/febr.html">Como usar</a>
+  <a href="../articles/febr.html">Guia básico</a>
 </li>
 <li>
-  <a href="../reference/">Referência</a>
+  <a href="../reference/index.html">Funções</a>
 </li>
       </ul>
       
@@ -85,7 +88,7 @@
     <div class="page-header">
       <h1>
         Reference
-        <small>version&nbsp;0.8-0</small>
+        <small>version&nbsp;0.9-0</small>
       </h1>
     </div>
 
@@ -100,8 +103,34 @@
       <tbody>
         <tr>
           <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
+            <h2 id="section-fun-es-estruturais" class="hasAnchor"><a href="#section-fun-es-estruturais" class="anchor"></a>Funções estruturais</h2>
+            <p class="section-desc"><p>As funções estruturais servem para conhecer a estrutura das tabelas dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Elas também servem para conhecer os padrões de codificação, nomenclatura, unidades de medida, número de casas decimais, entre outros, usados no <strong><em>febr</em></strong>.</p></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="header.html">header</a></code> </p>
+          </td>
+          <td><p>Get table header</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="standard.html">standard</a></code> </p>
+          </td>
+          <td><p>Get <em>standard</em> table</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="unit.html">unit</a></code> </p>
+          </td>
+          <td><p>Get <em>unit</em> table</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-fun-es-de-acesso" class="hasAnchor"><a href="#section-fun-es-de-acesso" class="anchor"></a>Funções de acesso</h2>
+            <p class="section-desc"><p>As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Isso inclui as tabelas <code>dataset</code>, <code>observacao</code>, <code>camada</code>, e <code>metadado</code>.</p></p>
           </th>
         </tr>
         <tr>
@@ -113,27 +142,9 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="febr2sp.html">febr2sp</a></code> </p>
+            <p><code><a href="observation.html">observation</a></code> </p>
           </td>
-          <td><p>Create an object of class <code>SpatialPointsDataFrame</code></p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="febr2xlsx.html">febr2xlsx</a></code> </p>
-          </td>
-          <td><p>Write data to an Excel workbook</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="febr.html">febr</a></code> </p>
-          </td>
-          <td><p>Get all dataset tables</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="header.html">header</a></code> </p>
-          </td>
-          <td><p>Get table header</p></td>
+          <td><p>Get <em>observation</em> table</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -149,21 +160,35 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="observation.html">observation</a></code> </p>
+            <p><code><a href="febr.html">febr</a></code> </p>
           </td>
-          <td><p>Get <em>observation</em> table</p></td>
+          <td><p>Get all dataset tables</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-fun-es-auxiliares" class="hasAnchor"><a href="#section-fun-es-auxiliares" class="anchor"></a>Funções auxiliares</h2>
+            <p class="section-desc"><p>As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de acesso, assim apoiando o processamento e uso dos dados descarregados do <strong><em>febr</em></strong>, por exemplo, a criação de objetos de outras classes e a exportação dos dados.</p></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="febr2spdf.html">febr2spdf</a></code> </p>
+          </td>
+          <td><p>Create an object of class <code>SpatialPointsDataFrame</code></p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="standard.html">standard</a></code> </p>
+            <p><code><a href="febr2xlsx.html">febr2xlsx</a></code> </p>
           </td>
-          <td><p>Get <em>standard</em> table</p></td>
+          <td><p>Write data to an Excel workbook</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="unit.html">unit</a></code> </p>
+            <p><code><a href="goto.html">goto</a></code> </p>
           </td>
-          <td><p>Get <em>unit</em> table</p></td>
+          <td><p>Go to <em><strong>febr</strong></em></p></td>
         </tr>
       </tbody>
       </table>
@@ -173,7 +198,9 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-fun-es-estruturais">Funções estruturais</a></li>
+      <li><a href="#section-fun-es-de-acesso">Funções de acesso</a></li>
+      <li><a href="#section-fun-es-auxiliares">Funções auxiliares</a></li>
     </ul>
   </div>
 </div>
