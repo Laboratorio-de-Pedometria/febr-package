@@ -7,3 +7,5 @@ docs
 pkgdown
 .travis.yml
 vignettes/_febr.Rmd
+vignettes/biblio.bib
+vignettes/abnt.csl
