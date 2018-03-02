@@ -85,15 +85,15 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <p>O pacote <code>febr</code> possui cinco funções para descarregamento de dados:</p>
 <ol>
 <li>
-<code>dataset</code>, para descarregar os dados sobre um conjunto de dados;</li>
+<code>dataset</code>, para descarregar os dados sobre um ou mais conjuntos de dados;</li>
 <li>
-<code>observation</code>, para descarregar os dados das observações do solo de um conjunto de dados;</li>
+<code>observation</code>, para descarregar os dados das observações do solo de um ou mais conjuntos de dados;</li>
 <li>
-<code>layer</code>, para descarregar os dados das camadas das observações do solo de um conjunto de dados;</li>
+<code>layer</code>, para descarregar os dados das camadas das observações do solo de um ou mais conjuntos de dados;</li>
 <li>
-<code>metadata</code>, para descarregar os dados sobre os dados de um conjunto de dados;</li>
+<code>metadata</code>, para descarregar os dados sobre os dados de um ou mais conjuntos de dados;</li>
 <li>
-<code>febr</code>, para descarregar todos os dados e metadados de um conjunto de dados.</li>
+<code>febr</code>, para descarregar todos os dados e metadados de um único conjunto de dados.</li>
 </ol>
 <p>O principal argumento dessas cinco funções é <code>dataset</code>. Para esse argumento é passado o código de identificação de um ou mais conjuntos de dados publicados no <strong><em>febr</em></strong>. Isso descarrega os dados da tabela de dados indicada pela função escolhida. Por exemplo,</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/observation.html">observation</a></span>(<span class="dt">dataset =</span> <span class="st">"ctb0003"</span>)</code></pre></div>
