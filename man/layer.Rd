@@ -33,7 +33,7 @@ standardization.
 \item \code{plus.sign} Character string indicating what should be done with the plus sign (\code{+}) commonly used
 along with the inferior limit of the bottom layer of an observation. Options are \code{"keep"} (default),
 \code{"add"}, and \code{"remove"}.
-\item \code{plus.depth} Numeric value indicating the depth increment (in centimetres) when processing the plus
+\item \code{plus.depth} Numeric value indicating the depth increment (in centimeters) when processing the plus
 sign (\code{+}) with \code{plus.sign = "add"}. Defaults to \code{plus.depth = 2.5}.
 
 \item \code{lessthan.sign} Character string indicating what should be done with the less-than sign (\code{<}) used
@@ -119,7 +119,7 @@ based on a chosen number of levels of their identification code. For example, co
 identification code composed of four levels, \code{aaa_bbb_ccc_ddd}, where \code{aaa} is the first level and
 \code{ddd} is the fourth level. Now consider a related variable, \code{aaa_bbb_eee_fff}. If the harmonization
 is to consider all four coding levels (\code{level = 4}), then these two variables will remain coded as
-separate variables. But if \code{level = 2}, then both variables will be recoded to \code{aaa_bbb}, thus becoming the
+separate variables. But if \code{level = 2}, then both variables will be re-coded as \code{aaa_bbb}, thus becoming the
 same variable.
 }
 }

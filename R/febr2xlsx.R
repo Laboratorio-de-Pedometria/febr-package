@@ -10,7 +10,7 @@
 #' @param row.names (optional) Logical value indicating whether the row names of `x` are to be written along 
 #' with `x` to the file.
 #' 
-#' @param ... (optionl) Futher arguments passed to \code{\link[xlsx]{write.xlsx}}.
+#' @param ... (optional) Further arguments passed to \code{\link[xlsx]{write.xlsx}}.
 #' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export

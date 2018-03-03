@@ -14,7 +14,7 @@ febr2xlsx(x, file, row.names = FALSE, ...)
 \item{row.names}{(optional) Logical value indicating whether the row names of \code{x} are to be written along
 with \code{x} to the file.}
 
-\item{...}{(optionl) Futher arguments passed to \code{\link[xlsx]{write.xlsx}}.}
+\item{...}{(optional) Further arguments passed to \code{\link[xlsx]{write.xlsx}}.}
 }
 \description{
 Write data downloaded from the Free Brazilian Repository for Open Soil Data -- \emph{\strong{febr}},

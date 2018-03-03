@@ -22,7 +22,8 @@
 #'       `crs = NULL`, i.e. no transformation is performed.
 #' \item `time.format` Character string indicating how to format dates. For example, 
 #'       \code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to 
-#'       `time.format = NULL`, i.e. no formating is performed. See \code{\link[base]{as.Date}} for more details.
+#'       `time.format = NULL`, i.e. no formatting is performed. See \code{\link[base]{as.Date}} for more 
+#'       details.
 #' \item `units` Logical value indicating if the measurement units of the continuous variable(s) should
 #'       be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
 #'       performed. See \code{\link[febr]{standard}} for more information.
@@ -54,8 +55,8 @@
 #' of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/downloads_geociencias.htm#}.
 #' \item `observacao_data`. Date (dd-mm-yyyy) in which an observation was made.
 #' \item `coord_sistema`. EPSG code of the coordinate reference system.
-#' \item `coord_x`. Longitude (°) or Easting (m).
-#' \item `coord_y`. Latitude (°) or Northing (m).
+#' \item `coord_x`. Longitude (°) or easting (m).
+#' \item `coord_y`. Latitude (°) or northing (m).
 #' \item `coord_precisao`. Precision with which x- and y-coordinates were determined (m).
 #' \item `coord_fonte`. Source of the x- and y-coordinates.
 #' \item `pais_id`. Country code (ISO 3166-1 alpha-2).
@@ -81,7 +82,7 @@
 #' identification code composed of four levels, `aaa_bbb_ccc_ddd`, where `aaa` is the first level and
 #' `ddd` is the fourth level. Now consider a related variable, `aaa_bbb_eee_fff`. If the harmonization
 #' is to consider all four coding levels (`level = 4`), then these two variables will remain coded as
-#' separate variables. But if `level = 2`, then both variables will be recoded to `aaa_bbb`, thus becoming the
+#' separate variables. But if `level = 2`, then both variables will be re-coded as `aaa_bbb`, thus becoming the
 #' same variable.
 #' }
 #'

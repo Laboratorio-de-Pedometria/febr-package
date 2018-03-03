@@ -18,7 +18,7 @@
 #' \item `plus.sign` Character string indicating what should be done with the plus sign (`+`) commonly used
 #'       along with the inferior limit of the bottom layer of an observation. Options are `"keep"` (default),
 #'       `"add"`, and `"remove"`.
-#' \item `plus.depth` Numeric value indicating the depth increment (in centimetres) when processing the plus
+#' \item `plus.depth` Numeric value indicating the depth increment (in centimeters) when processing the plus
 #'       sign (`+`) with `plus.sign = "add"`. Defaults to `plus.depth = 2.5`.
 #'       
 #' \item `lessthan.sign` Character string indicating what should be done with the less-than sign (`<`) used
@@ -95,7 +95,7 @@
 #' identification code composed of four levels, `aaa_bbb_ccc_ddd`, where `aaa` is the first level and
 #' `ddd` is the fourth level. Now consider a related variable, `aaa_bbb_eee_fff`. If the harmonization
 #' is to consider all four coding levels (`level = 4`), then these two variables will remain coded as
-#' separate variables. But if `level = 2`, then both variables will be recoded to `aaa_bbb`, thus becoming the
+#' separate variables. But if `level = 2`, then both variables will be re-coded as `aaa_bbb`, thus becoming the
 #' same variable.
 #' }
 #' 

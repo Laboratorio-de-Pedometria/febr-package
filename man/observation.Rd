@@ -36,7 +36,8 @@ standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg
 \code{crs = NULL}, i.e. no transformation is performed.
 \item \code{time.format} Character string indicating how to format dates. For example,
 \code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to
-\code{time.format = NULL}, i.e. no formating is performed. See \code{\link[base]{as.Date}} for more details.
+\code{time.format = NULL}, i.e. no formatting is performed. See \code{\link[base]{as.Date}} for more
+details.
 \item \code{units} Logical value indicating if the measurement units of the continuous variable(s) should
 be converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no conversion is
 performed. See \code{\link[febr]{standard}} for more information.
@@ -84,8 +85,8 @@ maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
 of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/downloads_geociencias.htm#}.
 \item \code{observacao_data}. Date (dd-mm-yyyy) in which an observation was made.
 \item \code{coord_sistema}. EPSG code of the coordinate reference system.
-\item \code{coord_x}. Longitude (°) or Easting (m).
-\item \code{coord_y}. Latitude (°) or Northing (m).
+\item \code{coord_x}. Longitude (°) or easting (m).
+\item \code{coord_y}. Latitude (°) or northing (m).
 \item \code{coord_precisao}. Precision with which x- and y-coordinates were determined (m).
 \item \code{coord_fonte}. Source of the x- and y-coordinates.
 \item \code{pais_id}. Country code (ISO 3166-1 alpha-2).
@@ -111,7 +112,7 @@ based on a chosen number of levels of their identification code. For example, co
 identification code composed of four levels, \code{aaa_bbb_ccc_ddd}, where \code{aaa} is the first level and
 \code{ddd} is the fourth level. Now consider a related variable, \code{aaa_bbb_eee_fff}. If the harmonization
 is to consider all four coding levels (\code{level = 4}), then these two variables will remain coded as
-separate variables. But if \code{level = 2}, then both variables will be recoded to \code{aaa_bbb}, thus becoming the
+separate variables. But if \code{level = 2}, then both variables will be re-coded as \code{aaa_bbb}, thus becoming the
 same variable.
 }
 }

@@ -7,7 +7,7 @@
 #' @template metadata_template
 #' 
 #' @param merge (optional) Logical value indicating if the *observation* ("observacao") and *layer* ("camada")
-#' tables should be merged. Detaults to `merge = FALSE`. See \code{\link[base]{merge}} for more details.
+#' tables should be merged. Defaults to `merge = FALSE`. See \code{\link[base]{merge}} for more details.
 #' 
 #' @param ... (optional) Arguments passed to \code{\link[febr]{observation}} and \code{\link[febr]{layer}}.
 #' 
