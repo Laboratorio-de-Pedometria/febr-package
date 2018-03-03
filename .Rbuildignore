@@ -7,3 +7,4 @@ docs
 pkgdown
 .travis.yml
 vignettes/_febr.Rmd
+^cran-comments\.md$

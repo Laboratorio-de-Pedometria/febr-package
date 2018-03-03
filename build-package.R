@@ -29,3 +29,6 @@ pkgdown::build_articles()
 
 # turn on/off development mode
 # devtools::dev_mode()
+
+# upload to CRAN
+devtools::release(check = FALSE)
