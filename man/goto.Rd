@@ -21,10 +21,8 @@ Go to one of the web pages of the Free Brazilian Repository for Open Soil Data -
 project and dataset web pages.
 }
 \examples{
-\dontrun{
 # Go to the main project page
 goto(page = "febr")
-}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

@@ -46,8 +46,8 @@ Standard identification variables and their content depend on the chosen \code{t
 }
 }
 \examples{
-\dontrun{
-res <- header(dataset = "all", table = "camada", variable = "ferro", stack = TRUE)
+\donttest{
+res <- header(dataset = c("ctb0001", "ctb0002"), table = "camada", variable = "ferro", stack = TRUE)
 id <- grep("ferro_", colnames(res))
 col <- colnames(res)[id]
 col[order(col)]

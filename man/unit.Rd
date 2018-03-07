@@ -21,8 +21,9 @@ is used to standardize the data contained in a dataset when downloading it via \
 \code{\link[febr]{observation}}.
 }
 \examples{
-\dontrun{
-unit(source = c("\%", "dag/kg"), target = "g/kg")
+\donttest{
+res <- unit(source = c("\%", "dag/kg"), target = "g/kg")
+res
 }
 }
 \references{

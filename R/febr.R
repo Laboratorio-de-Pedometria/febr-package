@@ -18,8 +18,9 @@
 #' \code{\link[febr]{metadata}}
 #' @export
 #' @examples
-#' \dontrun{ 
-#' tmp <- febr(dataset = "ctb0003", join = TRUE, variable = "all")
+#' \donttest{ 
+#' res <- febr(dataset = "ctb0003", merge = TRUE, variable = "all")
+#' str(res)
 #' }
 ###############################################################################################################
 febr <- 

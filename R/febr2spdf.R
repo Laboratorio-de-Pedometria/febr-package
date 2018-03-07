@@ -12,13 +12,12 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(magrittr)
 #' observation(dataset = "ctb0003", variable = "taxon",
 #'             progress = FALSE, verbose = FALSE) %>% 
 #'   febr2spdf() %>%
-#'   spplot(zcol = "taxon_sibcs_2009", auto.key = list(columns = 3), scales = list(draw = TRUE)) +
-#'   latticeExtra::layer(panel.grid(v = -1, h = -1))
+#'   sp::spplot(zcol = "taxon_sibcs_2009", auto.key = list(columns = 3), scales = list(draw = TRUE))
 #' }
 ###############################################################################################################
 febr2spdf <-

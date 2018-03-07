@@ -31,8 +31,9 @@
 #' @seealso The *standard* table at \url{https://goo.gl/hi77sB}
 #' @export
 #' @examples
-#' \dontrun{
-#' a <- standard(variable = "ferro")
+#' \donttest{
+#' res <- standard(variable = "ferro")
+#' head(res)
 #' }
 ###############################################################################################################
 standard <-

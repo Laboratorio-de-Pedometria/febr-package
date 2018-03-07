@@ -25,9 +25,9 @@ Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/f
 description, author and institution names, dataset license, and much more.
 }
 \examples{
-\dontrun{
-res <- dataset()
-str(res)
+\donttest{
+res <- dataset(dataset = "ctb0003")
+head(res)
 }
 }
 \author{

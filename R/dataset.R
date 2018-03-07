@@ -11,9 +11,9 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
-#' \dontrun{
-#' res <- dataset()
-#' str(res)
+#' \donttest{
+#' res <- dataset(dataset = "ctb0003")
+#' head(res)
 #' }
 ###############################################################################################################
 dataset <-

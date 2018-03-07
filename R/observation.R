@@ -92,7 +92,7 @@
 #' @seealso \code{\link[febr]{layer}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' res <- observation(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
 #' str(res)
 #' }

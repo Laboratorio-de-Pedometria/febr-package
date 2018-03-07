@@ -124,7 +124,7 @@ same variable.
 }
 }
 \examples{
-\dontrun{
+\donttest{
 res <- layer(dataset = paste("ctb000", 4:9, sep = ""))
 str(res)
 }

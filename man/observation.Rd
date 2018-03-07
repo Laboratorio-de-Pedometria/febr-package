@@ -117,7 +117,7 @@ same variable.
 }
 }
 \examples{
-\dontrun{
+\donttest{
 res <- observation(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
 str(res)
 }

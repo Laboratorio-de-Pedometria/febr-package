@@ -15,13 +15,13 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' dts <-
-#'   febr::febr(dataset = "ctb0003", 
+#'   febr::febr(dataset = "ctb0013", 
 #'              variable = "all",
 #'              merge = TRUE,
 #'              progress = FALSE, verbose = FALSE)
-#' febr2xlsx(x = dts, file = "ctb0003.xlsx")
+#' febr2xlsx(x = dts, file = tempfile(fileext = ".xlsx"))
 #' }
 ###############################################################################################################
 febr2xlsx <-

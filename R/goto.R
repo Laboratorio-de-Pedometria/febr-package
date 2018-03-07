@@ -15,10 +15,8 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
-#' \dontrun{
 #' # Go to the main project page
 #' goto(page = "febr")
-#' }
 ###############################################################################################################
 goto <-
   function (dataset, table, page) {

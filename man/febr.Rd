@@ -30,8 +30,9 @@ Download data from the \emph{dataset} ("dataset"), \emph{observation} ("observac
 -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}.
 }
 \examples{
-\dontrun{ 
-tmp <- febr(dataset = "ctb0003", join = TRUE, variable = "all")
+\donttest{ 
+res <- febr(dataset = "ctb0003", merge = TRUE, variable = "all")
+str(res)
 }
 }
 \seealso{

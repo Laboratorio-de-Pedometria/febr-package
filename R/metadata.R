@@ -11,9 +11,9 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
-#' \dontrun{
-#' res <- metadata()
-#' str(res)
+#' \donttest{
+#' res <- metadata(dataset = "ctb0003")
+#' head(res)
 #' }
 ###############################################################################################################
 metadata <-
