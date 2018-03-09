@@ -11,10 +11,10 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
-#' \donttest{
+# \donttest{
 #' res <- dataset(dataset = "ctb0003")
 #' head(res)
-#' }
+# }
 ###############################################################################################################
 dataset <-
   function (dataset, progress = TRUE, verbose = TRUE) {

@@ -19,10 +19,10 @@
 #' @seealso The *unit* table at \url{https://goo.gl/Vvvsf2}
 #' @export
 #' @examples
-#' \donttest{
+# \donttest{
 #' res <- unit(source = c("%", "dag/kg"), target = "g/kg")
 #' res
-#' }
+# }
 ###############################################################################################################
 unit <-
   function (source, target) {

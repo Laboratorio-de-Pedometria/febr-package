@@ -25,8 +25,8 @@
 #' @export
 #' @examples
 # \donttest{
-# res <- header(dataset = c("ctb0001", "ctb0002"), table = "camada", variable = "ferro", stack = TRUE)
-#' res <- header(dataset = "ctb0013", table = "observacao")
+#' res <- header(dataset = c("ctb0001", "ctb0002"), table = "camada", variable = "ferro", stack = TRUE)
+# res <- header(dataset = "ctb0013", table = "observacao")
 #' id <- grep("ferro_", colnames(res))
 #' col <- colnames(res)[id]
 #' col[order(col)]

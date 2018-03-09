@@ -31,10 +31,10 @@
 #' @seealso The *standard* table at \url{https://goo.gl/hi77sB}
 #' @export
 #' @examples
-#' \donttest{
+# \donttest{
 #' res <- standard(variable = "ferro")
 #' head(res)
-#' }
+# }
 ###############################################################################################################
 standard <-
   function (table, variable, unit, precision, expr) {

@@ -11,10 +11,10 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
-#' \donttest{
+# \donttest{
 #' res <- metadata(dataset = "ctb0003")
 #' head(res)
-#' }
+# }
 ###############################################################################################################
 metadata <-
   function (dataset, progress = TRUE, verbose = TRUE) {
