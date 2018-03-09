@@ -66,15 +66,15 @@
       <h1>Repositório Brasileiro Livre para Dados Abertos do Solo – Guia Básico</h1>
                         <h4 class="author">Alessandro Samuel-Rosa</h4>
             
-            <h4 class="date">02-03-2018</h4>
+            <h4 class="date">09-03-2018</h4>
           </div>
 
     
     
 <div class="contents">
-<div id="introducao" class="section level2">
-<h2 class="hasAnchor">
-<a href="#introducao" class="anchor"></a>Introdução</h2>
+<div id="introducao" class="section level1">
+<h1 class="hasAnchor">
+<a href="#introducao" class="anchor"></a>Introdução</h1>
 <p>O pacote <code>febr</code> (/ˈfɛ.bɾe/) para R <span class="citation">(R Core Team <a href="#ref-r">2017</a>)</span> foi criado para facilitar o acesso aos dados dos conjuntos de dados publicados no Repositório Brasileiro Livre para Dados Abertos do Solo (<a href="http://www.ufsm.br/febr/"><strong><em>febr</em></strong></a>). Ele pode ser descarregado do <a href="https://CRAN.R-project.org/package=febr">CRAN</a> da seguinte maneira:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"febr"</span>)</code></pre></div>
 <p>Já a versão de desenvolvimento, disponível no <a href="https://github.com/febr-team/febr-package">GitHub</a>, pode ser instalada – usando o pacote <code>devtools</code> <span class="citation">(Wickham e Chang <a href="#ref-devtools">2017</a>)</span> – da seguinte maneira:</p>
@@ -84,7 +84,7 @@
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"febr-team/febr-package"</span>)</code></pre></div>
 <p>O pacote <code>febr</code> possui três grupos de funções: as funções estruturais, as funções de acesso, e as funções auxiliares – veja tabela abaixo. Uma demonstração básica da forma de uso e aplicações dessas funções é apresentada nas próximas seções.</p>
 <table style="width:85%;" class="table">
-<caption>Funções disponíveis no pacote <code>febr</code> versão 0.9-0.</caption>
+<caption>Funções disponíveis no pacote <code>febr</code> versão 1.0-0.</caption>
 <colgroup>
 <col width="22%">
 <col width="18%">
@@ -157,9 +157,9 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 </tbody>
 </table>
 </div>
-<div id="funcoes-estruturais" class="section level2">
-<h2 class="hasAnchor">
-<a href="#funcoes-estruturais" class="anchor"></a>Funções estruturais</h2>
+<div id="funcoes-estruturais" class="section level1">
+<h1 class="hasAnchor">
+<a href="#funcoes-estruturais" class="anchor"></a>Funções estruturais</h1>
 <p>As funções estruturais servem para conhecer a estrutura das tabelas dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Elas também servem para conhecer os padrões de codificação, nomenclatura, unidades de medida e número de casas decimais usados no <strong><em>febr</em></strong>. Todas as funções estruturais são construídas sobre funções do pacote <code>googlesheets</code> <span class="citation">(Bryan e Zhao <a href="#ref-googlesheets">2018</a>)</span>.</p>
 <p>A função <code>header</code> (do inglês, <em>header</em>, para cabeçalho) serve para descarregar o cabeçalho – as duas primeiras linhas – de uma das duas tabelas de dados – <code>observacao</code> ou <code>camada</code> – dos conjuntos de dados. Isso permite verificar quais são as variáveis incluídas nos conjuntos de dados, os códigos de identificação utilizados, e as respectivas unidades de medida. Por exemplo, o cabeçalho completo da tabela <code>camada</code> do conjunto de dados <code>ctb0003</code> é descarregado da seguinte maneira:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cab &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/febr/topics/header">header</a></span>(<span class="dt">dataset =</span> <span class="st">"ctb0003"</span>, <span class="dt">table =</span> <span class="st">"camada"</span>, <span class="dt">variable =</span> <span class="st">"all"</span>)</code></pre></div>
@@ -168,9 +168,9 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <p>A função <code>unit</code> (do inglês, <em>unit</em>, para unidade) serve de interface para uma planilha – disponível em <a href="https://goo.gl/Vvvsf2" class="uri">https://goo.gl/Vvvsf2</a> – contendo diversas unidades de medida e as constantes utilizadas para a conversão dos dados entre elas. Essas informações são úteis durante o descarregamento dos dados usando as funções <code>observation</code> e <code>layer</code> – veja mais abaixo. Por exemplo, a densidade do solo é comumente expressa em <code>Mg/m^3</code> e <code>kg/dm^3</code>. Para descarregar as constantes de transformação entre essas duas unidades de medida, basta usar o seguinte código:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">uni &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/febr/topics/unit">unit</a></span>(<span class="dt">source =</span> <span class="st">"Mg/m^3"</span>, <span class="dt">target =</span> <span class="st">"kg/dm^3"</span>)</code></pre></div>
 </div>
-<div id="funcoes-de-acesso" class="section level2">
-<h2 class="hasAnchor">
-<a href="#funcoes-de-acesso" class="anchor"></a>Funções de acesso</h2>
+<div id="funcoes-de-acesso" class="section level1">
+<h1 class="hasAnchor">
+<a href="#funcoes-de-acesso" class="anchor"></a>Funções de acesso</h1>
 <p>As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Isso inclui as tabelas <code>dataset</code>, <code>observacao</code>, <code>camada</code>, e <code>metadado</code>. Assim como as funções estruturais, as funções de acesso também são construídas sobre funções do pacote <code>googlesheets</code> <span class="citation">(Bryan e Zhao <a href="#ref-googlesheets">2018</a>)</span>.</p>
 <p>Os dados sobre um ou mais conjuntos de dados, contidos na tabela <code>dataset</code> (do inglês, <em>dataset</em>, para conjunto de dados), podem ser descarregados usando uma função de mesmo nome. Para isso, basta informar o código de identificação do(s) conjunto(s) de dados que se deseja descarregar – conforme catalogado em <a href="http://www.ufsm.br/febr/catalog/" class="uri">http://www.ufsm.br/febr/catalog/</a> –, por exemplo:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">conj &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/febr/topics/dataset">dataset</a></span>(<span class="dt">dataset =</span> <span class="kw">c</span>(<span class="st">"ctb0003"</span>, <span class="st">"ctb0036"</span>))</code></pre></div>
@@ -192,9 +192,9 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
     <span class="dt">lessthan.sign =</span> <span class="st">"subtract"</span>, <span class="dt">lessthan.frac =</span> <span class="fl">0.1</span>,
     <span class="dt">units =</span> <span class="ot">TRUE</span>, <span class="dt">round =</span> <span class="ot">TRUE</span>))</code></pre></div>
 </div>
-<div id="funcoes-auxiliares" class="section level2">
-<h2 class="hasAnchor">
-<a href="#funcoes-auxiliares" class="anchor"></a>Funções auxiliares</h2>
+<div id="funcoes-auxiliares" class="section level1">
+<h1 class="hasAnchor">
+<a href="#funcoes-auxiliares" class="anchor"></a>Funções auxiliares</h1>
 <p>As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de acesso, assim apoiando o processamento e uso dos dados descarregados do <strong><em>febr</em></strong>, por exemplo, a criação de objetos de outras classes e a exportação dos dados.</p>
 <p>A função <code>febr2spdf</code> serve para criar um objeto de classe <code>SpatialPointsDataFrame</code> <span class="citation">(Pebesma e Bivand <a href="#ref-sp">2005</a>)</span> a partir da tabela <code>observacao</code> descarregada usando a função <code>observation</code>. O código a seguir demonstra como fazer isso – note que as funções do pacote <code>febr</code> são compatíveis com o uso do operador <code>%&gt;%</code> do pacote <code>magrittr</code> <span class="citation">(Bache e Wickham <a href="#ref-magrittr">2014</a>)</span>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(magrittr)
@@ -208,9 +208,10 @@ obs &lt;-<span class="st"> </span>
 <p>A terceira função auxiliar do pacote <code>febr</code> é <code>goto</code>. A função <code>goto</code> serve de interface para navegação nas diversas páginas na Internet do <strong><em>febr</em></strong>: página principal, visualização geográfica, catálogo de conjuntos de dados, página de busca, manual do mantenedor, pacote para R, GitHub, fórum de discussão, e tabelas com padrões de unidades de medida e de codificação e nomenclatura. Além disso, a função <code>goto</code> serve para visitar as tabelas dos conjuntos de dados. Por exemplo, para visitar a tabela <code>camada</code> do conjunto de dados <code>ctb0036</code>, usamos o seguinte código:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">febr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/febr/topics/goto">goto</a></span>(<span class="dt">dataset =</span> <span class="st">"ctb0036"</span>, <span class="dt">table =</span> <span class="st">"camada"</span>)</code></pre></div>
 <p>Novas funções auxiliares podem ser criadas à medida que as usuárias do pacote <code>febr</code> apontarem a sua necessidade. Alternativamente, as usuárias são encorajadas a submeter funções auxiliares para inclusão no pacote <code>febr</code> seguindo o modelo de desenvolvimento colaborativo <em>fork &amp; pull</em>.</p>
-<div id="referencias" class="section level3 unnumbered">
-<h3 class="hasAnchor">
-<a href="#referencias" class="anchor"></a>Referências</h3>
+</div>
+<div id="referencias" class="section level1 unnumbered">
+<h1 class="hasAnchor">
+<a href="#referencias" class="anchor"></a>Referências</h1>
 <div id="refs" class="references">
 <div id="ref-magrittr">
 <p>Bache, S. M., Wickham, H. <em>magrittr: A Forward-Pipe Operator for R</em>. [s.l: s.n.]. <a href="https://CRAN.R-project.org/package=magrittr" class="uri">https://CRAN.R-project.org/package=magrittr</a>. R package version 1.5</p>
@@ -233,7 +234,6 @@ obs &lt;-<span class="st"> </span>
 </div>
 </div>
 </div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -245,6 +245,7 @@ obs &lt;-<span class="st"> </span>
       <li><a href="#funcoes-estruturais">Funções estruturais</a></li>
       <li><a href="#funcoes-de-acesso">Funções de acesso</a></li>
       <li><a href="#funcoes-auxiliares">Funções auxiliares</a></li>
+      <li><a href="#referencias">Referências</a></li>
       </ul>
 </div>
       </div>

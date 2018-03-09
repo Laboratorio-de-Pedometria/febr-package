@@ -160,12 +160,7 @@ the chosen variable(s) of the chosen dataset(s).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>header</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"all"</span>, <span class='kw'>table</span> <span class='kw'>=</span> <span class='st'>"camada"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"ferro"</span>, <span class='kw'>stack</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='fu'>grep</span>(<span class='st'>"ferro_"</span>, <span class='fu'>colnames</span>(<span class='no'>res</span>))
-<span class='no'>col</span> <span class='kw'>&lt;-</span> <span class='fu'>colnames</span>(<span class='no'>res</span>)[<span class='no'>id</span>]
-<span class='no'>col</span>[<span class='fu'>order</span>(<span class='no'>col</span>)]
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>header</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0013"</span>, <span class='kw'>table</span> <span class='kw'>=</span> <span class='st'>"observacao"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): gnutls_handshake() failed: An unexpected TLS packet was received.</span></div><div class='input'><span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='fu'>grep</span>(<span class='st'>"ferro_"</span>, <span class='fu'>colnames</span>(<span class='no'>res</span>))</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'res' not found</span></div><div class='input'><span class='no'>col</span> <span class='kw'>&lt;-</span> <span class='fu'>colnames</span>(<span class='no'>res</span>)[<span class='no'>id</span>]</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'res' not found</span></div><div class='input'><span class='no'>col</span>[<span class='fu'>order</span>(<span class='no'>col</span>)]</div><div class='output co'>#&gt; <span class='error'>Error in order(col): argument 1 is not a vector</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

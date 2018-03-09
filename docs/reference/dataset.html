@@ -31,7 +31,7 @@
 
 <meta property="og:description" content="Download data from the dataset ("dataset") table of one or more datasets contained in the Free Brazilian
 Repository for Open Soil Data -- febr, http://www.ufsm.br/febr. This includes dataset name and
-description, author and institution names, dataset licence, and much more." />
+description, author and institution names, dataset license, and much more." />
 <meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -97,7 +97,7 @@ description, author and institution names, dataset licence, and much more." />
     
     <p>Download data from the <em>dataset</em> ("dataset") table of one or more datasets contained in the Free Brazilian
 Repository for Open Soil Data -- <em><strong>febr</strong></em>, <a href='http://www.ufsm.br/febr'>http://www.ufsm.br/febr</a>. This includes dataset name and
-description, author and institution names, dataset licence, and much more.</p>
+description, author and institution names, dataset license, and much more.</p>
     
 
     <pre class="usage"><span class='fu'>dataset</span>(<span class='no'>dataset</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
@@ -128,10 +128,7 @@ if you find any issue.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>dataset</span>()
-<span class='fu'>str</span>(<span class='no'>res</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>dataset</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0003"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): gnutls_handshake() failed: An unexpected TLS packet was received.</span></div><div class='input'><span class='fu'>head</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt; <span class='error'>Error in head(res): object 'res' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

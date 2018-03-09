@@ -144,7 +144,7 @@ standardization.</p><ul>
 <li><p><code>plus.sign</code> Character string indicating what should be done with the plus sign (<code>+</code>) commonly used
 along with the inferior limit of the bottom layer of an observation. Options are <code>"keep"</code> (default),
 <code>"add"</code>, and <code>"remove"</code>.</p></li>
-<li><p><code>plus.depth</code> Numeric value indicating the depth increment (in centimetres) when processing the plus
+<li><p><code>plus.depth</code> Numeric value indicating the depth increment (in centimeters) when processing the plus
 sign (<code>+</code>) with <code>plus.sign = "add"</code>. Defaults to <code>plus.depth = 2.5</code>.</p></li>
 <li><p><code>lessthan.sign</code> Character string indicating what should be done with the less-than sign (<code>&lt;</code>) used
 to indicate that the value of a variable is below the lower limit of detection. Options are <code>"keep"</code>
@@ -225,7 +225,7 @@ based on a chosen number of levels of their identification code. For example, co
 identification code composed of four levels, <code>aaa_bbb_ccc_ddd</code>, where <code>aaa</code> is the first level and
 <code>ddd</code> is the fourth level. Now consider a related variable, <code>aaa_bbb_eee_fff</code>. If the harmonization
 is to consider all four coding levels (<code>level = 4</code>), then these two variables will remain coded as
-separate variables. But if <code>level = 2</code>, then both variables will be recoded to <code>aaa_bbb</code>, thus becoming the
+separate variables. But if <code>level = 2</code>, then both variables will be re-coded as <code>aaa_bbb</code>, thus becoming the
 same variable.
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -234,10 +234,7 @@ same variable.
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>layer</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='fu'>paste</span>(<span class='st'>"ctb000"</span>, <span class='fl'>4</span>:<span class='fl'>9</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>))
-<span class='fu'>str</span>(<span class='no'>res</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>layer</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0013"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): gnutls_handshake() failed: An unexpected TLS packet was received.</span></div><div class='input'><span class='fu'>str</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt; <span class='error'>Error in str(res): object 'res' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
