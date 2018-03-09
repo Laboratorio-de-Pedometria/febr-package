@@ -117,10 +117,8 @@ same variable.
 }
 }
 \examples{
-\donttest{
-res <- observation(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
+res <- observation(dataset = "ctb0013")
 str(res)
-}
 }
 \seealso{
 \code{\link[febr]{layer}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}

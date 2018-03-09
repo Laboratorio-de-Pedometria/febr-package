@@ -92,10 +92,11 @@
 #' @seealso \code{\link[febr]{layer}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
 #' @export
 #' @examples
-#' \donttest{
-#' res <- observation(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
+# \donttest{
+# res <- observation(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
+#' res <- observation(dataset = "ctb0013")
 #' str(res)
-#' }
+# }
 ###############################################################################################################
 observation <-
   function (dataset, variable, 

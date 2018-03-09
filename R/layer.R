@@ -105,10 +105,11 @@
 #' @seealso \code{\link[febr]{observation}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
 #' @export
 #' @examples
-#' \donttest{
-#' res <- layer(dataset = paste("ctb000", 4:9, sep = ""))
+# \donttest{
+# res <- layer(dataset = paste("ctb000", 4:9, sep = ""))
+#' res <- layer(dataset = "ctb0013")
 #' str(res)
-#' }
+# }
 ###############################################################################################################
 layer <-
   function (dataset, variable,
