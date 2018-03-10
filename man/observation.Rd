@@ -117,7 +117,7 @@ same variable.
 }
 }
 \examples{
-res <- observation(dataset = "ctb0013")
+res <- observation(dataset = "ctb0013", variable = "taxon")
 str(res)
 }
 \seealso{

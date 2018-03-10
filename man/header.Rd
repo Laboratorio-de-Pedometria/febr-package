@@ -46,7 +46,7 @@ Standard identification variables and their content depend on the chosen \code{t
 }
 }
 \examples{
-res <- header(dataset = "ctb0013", table = "observacao")
+res <- header(dataset = c("ctb0001", "ctb0002"), table = "camada", variable = "ferro", stack = TRUE)
 id <- grep("ferro_", colnames(res))
 col <- colnames(res)[id]
 col[order(col)]

@@ -33,10 +33,8 @@ the data contained in a dataset when downloading it via \code{\link[febr]{layer}
 \code{\link[febr]{observation}}.
 }
 \examples{
-\donttest{
 res <- standard(variable = "ferro")
 head(res)
-}
 }
 \references{
 Teixeira, P. C., Donagemma, G. K., Fontana, A., Teixeira, W. G. (2017)
