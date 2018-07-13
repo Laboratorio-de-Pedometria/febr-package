@@ -318,6 +318,7 @@ layer <-
       # DESCARREGAMENTO
       ## Cabeçalho com unidades de medida
       unit <- .getHeader(x = sheets_keys$camada[i])
+      
       ## Dados
       tmp <- .getTable(x = sheets_keys$camada[i])
       n_rows <- nrow(tmp)
@@ -440,10 +441,12 @@ layer <-
               tmp_stds <- febr_stds[tmp_stds, c("campo_id", "campo_unidade", "campo_precisao")]
               
               ## 1. Se necessário, padronizar unidades de medida
-              idx_unit <- unit[cols[id_con]] != tmp_stds$campo_unidade
+              # idx_unit <- unit[cols[id_con]] != tmp_stds$campo_unidade
+              idx_unit <- unit[, cols[id_con]] != tmp_stds$campo_unidade
               if (any(idx_unit)) {
                 idx_unit <- colnames(idx_unit)[idx_unit]
-                source <- unit[idx_unit]
+                # source <- unit[idx_unit]
+                source <- unit[2, idx_unit]
                 target <- tmp_stds$campo_unidade[match(idx_unit, tmp_stds$campo_id)]
                 
                 ## Identificar constante
@@ -456,7 +459,8 @@ layer <-
                 
                 ## Processar dados
                 tmp[idx_unit] <- mapply(`*`, tmp[idx_unit], k$unidade_constante)
-                unit[idx_unit] <- k$unidade_destino
+                # unit[idx_unit] <- k$unidade_destino
+                unit[2, idx_unit] <- k$unidade_destino
               }
               
               ## 2. Se necessário, padronizar número de casas decimais
@@ -470,8 +474,11 @@ layer <-
           
           # ATTRIBUTOS I
           ## Processar unidades de medida
-          unit <- c("unitless", as.character(unit[names(unit) %in% cols]))
-          unit <- gsub("^-$", "unitless", unit)
+          unit[2, ] <- as.character(unit[2, names(unit) %in% cols])
+          unit[2, ] <- gsub("^-$", "unitless", unit[2, ])
+          unit["observacao_id"] <- c("Identificação da observação", "unitless")
+          dataset_id <- c("Identificação do conjunto de dados", "unitless")
+          unit <- cbind(dataset_id, unit)
           
           # HARMONIZAÇÃO I
           ## Harmonização dos dados das colunas adicionais
@@ -487,11 +494,13 @@ layer <-
           res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
           
           # ATTRIBUTOS II
-          ## Adicionar unidades de medida
           a <- attributes(res[[i]])
-          # a$units <- c("unitless", as.character(unit[names(unit) %in% a$names]))
-          a$units <- unit
-          # a$units <- gsub("^-$", "unitless", a$units)
+          
+          ## Adicionar nomes reais
+          a$field_name <- as.vector(t(unit)[, 1])
+          
+          ## Adicionar unidades de medida
+          a$field_unit <- as.vector(t(unit)[, 2])
           attributes(res[[i]]) <- a
           
           if (progress) {
