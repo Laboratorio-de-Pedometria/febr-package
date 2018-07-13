@@ -14,7 +14,8 @@
             "profund_sup", "profund_inf")
       ),
       gs = list(
-        comment = "#unidade",
+        # comment = "#unidade",
+        comment = "#metadado>",
         locale = readr::locale(date_names = "pt", decimal_mark = ","),
         na = c("NA", "-", "", "na"),
         verbose = FALSE
@@ -243,11 +244,13 @@
 .getHeader <- 
   function (x) {
     res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+    # nmax <- 1
+    nmax <- 2
     res <- suppressMessages(
       googlesheets::gs_read_csv(
-        ss = res, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, n_max = 1))
+        ss = res, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, n_max = nmax))
     res <- as.data.frame(res)
-    res[1, ] <- gsub("#unidade", "-", res[1, ])
+    # res[1, ] <- gsub("#unidade", "-", res[1, ])
     return (res)
   }
 
