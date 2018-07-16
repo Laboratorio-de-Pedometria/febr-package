@@ -1,7 +1,7 @@
 # Repositório Brasileiro Livre para Dados Abertos do Solo -- pacote para R
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
-[![](https://img.shields.io/badge/devel%20version-1.11.6-blue.svg?style=flat)](https://github.com/febr-team/febr-package)
+[![](https://img.shields.io/badge/devel%20version-1.0-0.9001-blue.svg?style=flat)](https://github.com/febr-team/febr-package)
 [![Build Status](https://travis-ci.org/febr-team/febr-package.svg?branch=master)](https://travis-ci.org/febr-team/febr-package)
 [![CRAN](https://www.r-pkg.org/badges/version/febr)](https://cran.r-project.org/package=febr)
 [![Rdoc](http://www.rdocumentation.org/badges/version/febr)](http://www.rdocumentation.org/packages/febr)
