@@ -413,8 +413,11 @@ observation <-
           ## Processar unidades de medida
           unit[2, ] <- as.character(unit[2, names(unit) %in% cols])
           unit[2, ] <- gsub("^-$", "unitless", unit[2, ])
-          unit["observacao_id"] <- c("Identificação da observação", "unitless")
-          dataset_id <- c("Identificação do conjunto de dados", "unitless")
+          # unit["observacao_id"] <- c("Identificação da observação", "unitless")
+          # dataset_id <- c("Identificação do conjunto de dados", "unitless")
+          # https://en.wikipedia.org/wiki/List_of_Unicode_characters
+          unit["observacao_id"] <- c("Identifica\u00E7\u00E3o da observa\u00E7\u00E3o", "unitless")
+          dataset_id <- c("Identifica\u00E7\u00E3o do conjunto de dados", "unitless")
           unit <- cbind(dataset_id, unit)
           
           # HARMONIZAÇÃO I
