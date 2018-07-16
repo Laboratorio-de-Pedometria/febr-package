@@ -21,20 +21,26 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Get <em>standard</em> table — standard" />
 
-<meta property="og:description" content="Download data from the standard ("padrao") table of the Free Brazilian Repository for Open Soil Data --
+<meta property="og:description" content="Download data from the standard (&quot;padrao&quot;) table of the Free Brazilian Repository for Open Soil Data --
 febr, http://www.ufsm.br/febr. This includes codes and names of variable, measurement units,
 number of decimal places, type of data, and description of analytical methods. This is used to standardize
 the data contained in a dataset when downloading it via layer or
 observation." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -57,8 +63,12 @@ observation." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">febr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">febr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.0.9001</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -73,6 +83,9 @@ observation." />
 <li>
   <a href="../reference/index.html">Funções</a>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -83,6 +96,7 @@ observation." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -90,12 +104,15 @@ observation." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get <em>standard</em> table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/febr-team/febr-package//blob/master/R/standard.R'><code>R/standard.R</code></a></small>
+    <div class="hidden name"><code>standard.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Download data from the <em>standard</em> ("padrao") table of the Free Brazilian Repository for Open Soil Data --
 <em><strong>febr</strong></em>, <a href='http://www.ufsm.br/febr'>http://www.ufsm.br/febr</a>. This includes codes and names of variable, measurement units,
@@ -103,10 +120,11 @@ number of decimal places, type of data, and description of analytical methods. T
 the data contained in a dataset when downloading it via <code><a href='layer.html'>layer</a></code> or
 <code><a href='observation.html'>observation</a></code>.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>standard</span>(<span class='no'>table</span>, <span class='no'>variable</span>, <span class='no'>unit</span>, <span class='no'>precision</span>, <span class='no'>expr</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -147,11 +165,32 @@ general identification codes, e.g. <code>"ferro"</code> and <code>"carbono"</cod
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>The <em>standard</em> table at <a href='https://goo.gl/hi77sB'>https://goo.gl/hi77sB</a></p>
+    <div class='dont-index'><p>The <em>standard</em> table at <a href='https://goo.gl/hi77sB'>https://goo.gl/hi77sB</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>standard</span>(<span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"ferro"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): gnutls_handshake() failed: An unexpected TLS packet was received.</span></div><div class='input'><span class='fu'>head</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt; <span class='error'>Error in head(res): object 'res' not found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>standard</span>(<span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"ferro"</span>)
+<span class='fu'>head</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt;   tabela_id               campo_id                             campo_nome
+#&gt; 1    camada         ferro_rggh_drx Razão goethita / (goethita + hematita)
+#&gt; 2    camada  ferro_aquaregia_icpms                            Ferro total
+#&gt; 3    camada ferro_aquaregia_icpoes                            Ferro total
+#&gt; 4    camada   ferro_cloridrico_eaa                            Ferro total
+#&gt; 5    camada    ferro_ditionito_eaa                Ferro livre (extraível)
+#&gt; 6    camada    ferro_ditionito_eam                Ferro livre (extraível)
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                               campo_descricao
+#&gt; 1                                                                                                                                                                                                                                                                                                                                                           Razão goethita / (goethita + hematita). Difratometria de raios X.
+#&gt; 2                                                          Conteúdo de ferro total na fração terra fina seca ao ar (&lt; 2 mm). Digestão à quente com ácido nítrico (HNO3) + ácido clorídrico (HCl) concentrados, numa proporção de 3:1 [aquaregia]. {ESPECIFICAR FORMA DE AQUECIMENTO, TEMPO E TEMPERATURA} Quantificação por espectrometria de massa com plasma acoplado indutivamente [icpms]. {INDICAR REFERÊNCIA DO MÉTODO}
+#&gt; 3                                               Conteúdo de ferro total na fração terra fina seca ao ar (&lt; 2 mm). Digestão à quente com ácido nítrico (HNO3) + ácido clorídrico (HCl) concentrados, numa proporção de 3:1 [aquaregia]. {ESPECIFICAR FORMA DE AQUECIMENTO, TEMPO E TEMPERATURA} Quantificação por espectrometria de emissão atômica com plasma acoplado indutivamente [icpoes]. {INDICAR REFERÊNCIA DO MÉTODO}
+#&gt; 4                                                                                                                                            Conteúdo de ferro total na fração terra fina seca ao ar (&lt; 2 mm). Digestão à quente com ácido clorídrico (HCl) 6 mol/L [cloridrico]. {ESPECIFICAR TEMPERATURA E TEMPO DE AQUECIMENTO} Quantificação por espectrometria de absorção atômica [eaa]. {INDICAR REFERÊNCIA DO MÉTODO}
+#&gt; 5                      Conteúdo de ferro livre (extraível) na fração terra fina seca ao ar (&lt; 2 mm). Extração com citrato de sódio (C6H5O7NA3.2H2O) 0,3 mol/L + bicarbonato de sódio (NaHCO3) 1 mol/L + ditionito de sódio [ditionito] sob aquecimento em banho-maria à temperatura de 75-80ºC. {ESPECIFICAR TEMPO DE AQUECIMENTO} Quantificação por espectrometria de absorção atômica [eaa]. {INDICAR REFERÊNCIA DO MÉTODO}
+#&gt; 6 Conteúdo de ferro livre (extraível) na fração terra fina seca ao ar (&lt; 2 mm). Extração com citrato de sódio (C6H5O7NA3.2H2O) 0,3 mol/L + bicarbonato de sódio (NaHCO3) 1 mol/L + ditionito de sódio [ditionito] sob aquecimento em banho-maria à temperatura de 75-80ºC. {ESPECIFICAR TEMPO DE AQUECIMENTO} Quantificação por espectrofotometria de absorção molecular (colorimetria) [eam]. {INDICAR REFERÊNCIA DO MÉTODO}
+#&gt;   campo_unidade campo_precisao campo_tipo   campo_cat status
+#&gt; 1          &lt;NA&gt;              3       real mineralogia      0
+#&gt; 2          g/kg              1       real     química      1
+#&gt; 3          g/kg              1       real     química      1
+#&gt; 4          g/kg              1       real     química      1
+#&gt; 5          g/kg              2       real     química      1
+#&gt; 6          g/kg              2       real     química      1</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -176,7 +215,7 @@ Alessandro Samuel-Rosa <a href='mailto:alessandrosamuelrosa@gmail.com'>alessandr
 
       <footer>
       <div class="copyright">
-  <p>Developed by Alessandro Samuel-Rosa, Universidade Federal de Santa Maria.</p>
+  <p>Developed by Alessandro Samuel-Rosa, Universidade Federal de Santa Maria, Universidade Tecnológica Federal do Paraná.</p>
 </div>
 
 <div class="pkgdown">
@@ -186,5 +225,8 @@ Alessandro Samuel-Rosa <a href='mailto:alessandrosamuelrosa@gmail.com'>alessandr
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

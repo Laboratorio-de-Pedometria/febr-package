@@ -21,20 +21,26 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Get <em>observation</em> table — observation" />
 
-<meta property="og:description" content="Download data from the observation ("observacao") table of one or more datasets contained in the Free
+<meta property="og:description" content="Download data from the observation (&quot;observacao&quot;) table of one or more datasets contained in the Free
 Brazilian Repository for Open Soil Data -- febr, http://www.ufsm.br/febr. This includes spatial
 coordinates, observation date, and variables such as geology, land use and vegetation, local topography, and
 much more. Use header if you want to check what are the variables contained in the
 observation table of a dataset before downloading it." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -57,8 +63,12 @@ observation table of a dataset before downloading it." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">febr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">febr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.0.9001</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -73,6 +83,9 @@ observation table of a dataset before downloading it." />
 <li>
   <a href="../reference/index.html">Funções</a>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -83,6 +96,7 @@ observation table of a dataset before downloading it." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -90,12 +104,15 @@ observation table of a dataset before downloading it." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get <em>observation</em> table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/febr-team/febr-package//blob/master/R/observation.R'><code>R/observation.R</code></a></small>
+    <div class="hidden name"><code>observation.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Download data from the <em>observation</em> ("observacao") table of one or more datasets contained in the Free
 Brazilian Repository for Open Soil Data -- <em><strong>febr</strong></em>, <a href='http://www.ufsm.br/febr'>http://www.ufsm.br/febr</a>. This includes spatial
@@ -103,6 +120,7 @@ coordinates, observation date, and variables such as geology, land use and veget
 much more. Use <code><a href='header.html'>header</a></code> if you want to check what are the variables contained in the
 <em>observation</em> table of a dataset before downloading it.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>observation</span>(<span class='no'>dataset</span>, <span class='no'>variable</span>, <span class='kw'>stack</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>missing</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>coord</span> <span class='kw'>=</span> <span class='st'>"keep"</span>,
   <span class='kw'>time</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='st'>"keep"</span>), <span class='kw'>standardization</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>crs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -110,7 +128,7 @@ much more. Use <code><a href='header.html'>header</a></code> if you want to chec
   <span class='kw'>harmonization</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>harmonize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>2</span>), <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -227,11 +245,29 @@ same variable.
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='layer.html'>layer</a></code>, <code><a href='standard.html'>standard</a></code>, <code><a href='unit.html'>unit</a></code></p>
+    <div class='dont-index'><p><code><a href='layer.html'>layer</a></code>, <code><a href='standard.html'>standard</a></code>, <code><a href='unit.html'>unit</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>observation</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0013"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): gnutls_handshake() failed: An unexpected TLS packet was received.</span></div><div class='input'><span class='fu'>str</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt; <span class='error'>Error in str(res): object 'res' not found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>observation</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0013"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"taxon"</span>)</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Downloading dataset ctb0013...</span></div><div class='output co'>#&gt;   |                                                                              |======================================================================| 100%</div><div class='input'><span class='fu'>str</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt; 'data.frame':	1 obs. of  15 variables:
+#&gt;  $ dataset_id      : chr "ctb0013"
+#&gt;  $ observacao_id   : chr "PVA"
+#&gt;  $ observacao_data : chr "xx-xx-2006"
+#&gt;  $ coord_sistema   : chr "EPSG:4326"
+#&gt;  $ coord_x         : num -53.7
+#&gt;  $ coord_y         : num -29.7
+#&gt;  $ coord_precisao  : num 10
+#&gt;  $ coord_fonte     : chr "WEB"
+#&gt;  $ pais_id         : chr "BR"
+#&gt;  $ estado_id       : chr "RS"
+#&gt;  $ municipio_id    : chr "Santa Maria"
+#&gt;  $ amostra_tipo    : chr "SIMPLES"
+#&gt;  $ amostra_quanti  : int 1
+#&gt;  $ amostra_area    : int 1
+#&gt;  $ taxon_sibcs_2006: chr "Argissolo Vermelho-Amarelo distrófico típico"
+#&gt;  - attr(*, "field_name")= chr  "Identificação do conjunto de dados" "Identificação da observação" "Data da observação" "Sistema de referência de coordenadas" ...
+#&gt;  - attr(*, "field_unit")= chr  "unitless" "unitless" "unitless" "unitless" ...</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -256,7 +292,7 @@ Alessandro Samuel-Rosa <a href='mailto:alessandrosamuelrosa@gmail.com'>alessandr
 
       <footer>
       <div class="copyright">
-  <p>Developed by Alessandro Samuel-Rosa, Universidade Federal de Santa Maria.</p>
+  <p>Developed by Alessandro Samuel-Rosa, Universidade Federal de Santa Maria, Universidade Tecnológica Federal do Paraná.</p>
 </div>
 
 <div class="pkgdown">
@@ -266,5 +302,8 @@ Alessandro Samuel-Rosa <a href='mailto:alessandrosamuelrosa@gmail.com'>alessandr
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

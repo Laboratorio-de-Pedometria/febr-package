@@ -1,7 +1,7 @@
 Package: febr
 Type: Package
 Title: Free Brazilian Repository for Open Soil Data
-Version: 1.0-0.9001
+Version: 1.0.0.9001
 Date: 2018-07-16
 Authors@R: c(
     person("Alessandro", "Samuel-Rosa", role = c("aut", "cre"), email = "alessandrosamuelrosa@gmail.com", 
@@ -32,6 +32,7 @@ Suggests:
   pander,
   rgdal
 VignetteBuilder: knitr
+SystemRequirements: pandoc
 LazyData: true
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)

@@ -21,19 +21,25 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Get table header — header" />
 
-<meta property="og:description" content="Download header data (column names and measurement units) from the layer ("camada") or observation
-("observacao") table of one or more datasets contained in the Free Brazilian Repository for Open Soil Data
+<meta property="og:description" content="Download header data (column names and measurement units) from the layer (&quot;camada&quot;) or observation
+(&quot;observacao&quot;) table of one or more datasets contained in the Free Brazilian Repository for Open Soil Data
 -- febr, http://www.ufsm.br/febr. This is useful to check what are the variables contained in a
 dataset before downloading it via layer or observation." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -56,8 +62,12 @@ dataset before downloading it via layer or observation." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">febr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">febr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.0.9001</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -72,6 +82,9 @@ dataset before downloading it via layer or observation." />
 <li>
   <a href="../reference/index.html">Funções</a>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -82,6 +95,7 @@ dataset before downloading it via layer or observation." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -89,23 +103,27 @@ dataset before downloading it via layer or observation." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get table header</h1>
+    <small class="dont-index">Source: <a href='https://github.com/febr-team/febr-package//blob/master/R/header.R'><code>R/header.R</code></a></small>
+    <div class="hidden name"><code>header.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Download header data (column names and measurement units) from the <em>layer</em> ("camada") or <em>observation</em>
 ("observacao") table of one or more datasets contained in the Free Brazilian Repository for Open Soil Data
 -- <em><strong>febr</strong></em>, <a href='http://www.ufsm.br/febr'>http://www.ufsm.br/febr</a>. This is useful to check what are the variables contained in a
 dataset before downloading it via <code><a href='layer.html'>layer</a></code> or <code><a href='observation.html'>observation</a></code>.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>header</span>(<span class='no'>dataset</span>, <span class='no'>table</span>, <span class='no'>variable</span>, <span class='kw'>stack</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -156,11 +174,15 @@ the chosen variable(s) of the chosen dataset(s).</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='layer.html'>layer</a></code>, <code><a href='observation.html'>observation</a></code></p>
+    <div class='dont-index'><p><code><a href='layer.html'>layer</a></code>, <code><a href='observation.html'>observation</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>header</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0013"</span>, <span class='kw'>table</span> <span class='kw'>=</span> <span class='st'>"observacao"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): gnutls_handshake() failed: An unexpected TLS packet was received.</span></div><div class='input'><span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='fu'>grep</span>(<span class='st'>"ferro_"</span>, <span class='fu'>colnames</span>(<span class='no'>res</span>))</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'res' not found</span></div><div class='input'><span class='no'>col</span> <span class='kw'>&lt;-</span> <span class='fu'>colnames</span>(<span class='no'>res</span>)[<span class='no'>id</span>]</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'res' not found</span></div><div class='input'><span class='no'>col</span>[<span class='fu'>order</span>(<span class='no'>col</span>)]</div><div class='output co'>#&gt; <span class='error'>Error in order(col): argument 1 is not a vector</span></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>header</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ctb0001"</span>, <span class='st'>"ctb0002"</span>), <span class='kw'>table</span> <span class='kw'>=</span> <span class='st'>"camada"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"ferro"</span>, <span class='kw'>stack</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Downloading dataset ctb0001...</span></div><div class='output co'>#&gt;   |                                                                              |===================================                                   |  50%</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Downloading dataset ctb0002...</span></div><div class='output co'>#&gt;   |                                                                              |======================================================================| 100%</div><div class='input'><span class='no'>id</span> <span class='kw'>&lt;-</span> <span class='fu'>grep</span>(<span class='st'>"ferro_"</span>, <span class='fu'>colnames</span>(<span class='no'>res</span>))
+<span class='no'>col</span> <span class='kw'>&lt;-</span> <span class='fu'>colnames</span>(<span class='no'>res</span>)[<span class='no'>id</span>]
+<span class='no'>col</span>[<span class='fu'>order</span>(<span class='no'>col</span>)]</div><div class='output co'>#&gt; [1] "ferro_oxalato_eaa"   "ferro_sulfurico_eaa"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -185,7 +207,7 @@ Alessandro Samuel-Rosa <a href='mailto:alessandrosamuelrosa@gmail.com'>alessandr
 
       <footer>
       <div class="copyright">
-  <p>Developed by Alessandro Samuel-Rosa, Universidade Federal de Santa Maria.</p>
+  <p>Developed by Alessandro Samuel-Rosa, Universidade Federal de Santa Maria, Universidade Tecnológica Federal do Paraná.</p>
 </div>
 
 <div class="pkgdown">
@@ -195,5 +217,8 @@ Alessandro Samuel-Rosa <a href='mailto:alessandrosamuelrosa@gmail.com'>alessandr
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

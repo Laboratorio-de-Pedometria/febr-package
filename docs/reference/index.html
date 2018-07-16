@@ -21,13 +21,19 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Function reference" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -50,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">febr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">febr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.0.9001</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -66,6 +76,9 @@
 <li>
   <a href="../reference/index.html">Funções</a>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -76,6 +89,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -83,116 +97,112 @@
       
       </header>
 
-      <div class="row">
-  <div class="col-md-9">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;1.0-0</small>
-      </h1>
+      <h1>Reference</h1>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    <table class="ref-index">
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <colgroup>
+      
+      <col class="alias" />
+      <col class="title" />
+    </colgroup>
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-fun-es-estruturais" class="hasAnchor"><a href="#section-fun-es-estruturais" class="anchor"></a>Funções estruturais</h2>
-            <p class="section-desc"><p>As funções estruturais servem para conhecer a estrutura das tabelas dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Elas também servem para conhecer os padrões de codificação, nomenclatura, unidades de medida, número de casas decimais, entre outros, usados no <strong><em>febr</em></strong>.</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="header.html">header</a></code> </p>
-          </td>
-          <td><p>Get table header</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="standard.html">standard</a></code> </p>
-          </td>
-          <td><p>Get <em>standard</em> table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="unit.html">unit</a></code> </p>
-          </td>
-          <td><p>Get <em>unit</em> table</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-fun-es-de-acesso" class="hasAnchor"><a href="#section-fun-es-de-acesso" class="anchor"></a>Funções de acesso</h2>
-            <p class="section-desc"><p>As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Isso inclui as tabelas <code>dataset</code>, <code>observacao</code>, <code>camada</code>, e <code>metadado</code>.</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="dataset.html">dataset</a></code> </p>
-          </td>
-          <td><p>Get <em>dataset</em> table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="observation.html">observation</a></code> </p>
-          </td>
-          <td><p>Get <em>observation</em> table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="layer.html">layer</a></code> </p>
-          </td>
-          <td><p>Get <em>layer</em> table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="metadata.html">metadata</a></code> </p>
-          </td>
-          <td><p>Get <em>metadata</em> table</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="febr.html">febr</a></code> </p>
-          </td>
-          <td><p>Get all dataset tables</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-fun-es-auxiliares" class="hasAnchor"><a href="#section-fun-es-auxiliares" class="anchor"></a>Funções auxiliares</h2>
-            <p class="section-desc"><p>As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de acesso, assim apoiando o processamento e uso dos dados descarregados do <strong><em>febr</em></strong>, por exemplo, a criação de objetos de outras classes e a exportação dos dados.</p></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="febr2spdf.html">febr2spdf</a></code> </p>
-          </td>
-          <td><p>Create an object of class <code>SpatialPointsDataFrame</code></p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="febr2xlsx.html">febr2xlsx</a></code> </p>
-          </td>
-          <td><p>Write data to an Excel workbook</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="goto.html">goto</a></code> </p>
-          </td>
-          <td><p>Go to <em><strong>febr</strong></em></p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+    <tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-fun-es-estruturais" class="hasAnchor"><a href="#section-fun-es-estruturais" class="anchor"></a>Funções estruturais</h2>
+          <p class="section-desc"><p>As funções estruturais servem para conhecer a estrutura das tabelas dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Elas também servem para conhecer os padrões de codificação, nomenclatura, unidades de medida, número de casas decimais, entre outros, usados no <strong><em>febr</em></strong>.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="header.html">header()</a></code> </p>
+        </td>
+        <td><p>Get table header</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="standard.html">standard()</a></code> </p>
+        </td>
+        <td><p>Get <em>standard</em> table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="unit.html">unit()</a></code> </p>
+        </td>
+        <td><p>Get <em>unit</em> table</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-fun-es-de-acesso" class="hasAnchor"><a href="#section-fun-es-de-acesso" class="anchor"></a>Funções de acesso</h2>
+          <p class="section-desc"><p>As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Isso inclui as tabelas <code>dataset</code>, <code>observacao</code>, <code>camada</code>, e <code>metadado</code>.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="dataset.html">dataset()</a></code> </p>
+        </td>
+        <td><p>Get <em>dataset</em> table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="observation.html">observation()</a></code> </p>
+        </td>
+        <td><p>Get <em>observation</em> table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="layer.html">layer()</a></code> </p>
+        </td>
+        <td><p>Get <em>layer</em> table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="metadata.html">metadata()</a></code> </p>
+        </td>
+        <td><p>Get <em>metadata</em> table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="febr.html">febr()</a></code> </p>
+        </td>
+        <td><p>Get all dataset tables</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-fun-es-auxiliares" class="hasAnchor"><a href="#section-fun-es-auxiliares" class="anchor"></a>Funções auxiliares</h2>
+          <p class="section-desc"><p>As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de acesso, assim apoiando o processamento e uso dos dados descarregados do <strong><em>febr</em></strong>, por exemplo, a criação de objetos de outras classes e a exportação dos dados.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="febr2spdf.html">febr2spdf()</a></code> </p>
+        </td>
+        <td><p>Create an object of class <code>SpatialPointsDataFrame</code></p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="febr2xlsx.html">febr2xlsx()</a></code> </p>
+        </td>
+        <td><p>Write data to an Excel workbook</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="goto.html">goto()</a></code> </p>
+        </td>
+        <td><p>Go to <em><strong>febr</strong></em></p></td>
+      </tr>
+    </tbody>
+    </table>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -207,7 +217,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Alessandro Samuel-Rosa, Universidade Federal de Santa Maria.</p>
+  <p>Developed by Alessandro Samuel-Rosa, Universidade Federal de Santa Maria, Universidade Tecnológica Federal do Paraná.</p>
 </div>
 
 <div class="pkgdown">
@@ -217,5 +227,8 @@
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

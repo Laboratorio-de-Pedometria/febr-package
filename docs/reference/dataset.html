@@ -21,18 +21,24 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Get <em>dataset</em> table — dataset" />
 
-<meta property="og:description" content="Download data from the dataset ("dataset") table of one or more datasets contained in the Free Brazilian
+<meta property="og:description" content="Download data from the dataset (&quot;dataset&quot;) table of one or more datasets contained in the Free Brazilian
 Repository for Open Soil Data -- febr, http://www.ufsm.br/febr. This includes dataset name and
 description, author and institution names, dataset license, and much more." />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -55,8 +61,12 @@ description, author and institution names, dataset license, and much more." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">febr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">febr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.0.9001</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -71,6 +81,9 @@ description, author and institution names, dataset license, and much more." />
 <li>
   <a href="../reference/index.html">Funções</a>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -81,6 +94,7 @@ description, author and institution names, dataset license, and much more." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -88,21 +102,25 @@ description, author and institution names, dataset license, and much more." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get <em>dataset</em> table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/febr-team/febr-package//blob/master/R/dataset.R'><code>R/dataset.R</code></a></small>
+    <div class="hidden name"><code>dataset.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Download data from the <em>dataset</em> ("dataset") table of one or more datasets contained in the Free Brazilian
 Repository for Open Soil Data -- <em><strong>febr</strong></em>, <a href='http://www.ufsm.br/febr'>http://www.ufsm.br/febr</a>. This includes dataset name and
 description, author and institution names, dataset license, and much more.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>dataset</span>(<span class='no'>dataset</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -128,7 +146,21 @@ if you find any issue.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>dataset</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0003"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in curl::curl_fetch_memory(url, handle = handle): gnutls_handshake() failed: An unexpected TLS packet was received.</span></div><div class='input'><span class='fu'>head</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt; <span class='error'>Error in head(res): object 'res' not found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>dataset</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0003"</span>)</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Downloading dataset ctb0003...</span></div><div class='output co'>#&gt;   |                                                                              |======================================================================| 100%</div><div class='input'><span class='fu'>head</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt;               campo
+#&gt; 1        dataset_id
+#&gt; 2    dataset_titulo
+#&gt; 3 dataset_descricao
+#&gt; 4    dataset_versao
+#&gt; 5   dataset_licenca
+#&gt; 6   publicacao_data
+#&gt;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           valor
+#&gt; 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ctb0003
+#&gt; 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Conjunto de dados do solo da bacia do reservatório do DNOS-CORSAN, Santa Maria, RS
+#&gt; 3 Compreende dados do solo de n = 400 observações feitas entre 2009 e 2013 na bacia do reservatório do Departamento Nacional de Obras de Saneamento-Companhia Riograndense de Saneamento (DNOS-CORSAN), localizada no estado brasileiro do Rio Grande do Sul. Esses dados do solo foram produzidos no âmbito de projetos de pesquisa que visam a produção de mapas semi-detalhados do solo e do uso da terra, e prever o estoque superficial de carbono no solo e sua vulnerabilidade à erosão. Todos os locais de observação foram selecionados intencionalmente ou por conveniência. Várias características ambientais foram descritas nos locais de observação, tais como o uso da terra, geologia, classificação do solo, declividade, condições de drenagem, presença de fragmentos grosseiros e afloramentos rochosos, cobertura do solo com vegetação, entre outras peculiaridades de cada local de observação que não foram registradas de uma forma sistemática. As amostras do solo foram submetidos à análise de laboratório para determinar o conteúdo de carbono orgânico no solo, a distribuição do tamanho de partículas, a densidade e o conteúdo de bases (cálcio, magnésio, potássio e sódio) e acidez trocáveis. A capacidade de troca de cátions efetiva foi calculada como a soma das bases e acidez trocáveis. Eles incluem a identificação de todos os locais de observação, as suas coordenadas geográficas, e dados de campo e de laboratório. O número de repetições de laboratório e o desvio padrão amostral também são fornecidos.
+#&gt; 4                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           2.1
+#&gt; 5                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     CC BY 4.0
+#&gt; 6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    17-01-2018</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -149,7 +181,7 @@ Alessandro Samuel-Rosa <a href='mailto:alessandrosamuelrosa@gmail.com'>alessandr
 
       <footer>
       <div class="copyright">
-  <p>Developed by Alessandro Samuel-Rosa, Universidade Federal de Santa Maria.</p>
+  <p>Developed by Alessandro Samuel-Rosa, Universidade Federal de Santa Maria, Universidade Tecnológica Federal do Paraná.</p>
 </div>
 
 <div class="pkgdown">
@@ -159,5 +191,8 @@ Alessandro Samuel-Rosa <a href='mailto:alessandrosamuelrosa@gmail.com'>alessandr
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

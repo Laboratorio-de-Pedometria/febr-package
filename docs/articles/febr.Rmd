@@ -2,10 +2,12 @@
 title: "Repositório Brasileiro Livre para Dados Abertos do Solo -- Guia Básico"
 author: "Alessandro Samuel-Rosa"
 date: "`r format(Sys.Date(), '%d-%m-%Y')`"
-output: 
-  rmarkdown::html_vignette:
+output:
+  bookdown::html_document2:
     toc: true
-bibliography: biblio.bib
+    theme: united
+bibliography:
+  - biblio.bib
 link-citations: true
 csl: abnt.csl
 vignette: >
