@@ -442,7 +442,8 @@ layer <-
               
               ## 1. Se necessário, padronizar unidades de medida
               # idx_unit <- unit[cols[id_con]] != tmp_stds$campo_unidade
-              idx_unit <- unit[, cols[id_con]] != tmp_stds$campo_unidade
+              # idx_unit <- unit[, cols[id_con]] != tmp_stds$campo_unidade
+              idx_unit <- unit[2, cols[id_con]] != tmp_stds$campo_unidade # verifica a 2ª linha de metadados
               if (any(idx_unit)) {
                 idx_unit <- colnames(idx_unit)[idx_unit]
                 # source <- unit[idx_unit]

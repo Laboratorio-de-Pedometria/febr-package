@@ -1,3 +1,8 @@
+# Version 1.0.0.9002 (2018-11-01)
+
+* Bug fix: during the standardization of measurement units, now understands that measurements units are stored
+  in the second line of tables `camada` and `observacao`.
+
 # Version 1.0.0.9001 (2018-07-16)
 
 * Bug fixes.
