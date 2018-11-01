@@ -14,19 +14,19 @@ in \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to downloa
 \item{table}{Character string indicating a table, i.e. the \emph{layer} table, \code{"camada"}, or the \emph{observation}
 table, \code{"observacao"}.}
 
-\item{variable}{(optional) Character vector indicating one or more variables. Accepts only general 
-identification codes, e.g. `"ferro"` and `"carbono"`. If missing, then a set of standard identification 
-variables is downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{Details} for 
+\item{variable}{(optional) Character vector indicating one or more variables. Accepts only general
+identification codes, e.g. \code{"ferro"} and \code{"carbono"}. If missing, then a set of standard identification
+variables is downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{Details} for
 more information.}
 
-\item{stack}{(optional) Logical value indicating if tables from different datasets should be stacked on a 
-single table for output. Requires `standardization = list(units = TRUE)` -- see below. Defaults to 
+\item{stack}{(optional) Logical value indicating if tables from different datasets should be stacked on a
+single table for output. Requires \code{standardization = list(units = TRUE)} -- see below. Defaults to
 \code{stack = FALSE}, the output being a list of tables.}
 
 \item{progress}{(optional) Logical value indicating if a download progress bar should be displayed.}
 
-\item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally 
-useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com} 
+\item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally
+useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com}
 if you find any issue.}
 }
 \value{
@@ -46,7 +46,7 @@ Standard identification variables and their content depend on the chosen \code{t
 }
 }
 \examples{
-res <- header(dataset = c("ctb0001", "ctb0002"), table = "camada", variable = "ferro", stack = TRUE)
+res <- header(dataset = c("ctb0001", "ctb0003"), table = "camada", variable = "ferro", stack = TRUE)
 id <- grep("ferro_", colnames(res))
 col <- colnames(res)[id]
 col[order(col)]
