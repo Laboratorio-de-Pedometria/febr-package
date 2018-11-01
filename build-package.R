@@ -1,7 +1,7 @@
 # Build package
 
 # Dependencies
-update(devtools::package_deps())
+update(remotes::package_deps(packages = "febr"))
 
 # turn on/off development mode
 # devtools::dev_mode()
@@ -12,7 +12,7 @@ devtools::run_examples()
 
 # check the package for Linux and Windows
 devtools::check(
-  document = TRUE, manual = TRUE, check_version = TRUE, force_suggests = TRUE, 
+  document = TRUE, manual = TRUE, force_suggests = TRUE, 
   args = "--use-valgrind --run-donttest")
 
 devtools::build_win(version = c("R-release", "R-devel"))
