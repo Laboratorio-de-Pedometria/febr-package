@@ -15,8 +15,8 @@ tables should be merged. Defaults to \code{merge = FALSE}. See \code{\link[base]
 
 \item{progress}{(optional) Logical value indicating if a download progress bar should be displayed.}
 
-\item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally 
-useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com} 
+\item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally
+useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com}
 if you find any issue.}
 
 \item{...}{(optional) Arguments passed to \code{\link[febr]{observation}} and \code{\link[febr]{layer}}.}
