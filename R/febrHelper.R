@@ -10,7 +10,7 @@
         ),
       layer = list(
         std.cols = 
-          c("observacao_id", "camada_numero", "camada_nome", "amostra_codigo",
+          c("observacao_id", "camada_id", "camada_nome", "amostra_id",
             "profund_sup", "profund_inf")
       ),
       gs = list(

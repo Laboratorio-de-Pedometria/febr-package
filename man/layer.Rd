@@ -97,9 +97,9 @@ Standard identification variables and their content are as follows:
 \itemize{
 \item \code{dataset_id}. Identification code of the dataset in \emph{\strong{febr}} to which an observation belongs.
 \item \code{observacao_id}. Identification code of an observation in \emph{\strong{febr}}.
-\item \code{camada_numero}. Sequential layer number, from top to bottom.
+\item \code{camada_id}. Sequential layer number, from top to bottom.
 \item \code{camada_nome}. Layer designation according to some standard description guide.
-\item \code{amostra_codigo}. Laboratory number of a sample.
+\item \code{amostra_id}. Laboratory number of a sample.
 \item \code{profund_sup}. Upper boundary of a layer (cm).
 \item \code{profund_inf}. Lower boundary of a layer (cm).
 }

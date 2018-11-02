@@ -73,9 +73,9 @@
 #' \itemize{
 #' \item \code{dataset_id}. Identification code of the dataset in ___febr___ to which an observation belongs.
 #' \item \code{observacao_id}. Identification code of an observation in ___febr___.
-#' \item \code{camada_numero}. Sequential layer number, from top to bottom.
+#' \item \code{camada_id}. Sequential layer number, from top to bottom.
 #' \item \code{camada_nome}. Layer designation according to some standard description guide.
-#' \item \code{amostra_codigo}. Laboratory number of a sample.
+#' \item \code{amostra_id}. Laboratory number of a sample.
 #' \item \code{profund_sup}. Upper boundary of a layer (cm).
 #' \item \code{profund_inf}. Lower boundary of a layer (cm).
 #' }
@@ -373,7 +373,7 @@ layer <-
           }
           
           # TIPO DE DADOS
-          ## "observacao_id", "camada_numero", "camada_nome", "amostra_codigo", "profund_sup" e "profund_inf"
+          ## "observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup" e "profund_inf"
           ## precisam estar no formato de caracter para evitar erros durante o empilhamento das tabelas
           ## devido ao tipo de dado.
           ## Nota: esse processamento deve ser feito via Google Sheets.
@@ -402,7 +402,7 @@ layer <-
           }
           
           ## Repetições de laboratório
-          ## O padrão consiste em manter as repetições de laboratório. Do contrário, a coluna 'camada_numero' 
+          ## O padrão consiste em manter as repetições de laboratório. Do contrário, a coluna 'camada_id' 
           ## é a chave para o processamento dos dados. Note que é necessário que o tipo de dado das variáveis
           ## esteja corretamente definido, sobretudo no caso de variáveis contínuas. A solução prévia do 
           ## símbolo indicador do limite inferior de detecção geralmente é necessária.

@@ -1,3 +1,9 @@
+# Version 1.0.0.9003 (2018-11-02)
+
+* Acomodates changes in ___febr___:
+  - Field `camada_numero` now is `camada_id`.
+  - Field `amostra_codigo` now is `amostra_id`.
+
 # Version 1.0.0.9002 (2018-11-01)
 
 * Bug fix: during the standardization of measurement units, now understands that measurements units are stored

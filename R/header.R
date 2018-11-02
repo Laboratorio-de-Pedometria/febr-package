@@ -141,7 +141,7 @@ header <-
           # tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
         # }
       # } else if (table == "camada") {
-        ## "observacao_id", "camada_numero", "camada_nome", "amostra_codigo", "profund_sup" e "profund_inf"
+        ## "observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup" e "profund_inf"
         ## precisam estar no formato de carácter para evitar erros durante o empilhamento das tabelas
         ## devido ao tipo de dado.
         ## Nota: esse processamento deve ser feito via Google Sheets.

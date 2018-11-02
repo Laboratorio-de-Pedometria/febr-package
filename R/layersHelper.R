@@ -204,7 +204,7 @@
 #   }
 # .solveBrokenLayerTransition <-
 #   function (obj, depth.cols = c("profund_sup", "profund_inf"), merge.fun = "weighted.mean",
-#             id.cols = c("observacao_id", "camada_numero", "camada_nome", "amostra_codigo")) {
+#             id.cols = c("observacao_id", "camada_id", "camada_nome", "amostra_id")) {
 #     
 #     # Dividir camadas por 'observacao_id' 
 #     split_obj <- split(x = obj, f = obj[[id.cols[1]]])
@@ -301,13 +301,13 @@
 #   }
 # Repetições de laboratório ###################################################################################
 .solveLayerRepetition <-
-  function (obj, observation.id = "observacao_id", layer.id = "camada_numero", sample.id = "amostra_codigo",
+  function (obj, observation.id = "observacao_id", layer.id = "camada_id", sample.id = "amostra_id",
             combine.fun = "mean") {
     
     # Dividir camadas por 'observacao_id'
     split_obj <- split(x = obj, f = obj[[observation.id]])
     
-    # Duas ou mais camadas possuem valor idêntico de 'camada_numero'
+    # Duas ou mais camadas possuem valor idêntico de 'camada_id'
     has_rep <- sapply(split_obj, function (x) any(duplicated(x[[layer.id]])))
     if (length(has_rep) >= 1) {
       
@@ -316,10 +316,10 @@
       res <- split_obj
       res[has_rep] <- lapply(split_obj[has_rep], function (obj) {
         
-        # Quais camadas possuem o mesmo 'camada_numero'?
+        # Quais camadas possuem o mesmo 'camada_id'?
         idx <-  match(obj[[layer.id]], obj[[layer.id]])
         
-        # Dividir camadas por 'camada_numero'
+        # Dividir camadas por 'camada_id'
         new_obj <- split(x = obj, f = idx)
         idx2 <- sapply(new_obj, function (x) nrow(x) > 1)
           
@@ -361,7 +361,7 @@
             }
           }
           
-          # Remover 'amostra_codigo'
+          # Remover 'amostra_id'
           x[1, sample.id] <- NA
           
           # Retornar apenas a primeira camada
