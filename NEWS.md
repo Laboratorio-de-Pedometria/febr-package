@@ -1,3 +1,7 @@
+# Version 1.0.0.9004 (2018-11-02)
+
+* Bug fix: stops execution of `layer` and `observation` when downloading a single dataset with `stack = TRUE`.
+
 # Version 1.0.0.9003 (2018-11-02)
 
 * Acomodates changes in ___febr___:

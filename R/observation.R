@@ -230,6 +230,11 @@ observation <-
       }
     }
     
+    ## dataset + stack
+    if (stack && length(dataset) == 1 && dataset != "all") {
+      stop ("data cannot be stacked when downloading a single dataset")
+    }
+    
     # PADRÕES
     ## Descarregar tabela com unidades de medida e número de casas decimais quando padronização é solicitada
     ## ou quando empilhamento é solicitado
