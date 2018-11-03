@@ -25,7 +25,7 @@ single table for output. Requires \code{standardization = list(units = TRUE)} --
 \code{stack = FALSE}, the output being a list of tables.}
 
 \item{missing}{(optional) List with named sub-arguments indicating what should be done with a layer missing
-data on sampling depth, \code{depth}, or data on variable(s), \code{data}? Options are \code{"keep"} (default) and \code{"drop"}.}
+data on sampling depth, \code{depth}, or data on variable(s), \code{data}. Options are \code{"keep"} (default) and \code{"drop"}.}
 
 \item{standardization}{(optional) List with named sub-arguments indicating how to perform data
 standardization.

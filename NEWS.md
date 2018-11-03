@@ -1,3 +1,8 @@
+# Version 1.0.0.9005 (2018-11-02)
+
+* Bug fix: exports correct data type when combining categorical data values when there are repeated 
+  measurements.
+
 # Version 1.0.0.9004 (2018-11-02)
 
 * Bug fix: stops execution of `layer` and `observation` when downloading a single dataset with `stack = TRUE`.

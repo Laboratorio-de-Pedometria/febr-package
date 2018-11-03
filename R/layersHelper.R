@@ -327,10 +327,6 @@
         # Usar a primeira camada para armazenar os dados
         new_obj[idx2] <- lapply(new_obj[idx2], function (x) {
           
-          # Número de camadas
-          n <- nrow(x)
-          i <- sample(x = seq(n), size = 1)
-          
           # Variáveis contínuas
           id_con <- which(id_class %in% c("numeric", "integer"))
           if (length(id_con) >= 1) {
@@ -352,11 +348,16 @@
           }
           
           # Variáveis categóricas
+          n <- nrow(x) # número de camadas
+          i <- sample(x = seq(n), size = 1) # selecionar uma camada aleatoriamente
           id_cat <- which(id_class %in% c("logical", "factor", "character"))
           if (length(id_cat) >= 1) {
-            if (n >= 3) {
-              x[1, id_cat] <- apply(x[id_cat], 2, function (y) names(sort(table(y), decreasing = TRUE))[1])
-            } else {
+            if (n >= 3) { # Se houver três ou mais, seleciona-se a mais comum (maior frequência)
+              # x[1, id_cat] <- apply(x[id_cat], 2, function (y) names(sort(table(y), decreasing = TRUE))[1])
+              x[1, id_cat] <- 
+                as.character(
+                  apply(x[id_cat], 2, function (y) names(sort(table(y), decreasing = TRUE))[1]))
+            } else { # Se houver apenas duas, seleciona-se aleatoriamente
               x[1, id_cat] <- apply(x[id_cat], 2, function (y) y[i])
             }
           }

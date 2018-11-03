@@ -10,7 +10,7 @@
 #' @template metadata_template
 #'
 #' @param missing (optional) List with named sub-arguments indicating what should be done with a layer missing
-#' data on sampling depth, `depth`, or data on variable(s), `data`? Options are `"keep"` (default) and `"drop"`.
+#' data on sampling depth, `depth`, or data on variable(s), `data`. Options are `"keep"` (default) and `"drop"`.
 #' 
 #' @param standardization (optional) List with named sub-arguments indicating how to perform data 
 #' standardization.
