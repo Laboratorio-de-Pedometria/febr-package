@@ -1,3 +1,8 @@
+# Version 1.0.0.9007 (2018-11-03)
+
+* Bux fix: proceeds with standardization and harmonization only when the dataset has data on the selected 
+  variables. This should produce a minor speed improvement.
+
 # Version 1.0.0.9006 (2018-11-03)
 
 * Bug fix: `-` is used as a surrogate measurement unit for variables that are unitless. This is necessary to

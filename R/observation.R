@@ -373,8 +373,8 @@ observation <-
           }
           
           # PADRONIZAÇÃO III
-          ## Unidade de medida e número de casas decimais
-          if (standardization$units) {
+          ## Unidade de medida e número de casas decimais das colunas adicionais
+          if (standardization$units && length(extra_cols) >= 1) {
             
             ## Identificar variáveis contínuas (classe 'numeric' e 'integer'), excluíndo variáveis de 
             ## identificação padrão
@@ -430,7 +430,7 @@ observation <-
           
           # HARMONIZAÇÃO I
           ## Harmonização dos dados das colunas adicionais
-          if (harmonization$harmonize) {
+          if (harmonization$harmonize && length(extra_cols) >= 1) {
             
             ## Harmonização baseada nos níveis dos códigos de identificação
             tmp <- .harmonizeByName(obj = tmp, extra_cols = extra_cols, harmonization = harmonization)
