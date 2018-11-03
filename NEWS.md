@@ -1,3 +1,8 @@
+# Version 1.0.0.9006 (2018-11-03)
+
+* Bug fix: `-` is used as a surrogate measurement unit for variables that are unitless. This is necessary to
+  perform data standardization.
+
 # Version 1.0.0.9005 (2018-11-02)
 
 * Bug fix: exports correct data type when combining categorical data values when there are repeated 

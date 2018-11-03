@@ -29,7 +29,8 @@ unit <-
 
     # DESCARREGAMENTO
     ## Descarregar tabela com unidades de medida
-    res <- .getTable(x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo")
+    # res <- .getTable(x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo")
+    res <- .getUnits()
     
     # ARGUMENTOS
     ## source
