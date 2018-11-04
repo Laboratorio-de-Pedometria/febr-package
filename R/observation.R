@@ -380,20 +380,24 @@ observation <-
             ## Identificar variáveis contínuas (classe 'numeric' e 'integer'), excluíndo variáveis de 
             ## identificação padrão
             id_class <- sapply(tmp, class)
-            id_con <- which(id_class %in% c("numeric", "integer") & !names(id_class) %in% std_cols)
-            if (length(id_con) >= 1) {
-              tmp_stds <- match(cols[id_con], febr_stds$campo_id)
+            cont_idx <- which(id_class %in% c("numeric", "integer") & !names(id_class) %in% std_cols)
+            if (length(cont_idx) >= 1) {
+              
+              # Tabela com padrões das variáveis contínuas identificadas
+              tmp_stds <- match(cols[cont_idx], febr_stds$campo_id)
               tmp_stds <- febr_stds[tmp_stds, c("campo_id", "campo_unidade", "campo_precisao")]
               
               ## 1. Se necessário, padronizar unidades de medida
-              # idx_unit <- unit[cols[id_con]] != tmp_stds$campo_unidade
-              # idx_unit <- unit[, cols[id_con]] != tmp_stds$campo_unidade
-              idx_unit <- unit[2, cols[id_con]] != tmp_stds$campo_unidade # verifica a 2ª linha de metadados
-              if (any(idx_unit)) {
-                idx_unit <- colnames(idx_unit)[idx_unit]
+              # idx_unit <- unit[cols[cont_idx]] != tmp_stds$campo_unidade
+              # idx_unit <- unit[, cols[cont_idx]] != tmp_stds$campo_unidade
+              need_idx <- unit[2, cols[cont_idx]] != tmp_stds$campo_unidade # verifica a 2ª linha de metadados
+              if (any(need_idx)) {
+                # idx_unit <- colnames(idx_unit)[idx_unit]
+                need_name <- cols[cont_idx][need_idx]
                 # source <- unit[idx_unit]
-                source <- unit[2, idx_unit]
-                target <- tmp_stds$campo_unidade[match(idx_unit, tmp_stds$campo_id)]
+                # source <- unit[2, idx_unit]
+                source <- unit[2, need_name]
+                target <- tmp_stds$campo_unidade[match(need_name, tmp_stds$campo_id)]
                 
                 ## Identificar constante
                 k <- lapply(seq_along(source), function (i) {
@@ -404,9 +408,10 @@ observation <-
                 k <- do.call(rbind, k)
                 
                 ## Processar dados
-                tmp[idx_unit] <- mapply(`*`, tmp[idx_unit], k$unidade_constante)
+                # tmp[idx_unit] <- mapply(`*`, tmp[idx_unit], k$unidade_constante)
+                tmp[need_name] <- mapply(`*`, tmp[need_name], k$unidade_constante)
                 # unit[idx_unit] <- k$unidade_destino
-                unit[2, idx_unit] <- k$unidade_destino
+                unit[2, need_name] <- k$unidade_destino
               }
               
               ## 2. Se necessário, padronizar número de casas decimais
