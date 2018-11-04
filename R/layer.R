@@ -359,7 +359,8 @@ layer <-
         }
         cols <- c(cols, extra_cols)
         tmp <- tmp[, cols]
-        unit <- unit[names(unit) %in% cols]
+        # unit <- unit[names(unit) %in% cols]
+        unit <- unit[, cols]
         
         # LINHAS I
         ## Avaliar limpeza das linhas
