@@ -11,9 +11,7 @@ devtools::check_man()
 devtools::run_examples()
 
 # check the package for Linux and Windows
-devtools::check(
-  document = TRUE, manual = TRUE, force_suggests = TRUE, 
-  args = "--use-valgrind --run-donttest")
+devtools::check(document = TRUE, manual = TRUE, force_suggests = TRUE, run_dont_test = TRUE)
 
 devtools::build_win(version = c("R-release", "R-devel"))
 
