@@ -5,8 +5,6 @@
     - Corrects the stacking of measurement units and fields names.
     - Takes into account that both '<' and '< ' are used to indicate 'less than'.
     - `-` is used as a surrogate measurement unit for variables that are unitless.
-* Improvement:
-    - Includes temporary code to correct values outside of physical range
 
 # Version 1.0.0.9007 (2018-11-03)
 
