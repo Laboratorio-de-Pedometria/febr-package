@@ -38,7 +38,9 @@
   function (obj) {
     
     # Organizar unidades de medida
-    stack_unit <- lapply(obj, function (x) do.call(rbind, attributes(x)[c("names", "units")]))
+    # stack_unit <- lapply(obj, function (x) do.call(rbind, attributes(x)[c("names", "units")]))
+    stack_unit <- 
+      lapply(obj, function (x) do.call(rbind, attributes(x)[c("names", "field_name", "field_unit")]))
     stack_unit <- do.call(cbind, stack_unit)
     stack_unit <- stack_unit[, !duplicated(stack_unit["names", ])]
     
@@ -47,7 +49,9 @@
     
     # Definir novos atributos
     a <- attributes(res)
-    a$units <- stack_unit["units", ][match(stack_unit["names", ], colnames(res))]
+    # a$units <- stack_unit["units", ][match(stack_unit["names", ], colnames(res))]
+    a$field_unit <- stack_unit["field_unit", ][match(stack_unit["names", ], colnames(res))]
+    a$field_name <- stack_unit["field_name", ][match(stack_unit["names", ], colnames(res))]
     attributes(res) <- a
     
     # Resultado
@@ -340,6 +344,7 @@
     sheets_keys <- suppressMessages(
       googlesheets::gs_read(sheets_keys, na = opts$gs$na, verbose = opts$gs$verbose))
     sheets_keys <- .getDataset(sheets_keys = sheets_keys, dataset = dataset)
+    sheets_keys <- sheets_keys[order(sheets_keys$ctb), ]
     
     # Descarregar chaves de identificação das planilhas do repositório
     return (sheets_keys)
