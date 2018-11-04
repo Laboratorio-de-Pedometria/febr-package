@@ -75,6 +75,7 @@
           remove = {
             obj[idx_lessthan] <- 
               lapply(obj[idx_lessthan], function (x) {
+                out <- gsub(pattern = "^< ", replacement = "", x = x) # alguns casos incluem espaço após '<'
                 out <- gsub(pattern = "^<", replacement = "", x = x)
                 out <- gsub(pattern = "(.),(.)", replacement = "\\1.\\2", x = out)
                 as.numeric(out)
