@@ -281,12 +281,15 @@
     # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não pode ser
     # lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é possível realizar a
     # padronização das unidades de medida quando descarregamos variáveis sem unidades de medida.
+    # Contudo, no campo 'campo_precisao', '-' significa NA.
     na <- .opt()$gs$na
     na <- na[-which(na == "-")]
     res <- suppressMessages(
       googlesheets::gs_read_csv(
         res, na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
     res <- as.data.frame(res)
+    res$campo_precisao <- gsub(pattern = "-", NA_real_, res$campo_precisao)
+    res$campo_precisao <- as.numeric(res$campo_precisao)
     return (res)
   }
 
