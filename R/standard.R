@@ -1,6 +1,7 @@
 #' Get *standard* table
 #'
-#' Download data from the *standard* ("padrao") table of the Free Brazilian Repository for Open Soil Data --
+#' Download data from the *standard* ("febr-padrao") table of the Free Brazilian Repository for Open Soil Data
+#' --
 #' ___febr___, \url{http://www.ufsm.br/febr}. This includes codes and names of variable, measurement units, 
 #' number of decimal places, type of data, and description of analytical methods. This is used to standardize 
 #' the data contained in a dataset when downloading it via \code{\link[febr]{layer}} or 
@@ -10,7 +11,7 @@
 #' *observation* table, `"observacao"`.
 #' 
 #' @param variable (optional) Character vector indicating one or more variables. Accepts both specific 
-#' identification codes, e.g. `"ferro_oxalato_icpoes"` and `"carbono_dicromato_30min150_mohr"`, as well as 
+#' identification codes, e.g. `"ferro_oxalato_icpoes"` and `"carbono_cromo_30min150_mohr"`, as well as 
 #' general identification codes, e.g. `"ferro"` and `"carbono"`.
 #' 
 #' @param unit (optional) Character vector indicating one or more measurement units. For example, `"g/kg"`, 

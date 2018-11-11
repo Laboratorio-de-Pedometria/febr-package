@@ -21,22 +21,19 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
-
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 
 <meta property="og:title" content="Get <em>metadata</em> table — metadata" />
 
-<meta property="og:description" content="Download data from the metadata (&quot;metadado&quot;) table of one or more datasets contained in the Free Brazilian
+<meta property="og:description" content="Download data from the metadata ("metadado") table of one or more datasets contained in the Free Brazilian
 Repository for Open Soil Data -- febr, http://www.ufsm.br/febr. This includes variable names,
 description of analytical methods, and identification of analysis laboratories." />
 <meta name="twitter:card" content="summary" />
-
 
 
 <!-- mathjax -->
@@ -63,7 +60,7 @@ description of analytical methods, and identification of analysis laboratories."
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">febr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.0.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.1</span>
       </span>
     </div>
 
@@ -134,8 +131,8 @@ in <a href='http://www.ufsm.br/febr/catalog/'>http://www.ufsm.br/febr/catalog/</
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>(optional) Logical value indicating if informative messages should be displayed. Generally 
-useful to identify datasets with inconsistent data. Please report to <a href='mailto:febr-forum@googlegroups.com'>febr-forum@googlegroups.com</a> 
+      <td><p>(optional) Logical value indicating if informative messages should be displayed. Generally
+useful to identify datasets with inconsistent data. Please report to <a href='mailto:febr-forum@googlegroups.com'>febr-forum@googlegroups.com</a>
 if you find any issue.</p></td>
     </tr>
     </table>
@@ -161,20 +158,20 @@ if you find any issue.</p></td>
 #&gt; 4                        Coordenadas geográfica (latitude) em graus.
 #&gt; 5                       Coordenadas geográfica (longitude) em graus.
 #&gt; 6      Precisão com que as coordenadas espaciais foram determinadas.
-#&gt;   campo_fator campo_unidade campo_tipo metodo_id lab_nome lab_pais_id
-#&gt; 1          NA          &lt;NA&gt;      Texto       n/a      n/a         n/a
-#&gt; 2          NA          &lt;NA&gt;       Data       n/a      n/a         n/a
-#&gt; 3          NA          &lt;NA&gt;    Inteiro       n/a      n/a         n/a
-#&gt; 4           1             °       Real       n/a      n/a         n/a
-#&gt; 5           1             °       Real       n/a      n/a         n/a
-#&gt; 6           1             m    Inteiro       n/a      n/a         n/a
-#&gt;   lab_municipio_id lab_codigo_postal lab_rua_nome lab_rua_numero
-#&gt; 1              n/a               n/a          n/a            n/a
-#&gt; 2              n/a               n/a          n/a            n/a
-#&gt; 3              n/a               n/a          n/a            n/a
-#&gt; 4              n/a               n/a          n/a            n/a
-#&gt; 5              n/a               n/a          n/a            n/a
-#&gt; 6              n/a               n/a          n/a            n/a</div></pre>
+#&gt;   campo_fator campo_unidade campo_tipo lab_nome lab_pais_id lab_municipio_id
+#&gt; 1          NA          &lt;NA&gt;      Texto      n/a         n/a              n/a
+#&gt; 2          NA          &lt;NA&gt;       Data      n/a         n/a              n/a
+#&gt; 3          NA          &lt;NA&gt;    Inteiro      n/a         n/a              n/a
+#&gt; 4           1             °       Real      n/a         n/a              n/a
+#&gt; 5           1             °       Real      n/a         n/a              n/a
+#&gt; 6           1             m    Inteiro      n/a         n/a              n/a
+#&gt;   lab_codigo_postal lab_rua_nome lab_rua_numero
+#&gt; 1               n/a          n/a            n/a
+#&gt; 2               n/a          n/a            n/a
+#&gt; 3               n/a          n/a            n/a
+#&gt; 4               n/a          n/a            n/a
+#&gt; 5               n/a          n/a            n/a
+#&gt; 6               n/a          n/a            n/a</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

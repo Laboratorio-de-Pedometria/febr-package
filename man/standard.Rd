@@ -11,7 +11,7 @@ standard(table, variable, unit, precision, expr)
 \emph{observation} table, \code{"observacao"}.}
 
 \item{variable}{(optional) Character vector indicating one or more variables. Accepts both specific
-identification codes, e.g. \code{"ferro_oxalato_icpoes"} and \code{"carbono_dicromato_30min150_mohr"}, as well as
+identification codes, e.g. \code{"ferro_oxalato_icpoes"} and \code{"carbono_cromo_30min150_mohr"}, as well as
 general identification codes, e.g. \code{"ferro"} and \code{"carbono"}.}
 
 \item{unit}{(optional) Character vector indicating one or more measurement units. For example, \code{"g/kg"},

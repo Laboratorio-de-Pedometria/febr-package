@@ -21,24 +21,21 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
-
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 
 <meta property="og:title" content="Get <em>layer</em> table — layer" />
 
-<meta property="og:description" content="Download data from the layer (&quot;camada&quot;) table of one or more datasets contained in the Free Brazilian
+<meta property="og:description" content="Download data from the layer ("camada") table of one or more datasets contained in the Free Brazilian
 Repository for Open Soil Data -- febr, http://www.ufsm.br/febr. This includes sampling depth,
 horizon designation, and variables such as pH, carbon content, clay content, and much more. Use
 header if you want to check what are the variables contained in the layer table of a
 dataset before downloading it." />
 <meta name="twitter:card" content="summary" />
-
 
 
 <!-- mathjax -->
@@ -65,7 +62,7 @@ dataset before downloading it." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">febr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.0.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.1</span>
       </span>
     </div>
 
@@ -122,12 +119,12 @@ dataset before downloading it.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>layer</span>(<span class='no'>dataset</span>, <span class='no'>variable</span>, <span class='kw'>stack</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>missing</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>depth</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>data</span>
-  <span class='kw'>=</span> <span class='st'>"keep"</span>), <span class='kw'>standardization</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>plus.sign</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>plus.depth</span> <span class='kw'>=</span> <span class='fl'>2.5</span>,
-  <span class='kw'>lessthan.sign</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>lessthan.frac</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>repetition</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>combine.fun</span>
-  <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>transition</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>smoothing.fun</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>units</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>round</span> <span class='kw'>=</span>
-  <span class='fl'>FALSE</span>), <span class='kw'>harmonization</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>harmonize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>2</span>),
-  <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>layer</span>(<span class='no'>dataset</span>, <span class='no'>variable</span>, <span class='kw'>stack</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>missing</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>depth</span> <span class='kw'>=</span> <span class='st'>"keep"</span>,
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='st'>"keep"</span>), <span class='kw'>standardization</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>plus.sign</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>plus.depth</span> <span class='kw'>=</span>
+  <span class='fl'>2.5</span>, <span class='kw'>lessthan.sign</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>lessthan.frac</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>repetition</span> <span class='kw'>=</span> <span class='st'>"keep"</span>,
+  <span class='kw'>combine.fun</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>transition</span> <span class='kw'>=</span> <span class='st'>"keep"</span>, <span class='kw'>smoothing.fun</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>units</span>
+  <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>), <span class='kw'>harmonization</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>harmonize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>level</span>
+  <span class='kw'>=</span> <span class='fl'>2</span>), <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -139,21 +136,21 @@ in <a href='http://www.ufsm.br/febr/catalog/'>http://www.ufsm.br/febr/catalog/</
     </tr>
     <tr>
       <th>variable</th>
-      <td><p>(optional) Character vector indicating one or more variables. Accepts only general 
-identification codes, e.g. `"ferro"` and `"carbono"`. If missing, then a set of standard identification 
-variables is downloaded. Use <code>variable = "all"</code> to download all variables. See &#8216;Details&#8217; for 
+      <td><p>(optional) Character vector indicating one or more variables. Accepts only general
+identification codes, e.g. <code>"ferro"</code> and <code>"carbono"</code>. If missing, then a set of standard identification
+variables is downloaded. Use <code>variable = "all"</code> to download all variables. See &#8216;Details&#8217; for
 more information.</p></td>
     </tr>
     <tr>
       <th>stack</th>
-      <td><p>(optional) Logical value indicating if tables from different datasets should be stacked on a 
-single table for output. Requires `standardization = list(units = TRUE)` -- see below. Defaults to 
+      <td><p>(optional) Logical value indicating if tables from different datasets should be stacked on a
+single table for output. Requires <code>standardization = list(units = TRUE)</code> -- see below. Defaults to
 <code>stack = FALSE</code>, the output being a list of tables.</p></td>
     </tr>
     <tr>
       <th>missing</th>
       <td><p>(optional) List with named sub-arguments indicating what should be done with a layer missing
-data on sampling depth, <code>depth</code>, or data on variable(s), <code>data</code>? Options are <code>"keep"</code> (default) and <code>"drop"</code>.</p></td>
+data on sampling depth, <code>depth</code>, or data on variable(s), <code>data</code>. Options are <code>"keep"</code> (default) and <code>"drop"</code>.</p></td>
     </tr>
     <tr>
       <th>standardization</th>
@@ -207,8 +204,8 @@ information.</p></li>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>(optional) Logical value indicating if informative messages should be displayed. Generally 
-useful to identify datasets with inconsistent data. Please report to <a href='mailto:febr-forum@googlegroups.com'>febr-forum@googlegroups.com</a> 
+      <td><p>(optional) Logical value indicating if informative messages should be displayed. Generally
+useful to identify datasets with inconsistent data. Please report to <a href='mailto:febr-forum@googlegroups.com'>febr-forum@googlegroups.com</a>
 if you find any issue.</p></td>
     </tr>
     </table>
@@ -224,9 +221,9 @@ if you find any issue.</p></td>
 <ul>
 <li><p><code>dataset_id</code>. Identification code of the dataset in <em><strong>febr</strong></em> to which an observation belongs.</p></li>
 <li><p><code>observacao_id</code>. Identification code of an observation in <em><strong>febr</strong></em>.</p></li>
-<li><p><code>camada_numero</code>. Sequential layer number, from top to bottom.</p></li>
+<li><p><code>camada_id</code>. Sequential layer number, from top to bottom.</p></li>
 <li><p><code>camada_nome</code>. Layer designation according to some standard description guide.</p></li>
-<li><p><code>amostra_codigo</code>. Laboratory number of a sample.</p></li>
+<li><p><code>amostra_id</code>. Laboratory number of a sample.</p></li>
 <li><p><code>profund_sup</code>. Upper boundary of a layer (cm).</p></li>
 <li><p><code>profund_inf</code>. Lower boundary of a layer (cm).</p></li>
 </ul>
@@ -254,13 +251,13 @@ same variable.
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>layer</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0013"</span>)</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Downloading dataset ctb0013...</span></div><div class='output co'>#&gt;   |                                                                              |======================================================================| 100%</div><div class='input'><span class='fu'>str</span>(<span class='no'>res</span>)</div><div class='output co'>#&gt; 'data.frame':	4 obs. of  7 variables:
-#&gt;  $ dataset_id    : chr  "ctb0013" "ctb0013" "ctb0013" "ctb0013"
-#&gt;  $ observacao_id : chr  "PVA" "PVA" "PVA" "PVA"
-#&gt;  $ camada_numero : chr  "1" "2" "3" "4"
-#&gt;  $ camada_nome   : chr  "A" "E" "Bt" "C"
-#&gt;  $ amostra_codigo: chr  "1" "1" "1" "1"
-#&gt;  $ profund_sup   : chr  "0" "40" "60" "90"
-#&gt;  $ profund_inf   : chr  "40" "60" "90" "120"
+#&gt;  $ dataset_id   : chr  "ctb0013" "ctb0013" "ctb0013" "ctb0013"
+#&gt;  $ observacao_id: chr  "PVA" "PVA" "PVA" "PVA"
+#&gt;  $ camada_id    : chr  "1" "2" "3" "4"
+#&gt;  $ camada_nome  : chr  "A" "E" "Bt" "C"
+#&gt;  $ amostra_id   : chr  "1" "1" "1" "1"
+#&gt;  $ profund_sup  : chr  "0" "40" "60" "90"
+#&gt;  $ profund_inf  : chr  "40" "60" "90" "120"
 #&gt;  - attr(*, "field_name")= chr  "Identificação do conjunto de dados" "Identificação da observação" NA NA ...
 #&gt;  - attr(*, "field_unit")= chr  "unitless" "unitless" "unitless" "unitless" ...</div></pre>
   </div>
