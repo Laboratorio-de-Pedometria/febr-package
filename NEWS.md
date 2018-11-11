@@ -1,3 +1,7 @@
+# Version 1.0.0.9009 (2018-11-11)
+
+* Ajustments for new release.
+
 # Version 1.0.0.9008 (2018-11-04)
 
 * Bug fixes:

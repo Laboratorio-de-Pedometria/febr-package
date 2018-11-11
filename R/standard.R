@@ -10,7 +10,7 @@
 #' *observation* table, `"observacao"`.
 #' 
 #' @param variable (optional) Character vector indicating one or more variables. Accepts both specific 
-#' identification codes, e.g. `"ferro_oxalato_icpoes"` and `"carbono_dicromato_30min150_mohr"`, as well as 
+#' identification codes, e.g. `"ferro_oxalato_icpoes"` and `"carbono_cromo_30min150_mohr"`, as well as 
 #' general identification codes, e.g. `"ferro"` and `"carbono"`.
 #' 
 #' @param unit (optional) Character vector indicating one or more measurement units. For example, `"g/kg"`, 
