@@ -26,7 +26,8 @@ general identification codes, e.g. \code{"ferro"} and \code{"carbono"}.}
 A data frame with standards for selected variable(s).
 }
 \description{
-Download data from the \emph{standard} ("padrao") table of the Free Brazilian Repository for Open Soil Data --
+Download data from the standard ("febr-padrao") table of the Free Brazilian Repository for Open Soil Data
+
 \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This includes codes and names of variable, measurement units,
 number of decimal places, type of data, and description of analytical methods. This is used to standardize
 the data contained in a dataset when downloading it via \code{\link[febr]{layer}} or
