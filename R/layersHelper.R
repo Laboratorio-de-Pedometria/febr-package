@@ -9,34 +9,56 @@
 # obj is a data.frame with the layers of one or many soil observations
 # 
 # Example:
-# source("R/layers.R")
-# res <- layers("ctb0016")
-# res[, c("profund_sup", "profund_inf")]
-# res <- .setMaximumObservationDepth(res)
-# res[, c("profund_sup", "profund_inf")]
+# source("R/layer.R")
+# source("R/layersHelper.R")
+# source("R/febrHelper.R")
+# Sinal de adição na última profundidade
+# res <- layer("ctb0016")
+# (res <- res[res$observacao_id == "LVd-1", c("profund_sup", "profund_inf")])
+# .setMaximumObservationDepth(res)
+# Última profundidade ondulada/irregular com sinal de adição
+# res <- layer("ctb0770")
+# (res <- res[res$observacao_id == "E85", c("profund_sup", "profund_inf")])
+# .setMaximumObservationDepth(res)
 .setMaximumObservationDepth <-
   function (obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"), plus.sign = "add",
             plus.depth = 2.5) {
     
-      # Process data
-      idx_plus <- grep("+", obj[, depth.cols[2]], fixed = TRUE)
-      if (length(idx_plus >= 1)) {
-        switch(
-          plus.sign,
-          # Remove plus sign
-          remove = {
-            obj[idx_plus, depth.cols[2]] <- gsub("+", "", obj[idx_plus, depth.cols[2]], fixed = TRUE)
-          },
-          # Add a given quantity
-          # NOTA: É PRECISO VERIFICAR A UNIDADE DE MEDIDA!
-          add = {
-            obj[idx_plus, depth.cols[2]] <-
-              gsub("+", paste(" +", plus.depth), obj[idx_plus, depth.cols[2]], fixed = TRUE)
-            obj[idx_plus, depth.cols[2]] <-
-              sapply(obj[idx_plus, depth.cols[2]], function (x) eval(parse(text = x)))
-          }
-        )
-      }
+    plus.depth <- paste("+", plus.depth)
+    
+    # Process data
+    idx_plus <- grep("+", obj[, depth.cols[2]], fixed = TRUE)
+    if (length(idx_plus >= 1)) {
+      switch(
+        plus.sign,
+        
+        # Remove plus sign
+        remove = {
+          obj[idx_plus, depth.cols[2]] <- gsub("+", "", obj[idx_plus, depth.cols[2]], fixed = TRUE)
+        },
+        
+        # Adicionar uma dada quantidade definida pelo usuário.
+        # É preciso atentar para o fato de que a última profundidade, por mais incrível que pareça, também pode
+        # ser irregular, ou seja, identificada por uma barra (/). Nesse caso, a simples avaliação da expressão
+        # usando eval() e parse() resultaria numa operação de divisão.
+        add = {
+          obj[idx_plus, depth.cols[2]] <- gsub("+", plus.depth, obj[idx_plus, depth.cols[2]], fixed = TRUE)
+          # obj[idx_plus, depth.cols[2]] <-
+          # sapply(obj[idx_plus, depth.cols[2]], function (x) eval(parse(text = x)))
+          obj[idx_plus, depth.cols[2]] <-
+            sapply(obj[idx_plus, depth.cols[2]], function (x) {
+              is_broken <- grepl(pattern = "/", x = x, fixed = TRUE)
+              if (is_broken) {
+                y <- stringr::str_split_fixed(x, "/", Inf)
+                y <- sapply(y, function (y) eval(parse(text = y)))
+                paste(y, collapse = "/")
+              } else {
+                eval(parse(text = x))
+              }
+            })
+        }
+      )
+    }
     return (obj)
   }
 
@@ -308,8 +330,10 @@
     # Dividir camadas por 'observacao_id'
     split_obj <- split(x = obj, f = obj[[observation.id]])
     
-    # Duas ou mais camadas possuem valor idêntico de 'camada_id'
-    has_rep <- sapply(split_obj, function (x) any(duplicated(x[[layer.id]])))
+    # Duas ou mais camadas possuem valor idêntico de 'camada_id' -- exceto NA, ou seja, quando as camadas
+    # não possuem código de identificação (caso de conjuntos de dados ainda não revisados).
+    # has_rep <- sapply(split_obj, function (x) any(duplicated(x[[layer.id]])))
+    has_rep <- sapply(split_obj, function (x) any(duplicated(x[[layer.id]], incomparables = NA)))
     if (length(has_rep) >= 1) {
       
       id_class <- lapply(obj, class)
