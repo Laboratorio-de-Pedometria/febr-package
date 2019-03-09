@@ -17,7 +17,7 @@
         # comment = "#unidade",
         comment = "#metadado>",
         locale = readr::locale(date_names = "pt", decimal_mark = ","),
-        na = c("NA", "-", "", "na"),
+        na = c("NA", "-", "", "na", "tr"),
         verbose = FALSE
       ),
       crs = 

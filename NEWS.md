@@ -1,3 +1,7 @@
+# Version 1.0.1.9001 (2019-03-09)
+
+* `tr` now is considered as `NA`. This is frequently found in the _camada_ table.
+
 # Version 1.0.1.9000 (2018-12-08)
 
 * Bug fixes:
