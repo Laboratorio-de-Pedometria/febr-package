@@ -1,3 +1,8 @@
+# Version 1.0.1.9002 (2019-04-25)
+
+* `#VALUE!` now is considered as `NA`. This can be found when a calculation is performed in one of the
+  Google Sheets.
+
 # Version 1.0.1.9001 (2019-03-09)
 
 * `tr` now is considered as `NA`. This is frequently found in the _camada_ table.

@@ -10,14 +10,13 @@
         ),
       layer = list(
         std.cols = 
-          c("observacao_id", "camada_id", "camada_nome", "amostra_id",
-            "profund_sup", "profund_inf")
+          c("observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup", "profund_inf")
       ),
       gs = list(
         # comment = "#unidade",
         comment = "#metadado>",
         locale = readr::locale(date_names = "pt", decimal_mark = ","),
-        na = c("NA", "-", "", "na", "tr"),
+        na = c("NA", "-", "", "na", "tr", "#VALUE!"),
         verbose = FALSE
       ),
       crs = 
