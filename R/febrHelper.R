@@ -2,18 +2,17 @@
   function () {
     list(
       observation = list(
-        std.cols =
-          c("observacao_id", "sisb_id", "ibge_id", "observacao_data", 
-            "coord_sistema", "coord_x", "coord_y", "coord_precisao", "coord_fonte", 
-            "pais_id", "estado_id", "municipio_id", 
-            "amostra_tipo", "amostra_quanti", "amostra_area")
-        ),
-      layer = list(
         std.cols = 
+          c("observacao_id", "sisb_id", "ibge_id", "observacao_data",
+            "coord_sistema", "coord_x", "coord_y", "coord_precisao", "coord_fonte",
+            "pais_id", "estado_id", "municipio_id",
+            "amostra_tipo", "amostra_quanti", "amostra_area")
+      ),
+      layer = list(
+        std.cols =
           c("observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup", "profund_inf")
       ),
       gs = list(
-        # comment = "#unidade",
         comment = "#metadado>",
         locale = readr::locale(date_names = "pt", decimal_mark = ","),
         na = c("NA", "-", "", "na", "tr", "#VALUE!"),
@@ -142,8 +141,8 @@
     new_colnames <- matrix(new_colnames[, n_new_colnames], nrow = nrow(new_colnames))
     
     # if (n_new_colnames > 1) {
-      new_colnames <- 
-        apply(new_colnames, 1, function (x) paste(x[!x == ""], collapse = "_", sep = ""))
+    new_colnames <- 
+      apply(new_colnames, 1, function (x) paste(x[!x == ""], collapse = "_", sep = ""))
     # }
     
     # No caso de nomes idênticos, manter o nome original
