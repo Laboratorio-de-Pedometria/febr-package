@@ -34,12 +34,14 @@ unit <-
     
     # ARGUMENTOS
     ## source
-    if (!missing(source) && !source %in% res$unidade_origem) {
+    if (!missing(source) && any(!source %in% res$unidade_origem)) {
+      source <- source[which(!source %in% res$unidade_origem)]
       stop (glue::glue("unknown value '{source}' passed to argument 'source'"))
     }
     
     ## target
-    if (!missing(target) && !target %in% res$unidade_destino) {
+    if (!missing(target) && any(!target %in% res$unidade_destino)) {
+      target <- target[which(!target %in% res$unidade_destino)]
       stop (glue::glue("unknown value '{target}' passed to argument 'target'"))
     }
     
