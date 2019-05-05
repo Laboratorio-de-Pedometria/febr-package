@@ -369,7 +369,8 @@ observation <-
           
           # PADRONIZAÇÃO II
           ## Data de observação
-          if (n_rows > na_time && !is.null(standardization$time.format)) {
+          if (n_rows > n_na_time && !is.null(standardization$time.format)) {
+          # if (n_rows > na_time && !is.null(standardization$time.format)) {
             tmp <- .formatObservationDate(obj = tmp, time.format = standardization$time.format)
           }
           
