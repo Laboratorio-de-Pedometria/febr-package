@@ -3,6 +3,7 @@
 ^\.Rproj\.user$
 build-package.R
 README.md
+README.Rmd
 man-roxygen
 docs
 pkgdown
