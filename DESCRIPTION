@@ -1,8 +1,8 @@
 Package: febr
 Type: Package
 Title: Free Brazilian Repository for Open Soil Data
-Version: 1.0.1.9002
-Date: 2019-04-25
+Version: 1.0.1.9003
+Date: 2019-05-05
 Authors@R: c(
     person("Alessandro", "Samuel-Rosa", role = c("aut", "cre"), email = "alessandrosamuelrosa@gmail.com", 
            comment = c(ORCID = "0000-0003-0877-1320")),
@@ -17,7 +17,6 @@ Imports:
   dplyr,
   glue,
   googlesheets,
-  knitr,
   pedometrics,
   readr,
   sp,
@@ -26,6 +25,7 @@ Imports:
 Suggests:
   bookdown,
   DT,
+  knitr,
   lattice,
   latticeExtra,
   magrittr,
@@ -38,3 +38,4 @@ RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/febr-team/febr-package/
 BugReports: https://github.com/febr-team/febr-package/issues/
+Language: pt-BR, en-GB
