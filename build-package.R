@@ -13,7 +13,8 @@ devtools::revdep()
 # check examples and documentation
 devtools::check_man()
 devtools::run_examples()
-devtools::spell_check()
+# spelling::spell_check_package()
+# spelling::update_wordlist()
 devtools::check_rhub()
 
 # check the package for Linux and Windows

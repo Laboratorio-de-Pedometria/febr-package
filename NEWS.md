@@ -1,3 +1,15 @@
+# Version 1.0.2 (2019-05-06)
+
+* New version (patch) -- including several bug fixes.
+
+# Version 1.0.1.9003 (2019-05-05)
+
+* Bug fixes:
+    - __knitr__ was moved from Imports to Suggests.
+    - `observatio()`: checking if the number of observations with date is greater than the number of 
+      observations without date.
+    - `unit()`: checking if the value passed to an argument is valid.
+
 # Version 1.0.1.9002 (2019-04-25)
 
 * `#VALUE!` now is considered as `NA`. This can be found when a calculation is performed in one of the

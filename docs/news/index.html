@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">febr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
       </span>
     </div>
 
@@ -106,6 +106,14 @@
       <small>Source: <a href='https://github.com/febr-team/febr-package/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="version-1-0-2-2019-05-06" class="section level1">
+<h1 class="page-header">
+<a href="#version-1-0-2-2019-05-06" class="anchor"></a>Version 1.0.2 (2019-05-06)<small> Unreleased </small>
+</h1>
+<ul>
+<li>New version (patch) – including several bug fixes.</li>
+</ul>
+</div>
     <div id="version-1-0-1-9003-2019-05-05" class="section level1">
 <h1 class="page-header">
 <a href="#version-1-0-1-9003-2019-05-05" class="anchor"></a>Version 1.0.1.9003 (2019-05-05)<small> Unreleased </small>
@@ -118,7 +126,7 @@
 <li>
 <code>observatio()</code>: checking if the number of observations with date is greater than the number of observations without date.</li>
 <li>
-<code>unit()</code>: checking if the value passed to an argument is valid.</li>
+<code><a href="../reference/unit.html">unit()</a></code>: checking if the value passed to an argument is valid.</li>
 </ul>
 </li>
 </ul>
@@ -148,7 +156,7 @@
 <ul>
 <li>Bug fixes:
 <ul>
-<li>Many layers from datasets that have not gone through revision yet are lacking the identification code <code>camada_id</code>, which is automatically set to <code>NA_character_</code>. In these cases, when merging repeated layer data using <code>layer(standardization = list(repetition = "combine"))</code>, the entire observation would be merged. This was because for all layers <code>camada_id = NA_character_</code>, that is, <code>camada_id</code> was duplicated. Now duplicates are checked using <code><a href="https://www.rdocumentation.org/packages/base/topics/duplicated">duplicated(incomparables = NA)</a></code> to avoid incorrect merges.</li>
+<li>Many layers from datasets that have not gone through revision yet are lacking the identification code <code>camada_id</code>, which is automatically set to <code>NA_character_</code>. In these cases, when merging repeated layer data using <code><a href="../reference/layer.html">layer(standardization = list(repetition = "combine"))</a></code>, the entire observation would be merged. This was because for all layers <code>camada_id = NA_character_</code>, that is, <code>camada_id</code> was duplicated. Now duplicates are checked using <code><a href="https://www.rdocumentation.org/packages/base/topics/duplicated">duplicated(incomparables = NA)</a></code> to avoid incorrect merges.</li>
 <li>The lowermost limit of some layers is recorded as being a wavy or irregular layer trasitions. This is done using <code>/</code>. The depth data of these layes may include a plus sign indicating that the same material can be found deeper in the soil. This poses a difficulty when processing the plus sign with <code><a href="https://www.rdocumentation.org/packages/base/topics/eval">eval()</a></code> and <code><a href="https://www.rdocumentation.org/packages/base/topics/parse">parse()</a></code> because <code>/</code> is interpreted as a division sign. Now the presence of <code>/</code> is checked before deciding how to deal with the plus sign.</li>
 </ul>
 </li>
@@ -273,6 +281,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#version-1-0-2-2019-05-06">1.0.2</a></li>
         <li><a href="#version-1-0-1-9003-2019-05-05">1.0.1.9003</a></li>
         <li><a href="#version-1-0-1-9002-2019-04-25">1.0.1.9002</a></li>
         <li><a href="#version-1-0-1-9001-2019-03-09">1.0.1.9001</a></li>

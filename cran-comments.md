@@ -1,91 +1,60 @@
-## Changes
+# Changes
+
 This is a patch. It includes several bug fixes that fix the problems shown in https://cran.r-project.org/web/checks/check_results_febr.html.
 
 When tested locally -- x86_64-pc-linux-gnu --, two examples needed more that five seconds to run during an 
 `R CMD check`. However, when tested on travis-ci and win-builder, these examples where run in less than five 
 seconds. The long time needed to run locally likely is due to the relatively poor Internet connection speed.
 
-## Test environments
-* OK: local x86_64-pc-linux-gnu (ubuntu 18.04), R 3.4.4
-* OK: ubuntu 14.04 (on travis-ci), R 3.5.1
-* OK: win-builder (devel and release)
-* OK: Windows Server 2008 R2 SP1, R-devel, 32/64 bit (rhub)
-* FAIL: Ubuntu Linux 16.04 LTS, R-release, GCC (rhub)
-* FAIL: Fedora Linux, R-devel, clang, gfortran (rhub)
+# Test environments
+
+* OK: local, x86_64-pc-linux-gnu (64-bit), Ubuntu 18.04.01 LTS, R 3.6.0
+* OK: travis-ci, x86_64-pc-linux-gnu (64-bit), Ubuntu 14.04.5 LTS, R 3.6.0
+* OK: rhub, Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+* FAIL: rhub, Ubuntu Linux 16.04 LTS, R-release, GCC
+* FAIL: rhub, Fedora Linux, R-devel, clang, gfortran
+* OK: winbuilder, x86_64-w64-mingw32 (64-bit), Windows, R 3.5.3
+* OK: winbuilder, x86_64-w64-mingw32 (64-bit), Windows, R 3.6.0
+* OK: winbuilder, x86_64-w64-mingw32 (64-bit), Windows, R Under development (unstable)
 
 Failure in rhub test environments are due to missing software and package dependencies in those test
-environments. I am not sure how to deal with these failures.
+environments.
+
+On Ubuntu Linux:
 
 ```
-* installing *source* package ‘openssl’ ...
-** package ‘openssl’ successfully unpacked and MD5 sums checked
-Using PKG_CFLAGS=
-------------------------- ANTICONF ERROR ---------------------------
-Configuration failed because openssl was not found. Try installing:
- * deb: libssl-dev (Debian, Ubuntu, etc)
- * rpm: openssl-devel (Fedora, CentOS, RHEL)
- * csw: libssl_dev (Solaris)
- * brew: openssl@1.1 (Mac OSX)
-If openssl is already installed, check that 'pkg-config' is in your
-PATH and PKG_CONFIG_PATH contains a openssl.pc file. If pkg-config
-is unavailable you can set INCLUDE_DIR and LIB_DIR manually via:
-R CMD INSTALL --configure-vars='INCLUDE_DIR=... LIB_DIR=...'
---------------------------------------------------------------------
-ERROR: configuration failed for package ‘openssl’
-* removing ‘/home/docker/R/openssl’
+5572#> Warning messages:
+5573#> 1: In i.p(...) : installation of package ‘rgdal’ had non-zero exit status
+5574#> 2: In i.p(...) : installation of package ‘xml2’ had non-zero exit status
+5575#> 3: In i.p(...) :
+5576#> installation of package ‘openssl’ had non-zero exit status
+5577#> 4: In i.p(...) : installation of package ‘httr’ had non-zero exit status
+5578#> 5: In i.p(...) :
+5579#> installation of package ‘googlesheets’ had non-zero exit status
+5580#> 6: In i.p(...) :
+5581#> installation of package ‘/tmp/RtmpGI8dbA/file13b111cf369/febr_1.0.1.9003.tar.gz’ had non-zero exit status
 ```
 
-```
-ERROR: dependency ‘openssl’ is not available for package ‘httr’
-* removing ‘/home/docker/R/httr’
-```
+On Fedora Linux:
 
 ```
-checking for gdal-config... no
-no
-configure: error: gdal-config not found or not executable.
-ERROR: configuration failed for package ‘rgdal’
-* removing ‘/home/docker/R/rgdal’
+3574#> Warning messages:
+3575#> 1: In i.p(...) : installation of package ‘rJava’ had non-zero exit status
+3576#> 2: In i.p(...) :
+3577#> installation of package ‘xlsxjars’ had non-zero exit status
+3578#> 3: In i.p(...) : installation of package ‘xlsx’ had non-zero exit status
+3579#> 4: In i.p(...) :
+3580#> installation of package ‘/tmp/RtmpN4SnNb/file11c4d39b687/febr_1.0.1.9003.tar.gz’ had non-zero exit status
 ```
 
-```
-------------------------- ANTICONF ERROR ---------------------------
-Configuration failed because libxml-2.0 was not found. Try installing:
- * deb: libxml2-dev (Debian, Ubuntu, etc)
- * rpm: libxml2-devel (Fedora, CentOS, RHEL)
- * csw: libxml2_dev (Solaris)
-If libxml-2.0 is already installed, check that 'pkg-config' is in your
-PATH and PKG_CONFIG_PATH contains a libxml-2.0.pc file. If pkg-config
-is unavailable you can set INCLUDE_DIR and LIB_DIR manually via:
-R CMD INSTALL --configure-vars='INCLUDE_DIR=... LIB_DIR=...'
---------------------------------------------------------------------
-ERROR: configuration failed for package ‘xml2’
-* removing ‘/home/docker/R/xml2’
-```
+The __rhub__ package maintainer has been warned about this issue.
 
-```
-ERROR: dependencies ‘httr’, ‘xml2’ are not available for package ‘googlesheets’
-* removing ‘/home/docker/R/googlesheets’
-```
 
-```
-Installing package into ‘/home/docker/R’
-(as ‘lib’ is unspecified)
-ERROR: dependency ‘googlesheets’ is not available for package ‘febr’
-* removing ‘/home/docker/R/febr’
-Warning messages:
-1: In i.p(...) :
-  installation of package ‘openssl’ had non-zero exit status
-2: In i.p(...) : installation of package ‘httr’ had non-zero exit status
-3: In i.p(...) : installation of package ‘rgdal’ had non-zero exit status
-4: In i.p(...) : installation of package ‘xml2’ had non-zero exit status
-5: In i.p(...) :
-  installation of package ‘googlesheets’ had non-zero exit status
-6: In i.p(...) :
-  installation of package ‘/tmp/RtmpWDlUFh/file1068507ab1/febr_1.0.1.tar.gz’ had non-zero exit status
-```
+# R CMD check results
 
-## R CMD check results
+There were no ERRORs or WARNINGs.
+
+There was one NOTE in all platforms.
 
 ```R
 0 errors | 0 warnings | 1 note 
@@ -95,6 +64,8 @@ Maintainer: ‘Alessandro Samuel-Rosa <alessandrosamuelrosa@gmail.com>’
 New submission
 ```
 
-## Reverse dependencies
+This NOTE can be ignored.
+
+# Reverse dependencies
 
 There are no reverse dependencies.
