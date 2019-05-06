@@ -21,9 +21,9 @@ Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/f
 \examples{
 library(magrittr)
 observation(dataset = "ctb0003", variable = "taxon",
-            progress = FALSE, verbose = FALSE) \%>\% 
-  febr2spdf() \%>\%
-  sp::spplot(zcol = "taxon_sibcs_2009", auto.key = list(columns = 3), scales = list(draw = TRUE))
+            progress = FALSE, verbose = FALSE) \%>\%
+febr2spdf() \%>\%
+sp::spplot(zcol = "taxon_sibcs_2009", auto.key = list(columns = 3), scales = list(draw = TRUE))
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}
