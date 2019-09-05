@@ -1,3 +1,9 @@
+# Version 1.0.2.9000 (2019-09-05)
+
+* Bug fix: setting argument `missing = list(coord = 'drop')` in function `observation()` now correctly drops 
+  observations missing spatial coordinates. Thanks to Edberto Moura Lima, from the Federal University of Santa
+  Maria, who identified the bug. Equivalent modifications were implemented in function `layer()`.
+
 # Version 1.0.2 (2019-05-06)
 
 * New version (patch) -- including several bug fixes.

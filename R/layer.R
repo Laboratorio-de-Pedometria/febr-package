@@ -376,7 +376,8 @@ layer <-
           
           # LINHAS II
           ## Definir as linhas a serem mantidas
-          if (missing$data == "drop") {
+          ## É preciso considerar todas as possibilidades de remoção de dados
+          if (missing$data == "drop" || missing$dept == 'drop') {
             tmp <- tmp_clean
           }
           

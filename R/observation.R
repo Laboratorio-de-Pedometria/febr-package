@@ -339,7 +339,8 @@ observation <-
           
           # LINHAS II
           ## Definir as linhas a serem mantidas
-          if (missing$data == "drop") {
+          ## É preciso considerar todas as possibilidades de remoção de dados
+          if (missing$data == "drop" || missing$coord == 'drop' || missing$time == 'drop') {
             tmp <- tmp_clean
           }
           
