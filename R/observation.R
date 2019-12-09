@@ -381,6 +381,7 @@ observation <-
             
             ## Identificar variáveis contínuas (classe 'numeric' e 'integer'), excluíndo variáveis de 
             ## identificação padrão
+            ## TODO: EXCETO 'coord_precisao'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             id_class <- sapply(tmp, class)
             cont_idx <- which(id_class %in% c("numeric", "integer") & !names(id_class) %in% std_cols)
             if (length(cont_idx) >= 1) {
