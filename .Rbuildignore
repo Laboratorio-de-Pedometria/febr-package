@@ -12,3 +12,4 @@ vignettes/_febr.Rmd
 ^cran-comments\.md$
 test.R
 ^\.httr-oauth$
+tmp_read.R
