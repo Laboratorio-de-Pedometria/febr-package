@@ -11,3 +11,4 @@ pkgdown
 vignettes/_febr.Rmd
 ^cran-comments\.md$
 test.R
+^\.httr-oauth$

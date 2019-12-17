@@ -324,10 +324,10 @@ layer <-
       
       # DESCARREGAMENTO
       ## Cabeçalho com unidades de medida
-      unit <- .getHeader(x = sheets_keys$camada[i])
+      unit <- .getHeader(x = sheets_keys$camada[i], ws = 'camada')
       
       ## Dados
-      tmp <- .getTable(x = sheets_keys$camada[i])
+      tmp <- .getTable(x = sheets_keys$camada[i], ws = 'camada')
       n_rows <- nrow(tmp)
       
       # PROCESSAMENTO I

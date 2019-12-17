@@ -279,10 +279,10 @@ observation <-
       
       # DESCARREGAMENTO
       ## Cabeçalho com unidades de medida
-      unit <- .getHeader(x = sheets_keys$observacao[i])
+      unit <- .getHeader(x = sheets_keys$observacao[i], ws = 'observacao')
       
       ## Dados
-      tmp <- .getTable(x = sheets_keys$observacao[i])
+      tmp <- .getTable(x = sheets_keys$observacao[i], ws = 'observacao')
       n_rows <- nrow(tmp)
       
       # PROCESSAMENTO I

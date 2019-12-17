@@ -65,9 +65,16 @@ metadata <-
       }
       
       tmp <- googlesheets::gs_key(stats::na.omit(sheets_keys$metadado)[i], verbose = FALSE)
-      tmp <- suppressMessages(
-        googlesheets::gs_read_csv(tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
-      )
+      tmp <- 
+        suppressMessages(
+          googlesheets::gs_read_csv(
+            ss = tmp, 
+            ws = 'metadado',
+            na = opts$gs$na,
+            locale = opts$gs$locale,
+            verbose = opts$gs$verbose
+          )
+        )
 
       # Dados processadas
       obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)

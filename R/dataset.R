@@ -59,9 +59,16 @@ dataset <-
       }
       
       tmp <- googlesheets::gs_key(sheets_keys$dataset[i], verbose = FALSE)
-      tmp <- suppressMessages(
-        googlesheets::gs_read_csv(tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
-      )
+      tmp <- 
+        suppressMessages(
+          googlesheets::gs_read_csv(
+            ss = tmp, 
+            ws = 'dataset',
+            na = opts$gs$na, 
+            locale = opts$gs$locale, 
+            verbose = opts$gs$verbose
+          )
+        )
 
       # Dados processados
       obs[[i]] <- as.data.frame(tmp)
