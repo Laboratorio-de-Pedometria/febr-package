@@ -245,18 +245,19 @@
 # Descarregar cabeçalho das tabelas 'camada' e observacao' ----
 .getHeader <- 
   function (x, ws) {
-    res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+    # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
     # nmax <- 1
     nmax <- 2
     res <- 
       suppressMessages(
-        googlesheets::gs_read_csv(
-          ss = res, 
-          ws = ws, 
-          locale = .opt()$gs$locale, 
-          verbose = .opt()$gs$verbose, 
-          n_max = nmax
-        )
+        googlesheets4::read_sheet(ss = x, sheet = ws, n_max = nmax)
+        # googlesheets::gs_read_csv(
+        # ss = res,
+        # ws = ws,
+        # locale = .opt()$gs$locale,
+        # verbose = .opt()$gs$verbose,
+        # n_max = nmax
+        # )
       )
     res <- as.data.frame(res)
     # res[1, ] <- gsub("#unidade", "-", res[1, ])
@@ -269,15 +270,17 @@
     res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
     res <- 
       suppressMessages(
+        # There is no comment argument
+        # googlesheets4::read_sheet(ss = x, sheet = ws, na = .opt()$gs$na, comment = ??)
         googlesheets::gs_read_csv(
-          ss = res, 
-          ws = ws, 
-          na = .opt()$gs$na, 
-          locale = .opt()$gs$locale, 
-          verbose = .opt()$gs$verbose, 
-          comment = .opt()$gs$comment
-        )
+        ss = res,
+        ws = ws,
+        na = .opt()$gs$na,
+        locale = .opt()$gs$locale,
+        verbose = .opt()$gs$verbose,
+        comment = .opt()$gs$comment
       )
+    )
     res <- as.data.frame(x = res)
     return (res)
   }
@@ -354,7 +357,6 @@
     
     # Options
     opts <- .opt()
-    
     sheets_keys <- googlesheets::gs_key(x = key, verbose = opts$gs$verbose)
     sheets_keys <- suppressMessages(
       googlesheets::gs_read(sheets_keys, na = opts$gs$na, verbose = opts$gs$verbose))

@@ -110,6 +110,7 @@ observation <-
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$observation$std.cols
+    googlesheets4::sheets_deauth() # evitar solicitação de autorização para acessar Google Sheets
     
     # ARGUMENTOS
     ## dataset
