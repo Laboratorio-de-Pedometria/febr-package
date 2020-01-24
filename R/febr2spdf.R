@@ -28,7 +28,8 @@ febr2spdf <-
     n_crs <- length(crs)
     if (n_crs == 1) {
       sp::coordinates(obj) <- ~ coord_x + coord_y
-      sp::proj4string(obj = obj) <- sp::CRS(glue::glue("+init={tolower(crs)}"))
+      #sp::proj4string(obj = obj) <- sp::CRS(glue::glue("+init={tolower(crs)}"))
+      sp::proj4string(obj = obj) <- sp::CRS(paste("+init=", tolower(crs), sep = ""))
       obj@data <- dplyr::select(obj@data, -coord_sistema)
     } else {
       stop ("spatial coordinates have not been standardized")

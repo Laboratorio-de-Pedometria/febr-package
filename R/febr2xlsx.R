@@ -32,8 +32,10 @@ febr2xlsx <-
       # Multiplas tabelas
       for (i in 1:length(x)) {
         xlsx::write.xlsx(
-          x[[i]], file = file, sheetName = glue::glue("sheet{i}"), append = TRUE, 
-          row.names = row.names, ...)
+          x[[i]], file = file, 
+          # sheetName = glue::glue("sheet{i}"), 
+          sheetName = paste("sheet", i, sep = ""), 
+          append = TRUE, row.names = row.names, ...)
       }
     } else {
       # Uma tabela
