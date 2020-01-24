@@ -66,7 +66,9 @@ metadata <-
       
       tmp <- googlesheets::gs_key(stats::na.omit(sheets_keys$metadado)[i], verbose = FALSE)
       tmp <- suppressMessages(
-        googlesheets::gs_read_csv(tmp, na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
+        googlesheets::gs_read_csv(
+          ss = tmp, ws = 'metadado', # identifica Sheet por seu nome
+          na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
       )
 
       # Dados processadas

@@ -327,7 +327,7 @@ layer <-
       unit <- .getHeader(x = sheets_keys$camada[i])
       
       ## Dados
-      tmp <- .getTable(x = sheets_keys$camada[i])
+      tmp <- .getTable(x = sheets_keys$camada[i], ws = 'camada')
       n_rows <- nrow(tmp)
       
       # PROCESSAMENTO I

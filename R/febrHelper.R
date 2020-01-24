@@ -256,14 +256,15 @@
     return (res)
   }
 
-# Descarregar tabela 'camada' e 'observacao' ----
+# Descarregar tabela 'camada' e 'observacao' ------------------------------------------------------------------
 .getTable <-
-  function (x) {
-    res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+  function (x, ws) {
+    ss <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
     res <- suppressMessages(
       googlesheets::gs_read_csv(
-        res, na = .opt()$gs$na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, 
-        comment = .opt()$gs$comment))
+        ss = ss, ws = ws, # identifica Sheet com seu nome
+        na = .opt()$gs$na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment)
+      )
     res <- as.data.frame(res)
     return (res)
   }
