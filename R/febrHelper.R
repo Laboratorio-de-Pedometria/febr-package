@@ -242,7 +242,10 @@
     return (obj)
   }
 
-# Descarregar cabeçalho das tabelas 'camada' e observacao' ----
+# Descarregar cabeçalho das tabelas 'camada' e observacao' ----------------------------------------------------
+# A função googlesheets::gs_key pode ser substituida por googlesheets4::read_sheet sem que haja qualquer
+# prejuízo à função .getHeader. Isso porque .getHeader retorna apenas as três primeiras linhas da Google Sheet,
+# o que é identificado usando o argumento n_max. Adicionalmente, .getHeader fica muito menos verbosa.
 .getHeader <- 
   function (x, ws) {
     # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
@@ -264,7 +267,10 @@
     return (res)
   }
 
-# Descarregar tabela 'camada' e 'observacao' ----
+# Descarregar tabela 'camada' e 'observacao' ------------------------------------------------------------------
+# Não é possível substituir googlesheets::gs_read_csv por googlesheets4::read_sheet na função .getTable. Isso 
+# porque googlesheets4::read_sheet não possui argumento para informar string que identifique linhas que contêm
+# comentários -- o caso das linhas com metadados. 
 .getTable <-
   function (x, ws) {
     res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
