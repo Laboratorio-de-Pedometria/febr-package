@@ -4,11 +4,16 @@
 \alias{observation}
 \title{Get \emph{observation} table}
 \usage{
-observation(dataset, variable, stack = FALSE, missing = list(coord =
-  "keep", time = "keep", data = "keep"), standardization = list(crs =
-  NULL, time.format = NULL, units = FALSE, round = FALSE),
-  harmonization = list(harmonize = FALSE, level = 2), progress = TRUE,
-  verbose = TRUE)
+observation(
+  dataset,
+  variable,
+  stack = FALSE,
+  missing = list(coord = "keep", time = "keep", data = "keep"),
+  standardization = list(crs = NULL, time.format = NULL, units = FALSE, round = FALSE),
+  harmonization = list(harmonize = FALSE, level = 2),
+  progress = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded

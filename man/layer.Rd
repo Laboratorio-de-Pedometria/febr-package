@@ -4,12 +4,18 @@
 \alias{layer}
 \title{Get \emph{layer} table}
 \usage{
-layer(dataset, variable, stack = FALSE, missing = list(depth = "keep",
-  data = "keep"), standardization = list(plus.sign = "keep", plus.depth =
-  2.5, lessthan.sign = "keep", lessthan.frac = 0.5, repetition = "keep",
-  combine.fun = "mean", transition = "keep", smoothing.fun = "mean", units
-  = FALSE, round = FALSE), harmonization = list(harmonize = FALSE, level
-  = 2), progress = TRUE, verbose = TRUE)
+layer(
+  dataset,
+  variable,
+  stack = FALSE,
+  missing = list(depth = "keep", data = "keep"),
+  standardization = list(plus.sign = "keep", plus.depth = 2.5, lessthan.sign = "keep",
+    lessthan.frac = 0.5, repetition = "keep", combine.fun = "mean", transition = "keep",
+    smoothing.fun = "mean", units = FALSE, round = FALSE),
+  harmonization = list(harmonize = FALSE, level = 2),
+  progress = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
@@ -41,7 +47,7 @@ to indicate that the value of a variable is below the lower limit of detection. 
 (default), \code{"subtract"}, and \code{"remove"}.
 \item \code{lessthan.frac} Numeric value between 0 and 1 (a fraction) by which the lower limit of detection
 should be subtracted when \code{lessthan.sign = "subtract"}. Defaults to \code{lessthan.frac = 0.5}, i.e.
-subtract 50\% from the lower limit of detection.
+subtract 50\\% from the lower limit of detection.
 
 \item \code{repetition} Character string indicating what should be done with repetitions, i.e. repeated
 measurements of layers in an observation. Options are \code{"keep"} (default) and \code{"combine"}. In the

@@ -1,3 +1,9 @@
+# Version 1.0.2.9001 (2020-01-24)
+
+* Preparing for future modifications in data storage in ___febr___. Now the sheet name (`dataset`, 
+  `observacao`, `camada` or `metadado`) is explicitly specified withing download functions. The user should not
+  have to worry about this change.
+
 # Version 1.0.2.9000 (2019-09-05)
 
 * Bug fix: setting argument `missing = list(coord = 'drop')` in function `observation()` now correctly drops 

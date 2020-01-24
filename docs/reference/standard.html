@@ -8,10 +8,12 @@
 
 <title>Get <em>standard</em> table — standard • febr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -30,14 +32,15 @@
 
 
 
-<meta property="og:title" content="Get <em>standard</em> table — standard" />
 
-<meta property="og:description" content="Download data from the standard (&quot;febr-padrao&quot;) table of the Free Brazilian Repository for Open Soil Data
-febr, http://www.ufsm.br/febr. This includes codes and names of variable, measurement units,
+<meta property="og:title" content="Get <em>standard</em> table — standard" />
+<meta property="og:description" content="Download data from the standard (&quot;febr-padrao&quot;) table of the Free Brazilian Repository for Open Soil Data" />
+<meta property="og:description" content="febr, http://www.ufsm.br/febr. This includes codes and names of variable, measurement units,
 number of decimal places, type of data, and description of analytical methods. This is used to standardize
 the data contained in a dataset when downloading it via layer or
 observation." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -67,7 +70,7 @@ observation." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">febr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2.9001</span>
       </span>
     </div>
 
@@ -89,7 +92,6 @@ observation." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/febr-team/febr-package">
@@ -115,17 +117,15 @@ observation." />
     </div>
 
     <div class="ref-description">
-    
-    <p>Download data from the standard ("febr-padrao") table of the Free Brazilian Repository for Open Soil Data</p>
-<p><em><strong>febr</strong></em>, <a href='http://www.ufsm.br/febr'>http://www.ufsm.br/febr</a>. This includes codes and names of variable, measurement units,
+    <h3>Download data from the <em>standard</em> ("febr-padrao") table of the Free Brazilian Repository for Open Soil Data</h3>
+    <em><strong>febr</strong></em>, <a href='http://www.ufsm.br/febr'>http://www.ufsm.br/febr</a>. This includes codes and names of variable, measurement units,
 number of decimal places, type of data, and description of analytical methods. This is used to standardize
 the data contained in a dataset when downloading it via <code><a href='layer.html'>layer</a></code> or
-<code><a href='observation.html'>observation</a></code>.</p>
-    
+<code><a href='observation.html'>observation</a></code>.
     </div>
 
     <pre class="usage"><span class='fu'>standard</span>(<span class='no'>table</span>, <span class='no'>variable</span>, <span class='no'>unit</span>, <span class='no'>precision</span>, <span class='no'>expr</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -155,20 +155,17 @@ general identification codes, e.g. <code>"ferro"</code> and <code>"carbono"</cod
 <code>"campo_precisao &gt; 0"</code>. Usage requires some knowledge of the structure of the <em>standard</em> table.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data frame with standards for selected variable(s).</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Teixeira, P. C., Donagemma, G. K., Fontana, A., Teixeira, W. G. (2017)
 <em>Manual de Métodos de Análise de Solo</em>. Brasília: Embrapa.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>The <em>standard</em> table at <a href='https://goo.gl/hi77sB'>https://goo.gl/hi77sB</a></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>standard</span>(<span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"ferro"</span>)
@@ -186,25 +183,28 @@ general identification codes, e.g. <code>"ferro"</code> and <code>"carbono"</cod
 #&gt; 4                                     Conteúdo de ferro livre (extraível) na fração terra fina seca ao ar (&lt; 2 mm). Extração com citrato de sódio (C6H5O7NA3.2H2O) 0,3 mol/L + bicarbonato de sódio (NaHCO3) 1 mol/L + ditionito de sódio [ditionito] sob aquecimento em banho-maria à temperatura de 75-80ºC. {ESPECIFICAR TEMPO DE AQUECIMENTO} Quantificação por espectrometria de absorção atômica [eaa]. {INDICAR REFERÊNCIA DO MÉTODO}
 #&gt; 5                Conteúdo de ferro livre (extraível) na fração terra fina seca ao ar (&lt; 2 mm). Extração com citrato de sódio (C6H5O7NA3.2H2O) 0,3 mol/L + bicarbonato de sódio (NaHCO3) 1 mol/L + ditionito de sódio [ditionito] sob aquecimento em banho-maria à temperatura de 75-80ºC. {ESPECIFICAR TEMPO DE AQUECIMENTO} Quantificação por espectrofotometria de absorção molecular (colorimetria) [eam]. {INDICAR REFERÊNCIA DO MÉTODO}
 #&gt; 6 Conteúdo de ferro livre (extraível) na fração terra fina seca ao ar (&lt; 2 mm). Extração com citrato de sódio (C6H5O7NA3.2H2O) 0,3 mol/L + bicarbonato de sódio (NaHCO3) 1 mol/L + ditionito de sódio [ditionito] sob aquecimento em banho-maria à temperatura de 75-80ºC. {ESPECIFICAR TEMPO DE AQUECIMENTO} Quantificação por espectrometria de emissão atômica com plasma acoplado indutivamente [icpoes]. {INDICAR REFERÊNCIA DO MÉTODO}
-#&gt;   campo_unidade campo_precisao campo_tipo campo_cat campo_carater status
-#&gt; 1          g/kg              1       real   química      opcional      1
-#&gt; 2          g/kg              1       real   química      opcional      1
-#&gt; 3          g/kg              1       real   química      opcional      1
-#&gt; 4          g/kg              2       real   química      opcional      1
-#&gt; 5          g/kg              2       real   química      opcional      1
-#&gt; 6          g/kg              2       real   química      opcional      1</div></pre>
+#&gt;   campo_opcao campo_unidade campo_precisao campo_tipo campo_cat campo_carater
+#&gt; 1           -          g/kg              1       real   química      opcional
+#&gt; 2           -          g/kg              1       real   química      opcional
+#&gt; 3           -          g/kg              1       real   química      opcional
+#&gt; 4           -          g/kg              2       real   química      opcional
+#&gt; 5           -          g/kg              2       real   química      opcional
+#&gt; 6           -          g/kg              2       real   química      opcional
+#&gt;   status
+#&gt; 1      1
+#&gt; 2      1
+#&gt; 3      1
+#&gt; 4      1
+#&gt; 5      1
+#&gt; 6      1</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#references">References</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

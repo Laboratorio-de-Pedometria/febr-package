@@ -4,8 +4,14 @@
 \alias{header}
 \title{Get table header}
 \usage{
-header(dataset, table, variable, stack = FALSE, progress = TRUE,
-  verbose = TRUE)
+header(
+  dataset,
+  table,
+  variable,
+  stack = FALSE,
+  progress = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded

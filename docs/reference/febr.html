@@ -8,10 +8,12 @@
 
 <title>Get all dataset tables — febr • febr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/simplex/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -30,12 +32,13 @@
 
 
 
-<meta property="og:title" content="Get all dataset tables — febr" />
 
+<meta property="og:title" content="Get all dataset tables — febr" />
 <meta property="og:description" content="Download data from the dataset (&quot;dataset&quot;), observation (&quot;observacao&quot;), layer (&quot;camada&quot;), and
 metadata (&quot;metadado&quot;) tables of a datasets contained in the Free Brazilian Repository for Open Soil Data
 -- febr, http://www.ufsm.br/febr." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -65,7 +68,7 @@ metadata (&quot;metadado&quot;) tables of a datasets contained in the Free Brazi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">febr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2.9001</span>
       </span>
     </div>
 
@@ -87,7 +90,6 @@ metadata (&quot;metadado&quot;) tables of a datasets contained in the Free Brazi
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/febr-team/febr-package">
@@ -113,15 +115,13 @@ metadata (&quot;metadado&quot;) tables of a datasets contained in the Free Brazi
     </div>
 
     <div class="ref-description">
-    
     <p>Download data from the <em>dataset</em> ("dataset"), <em>observation</em> ("observacao"), <em>layer</em> ("camada"), and
 <em>metadata</em> ("metadado") tables of a datasets contained in the Free Brazilian Repository for Open Soil Data
 -- <em><strong>febr</strong></em>, <a href='http://www.ufsm.br/febr'>http://www.ufsm.br/febr</a>.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>febr</span>(<span class='no'>dataset</span>, <span class='kw'>merge</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -150,16 +150,14 @@ if you find any issue.</p></td>
       <td><p>(optional) Arguments passed to <code><a href='observation.html'>observation</a></code> and <code><a href='layer.html'>layer</a></code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list of data frames with data on the chosen dataset.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='dataset.html'>dataset</a></code>, <code><a href='observation.html'>observation</a></code>, <code><a href='layer.html'>layer</a></code>,
 <code><a href='metadata.html'>metadata</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>febr</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0003"</span>, <span class='kw'>merge</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"all"</span>)</div><div class='output co'>#&gt; <span class='message'>Downloading table ctb0003-dataset...</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt; <span class='message'>Downloading table ctb0003-observacao...</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt; <span class='message'>Downloading table ctb0003-camada...</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt; <span class='message'>Downloading table ctb0003-metadado...</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>res</span>)</div><div class='output co'>#&gt; List of 3
@@ -231,11 +229,8 @@ if you find any issue.</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
