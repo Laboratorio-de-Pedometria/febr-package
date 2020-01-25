@@ -26,8 +26,12 @@ A list of data frames with data on the chosen dataset.
 }
 \description{
 Download data from the \emph{dataset} ("dataset"), \emph{observation} ("observacao"), \emph{layer} ("camada"), and
-\emph{metadata} ("metadado") tables of a datasets contained in the Free Brazilian Repository for Open Soil Data
+\emph{metadata} ("metadado") tables of a dataset contained in the Free Brazilian Repository for Open Soil Data
 -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}.
+}
+\details{
+Character vector indicating one dataset. The identification code should be as recorded in
+\url{http://www.ufsm.br/febr/catalog/}.
 }
 \examples{
 \donttest{ 

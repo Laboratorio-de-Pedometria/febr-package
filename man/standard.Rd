@@ -2,7 +2,7 @@
 % Please edit documentation in R/standard.R
 \name{standard}
 \alias{standard}
-\title{Get \emph{standard} table}
+\title{Get \emph{standards} table}
 \usage{
 standard(table, variable, unit, precision, expr)
 }
@@ -20,19 +20,17 @@ general identification codes, e.g. \code{"ferro"} and \code{"carbono"}.}
 \item{precision}{(optional) Integer vector indicating one or more number of decimal places.}
 
 \item{expr}{(optional) Character string to be parsed and evaluated as a regular expression. For example,
-\code{"campo_precisao > 0"}. Usage requires some knowledge of the structure of the \emph{standard} table.}
+\code{"campo_precisao > 0"}. Usage requires some knowledge of the structure of the \emph{standards} table.}
 }
 \value{
 A data frame with standards for selected variable(s).
 }
 \description{
-\subsection{Download data from the \emph{standard} ("febr-padrao") table of the Free Brazilian Repository for Open Soil Data}{
-
-\emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This includes codes and names of variable, measurement units,
+Download data from the \emph{standards} ("padroes") table of the Free Brazilian Repository for Open Soil Data
+-- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This includes codes and names of variable, measurement units,
 number of decimal places, type of data, and description of analytical methods. This is used to standardize
 the data contained in a dataset when downloading it via \code{\link[febr]{layer}} or
 \code{\link[febr]{observation}}.
-}
 }
 \examples{
 res <- standard(variable = "ferro")
@@ -43,7 +41,8 @@ Teixeira, P. C., Donagemma, G. K., Fontana, A., Teixeira, W. G. (2017)
 \emph{Manual de Métodos de Análise de Solo}. Brasília: Embrapa.
 }
 \seealso{
-The \emph{standard} table at \url{https://goo.gl/hi77sB}
+The \emph{standards} table at
+\url{https://docs.google.com/spreadsheets/d/1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

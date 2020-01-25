@@ -159,7 +159,7 @@ single table for output. Requires <code>standardization = list(units = TRUE)</co
     <tr>
       <th>missing</th>
       <td><p>(optional) List with named sub-arguments indicating what should be done with an observation
-missing spatial coordinates, <code>coord</code>, date of observation, <code>time</code>, or data on variables, <code>data</code>? Options are
+missing spatial coordinates, <code>coord</code>, date of observation, <code>time</code>, or data on variables, <code>data</code>. Options are
 <code>"keep"</code> (default) and <code>"drop"</code>.</p></td>
     </tr>
     <tr>
@@ -174,7 +174,7 @@ standard CRS for Brazil -- see more at <a href='http://spatialreference.org/ref/
 <code>time.format = "%d-%m-%Y"</code>, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to
 <code>time.format = NULL</code>, i.e. no formatting is performed. See <code><a href='https://www.rdocumentation.org/packages/base/topics/as.Date'>as.Date</a></code> for more
 details.</p></li>
-<li><p><code>units</code> Logical value indicating if the measurement units of the continuous variable(s) should
+<li><p><code>units</code> Logical value indicating if the measurement unit(s) of the continuous variable(s) should
 be converted to the standard measurement unit(s). Defaults to <code>units = FALSE</code>, i.e. no conversion is
 performed. See <code><a href='standard.html'>standard</a></code> for more information.</p></li>
 <li><p><code>round</code> Logical value indicating if the values of the continuous variable(s) should be rounded
@@ -186,7 +186,7 @@ no rounding is performed. See <code><a href='standard.html'>standard</a></code> 
       <th>harmonization</th>
       <td><p>(optional) List with named sub-arguments indicating if and how to perform data
 harmonization.</p><ul>
-<li><p><code>harmonize</code> Logical value indicating if data should be harmonized? Defaults to <code>harmonize = FALSE</code>,
+<li><p><code>harmonize</code> Logical value indicating if data should be harmonized. Defaults to <code>harmonize = FALSE</code>,
 i.e. no harmonization is performed.</p></li>
 <li><p><code>level</code> Integer value indicating the number of levels of the identification code of the variable(s)
 that should be considered for harmonization. Defaults to <code>level = 2</code>. See &#8216;Details&#8217; for more
@@ -214,36 +214,35 @@ if you find any issue.</p></td>
     Standard identification variables and their content are as follows:
 <ul>
 <li><p><code>dataset_id</code>. Identification code of the dataset in <em><strong>febr</strong></em> to which an observation belongs.</p></li>
-<li><p><code>observacao_id</code>. Identification code of an observation in <em><strong>febr</strong></em>.</p></li>
+<li><p><code>observacao_id</code>. Identification code of an observation in a dataset.</p></li>
 <li><p><code>sisb_id</code>. Identification code of an observation in the Brazilian Soil Information System
 maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
 <a href='https://www.bdsolos.cnptia.embrapa.br/consulta_publica.html'>https://www.bdsolos.cnptia.embrapa.br/consulta_publica.html</a>.</p></li>
 <li><p><code>ibge_id</code>. Identification code of an observation in the database of the Brazilian Institute
-of Geography and Statistics (IBGE) at <a href='http://www.downloads.ibge.gov.br/downloads_geociencias.htm#'>http://www.downloads.ibge.gov.br/downloads_geociencias.htm#</a>.</p></li>
+of Geography and Statistics (IBGE) at <a href='https://www.ibge.gov.br/geociencias/downloads-geociencias.html'>https://www.ibge.gov.br/geociencias/downloads-geociencias.html</a>.</p></li>
 <li><p><code>observacao_data</code>. Date (dd-mm-yyyy) in which an observation was made.</p></li>
 <li><p><code>coord_sistema</code>. EPSG code of the coordinate reference system.</p></li>
-<li><p><code>coord_x</code>. Longitude (°) or easting (m).</p></li>
-<li><p><code>coord_y</code>. Latitude (°) or northing (m).</p></li>
+<li><p><code>coord_x</code>. Longitude (deg) or easting (m).</p></li>
+<li><p><code>coord_y</code>. Latitude (deg) or northing (m).</p></li>
 <li><p><code>coord_precisao</code>. Precision with which x- and y-coordinates were determined (m).</p></li>
 <li><p><code>coord_fonte</code>. Source of the x- and y-coordinates.</p></li>
 <li><p><code>pais_id</code>. Country code (ISO 3166-1 alpha-2).</p></li>
 <li><p><code>estado_id</code>. Code of the Brazilian federative unit where an observation was made.</p></li>
-<li><p><code>municipio_id</code>. Name of the Brazilian county where as observation was made.</p></li>
+<li><p><code>municipio_id</code>. Name of the Brazilian municipality where as observation was made.</p></li>
 <li><p><code>amostra_tipo</code>. Type of sample taken.</p></li>
 <li><p><code>amostra_quanti</code>. Number of samples taken.</p></li>
 <li><p><code>amostra_area</code>. Sampling area.</p></li>
 </ul>
 Further details about the content of the standard identification variables can be found in
-<a href='http://www.ufsm.br/febr/book/'>http://www.ufsm.br/febr/book/</a> (in Portuguese).
+<a href='https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM'>https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM</a> (in Portuguese).
     <h3>Harmonization</h3>
     Data harmonization consists of converting the values of a variable determined using some method <em>B</em> so
 that they are (approximately) equivalent to the values that would have been obtained if the standard method
 <em>A</em> had been used instead. For example, converting carbon content values obtained using a wet digestion
 method to the standard dry combustion method is data harmonization.
     A heuristic data harmonization procedure is implemented in the <strong>febr</strong> package. It consists of grouping
-variables
-based on a chosen number of levels of their identification code. For example, consider a variable with an
-identification code composed of four levels, <code>aaa_bbb_ccc_ddd</code>, where <code>aaa</code> is the first level and
+variables based on a chosen number of levels of their identification code. For example, consider a variable
+with an identification code composed of four levels, <code>aaa_bbb_ccc_ddd</code>, where <code>aaa</code> is the first level and
 <code>ddd</code> is the fourth level. Now consider a related variable, <code>aaa_bbb_eee_fff</code>. If the harmonization
 is to consider all four coding levels (<code>level = 4</code>), then these two variables will remain coded as
 separate variables. But if <code>level = 2</code>, then both variables will be re-coded as <code>aaa_bbb</code>, thus becoming the

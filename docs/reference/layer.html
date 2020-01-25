@@ -190,7 +190,7 @@ transition between subsequent layers in an observation. Options are <code>"keep"
 <li><p><code>smoothing.fun</code> Character string indicating the function that should be used to smooth wavy and
 irregular transitions between subsequent layers in an observation when <code>transition = "smooth"</code>.
 Options are <code>"mean"</code> (default), <code>"min"</code>, <code>"max"</code>, and <code>"median"</code>.</p></li>
-<li><p><code>units</code> Logical value indicating if the measurement units of the continuous variable(s) should
+<li><p><code>units</code> Logical value indicating if the measurement unit(s) of the continuous variable(s) should
 be converted to the standard measurement unit(s). Defaults to <code>units = FALSE</code>, i.e. no conversion is
 performed. See <code><a href='standard.html'>standard</a></code> for more information.</p></li>
 <li><p><code>round</code> Logical value indicating if the values of the continuous variable(s) should be rounded
@@ -202,7 +202,7 @@ no rounding is performed. See <code><a href='standard.html'>standard</a></code> 
       <th>harmonization</th>
       <td><p>(optional) List with named sub-arguments indicating if and how to perform data
 harmonization.</p><ul>
-<li><p><code>harmonize</code> Logical value indicating if data should be harmonized? Defaults to <code>harmonize = FALSE</code>,
+<li><p><code>harmonize</code> Logical value indicating if data should be harmonized. Defaults to <code>harmonize = FALSE</code>,
 i.e. no harmonization is performed.</p></li>
 <li><p><code>level</code> Integer value indicating the number of levels of the identification code of the variable(s)
 that should be considered for harmonization. Defaults to <code>level = 2</code>. See &#8216;Details&#8217; for more
@@ -230,7 +230,7 @@ if you find any issue.</p></td>
     Standard identification variables and their content are as follows:
 <ul>
 <li><p><code>dataset_id</code>. Identification code of the dataset in <em><strong>febr</strong></em> to which an observation belongs.</p></li>
-<li><p><code>observacao_id</code>. Identification code of an observation in <em><strong>febr</strong></em>.</p></li>
+<li><p><code>observacao_id</code>. Identification code of an observation in a dataset.</p></li>
 <li><p><code>camada_id</code>. Sequential layer number, from top to bottom.</p></li>
 <li><p><code>camada_nome</code>. Layer designation according to some standard description guide.</p></li>
 <li><p><code>amostra_id</code>. Laboratory number of a sample.</p></li>
@@ -238,16 +238,15 @@ if you find any issue.</p></td>
 <li><p><code>profund_inf</code>. Lower boundary of a layer (cm).</p></li>
 </ul>
 Further details about the content of the standard identification variables can be found in
-<a href='http://www.ufsm.br/febr/book/'>http://www.ufsm.br/febr/book/</a> (in Portuguese).
+<a href='https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM'>https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM</a> (in Portuguese).
     <h3>Harmonization</h3>
     Data harmonization consists of converting the values of a variable determined using some method <em>B</em> so
 that they are (approximately) equivalent to the values that would have been obtained if the standard method
 <em>A</em> had been used instead. For example, converting carbon content values obtained using a wet digestion
 method to the standard dry combustion method is data harmonization.
     A heuristic data harmonization procedure is implemented in the <strong>febr</strong> package. It consists of grouping
-variables
-based on a chosen number of levels of their identification code. For example, consider a variable with an
-identification code composed of four levels, <code>aaa_bbb_ccc_ddd</code>, where <code>aaa</code> is the first level and
+variables based on a chosen number of levels of their identification code. For example, consider a variable
+with an identification code composed of four levels, <code>aaa_bbb_ccc_ddd</code>, where <code>aaa</code> is the first level and
 <code>ddd</code> is the fourth level. Now consider a related variable, <code>aaa_bbb_eee_fff</code>. If the harmonization
 is to consider all four coding levels (<code>level = 4</code>), then these two variables will remain coded as
 separate variables. But if <code>level = 2</code>, then both variables will be re-coded as <code>aaa_bbb</code>, thus becoming the

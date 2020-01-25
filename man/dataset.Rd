@@ -21,8 +21,8 @@ A list of data frames or a data frame with data of the chosen dataset(s).
 }
 \description{
 Download data from the \emph{dataset} ("dataset") table of one or more datasets contained in the Free Brazilian
-Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This includes dataset name and
-description, author and institution names, dataset license, and much more.
+Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This includes dataset title and
+description, author and institution identification, dataset license, and much more.
 }
 \examples{
 res <- dataset(dataset = "ctb0003")

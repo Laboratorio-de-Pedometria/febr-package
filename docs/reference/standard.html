@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get <em>standard</em> table — standard • febr</title>
+<title>Get <em>standards</em> table — standard • febr</title>
 
 
 <!-- jquery -->
@@ -33,9 +33,9 @@
 
 
 
-<meta property="og:title" content="Get <em>standard</em> table — standard" />
-<meta property="og:description" content="Download data from the standard (&quot;febr-padrao&quot;) table of the Free Brazilian Repository for Open Soil Data" />
-<meta property="og:description" content="febr, http://www.ufsm.br/febr. This includes codes and names of variable, measurement units,
+<meta property="og:title" content="Get <em>standards</em> table — standard" />
+<meta property="og:description" content="Download data from the standards (&quot;padroes&quot;) table of the Free Brazilian Repository for Open Soil Data
+-- febr, http://www.ufsm.br/febr. This includes codes and names of variable, measurement units,
 number of decimal places, type of data, and description of analytical methods. This is used to standardize
 the data contained in a dataset when downloading it via layer or
 observation." />
@@ -111,17 +111,17 @@ observation." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get <em>standard</em> table</h1>
+    <h1>Get <em>standards</em> table</h1>
     <small class="dont-index">Source: <a href='https://github.com/febr-team/febr-package/blob/master/R/standard.R'><code>R/standard.R</code></a></small>
     <div class="hidden name"><code>standard.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <h3>Download data from the <em>standard</em> ("febr-padrao") table of the Free Brazilian Repository for Open Soil Data</h3>
-    <em><strong>febr</strong></em>, <a href='http://www.ufsm.br/febr'>http://www.ufsm.br/febr</a>. This includes codes and names of variable, measurement units,
+    <p>Download data from the <em>standards</em> ("padroes") table of the Free Brazilian Repository for Open Soil Data
+-- <em><strong>febr</strong></em>, <a href='http://www.ufsm.br/febr'>http://www.ufsm.br/febr</a>. This includes codes and names of variable, measurement units,
 number of decimal places, type of data, and description of analytical methods. This is used to standardize
 the data contained in a dataset when downloading it via <code><a href='layer.html'>layer</a></code> or
-<code><a href='observation.html'>observation</a></code>.
+<code><a href='observation.html'>observation</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>standard</span>(<span class='no'>table</span>, <span class='no'>variable</span>, <span class='no'>unit</span>, <span class='no'>precision</span>, <span class='no'>expr</span>)</pre>
@@ -152,7 +152,7 @@ general identification codes, e.g. <code>"ferro"</code> and <code>"carbono"</cod
     <tr>
       <th>expr</th>
       <td><p>(optional) Character string to be parsed and evaluated as a regular expression. For example,
-<code>"campo_precisao &gt; 0"</code>. Usage requires some knowledge of the structure of the <em>standard</em> table.</p></td>
+<code>"campo_precisao &gt; 0"</code>. Usage requires some knowledge of the structure of the <em>standards</em> table.</p></td>
     </tr>
     </table>
 
@@ -165,7 +165,8 @@ general identification codes, e.g. <code>"ferro"</code> and <code>"carbono"</cod
 <em>Manual de Métodos de Análise de Solo</em>. Brasília: Embrapa.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>The <em>standard</em> table at <a href='https://goo.gl/hi77sB'>https://goo.gl/hi77sB</a></p></div>
+    <div class='dont-index'><p>The <em>standards</em> table at
+<a href='https://docs.google.com/spreadsheets/d/1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI'>https://docs.google.com/spreadsheets/d/1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>standard</span>(<span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"ferro"</span>)

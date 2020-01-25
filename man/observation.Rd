@@ -29,7 +29,7 @@ single table for output. Requires \code{standardization = list(units = TRUE)} --
 \code{stack = FALSE}, the output being a list of tables.}
 
 \item{missing}{(optional) List with named sub-arguments indicating what should be done with an observation
-missing spatial coordinates, \code{coord}, date of observation, \code{time}, or data on variables, \code{data}? Options are
+missing spatial coordinates, \code{coord}, date of observation, \code{time}, or data on variables, \code{data}. Options are
 \code{"keep"} (default) and \code{"drop"}.}
 
 \item{standardization}{(optional) List with named sub-arguments indicating how to perform data
@@ -43,7 +43,7 @@ standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg
 \code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to
 \code{time.format = NULL}, i.e. no formatting is performed. See \code{\link[base]{as.Date}} for more
 details.
-\item \code{units} Logical value indicating if the measurement units of the continuous variable(s) should
+\item \code{units} Logical value indicating if the measurement unit(s) of the continuous variable(s) should
 be converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no conversion is
 performed. See \code{\link[febr]{standard}} for more information.
 \item \code{round} Logical value indicating if the values of the continuous variable(s) should be rounded
@@ -54,7 +54,7 @@ no rounding is performed. See \code{\link[febr]{standard}} for more information.
 \item{harmonization}{(optional) List with named sub-arguments indicating if and how to perform data
 harmonization.
 \itemize{
-\item \code{harmonize} Logical value indicating if data should be harmonized? Defaults to \code{harmonize = FALSE},
+\item \code{harmonize} Logical value indicating if data should be harmonized. Defaults to \code{harmonize = FALSE},
 i.e. no harmonization is performed.
 \item \code{level} Integer value indicating the number of levels of the identification code of the variable(s)
 that should be considered for harmonization. Defaults to \code{level = 2}. See \sQuote{Details} for more
@@ -82,27 +82,27 @@ much more. Use \code{\link[febr]{header}} if you want to check what are the vari
 Standard identification variables and their content are as follows:
 \itemize{
 \item \code{dataset_id}. Identification code of the dataset in \emph{\strong{febr}} to which an observation belongs.
-\item \code{observacao_id}. Identification code of an observation in \emph{\strong{febr}}.
+\item \code{observacao_id}. Identification code of an observation in a dataset.
 \item \code{sisb_id}. Identification code of an observation in the Brazilian Soil Information System
 maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
 \url{https://www.bdsolos.cnptia.embrapa.br/consulta_publica.html}.
 \item \code{ibge_id}. Identification code of an observation in the database of the Brazilian Institute
-of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/downloads_geociencias.htm#}.
+of Geography and Statistics (IBGE) at \url{https://www.ibge.gov.br/geociencias/downloads-geociencias.html}.
 \item \code{observacao_data}. Date (dd-mm-yyyy) in which an observation was made.
 \item \code{coord_sistema}. EPSG code of the coordinate reference system.
-\item \code{coord_x}. Longitude (°) or easting (m).
-\item \code{coord_y}. Latitude (°) or northing (m).
+\item \code{coord_x}. Longitude (deg) or easting (m).
+\item \code{coord_y}. Latitude (deg) or northing (m).
 \item \code{coord_precisao}. Precision with which x- and y-coordinates were determined (m).
 \item \code{coord_fonte}. Source of the x- and y-coordinates.
 \item \code{pais_id}. Country code (ISO 3166-1 alpha-2).
 \item \code{estado_id}. Code of the Brazilian federative unit where an observation was made.
-\item \code{municipio_id}. Name of the Brazilian county where as observation was made.
+\item \code{municipio_id}. Name of the Brazilian municipality where as observation was made.
 \item \code{amostra_tipo}. Type of sample taken.
 \item \code{amostra_quanti}. Number of samples taken.
 \item \code{amostra_area}. Sampling area.
 }
 Further details about the content of the standard identification variables can be found in
-\url{http://www.ufsm.br/febr/book/} (in Portuguese).
+\url{https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM} (in Portuguese).
 }
 
 \subsection{Harmonization}{
@@ -112,9 +112,8 @@ that they are (approximately) equivalent to the values that would have been obta
 method to the standard dry combustion method is data harmonization.
 
 A heuristic data harmonization procedure is implemented in the \strong{febr} package. It consists of grouping
-variables
-based on a chosen number of levels of their identification code. For example, consider a variable with an
-identification code composed of four levels, \code{aaa_bbb_ccc_ddd}, where \code{aaa} is the first level and
+variables based on a chosen number of levels of their identification code. For example, consider a variable
+with an identification code composed of four levels, \code{aaa_bbb_ccc_ddd}, where \code{aaa} is the first level and
 \code{ddd} is the fourth level. Now consider a related variable, \code{aaa_bbb_eee_fff}. If the harmonization
 is to consider all four coding levels (\code{level = 4}), then these two variables will remain coded as
 separate variables. But if \code{level = 2}, then both variables will be re-coded as \code{aaa_bbb}, thus becoming the

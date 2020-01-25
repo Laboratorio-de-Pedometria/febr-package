@@ -2,7 +2,7 @@
 % Please edit documentation in R/unit.R
 \name{unit}
 \alias{unit}
-\title{Get \emph{unit} table}
+\title{Get \emph{units} table}
 \usage{
 unit(source, target)
 }
@@ -15,7 +15,7 @@ unit(source, target)
 A data.frame with source and target measurement units and their corresponding conversion factors.
 }
 \description{
-Download data from the \emph{unit} ("unidade") table of the Free Brazilian Repository for Open Soil Data --
+Download data from the \emph{units} ("unidades") table of the Free Brazilian Repository for Open Soil Data --
 \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This includes measurement units and conversion factors. This
 is used to standardize the data contained in a dataset when downloading it via \code{\link[febr]{layer}} or
 \code{\link[febr]{observation}}.
@@ -29,7 +29,8 @@ Teixeira, P. C., Donagemma, G. K., Fontana, A., Teixeira, W. G. (2017)
 \emph{Manual de Métodos de Análise de Solo}. Brasília: Embrapa.
 }
 \seealso{
-The \emph{unit} table at \url{https://goo.gl/Vvvsf2}
+The \emph{unit} table at
+\url{https://docs.google.com/spreadsheets/d/1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}
