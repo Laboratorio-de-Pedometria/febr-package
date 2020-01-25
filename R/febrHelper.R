@@ -271,7 +271,7 @@
     return (res)
   }
 
-# Descarregar tabela 'febr-padrao' ----
+# Descarregar tabela 'febr-padroes' ---------------------------------------------------------------------------
 .getStds <-
   function (x) {
     
@@ -287,14 +287,15 @@
     na <- na[-which(na == "-")]
     res <- suppressMessages(
       googlesheets::gs_read_csv(
-        res, na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
+        ss = res, ws = 'padroes', # Identifica Sheet por seu nome
+        na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
     res <- as.data.frame(res)
     res$campo_precisao <- gsub(pattern = "-", NA_real_, res$campo_precisao)
     res$campo_precisao <- as.numeric(res$campo_precisao)
     return (res)
   }
 
-# Descarregar tabela 'febr-unidade' ----
+# Descarregar tabela 'febr-unidades' --------------------------------------------------------------------------
 .getUnits <-
   function (x) {
     
@@ -309,7 +310,8 @@
     na <- na[-which(na == "-")]
     res <- suppressMessages(
       googlesheets::gs_read_csv(
-        res, na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
+        ss = res, ws = 'unidades', # identifica Sheet por seu nome
+        na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
     res <- as.data.frame(res)
     return (res)
   }
