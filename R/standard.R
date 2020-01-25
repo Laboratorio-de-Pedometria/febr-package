@@ -1,8 +1,7 @@
-#' Get *standard* table
+#' Get *standards* table
 #'
-#' Download data from the *standard* ("febr-padrao") table of the Free Brazilian Repository for Open Soil Data
-#' --
-#' ___febr___, \url{http://www.ufsm.br/febr}. This includes codes and names of variable, measurement units, 
+#' Download data from the *standards* ("padroes") table of the Free Brazilian Repository for Open Soil Data
+#' -- ___febr___, \url{http://www.ufsm.br/febr}. This includes codes and names of variable, measurement units, 
 #' number of decimal places, type of data, and description of analytical methods. This is used to standardize 
 #' the data contained in a dataset when downloading it via \code{\link[febr]{layer}} or 
 #' \code{\link[febr]{observation}}.
@@ -20,7 +19,7 @@
 #' @param precision (optional) Integer vector indicating one or more number of decimal places.
 #' 
 #' @param expr (optional) Character string to be parsed and evaluated as a regular expression. For example, 
-#' `"campo_precisao > 0"`. Usage requires some knowledge of the structure of the *standard* table.
+#' `"campo_precisao > 0"`. Usage requires some knowledge of the structure of the *standards* table.
 #' 
 #' @return A data frame with standards for selected variable(s).
 #'
@@ -29,7 +28,8 @@
 #' *Manual de Métodos de Análise de Solo*. Brasília: Embrapa.
 #' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso The *standard* table at \url{https://goo.gl/hi77sB}
+#' @seealso The *standards* table at 
+#' \url{https://docs.google.com/spreadsheets/d/1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI}
 #' @export
 #' @examples
 # \donttest{

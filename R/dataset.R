@@ -1,8 +1,8 @@
 #' Get *dataset* table
 #'
 #' Download data from the *dataset* ("dataset") table of one or more datasets contained in the Free Brazilian
-#' Repository for Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}. This includes dataset name and
-#' description, author and institution names, dataset license, and much more.
+#' Repository for Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}. This includes dataset title and
+#' description, author and institution identification, dataset license, and much more.
 #'
 #' @template metadata_template
 #'

@@ -1,6 +1,6 @@
-#' Get *unit* table
+#' Get *units* table
 #' 
-#' Download data from the *unit* ("unidade") table of the Free Brazilian Repository for Open Soil Data --
+#' Download data from the *units* ("unidades") table of the Free Brazilian Repository for Open Soil Data --
 #' ___febr___, \url{http://www.ufsm.br/febr}. This includes measurement units and conversion factors. This 
 #' is used to standardize the data contained in a dataset when downloading it via \code{\link[febr]{layer}} or
 #' \code{\link[febr]{observation}}.
@@ -16,7 +16,8 @@
 #' *Manual de Métodos de Análise de Solo*. Brasília: Embrapa.
 #' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso The *unit* table at \url{https://goo.gl/Vvvsf2}
+#' @seealso The *unit* table at 
+#' \url{https://docs.google.com/spreadsheets/d/1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo}
 #' @export
 #' @examples
 # \donttest{

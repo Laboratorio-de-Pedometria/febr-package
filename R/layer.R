@@ -49,7 +49,7 @@
 #       disrupted layers (also called broken transition) in an observation when `broken.transition = "merge"`.
 #       Options are `"weighted.mean"` (default), `"mean"`, `"min"`, `"max"`, and `"median"`.
 #'       
-#' \item `units` Logical value indicating if the measurement units of the continuous variable(s) should
+#' \item `units` Logical value indicating if the measurement unit(s) of the continuous variable(s) should
 #'       be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
 #'       performed. See \code{\link[febr]{standard}} for more information.
 #' \item `round` Logical value indicating if the values of the continuous variable(s) should be rounded  
@@ -60,7 +60,7 @@
 #' @param harmonization (optional) List with named sub-arguments indicating if and how to perform data 
 #' harmonization.
 #' \itemize{
-#' \item `harmonize` Logical value indicating if data should be harmonized? Defaults to `harmonize = FALSE`, 
+#' \item `harmonize` Logical value indicating if data should be harmonized. Defaults to `harmonize = FALSE`, 
 #'       i.e. no harmonization is performed.
 #' \item `level` Integer value indicating the number of levels of the identification code of the variable(s) 
 #'       that should be considered for harmonization. Defaults to `level = 2`. See \sQuote{Details} for more
@@ -72,7 +72,7 @@
 #' Standard identification variables and their content are as follows:
 #' \itemize{
 #' \item \code{dataset_id}. Identification code of the dataset in ___febr___ to which an observation belongs.
-#' \item \code{observacao_id}. Identification code of an observation in ___febr___.
+#' \item \code{observacao_id}. Identification code of an observation in a dataset.
 #' \item \code{camada_id}. Sequential layer number, from top to bottom.
 #' \item \code{camada_nome}. Layer designation according to some standard description guide.
 #' \item \code{amostra_id}. Laboratory number of a sample.
@@ -80,7 +80,7 @@
 #' \item \code{profund_inf}. Lower boundary of a layer (cm).
 #' }
 #' Further details about the content of the standard identification variables can be found in 
-#' \url{http://www.ufsm.br/febr/book/} (in Portuguese).
+#' \url{https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM} (in Portuguese).
 #' }
 #' 
 #' \subsection{Harmonization}{
@@ -89,10 +89,9 @@
 #' *A* had been used instead. For example, converting carbon content values obtained using a wet digestion
 #' method to the standard dry combustion method is data harmonization.
 #' 
-#' A heuristic data harmonization procedure is implemented in the **febr** package. It consists of grouping
-#' variables 
-#' based on a chosen number of levels of their identification code. For example, consider a variable with an 
-#' identification code composed of four levels, `aaa_bbb_ccc_ddd`, where `aaa` is the first level and
+#' A heuristic data harmonization procedure is implemented in the __febr__ package. It consists of grouping
+#' variables based on a chosen number of levels of their identification code. For example, consider a variable
+#' with an identification code composed of four levels, `aaa_bbb_ccc_ddd`, where `aaa` is the first level and
 #' `ddd` is the fourth level. Now consider a related variable, `aaa_bbb_eee_fff`. If the harmonization
 #' is to consider all four coding levels (`level = 4`), then these two variables will remain coded as
 #' separate variables. But if `level = 2`, then both variables will be re-coded as `aaa_bbb`, thus becoming the

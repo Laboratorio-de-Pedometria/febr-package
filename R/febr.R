@@ -1,8 +1,11 @@
 #' Get all dataset tables
 #' 
 #' Download data from the *dataset* ("dataset"), *observation* ("observacao"), *layer* ("camada"), and 
-#' *metadata* ("metadado") tables of a datasets contained in the Free Brazilian Repository for Open Soil Data 
+#' *metadata* ("metadado") tables of a dataset contained in the Free Brazilian Repository for Open Soil Data 
 #' -- ___febr___, \url{http://www.ufsm.br/febr}.
+#' 
+#' Character vector indicating one dataset. The identification code should be as recorded in 
+#' \url{http://www.ufsm.br/febr/catalog/}.
 #' 
 #' @template metadata_template
 #' 

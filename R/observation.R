@@ -10,7 +10,7 @@
 #' @template metadata_template
 #' 
 #' @param missing (optional) List with named sub-arguments indicating what should be done with an observation
-#' missing spatial coordinates, `coord`, date of observation, `time`, or data on variables, `data`? Options are
+#' missing spatial coordinates, `coord`, date of observation, `time`, or data on variables, `data`. Options are
 #' `"keep"` (default) and `"drop"`.
 #'
 #' @param standardization (optional) List with named sub-arguments indicating how to perform data 
@@ -24,7 +24,7 @@
 #'       \code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to 
 #'       `time.format = NULL`, i.e. no formatting is performed. See \code{\link[base]{as.Date}} for more 
 #'       details.
-#' \item `units` Logical value indicating if the measurement units of the continuous variable(s) should
+#' \item `units` Logical value indicating if the measurement unit(s) of the continuous variable(s) should
 #'       be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
 #'       performed. See \code{\link[febr]{standard}} for more information.
 #' \item `round` Logical value indicating if the values of the continuous variable(s) should be rounded  
@@ -35,7 +35,7 @@
 #' @param harmonization (optional) List with named sub-arguments indicating if and how to perform data 
 #' harmonization.
 #' \itemize{
-#' \item `harmonize` Logical value indicating if data should be harmonized? Defaults to `harmonize = FALSE`,
+#' \item `harmonize` Logical value indicating if data should be harmonized. Defaults to `harmonize = FALSE`,
 #'       i.e. no harmonization is performed.
 #' \item `level` Integer value indicating the number of levels of the identification code of the variable(s) 
 #'       that should be considered for harmonization. Defaults to `level = 2`. See \sQuote{Details} for more
@@ -47,27 +47,27 @@
 #' Standard identification variables and their content are as follows:
 #' \itemize{
 #' \item `dataset_id`. Identification code of the dataset in ___febr___ to which an observation belongs.
-#' \item `observacao_id`. Identification code of an observation in ___febr___.
+#' \item `observacao_id`. Identification code of an observation in a dataset.
 #' \item `sisb_id`. Identification code of an observation in the Brazilian Soil Information System
 #' maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
 #' \url{https://www.bdsolos.cnptia.embrapa.br/consulta_publica.html}.
 #' \item `ibge_id`. Identification code of an observation in the database of the Brazilian Institute
-#' of Geography and Statistics (IBGE) at \url{http://www.downloads.ibge.gov.br/downloads_geociencias.htm#}.
+#' of Geography and Statistics (IBGE) at \url{https://www.ibge.gov.br/geociencias/downloads-geociencias.html}.
 #' \item `observacao_data`. Date (dd-mm-yyyy) in which an observation was made.
 #' \item `coord_sistema`. EPSG code of the coordinate reference system.
-#' \item `coord_x`. Longitude (°) or easting (m).
-#' \item `coord_y`. Latitude (°) or northing (m).
+#' \item `coord_x`. Longitude (deg) or easting (m).
+#' \item `coord_y`. Latitude (deg) or northing (m).
 #' \item `coord_precisao`. Precision with which x- and y-coordinates were determined (m).
 #' \item `coord_fonte`. Source of the x- and y-coordinates.
 #' \item `pais_id`. Country code (ISO 3166-1 alpha-2).
 #' \item `estado_id`. Code of the Brazilian federative unit where an observation was made.
-#' \item `municipio_id`. Name of the Brazilian county where as observation was made.
+#' \item `municipio_id`. Name of the Brazilian municipality where as observation was made.
 #' \item `amostra_tipo`. Type of sample taken.
 #' \item `amostra_quanti`. Number of samples taken.
 #' \item `amostra_area`. Sampling area.
 #' }
 #' Further details about the content of the standard identification variables can be found in 
-#' \url{http://www.ufsm.br/febr/book/} (in Portuguese).
+#' \url{https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM} (in Portuguese).
 #' }
 #' 
 #' \subsection{Harmonization}{
@@ -77,9 +77,8 @@
 #' method to the standard dry combustion method is data harmonization.
 #' 
 #' A heuristic data harmonization procedure is implemented in the **febr** package. It consists of grouping
-#' variables 
-#' based on a chosen number of levels of their identification code. For example, consider a variable with an 
-#' identification code composed of four levels, `aaa_bbb_ccc_ddd`, where `aaa` is the first level and
+#' variables based on a chosen number of levels of their identification code. For example, consider a variable
+#' with an identification code composed of four levels, `aaa_bbb_ccc_ddd`, where `aaa` is the first level and
 #' `ddd` is the fourth level. Now consider a related variable, `aaa_bbb_eee_fff`. If the harmonization
 #' is to consider all four coding levels (`level = 4`), then these two variables will remain coded as
 #' separate variables. But if `level = 2`, then both variables will be re-coded as `aaa_bbb`, thus becoming the
