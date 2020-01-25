@@ -1,3 +1,7 @@
+# Version 1.0.3 (2020-01-24)
+
+* New version (patch) including internal changes in download functions.
+
 # Version 1.0.2.9001 (2020-01-24)
 
 * Preparing for future modifications in data storage in ___febr___. Now the sheet name (`dataset`, 
