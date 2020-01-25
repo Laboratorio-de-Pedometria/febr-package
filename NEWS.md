@@ -1,6 +1,6 @@
-# Version 1.0.3 (2020-01-24)
+# Version 1.0.3 (2020-01-25)
 
-* New version (patch) including internal changes in download functions.
+* New version (patch) including internal changes in download functions and documentation improvements.
 
 # Version 1.0.2.9001 (2020-01-24)
 

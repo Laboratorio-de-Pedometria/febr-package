@@ -2,7 +2,7 @@
 
 This is a patch. It consists of a minor internal modification in all download functions as to cope with 
 changes in data storage in the Free Brazilian Repository for Open Soil Data (___febr___) that will be
-implemented in the near future.
+implemented in the near future. It also includes documentation improvements.
 
 When tested locally -- x86_64-pc-linux-gnu --, two examples needed more that five seconds to run during an 
 `R CMD check`. However, when tested on travis-ci and win-builder, these examples where run in less than five 
@@ -14,12 +14,10 @@ seconds. The long time needed to run locally likely is due to the relatively poo
 * OK: travis-ci, x86_64-pc-linux-gnu (64-bit), Ubuntu 14.04.5 LTS, R 3.6.2
 * OK: winbuilder, x86_64-w64-mingw32 (64-bit), Windows, R 3.5.3
 * OK: winbuilder, x86_64-w64-mingw32 (64-bit), Windows, R 3.6.2
+* OK: winbuilder, x86_64-w64-mingw32 (64-bit), Windows, R Under development (unstable)
 * OK: rhub, Windows Server 2008 R2 SP1, R-devel, 32/64 bit
 * FAIL: rhub, Ubuntu Linux 16.04 LTS, R-release, GCC
 * FAIL: rhub, Fedora Linux, R-devel, clang, gfortran
-
-
-* OK: winbuilder, x86_64-w64-mingw32 (64-bit), Windows, R Under development (unstable)
 
 Failure in rhub test environments are due to missing software and package dependencies in those test
 environments.
