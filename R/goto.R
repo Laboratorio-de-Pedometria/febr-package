@@ -3,14 +3,15 @@
 #' Go to one of the web pages of the Free Brazilian Repository for Open Soil Data -- ___febr___ --, including
 #' project and dataset web pages.
 #' 
-#' @param dataset Character vector indicating one dataset. The identification code should be as recorded
-#' in \url{http://www.ufsm.br/febr/catalog/}.
+#' @param dataset (optional) Character vector indicating one dataset. The identification code should be as
+#' recorded in \url{http://www.ufsm.br/febr/catalog/}.
 #' 
-#' @param table Character string indicating a table, i.e. the *dataset* table, `"dataset"`, the *observation*
-#' table, `"observacao"`, the *layer* table, `"camada"`, or the *metadata* table, `"metadado"`.
+#' @param table (optional) Character string indicating a table, i.e. the *dataset* table, `"dataset"`, the
+#' *observation* table, `"observacao"`, the *layer* table, `"camada"`, or the *metadata* table, `"metadado"`.
 #' 
-#' @param page Character string indicating a web page of the ___febr___. Options are: `"febr"`, `"view"`,
-#' `"catalog"`, `"search"`, `"book"`, `"package"`, `"github"`, `"forum"`, `"unit"`, and `"standard"`.
+#' @param page (optional) Character string indicating a web page of the ___febr___. Options are: `"febr"`,
+#' `"view"`, `"catalog"`, `"search"`, `"book"`, `"package"`, `"github"`, `"forum"`, `"units"`, `"standards"`,
+#' and `"index"`.
 #' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
@@ -47,7 +48,8 @@ goto <-
       if (!is.character(page)) {
         stop (glue::glue("object of class '{class(page)}' passed to argument 'page'"))
       }
-      ops <- c("febr", "view", "catalog", "search", "book", "package", "github", "forum", "unit", "standard")
+      ops <- c("febr", "view", "catalog", "search", "book", "package", "github", "forum", "units", "standards",
+               "index", "template")
       if (!page %in% ops) {
         stop (glue::glue("unknown value '{page}' passed to argument 'page'"))
       }
@@ -66,10 +68,12 @@ goto <-
           url <- "http://coral.ufsm.br/febr/catalog/"
         },
         search = {
-          url <- "http://coral.ufsm.br/febr/search"
+          # url <- "http://coral.ufsm.br/febr/search"
+          url <- 'https://pedometria.shinyapps.io/febr/'
         },
         book = {
-          url <- "http://coral.ufsm.br/febr/book/"
+          # url <- "http://coral.ufsm.br/febr/book/"
+          url <- 'https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM'
         },
         package = {
           url <- "https://febr-team.github.io/febr-package/"
@@ -80,11 +84,17 @@ goto <-
         forum = {
           url <- "https://groups.google.com/forum/#!forum/febr-forum"
         },
-        unit = {
-          url <- "https://goo.gl/Vvvsf2"
+        units = {
+          url <- "https://docs.google.com/spreadsheets/d/1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo"
         },
-        standard = {
-          url <- "https://goo.gl/hi77sB"
+        standards = {
+          url <- "https://docs.google.com/spreadsheets/d/1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI"
+        },
+        index = {
+          url <- "https://docs.google.com/spreadsheets/d/1Z0JwcmRRUDCyTB9yFlvHPsN6mCSQPzSczIOv88SPtcw"
+        },
+        template = {
+          url <- "https://docs.google.com/spreadsheets/d/1crDNClXIzAuZNQLILKMMYk9rgCdYsZimX2Z2dKK6Ivo"
         }
       )
       
