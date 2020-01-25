@@ -104,7 +104,7 @@ header <-
       
       # DESCARREGAMENTO
       ## Cabeçalho com unidades de medida
-      tmp <- .getHeader(x = sheets_keys[[table]][i])
+      tmp <- .getHeader(x = sheets_keys[[table]][i], ws = table) # identifica Sheet com seu nome
       
       # COLUNAS
       ## Definir as colunas a serem mantidas

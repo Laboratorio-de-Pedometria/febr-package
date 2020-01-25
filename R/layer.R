@@ -324,7 +324,7 @@ layer <-
       
       # DESCARREGAMENTO
       ## Cabeçalho com unidades de medida
-      unit <- .getHeader(x = sheets_keys$camada[i])
+      unit <- .getHeader(x = sheets_keys$camada[i], ws = 'camada') # identifica Sheet com seu nome
       
       ## Dados
       tmp <- .getTable(x = sheets_keys$camada[i], ws = 'camada')

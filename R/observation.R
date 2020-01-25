@@ -279,7 +279,7 @@ observation <-
       
       # DESCARREGAMENTO
       ## Cabeçalho com unidades de medida
-      unit <- .getHeader(x = sheets_keys$observacao[i])
+      unit <- .getHeader(x = sheets_keys$observacao[i], ws = 'observacao') # identifica Sheet com seu nome
       
       ## Dados
       tmp <- .getTable(x = sheets_keys$observacao[i], ws = 'observacao')
