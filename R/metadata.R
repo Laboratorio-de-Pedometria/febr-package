@@ -61,15 +61,17 @@ metadata <-
       dts <- sheets_keys$ctb[i]
       if (verbose) {
         par <- ifelse(progress, "\n", "")
-        message(paste(par, "Downloading dataset ", dts, "...", sep = ""))
+        message(paste(par, "Downloading ", dts, "-metadado...", sep = ""))
       }
       
-      tmp <- googlesheets::gs_key(stats::na.omit(sheets_keys$metadado)[i], verbose = FALSE)
+      # tmp <- googlesheets::gs_key(stats::na.omit(sheets_keys$metadado)[i], verbose = FALSE)
+      # tmp <- suppressMessages(
+      #   googlesheets::gs_read_csv(
+      #     ss = tmp, ws = 'metadado', # identifica Sheet por seu nome
+      #     na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
+      # )
       tmp <- suppressMessages(
-        googlesheets::gs_read_csv(
-          ss = tmp, ws = 'metadado', # identifica Sheet por seu nome
-          na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
-      )
+        googlesheets4::read_sheet(ss = sheets_keys$dataset[i], sheet = 'metadado', na = na = opts$gs$na))
 
       # Dados processadas
       obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
