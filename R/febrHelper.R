@@ -273,25 +273,25 @@
 
 # Descarregar tabela 'febr-padroes' ---------------------------------------------------------------------------
 .getStds <-
-  function (x) {
+  function (x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI") {
     
-    # Chave de identificação da tabela com padrões
-    x <- "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI"
-    res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+    # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
     
     # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não pode ser
     # lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é possível realizar a
     # padronização das unidades de medida quando descarregamos variáveis sem unidades de medida.
     # Contudo, no campo 'campo_precisao', '-' significa NA.
-    na <- .opt()$gs$na
-    na <- na[-which(na == "-")]
-    res <- suppressMessages(
-      googlesheets::gs_read_csv(
-        ss = res, ws = 'padroes', # Identifica Sheet por seu nome
-        na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
+    # na <- .opt()$gs$na
+    # na <- na[-which(na == "-")]
+    # res <- suppressMessages(
+      # googlesheets::gs_read_csv(
+        # ss = res, ws = 'padroes', # Identifica Sheet por seu nome
+        # na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
+    
+    res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'padroes'))
     res <- as.data.frame(res)
-    res$campo_precisao <- gsub(pattern = "-", NA_real_, res$campo_precisao)
-    res$campo_precisao <- as.numeric(res$campo_precisao)
+    res$campo_precisao <- gsub(pattern = "-", NA, res$campo_precisao)
+    res$campo_precisao <- suppressWarnings(as.numeric(res$campo_precisao))
     return (res)
   }
 
@@ -338,7 +338,7 @@
     }
     return (sheets_keys)
   }
-# Download sheets keys ----
+# Descarregar tabela 'febr-chaves' ----------------------------------------------------------------------------
 .getSheetsKeys <- 
   function (x = "18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", dataset) {
     
