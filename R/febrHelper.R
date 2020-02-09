@@ -340,14 +340,15 @@
   }
 # Download sheets keys ----
 .getSheetsKeys <- 
-  function (key = "18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", dataset) {
+  function (x = "18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", dataset) {
     
     # Options
-    opts <- .opt()
-    
-    sheets_keys <- googlesheets::gs_key(x = key, verbose = opts$gs$verbose)
-    sheets_keys <- suppressMessages(
-      googlesheets::gs_read(sheets_keys, na = opts$gs$na, verbose = opts$gs$verbose))
+    # opts <- .opt()
+    # 
+    # sheets_keys <- googlesheets::gs_key(x = key, verbose = opts$gs$verbose)
+    # sheets_keys <- suppressMessages(
+    #   googlesheets::gs_read(sheets_keys, na = opts$gs$na, verbose = opts$gs$verbose))
+    sheets_keys <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'chaves'))
     sheets_keys <- .getDataset(sheets_keys = sheets_keys, dataset = dataset)
     sheets_keys <- sheets_keys[order(sheets_keys$ctb), ]
     
