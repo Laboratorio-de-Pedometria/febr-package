@@ -297,21 +297,20 @@
 
 # Descarregar tabela 'febr-unidades' --------------------------------------------------------------------------
 .getUnits <-
-  function (x) {
+  function (x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo") {
     
-    # Chave de identificação da tabela com unidade de medida
-    x <- "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo"
-    res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
-    
-    # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não pode ser
-    # lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é possível realizar a
-    # padronização das unidades de medida quando descarregamos variáveis sem unidades de medida.
-    na <- .opt()$gs$na
-    na <- na[-which(na == "-")]
-    res <- suppressMessages(
-      googlesheets::gs_read_csv(
-        ss = res, ws = 'unidades', # identifica Sheet por seu nome
-        na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
+    # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+    # 
+    # # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não pode ser
+    # # lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é possível realizar a
+    # # padronização das unidades de medida quando descarregamos variáveis sem unidades de medida.
+    # na <- .opt()$gs$na
+    # na <- na[-which(na == "-")]
+    # res <- suppressMessages(
+    #   googlesheets::gs_read_csv(
+    #     ss = res, ws = 'unidades', # identifica Sheet por seu nome
+    #     na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
+    res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'unidades'))
     res <- as.data.frame(res)
     return (res)
   }
