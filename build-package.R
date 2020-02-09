@@ -17,9 +17,10 @@ devtools::run_examples()
 # spelling::update_wordlist()
 devtools::check_rhub()
 
-# check the package for Linux and Windows
+# check the package for Linux (local)
 devtools::check(document = TRUE, manual = TRUE, force_suggests = TRUE, run_dont_test = TRUE)
 
+# check the package for Windows (remote)
 devtools::check_win_devel()
 devtools::check_win_release()
 devtools::check_win_oldrelease()

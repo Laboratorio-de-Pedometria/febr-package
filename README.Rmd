@@ -18,6 +18,7 @@ pkg.info <-
 [![packageversion](https://img.shields.io/badge/devel%20version-`r pkg.info["Version"]`-firebrick.svg?style=flat-square)](commits/master)
 [![Build Status](https://travis-ci.org/febr-team/febr-package.svg?branch=master)](https://travis-ci.org/febr-team/febr-package)
 [![CRAN](https://www.r-pkg.org/badges/version/febr)](https://cran.r-project.org/package=febr)
+[![cran checks](https://cranchecks.info/badges/worst/febr)](https://cran.r-project.org/web/checks/check_results_febr.html)
 [![Rdoc](http://www.rdocumentation.org/badges/version/febr)](http://www.rdocumentation.org/packages/febr)
 [![Downloads](http://cranlogs.r-pkg.org/badges/febr?color=brightgreen)](http://www.r-pkg.org/pkg/febr)
 
