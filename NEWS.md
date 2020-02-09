@@ -1,3 +1,7 @@
+# Version 1.0.3.9000 (2020-02-09)
+
+* Replacing __googlesheets__ with __googlesheets4__.
+
 # Version 1.0.3 (2020-01-25)
 
 * New version (patch) including internal changes in download functions and documentation improvements.
