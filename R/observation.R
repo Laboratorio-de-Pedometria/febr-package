@@ -90,9 +90,10 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \code{\link[febr]{layer}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
 #' @export
+#' 
 #' @examples
-#' \donttest{
-#' res <- observation(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
+# \donttest{
+# res <- observation(dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon")
 #' res <- observation(dataset = "ctb0013", variable = "taxon")
 #' str(res)
 # }
@@ -273,7 +274,7 @@ observation <-
       dts <- sheets_keys$ctb[i]
       if (verbose) {
         par <- ifelse(progress, "\n", "")
-        message(paste(par, "Downloading dataset ", dts, "...", sep = ""))
+        message(paste(par, "Downloading ", dts, "-observacao...", sep = ""))
       }
       
       # DESCARREGAMENTO

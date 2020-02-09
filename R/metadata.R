@@ -71,7 +71,7 @@ metadata <-
       #     na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
       # )
       tmp <- suppressMessages(
-        googlesheets4::read_sheet(ss = sheets_keys$dataset[i], sheet = 'metadado', na = na = opts$gs$na))
+        googlesheets4::read_sheet(ss = sheets_keys$dataset[i], sheet = 'metadado', na = opts$gs$na))
 
       # Dados processadas
       obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)

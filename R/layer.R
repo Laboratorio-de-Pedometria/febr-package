@@ -105,7 +105,7 @@
 #' @export
 #' @examples
 # \donttest{
-# res <- layer(dataset = paste("ctb000", 4:9, sep = ""))
+#' res <- layer(dataset = paste("ctb000", 4:9, sep = ""))
 #' res <- layer(dataset = "ctb0013")
 #' str(res)
 # }
@@ -283,8 +283,6 @@ layer <-
     ## Descarregar tabela com unidades de medida e número de casas decimais quando padronização é solicitada
     ## ou quando empilhamento é solicitado
     if (standardization$units || stack) {
-      # febr_stds <- .getTable(x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI")
-      # febr_unit <- .getTable(x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo")
       febr_stds <- .getStds()
       febr_unit <- .getUnits()
     }
@@ -318,7 +316,7 @@ layer <-
       dts <- sheets_keys$ctb[i]
       if (verbose) {
         par <- ifelse(progress, "\n", "")
-        message(paste(par, "Downloading dataset ", dts, "...", sep = ""))
+        message(paste(par, "Downloading ", dts, "-camada...", sep = ""))
       }
       
       # DESCARREGAMENTO

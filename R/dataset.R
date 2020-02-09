@@ -58,7 +58,7 @@ dataset <-
       dts <- sheets_keys$ctb[i]
       if (verbose) {
         par <- ifelse(progress, "\n", "")
-        message(paste(par, "Downloading ", dts, "-dataset..."))
+        message(paste(par, "Downloading ", dts, "-dataset...", sep = ""))
       }
       
       # tmp <- googlesheets::gs_key(sheets_keys$dataset[i], verbose = FALSE)
@@ -69,7 +69,7 @@ dataset <-
       #   )
       # )
       tmp <- suppressMessages(
-        googlesheets4::read_sheet(ss = sheets_keys$dataset[i], sheet = 'dataset', na = na = opts$gs$na))
+        googlesheets4::read_sheet(ss = sheets_keys$dataset[i], sheet = 'dataset', na = opts$gs$na))
 
       # Dados processados
       obs[[i]] <- as.data.frame(tmp)

@@ -50,28 +50,28 @@ febr <-
     ## Descarregar tabela 'dataset'
     if (verbose) {
       #message(glue::glue("Downloading table {dataset}-dataset..."))
-      message(paste("Downloading table ", dataset, "-dataset...", sep = ""))
+      message(paste("Downloading ", dataset, "-dataset...", sep = ""))
     }
     dts <- dataset(dataset = dataset, progress = progress, verbose = FALSE)
     
     ## Descarregar tabela 'observacao'
     if (verbose) {
       #message(glue::glue("Downloading table {dataset}-observacao..."))
-      message(paste("Downloading table ", dataset, "-observacao...", sep = ""))
+      message(paste("Downloading ", dataset, "-observacao...", sep = ""))
     }
     obs <- observation(dataset = dataset, progress = progress, verbose = FALSE, ...)
     
     ## Descarregar tabela 'camada'
     if (verbose) {
       #message(glue::glue("Downloading table {dataset}-camada..."))
-      message(paste("Downloading table ", dataset, "-camada...", sep = ""))
+      message(paste("Downloading ", dataset, "-camada...", sep = ""))
     }
     lyr <- layer(dataset = dataset, progress = progress, verbose = FALSE, ...)
     
     ## Descarregar tabela 'metadado'
     if (verbose) {
       #message(glue::glue("Downloading table {dataset}-metadado..."))
-      message(paste("Downloading table ", dataset, "-metadado...", sep = ""))
+      message(paste("Downloading ", dataset, "-metadado...", sep = ""))
     }
     mtd <- try(metadata(dataset = dataset, progress = progress, verbose = FALSE))
     

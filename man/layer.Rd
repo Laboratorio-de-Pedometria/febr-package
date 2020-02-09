@@ -129,6 +129,7 @@ same variable.
 }
 }
 \examples{
+res <- layer(dataset = paste("ctb000", 4:9, sep = ""))
 res <- layer(dataset = "ctb0013")
 str(res)
 }
