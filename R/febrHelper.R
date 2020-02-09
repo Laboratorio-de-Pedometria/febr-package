@@ -245,16 +245,16 @@
 # Descarregar cabeçalho das tabelas 'camada' e observacao' ----
 .getHeader <- 
   function (x, ws) {
-    res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+    # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
     # nmax <- 1
-    nmax <- 2
-    res <- suppressMessages(
-      googlesheets::gs_read_csv(
-        ss = res, ws = ws, 
-        locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, n_max = nmax)
-      )
+    # nmax <- 2
+    # res <- suppressMessages(
+      # googlesheets::gs_read_csv(
+        # ss = res, ws = ws, 
+        # locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, n_max = nmax)
+      # )
+    res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = ws, n_max = 2, col_types = 'c'))
     res <- as.data.frame(res)
-    # res[1, ] <- gsub("#unidade", "-", res[1, ])
     return (res)
   }
 

@@ -17,6 +17,7 @@ Imports:
   dplyr,
   glue,
   googlesheets,
+  googlesheets4,
   pedometrics,
   readr,
   sp,
