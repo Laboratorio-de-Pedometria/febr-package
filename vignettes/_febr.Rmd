@@ -226,16 +226,15 @@ febr::header(
   t()
 ```
 
-Agora que conhecemos as variáveis contidas na tabela `observacao` do conjunto de dados `ctb0003`, é possível proceder com seu descarregamento usando a função `observation`. Vamos solicitar que seja retornada apenas a variável `taxon` para, em seguida, após criar um objeto de classe `SpatialPointsDataFrame` com a função `febr2sp`, visualizar sua distribuição espacial usando a função `spplot` do pacote `sp`:
+Agora que conhecemos as variáveis contidas na tabela `observacao` do conjunto de dados `ctb0003`, é possível proceder com seu descarregamento usando a função `observation`. Vamos solicitar que seja retornada apenas a variável `taxon` para, em seguida, após criar um objeto de classe `Simple Feature` com a função `febr2sf`, visualizar sua distribuição espacial usando a função `plot`:
 
 ```{r, fig.asp=1}
 febr::observation(
   dataset = "ctb0003",
   variable = "taxon",
   progress = FALSE, verbose = FALSE) %>% 
-  febr2sp() %>%
-  spplot(zcol = "taxon_sibcs_2009", auto.key = list(columns = 3), scales = list(draw = TRUE)) +
-  latticeExtra::layer(panel.grid(v = -1, h = -1))
+  febr2sf() %>%
+  plot(.["taxon_sibcs_2009"], axes = TRUE, graticule = TRUE)
 ```
 
 Um argumento bastante útil da função `observation` é `missing`. Esse argumento aceita uma lista contendo especificações sobre como proceder caso alguma das observações não possua coordenadas espaciais (`coord`), data de observação (`time`), ou dados para uma ou mais das demais variáveis (`data`). O comportamento padrão do argumento `missing` consiste em retornar todas as observações, independentemente de possuírem ou não quaisquer dados. Alternativamente, pode-se solicitar que apenas as observações com dados sejam retornadas. Isso seria necessário, por exemplo, para o tratamento espacial dos dados do conjunto de dados `ctb0036`, que não possui coordenadas espaciais para algumas das suas observações. O valor `coord = "drop"` precisa ser passado para o argumento `missing` para que as observações sem coordenadas espaciais sejam excluídas -- definição equivalente é usada para excluir observações sem data de observação -- `time = "drop"` -- ou dados para uma ou mais variáveis -- `data = "drop"`. Vejamos a seguir como proceder:
@@ -245,8 +244,8 @@ febr::observation(
   dataset = "ctb0036",
   missing = list(coord = "drop", time = "drop"),
   progress = FALSE, verbose = FALSE) %>%
-  febr2sp() %>%
-  plot();box();grid();axis(1);axis(2)
+  febr2sf() %>%
+  plot()
 ```
 
 Um argumento compartilhado por muitas das funções do pacote `febr` é `stack`. Esse argumento permite que, ao descarregarmos duas ou mais tabelas de dados, as mesmas sejam empilhadas, formando uma única tabela de dados retornada como objeto de classe `data.frame`. Contudo, é bastante comum que os conjuntos de dados utilizem sistema de referência de coordenadas (`crs`, do inglês *coordinate reference system*) distintos. Esse é o caso de `ctb0003` -- coordenadas geográficas -- e `ctb0036` -- coordenadas métricas (veja figuras acima). Portanto, antes de empilhar a tabela `observacao` de ambos os conjuntos de dados, precisamos padronizar o sistema de referência de coordenadas.
@@ -417,7 +416,7 @@ febr::layer(
 
 A última função de acesso é `febr`. Ela serve para descarregar todos os dados e metadados de um conjunto de dados. O comportamento padrão consiste em retornar um objeto de classe `list`, onde cada item é constituído por uma das tabelas do conjunto de dados: `dataset`, `observacao`, `camada`, e `metadado`. Contudo, é possível usar o argumento `merge` para solicitar que as tabelas `observacao` e `camada` sejam fundidas usando como critério a identificação das observações (`observacao_id`) -- nesse caso o item da lista passa a se chamar `data`. Isso permite que os dados sejam utilizados, por exemplo, para a modelagem espacial. Vejamos como fazer isso no caso do conjunto de dados `ctb0003`: 
 
-```{r, fig.asp=1}
+```{r, fig.asp=1, eval=FALSE}
 dts <-
   febr::febr(
     dataset = "ctb0003", 
@@ -426,7 +425,7 @@ dts <-
     progress = FALSE, verbose = FALSE)
 dts$data %>% 
   mutate(carbono = carbono_dicromato_30min150_mohr - mean(carbono_dicromato_30min150_mohr)) %>% 
-  febr2sp() %>% 
+  febr2sf() %>% 
   bubble(zcol = "carbono", main = "Carbono orgânico (g/kg)",
          scales = list(draw = TRUE)) +
   latticeExtra::layer(lattice::panel.grid(v = -1, h = -1))

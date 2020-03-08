@@ -1,13 +1,13 @@
-#' Create an object of class `SpatialPointsDataFrame`
+#' Create an sf object
 #' 
-#' Set spatial coordinates and projection attributes to create an object of class `SpatialPointsDataFrame` from
-#' the *observation* ("observacao") table of one or more standardized datasets contained in the Free Brazilian
-#' Repository for Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}.
+#' Set spatial coordinates and projection attributes to create an sf object from the *observation* 
+#' ("observacao") table of one or more standardized datasets contained in the Free Brazilian Repository for 
+#' Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}.
 #' 
 #' @param obj Object of class `data.frame` downloaded from ___febr___ using function
 #' \code{\link[febr]{observation}}.
 #' 
-#' @return An object of class `SpatialPointsDataFrame`
+#' @return An sf object
 #' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export

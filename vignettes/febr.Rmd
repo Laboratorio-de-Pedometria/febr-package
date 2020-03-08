@@ -138,13 +138,13 @@ tudo <- febr::febr(
 
 As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de acesso, assim apoiando o processamento e uso dos dados descarregados do ___febr___, por exemplo, a criação de objetos de outras classes e a exportação dos dados.
 
-A função `febr2spdf` serve para criar um objeto de classe `SpatialPointsDataFrame` [@sp] a partir da tabela `observacao` descarregada usando a função `observation`. O código a seguir demonstra como fazer isso -- note que as funções do pacote `febr` são compatíveis com o uso do operador `%>%` do pacote `magrittr` [@magrittr]:
+A função `febr2sf` serve para criar um objeto do tipo _simple feature_  [@sp] a partir da tabela `observacao` descarregada usando a função `observation`. O código a seguir demonstra como fazer isso -- note que as funções do pacote `febr` são compatíveis com o uso do operador `%>%` do pacote `magrittr` [@magrittr]:
 
 ```{r}
 library(magrittr)
 obs <- 
   febr::observation(dataset = "ctb0003", variable = "taxon") %>% 
-  febr::febr2spdf()
+  febr::febr2sf()
 ```
 
 Já a função `febr2xlsx` -- construída sobre funções do pacote `xlsx` [@xlsx] -- serve para escrever os dados de um conjunto de dados para um arquivo XLSX no disco rígido. No caso específico da função `febr`, que retorna um objeto de classe `list` composto de itens de classe `data.frame`, a função `febr2xlsx` escreve cada um dos `data.frame`s em uma planilha individual do mesmo arquivo XLSX. Por exemplo,

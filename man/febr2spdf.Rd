@@ -2,7 +2,7 @@
 % Please edit documentation in R/febr2spdf.R
 \name{febr2spdf}
 \alias{febr2spdf}
-\title{Create an object of class \code{SpatialPointsDataFrame}}
+\title{Create an sf object}
 \usage{
 febr2spdf(obj)
 }
@@ -11,12 +11,12 @@ febr2spdf(obj)
 \code{\link[febr]{observation}}.}
 }
 \value{
-An object of class \code{SpatialPointsDataFrame}
+An sf object
 }
 \description{
-Set spatial coordinates and projection attributes to create an object of class \code{SpatialPointsDataFrame} from
-the \emph{observation} ("observacao") table of one or more standardized datasets contained in the Free Brazilian
-Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}.
+Set spatial coordinates and projection attributes to create an sf object from the \emph{observation}
+("observacao") table of one or more standardized datasets contained in the Free Brazilian Repository for
+Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}.
 }
 \examples{
 res <- observation(dataset = "ctb0003", variable = "taxon",
