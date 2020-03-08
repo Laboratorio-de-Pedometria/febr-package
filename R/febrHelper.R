@@ -55,11 +55,16 @@
     # Resultado
     return (res)
   }
-# Transformação do sistema de referência de coordenadas ----
+# Transformação do sistema de referência de coordenadas -------------------------------------------------------
+# 2020-03-08: substitui 'sp' por 'sf'; substitui 'dplyr' por 'base'
+.getEPSGcode <- 
+  function (x) {
+    as.integer(gsub(pattern = 'EPSG:', replacement = '', x = x))
+  }
 .crsTransform <- 
   function (obj, crs, xy = c("coord_x", "coord_y")) {
     
-    crs_lower <- tolower(crs)
+    # crs_lower <- tolower(crs)
     crs_upper <- toupper(crs)
     
     # Registrar ordem das colunas
@@ -70,6 +75,7 @@
     tmp_obj <- obj[id_coords, ]
     
     ## Verificar se o SRC está faltando
+    ## Caso esteja faltando, e as coordendas forem geográficas, então atribui-se o SRC usado como padrão
     is_na_crs <- is.na(tmp_obj$coord_sistema)
     if (any(is_na_crs)) {
       is_degree <- nchar(round(abs(tmp_obj$coord_x))) <= 2
@@ -106,28 +112,42 @@
       
       ## Transformar os SRC
       tmp_obj[j] <- lapply(tmp_obj[j], function (x) {
-        sp::coordinates(x) <- c("coord_x", "coord_y")
-        sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
-        x <- sp::spTransform(x, sp::CRS(paste("+init=", crs_lower, sep = "")))
-        as.data.frame(x)
+        x <- sf::st_as_sf(x = x, coords = xy, crs = .getEPSGcode(x$coord_sistema[1]))
+        x <- sf::st_transform(x = x, crs = .getEPSGcode(crs))
+        x_coords <- sf::st_coordinates(x = x)
+        colnames(x_coords) <- xy
+        x <- cbind(x_coords, sf::st_drop_geometry(x))
+        # sp::coordinates(x) <- c("coord_x", "coord_y")
+        # sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
+        # x <- sp::spTransform(x, sp::CRS(paste("+init=", crs_lower, sep = "")))
+        # as.data.frame(x)
       })
-      tmp_obj <- suppressWarnings(dplyr::bind_rows(tmp_obj))
+      # tmp_obj <- suppressWarnings(dplyr::bind_rows(tmp_obj))
+      tmp_obj <- do.call(rbind, tmp_obj)
       tmp_obj$coord_sistema <- crs_upper
       
     } else if (tmp_obj$coord_sistema[1] != crs_upper) {
       
       ## Transformar o SRC
-      sp::coordinates(tmp_obj) <- xy
-      sp::proj4string(tmp_obj) <- sp::CRS(paste("+init=", tolower(tmp_obj$coord_sistema[1]), sep = ""))
-      tmp_obj <- sp::spTransform(tmp_obj, sp::CRS(paste("+init=", crs_lower, sep = "")))
-      tmp_obj <- as.data.frame(tmp_obj)
+      tmp_obj <- sf::st_as_sf(x = tmp_obj, coords = xy, crs = .getEPSGcode(tmp_obj$coord_sistema[1]))
+      tmp_obj <- sf::st_transform(crs = .getEPSGcode(crs), x = tmp_obj)
+      tmp_obj_coords <- sf::st_coordinates(x = tmp_obj)
+      colnames(tmp_obj_coords) <- xy
+      tmp_obj <- cbind(tmp_obj_coords, sf::st_drop_geometry(tmp_obj))
+      # sp::coordinates(tmp_obj) <- xy
+      # sp::proj4string(tmp_obj) <- sp::CRS(paste("+init=", tolower(tmp_obj$coord_sistema[1]), sep = ""))
+      # tmp_obj <- sp::spTransform(tmp_obj, sp::CRS(paste("+init=", crs_lower, sep = "")))
+      # tmp_obj <- as.data.frame(tmp_obj)
       tmp_obj$coord_sistema <- crs_upper
     }
     
-    ## Agrupar observações com e sem coordenadas
-    ## Em seguida, organizar as colunas na ordem original de entrada
+    ## 1. Agrupar observações com e sem coordenadas
+    ## 2. Organizar as colunas na ordem original de entrada
+    ## 3. Ordenar as linhas em função de 'observacao_id'
     res <- rbind(tmp_obj, obj[-id_coords, ])
-    res <- dplyr::select(res, col_names)
+    res <- res[, col_names]
+    res <- res[order(res$observacao_id), ]
+    # res <- dplyr::select(res, col_names)
     
     return (res)
   }
@@ -242,7 +262,7 @@
     return (obj)
   }
 
-# Descarregar cabeçalho das tabelas 'camada' e observacao' ----
+# Descarregar cabeçalho das tabelas 'camada' e observacao' ----------------------------------------------------
 .getHeader <- 
   function (x, ws) {
     # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)

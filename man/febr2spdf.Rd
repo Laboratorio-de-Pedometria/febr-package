@@ -19,11 +19,10 @@ the \emph{observation} ("observacao") table of one or more standardized datasets
 Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}.
 }
 \examples{
-res <- observation(dataset = "ctb0003", variable = "taxon", 
+res <- observation(dataset = "ctb0003", variable = "taxon",
                    progress = FALSE, verbose = FALSE)
-res <- febr2spdf(obj = res)
-sp::spplot(obj = res, zcol = "taxon_sibcs_2009", 
-           auto.key = list(columns = 3), scales = list(draw = TRUE))
+res <- febr2sf(obj = res)
+plot(res["taxon_sibcs_2009"], axes = TRUE, graticule = TRUE)
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}
