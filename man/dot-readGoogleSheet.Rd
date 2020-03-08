@@ -79,7 +79,7 @@ sheet <-
     na.strings = c("NA", "-", "", "na", "tr", "#VALUE!"))
 
 # Read spreadsheet header plus another line
-sheet <-
+sheet1 <-
   .readGoogleSheet(
     sheet.id = '1ucoZYzIS49tsypPb0Hd8a1f0x9pKESrVAho0Q6NP9ww',
     sheet.name = "observacao", sheet.headers = 1,

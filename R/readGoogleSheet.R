@@ -41,6 +41,7 @@
 #' Google Charts. Query Language Reference (Version 0.7). https://developers.google.com/chart/interactive/docs/querylanguage
 #' Google Charts. Implementing the Chart Tools Datasource Protocol (V0.6). https://developers.google.com/chart/interactive/docs/dev/implementing_data_source
 #' 
+#' @export
 #' @examples
 #' # Read entire spreadsheet
 #' # First row contains header
@@ -73,7 +74,7 @@
 #'     na.strings = c("NA", "-", "", "na", "tr", "#VALUE!"))
 #' 
 #' # Read spreadsheet header plus another line
-#' sheet <-
+#' sheet1 <-
 #'   .readGoogleSheet(
 #'     sheet.id = '1ucoZYzIS49tsypPb0Hd8a1f0x9pKESrVAho0Q6NP9ww',
 #'     sheet.name = "observacao", sheet.headers = 1,
@@ -91,7 +92,9 @@
 ###############################################################################################################
 .readGoogleSheet <- 
   function (
-    sheet.id, sheet.name, sheet.headers, sheet.query, return = 'data.frame', ...) {
+    sheet.id, sheet.name, sheet.headers, sheet.query, 
+    # sheet.range, 
+    return = 'data.frame', ...) {
     
     # ARGUMENTS
     ## sheet.id
@@ -134,6 +137,17 @@
       sheet.query <- ""
     }
     
+    # ## sheet.range (optional)
+    # if (!missing(sheet.range)) {
+    #   if (!is.character(sheet.range)) {
+    #     stop (paste("object of class '", class(sheet.range), "' passed to argument 'sheet.range'"))
+    #   } else {
+    #     sheet.range <- paste("&range=", sheet.range, sep = "")
+    #   }
+    # } else {
+    #   sheet.range <- ""
+    # }
+    
     ## return
     if (!return %in% c('data.frame', 'https.request')) {
       stop (paste("unknown value '", return, "' passed to argument 'return'"))
@@ -145,7 +159,8 @@
         "https://docs.google.com/spreadsheets/d/", sheet.id, "/gviz/tq?tqx=out:csv",
         sheet.name,
         sheet.headers,
-        sheet.query, 
+        sheet.query,
+        # sheet.range,
         sep = "")
     
     # RESULT
