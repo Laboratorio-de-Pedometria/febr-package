@@ -107,7 +107,6 @@
 # \donttest{
 #' res <- layer(dataset = paste("ctb000", 4:9, sep = ""))
 #' res <- layer(dataset = "ctb0013")
-#' str(res)
 # }
 ###############################################################################################################
 layer <-
@@ -379,11 +378,13 @@ layer <-
           }
           
           # TIPO DE DADOS
-          ## "observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup" e "profund_inf"
-          ## precisam estar no formato de caracter para evitar erros durante o empilhamento das tabelas
-          ## devido ao tipo de dado.
+          ## "observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup" e "profund_inf" devem
+          ## estar no formato de caracter para evitar erros durante o empilhamento das tabelas devido ao tipo 
+          ## de dado.
           ## Nota: esse processamento deve ser feito via Google Sheets.
-          tmp[std_cols] <- sapply(tmp[std_cols], as.character)
+          if (stack) {
+            tmp[std_cols] <- sapply(tmp[std_cols], as.character)
+          }
           
           # PADRONIZAÇÃO I
           ## Profundidade e transição entre as camadas
