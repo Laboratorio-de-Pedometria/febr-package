@@ -147,15 +147,7 @@ obs <-
   febr::febr2sf()
 ```
 
-Já a função `febr2xlsx` -- construída sobre funções do pacote `xlsx` [@xlsx] -- serve para escrever os dados de um conjunto de dados para um arquivo XLSX no disco rígido. No caso específico da função `febr`, que retorna um objeto de classe `list` composto de itens de classe `data.frame`, a função `febr2xlsx` escreve cada um dos `data.frame`s em uma planilha individual do mesmo arquivo XLSX. Por exemplo,
-
-```{r}
-tudo <- 
-  febr::febr(dataset = "ctb0003", variable = "all") %>% 
-  febr::febr2xlsx(file = "ctb0003.xlsx")
-```
-
-A terceira função auxiliar do pacote `febr` é `goto`. A função `goto` serve de interface para navegação nas diversas páginas na Internet do ___febr___: página principal, visualização geográfica, catálogo de conjuntos de dados, página de busca, manual do mantenedor, pacote para R, GitHub, fórum de discussão, e tabelas com padrões de unidades de medida e de codificação e nomenclatura. Além disso, a função `goto` serve para visitar as tabelas dos conjuntos de dados. Por exemplo, para visitar a tabela `camada` do conjunto de dados `ctb0036`, usamos o seguinte código: 
+A segunda função auxiliar do pacote `febr` é `goto`. A função `goto` serve de interface para navegação nas diversas páginas na Internet do ___febr___: página principal, visualização geográfica, catálogo de conjuntos de dados, página de busca, manual do mantenedor, pacote para R, GitHub, fórum de discussão, e tabelas com padrões de unidades de medida e de codificação e nomenclatura. Além disso, a função `goto` serve para visitar as tabelas dos conjuntos de dados. Por exemplo, para visitar a tabela `camada` do conjunto de dados `ctb0036`, usamos o seguinte código: 
 
 ```{r}
 febr::goto(dataset = "ctb0036", table = "camada")

@@ -433,9 +433,9 @@ dts$data %>%
 
 Um detalhe importante da função `febr` é que ela aceita os mesmos argumentos e sub-argumentos das funções `observation` e `layer`. Isso significa que, antes dos dados serem retornados, é possível solicitar que passem por uma limpeza e padronização. A exceção é o argumento `harmonization`, uma vez que se aplica apenas aos casos em que mais de um conjunto de dados é descarregado: a função `febr` permite descarregar apenas um conjunto de dados por vez.
 
-Depois de descarregados, os dados de um conjunto de dados podem ser escritos para o disco rígido usando a função `febr2xlsx`. No caso da função `febr`, que tem como saída um objeto de classe `list` composto por vários objetos de classe `data.frame`, a função `febr2xlsx` faz com que cada `data.frame` seja escrito em uma planilha individual do mesmo arquivo XLSX.
+Depois de descarregados, os dados de um conjunto de dados podem ser escritos para o disco rígido usando a função `write.xlsx` do pacote __openxlsx__. No caso da função `febr`, que tem como saída um objeto de classe `list` composto por vários objetos de classe `data.frame`, a função `openxlsx::write.xlsx` faz com que cada `data.frame` seja escrito em uma planilha individual do mesmo arquivo XLSX.
 
 ```{r, eval=FALSE}
-febr::febr2xlsx(x = dts, file = "ctb0003.xlsx")
+openxlsx::write.xlsx(x = dts, file = "ctb0003.xlsx")
 ```
 
