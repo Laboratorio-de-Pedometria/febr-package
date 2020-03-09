@@ -113,6 +113,8 @@ observation <-
             harmonization = list(harmonize = FALSE, level = 2),
             progress = TRUE, verbose = TRUE) {
     
+    googlesheets4::sheets_deauth()
+    
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$observation$std.cols
