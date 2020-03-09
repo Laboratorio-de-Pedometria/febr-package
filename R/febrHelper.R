@@ -279,15 +279,31 @@
   }
 
 # Descarregar tabela 'camada' e 'observacao' ------------------------------------------------------------------
+# 2020-03-09: substitui 'googlesheets::gs_read_csv' por '.readGoogleSheet' 
 .getTable <-
   function (x, ws) {
-    ss <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
-    res <- suppressMessages(
-      googlesheets::gs_read_csv(
-        ss = ss, ws = ws, # identifica Sheet com seu nome
-        na = .opt()$gs$na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment)
-      )
-    res <- as.data.frame(res)
+    res <- .readGoogleSheet(
+      sheet.id = x,
+      sheet.name = ws,
+      sheet.headers = 3, # usa as três primeiras linhas para criar o cabeçalho
+      stringsAsFactors = FALSE,
+      dec = ',',
+      header = TRUE,
+      na.strings = c("NA", "-", "", "na", "tr", "#VALUE!")
+    )
+    colnames(res) <- sapply(colnames(res), function (x) strsplit(x, split = '.', fixed = TRUE)[[1]][1])
+    # ss <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+    # res <- suppressMessages(
+    #   googlesheets::gs_read_csv(
+    #     ss = ss,
+    #     ws = ws, # identifica Sheet com seu nome
+    #     na = .opt()$gs$na,
+    #     locale = .opt()$gs$locale,
+    #     verbose = .opt()$gs$verbose,
+    #     comment = .opt()$gs$comment
+    #   )
+    # )
+    # res <- as.data.frame(res)
     return (res)
   }
 

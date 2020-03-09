@@ -93,7 +93,7 @@
 .readGoogleSheet <- 
   function (
     sheet.id, sheet.name, sheet.headers, sheet.query, 
-    # sheet.range, 
+    # sheet.range,
     return = 'data.frame', ...) {
     
     # ARGUMENTS
