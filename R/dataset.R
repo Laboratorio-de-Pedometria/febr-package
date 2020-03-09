@@ -19,6 +19,8 @@
 dataset <-
   function (dataset, progress = TRUE, verbose = TRUE) {
 
+    googlesheets4::sheets_deauth()
+    
     # ARGUMENTOS
     ## dataset
     if (missing(dataset)) {
