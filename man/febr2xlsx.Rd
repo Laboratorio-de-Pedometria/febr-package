@@ -20,13 +20,16 @@ with \code{x} to the file.}
 Write data downloaded from the Free Brazilian Repository for Open Soil Data -- \emph{\strong{febr}},
 \url{http://www.ufsm.br/febr} -- to an Excel workbook.
 }
+\note{
+THIS FUNCTION IS DEPRECATED. PLEASE USE \code{\link[openxlsx]{write.xlsx}} INSTEAD.
+}
 \examples{
 \donttest{
 dts <-
-  febr::febr(dataset = "ctb0013",
-             variable = "all",
-             merge = TRUE,
-             progress = FALSE, verbose = FALSE)
+  febr(dataset = "ctb0013",
+       variable = "all",
+       merge = TRUE,
+       progress = FALSE, verbose = FALSE)
 febr2xlsx(x = dts, file = tempfile(fileext = ".xlsx"))
 }
 }

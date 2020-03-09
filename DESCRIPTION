@@ -1,8 +1,8 @@
 Package: febr
 Type: Package
 Title: Free Brazilian Repository for Open Soil Data
-Version: 1.0.3.9001
-Date: 2020-03-08
+Version: 1.0.3.9002
+Date: 2020-03-09
 Authors@R: c(
     person("Alessandro", "Samuel-Rosa", role = c("aut", "cre"), email = "alessandrosamuelrosa@gmail.com", 
            comment = c(ORCID = "0000-0003-0877-1320")),
@@ -21,8 +21,7 @@ Imports:
   pedometrics,
   readr,
   sf,
-  stringr,
-  xlsx
+  stringr
 Suggests:
   bookdown,
   DT,
