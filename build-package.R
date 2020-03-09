@@ -8,11 +8,11 @@ update(remotes::package_deps(packages = "devtools"))
 devtools::revdep()
 
 # turn on/off development mode
-# devtools::dev_mode()
+devtools::dev_mode()
 
 # check examples and documentation
 devtools::check_man()
-devtools::run_examples()
+devtools::run_examples(run = true)
 # spelling::spell_check_package()
 # spelling::update_wordlist()
 devtools::check_rhub()
