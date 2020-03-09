@@ -2,9 +2,12 @@
 % Please edit documentation in R/febr2spdf.R
 \name{febr2spdf}
 \alias{febr2spdf}
+\alias{febr2sf}
 \title{Create an sf object}
 \usage{
 febr2spdf(obj)
+
+febr2sf(obj)
 }
 \arguments{
 \item{obj}{Object of class \code{data.frame} downloaded from \emph{\strong{febr}} using function

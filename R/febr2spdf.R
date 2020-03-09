@@ -22,6 +22,8 @@ febr2spdf <-
   function (obj) {
     .Deprecated(new = 'febr2sf')
   }
+#' @rdname febr2spdf
+#' @export
 febr2sf <-
   function (obj) {
     
