@@ -16,7 +16,6 @@ Encoding: UTF-8
 Imports:
   dplyr,
   glue,
-  googlesheets,
   googlesheets4,
   pedometrics,
   readr,

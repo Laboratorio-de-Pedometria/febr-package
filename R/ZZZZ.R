@@ -18,7 +18,7 @@
   )
   
   # Verificar se os pacotes importados estão instalados
-  pkg <- c("dplyr", "glue", "googlesheets", "googlesheets4", "pedometrics", "readr", "sf", "stringr")
+  pkg <- c("dplyr", "glue", "googlesheets4", "pedometrics", "readr", "sf", "stringr")
   id <- !sapply(pkg, requireNamespace, quietly = TRUE)
   if (any(id)) {
     pkg <- paste(pkg[which(id)], collapse = " ")
