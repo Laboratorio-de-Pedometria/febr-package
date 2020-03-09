@@ -1,4 +1,4 @@
-key <- '1U1RlF6-2FuCpuVgZtcOkfX9qM3nfmzjhSLQXhnSPJFg'
+key <- '1l_ag2vVnEjKSUYyWsy89a6LYCjqQN8QKGolZcoms4NY'
 tb <- "observacao"
 sheet <-
   .readGoogleSheet(
@@ -11,3 +11,5 @@ sheet <-
 colnames(sheet) <- sapply(colnames(sheet), function (x) strsplit(x, split = '.', fixed = TRUE)[[1]][1])
 sheet1 <- .getTable(x = key, ws = tb)
 cbind(new = sapply(sheet, class), old = sapply(sheet1, class))
+
+lapply(list(sheet, sheet1), head)
