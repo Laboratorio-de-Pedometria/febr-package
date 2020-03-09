@@ -23,7 +23,7 @@ Write data downloaded from the Free Brazilian Repository for Open Soil Data -- \
 \examples{
 \donttest{
 dts <-
-  febr::febr(dataset = "ctb0013", 
+  febr::febr(dataset = "ctb0013",
              variable = "all",
              merge = TRUE,
              progress = FALSE, verbose = FALSE)
