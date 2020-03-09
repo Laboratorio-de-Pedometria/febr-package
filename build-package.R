@@ -13,7 +13,7 @@ devtools::dev_mode()
 # check examples and documentation
 devtools::check_man()
 devtools::run_examples(run = true)
-# spelling::spell_check_package()
+spelling::spell_check_package()
 # spelling::update_wordlist()
 devtools::check_rhub()
 
