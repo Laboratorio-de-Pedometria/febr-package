@@ -18,7 +18,7 @@
   )
   
   # Verificar se os pacotes sugeridos estão instalados
-  pkg <- c("cellranger", "dplyr", "glue", "googlesheets", "pedometrics", "readr", "sp", "stringr")
+  pkg <- c("cellranger", "dplyr", "glue", "googlesheets", "pedometrics", "readr", "stringr")
   id <- !sapply(pkg, requireNamespace, quietly = TRUE)
   if (any(id)) {
     pkg <- paste(pkg[which(id)], collapse = " ")
