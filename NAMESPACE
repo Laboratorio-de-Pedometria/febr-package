@@ -3,6 +3,7 @@
 export(.readGoogleSheet)
 export(dataset)
 export(febr)
+export(febr2sf)
 export(febr2spdf)
 export(febr2xlsx)
 export(goto)
