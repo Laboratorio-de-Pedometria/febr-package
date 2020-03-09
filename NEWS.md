@@ -1,3 +1,22 @@
+# Version 1.0.3.9002 (2020-03-09)
+
+* Improvements:
+  + New function: `febr2sf` as a replacement for `febr2sp`;
+  + Replaces __googlesheets__ with `.readGoogleSheets`;
+  + `febr2xlsx` is now deprecated and __febr__ does not depend upon __xlsx__ anymore;
+  + Improves documentation;
+* Bug fixes:
+  + `layer`: standard variables are only set to type character when `stack = TRUE`;
+
+# Version 1.0.3.9001 (2020-03-08)
+
+* Improvements:
+  + Replaces __sp__ with __sf__;
+  + Exports new data reading function: `.readGoogleSheets`;
+  + Improves documentation;
+* Bug fixes:
+  + `metadata`: get correct file id.
+
 # Version 1.0.3.9000 (2020-02-09)
 
 * Replacing __googlesheets__ with __googlesheets4__.
