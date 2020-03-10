@@ -24,13 +24,14 @@
 #' @seealso \code{\link[febr]{layer}}, \code{\link[febr]{observation}}
 #' @export
 #' @examples
-# \donttest{
-#' res <- header(dataset = c("ctb0001", "ctb0003"), table = "camada", variable = "ferro", stack = TRUE)
-# res <- header(dataset = "ctb0013", table = "observacao")
+#' \donttest{
+#' res <- header(dataset = c("ctb0001", "ctb0003"), table = "camada", 
+#'               variable = "ferro", stack = TRUE)
 #' id <- grep("ferro_", colnames(res))
 #' col <- colnames(res)[id]
 #' col[order(col)]
-# }
+#' res <- header(dataset = "ctb0013", table = "observacao")
+#' }
 ###############################################################################################################
 header <-
   function (dataset, table, variable, stack = FALSE, progress = TRUE, verbose = TRUE) {

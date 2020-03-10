@@ -105,13 +105,10 @@
 #' @seealso \code{\link[febr]{observation}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
 #' @export
 #' @examples
-# \donttest{
-#' Sys.sleep(time = 10)
+#' \donttest{
 #' res <- layer(dataset = paste("ctb000", 4:9, sep = ""))
-#' 
-#' Sys.sleep(time = 10)
+#' }
 #' res <- layer(dataset = "ctb0013")
-# }
 ###############################################################################################################
 layer <-
   function (dataset, variable,

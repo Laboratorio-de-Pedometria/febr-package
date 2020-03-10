@@ -130,10 +130,9 @@ same variable.
 }
 }
 \examples{
-Sys.sleep(time = 10)
+\donttest{
 res <- layer(dataset = paste("ctb000", 4:9, sep = ""))
-
-Sys.sleep(time = 10)
+}
 res <- layer(dataset = "ctb0013")
 }
 \seealso{

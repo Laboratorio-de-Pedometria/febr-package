@@ -11,11 +11,9 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
-# \donttest{
-# Sys.sleep(time = 10)
-#' #res <- dataset(dataset = "ctb0003")
-#' #head(res)
-# }
+#' \donttest{
+#' res <- dataset(dataset = "ctb0003")
+#' }
 ###############################################################################################################
 dataset <-
   function (dataset, progress = TRUE, verbose = TRUE) {

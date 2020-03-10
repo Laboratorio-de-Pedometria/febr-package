@@ -25,8 +25,9 @@ Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/f
 description, author and institution identification, dataset license, and much more.
 }
 \examples{
-#res <- dataset(dataset = "ctb0003")
-#head(res)
+\donttest{
+res <- dataset(dataset = "ctb0003")
+}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

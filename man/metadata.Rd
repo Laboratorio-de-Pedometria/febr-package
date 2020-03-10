@@ -26,7 +26,6 @@ description of analytical methods, and identification of analysis laboratories.
 }
 \examples{
 res <- metadata(dataset = "ctb0003")
-head(res)
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}
