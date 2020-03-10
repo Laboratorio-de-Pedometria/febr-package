@@ -103,8 +103,9 @@ goto <-
       
     } else { # Ir para tabela do conjunto de dados no GoogleDrive
       sheets_keys <- .getSheetsKeys(dataset = dataset)
-      key <- googlesheets::gs_key(x = sheets_keys[[table]], verbose = FALSE)
-      url <- key$browser_url
+      url <- paste('https://docs.google.com/spreadsheets/d/', sheets_keys[[table]], sep = '')
+      # key <- googlesheets::gs_key(x = sheets_keys[[table]], verbose = FALSE)
+      # url <- key$browser_url
     }
     
     ## Lançar navegador
