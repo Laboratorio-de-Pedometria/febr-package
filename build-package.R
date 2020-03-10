@@ -10,20 +10,27 @@ devtools::revdep()
 # turn on/off development mode
 devtools::dev_mode()
 
-# check examples and documentation
+# check documentation ----
+roxygen2::roxygenise()
 devtools::check_man()
-devtools::run_examples(run = true)
 spelling::spell_check_package()
 # spelling::update_wordlist()
-devtools::check_rhub()
 
-# check the package for Linux (local)
+# check examples ----
+devtools::run_examples()
+
+# check for Linux (local) ----
 devtools::check(document = TRUE, manual = TRUE, force_suggests = TRUE, run_dont_test = TRUE)
 
-# check the package for Windows (remote)
+# check for Windows (remote) ----
 devtools::check_win_devel()
 devtools::check_win_release()
 devtools::check_win_oldrelease()
+
+# check in R-hub ----
+# rhub::validate_email(email = 'alessandrosamuelrosa@gmail.com')
+devtools::check_rhub()
+# devtools::check_rhub(env_vars = c("_R_CHECK_FORCE_SUGGESTS_" = "false")) # scape missing suggested packages
 
 devtools::build()
 

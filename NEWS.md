@@ -1,3 +1,12 @@
+# Version 1.0.3.9003 (2020-03-10)
+
+* Using `Sys.sleep(time = 10)` to pass checks in functions examples. This is necessary because the new Google
+  Sheets API has a limit of 500 requests per 100 seconds per project, and 100 requests per 100 seconds per
+  user (https://developers.google.com/sheets/api/limits). This issue has also been found elsewhere, e.g.
+  https://stackoverflow.com/questions/53765222/python-google-sheets-api-limit-429-error-with-loop. We soon will
+  remove the dependency upon __googlesheets4__ and thus solve this issue.
+* Preparing for removal of __googlesheets4__ from the list of imports.
+
 # Version 1.0.3.9002 (2020-03-09)
 
 * Improvements:
