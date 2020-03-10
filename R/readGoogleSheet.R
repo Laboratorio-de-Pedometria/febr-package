@@ -167,7 +167,7 @@
     switch (
       return,
       data.frame = {
-        res <- utils::read.table(file = https_request, sep = ",", ...)
+        res <- suppressWarnings(utils::read.table(file = https_request, sep = ",", ...))
       },
       https.request = {
         res <- https_request
