@@ -33,12 +33,14 @@
 #' @export
 #' @examples
 # \donttest{
-#' res <- standard(variable = "ferro")
-#' head(res)
+#' #res <- standard(variable = "ferro")
+#' #head(res)
 # }
 ###############################################################################################################
 standard <-
   function (table, variable, unit, precision, expr) {
+    
+    googlesheets4::sheets_deauth()
     
     # ARGUMENTOS
     ## table

@@ -125,10 +125,10 @@ res <- observation(dataset = "ctb0013", variable = "taxon")
 str(res)
 \donttest{
 # Download various datasets and standardize CRS
-res1 <- observation(
-  dataset = paste("ctb000", 4:9, sep = ""), variable = "taxon",
-  standardization = list(crs = "EPSG:4674"))
-
+#res1 <- observation(
+#  dataset = paste("ctb000", 4:6, sep = ""), variable = "taxon",
+#  standardization = list(crs = "EPSG:4674"))
+  
 # Download single dataset and standardize CRS
 res2 <- observation('ctb0005', standardization = list(crs = "EPSG:4674"))
 }

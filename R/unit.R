@@ -21,13 +21,16 @@
 #' @export
 #' @examples
 # \donttest{
-#' res <- unit(source = c("%", "dag/kg"), target = "g/kg")
-#' res
+# Sys.sleep(time = 10)
+#' #res <- unit(source = c("%", "dag/kg"), target = "g/kg")
+#' #res
 # }
 ###############################################################################################################
 unit <-
   function (source, target) {
 
+    googlesheets4::sheets_deauth()
+    
     # DESCARREGAMENTO
     ## Descarregar tabela com unidades de medida
     res <- .getUnits()

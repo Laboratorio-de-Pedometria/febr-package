@@ -12,8 +12,9 @@
 #' @export
 #' @examples
 # \donttest{
-#' res <- dataset(dataset = "ctb0003")
-#' head(res)
+# Sys.sleep(time = 10)
+#' #res <- dataset(dataset = "ctb0003")
+#' #head(res)
 # }
 ###############################################################################################################
 dataset <-

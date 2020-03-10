@@ -22,6 +22,8 @@
 goto <-
   function (dataset, table, page) {
     
+    googlesheets4::sheets_deauth()
+    
     # ARGUMENTOS
     ## dataset
     if (!missing(dataset)) {

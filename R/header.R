@@ -35,6 +35,8 @@
 header <-
   function (dataset, table, variable, stack = FALSE, progress = TRUE, verbose = TRUE) {
     
+    googlesheets4::sheets_deauth()
+    
     # ARGUMENTOS
     ## dataset
     if (missing(dataset)) {

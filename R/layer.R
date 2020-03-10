@@ -10,7 +10,8 @@
 #' @template metadata_template
 #'
 #' @param missing (optional) List with named sub-arguments indicating what should be done with a layer missing
-#' data on sampling depth, `depth`, or data on variable(s), `data`. Options are `"keep"` (default) and `"drop"`.
+#' data on sampling depth, `depth`, or data on variable(s), `data`. Options are `"keep"` (default) and 
+#' `"drop"`.
 #' 
 #' @param standardization (optional) List with named sub-arguments indicating how to perform data 
 #' standardization.
@@ -105,7 +106,10 @@
 #' @export
 #' @examples
 # \donttest{
+#' Sys.sleep(time = 10)
 #' res <- layer(dataset = paste("ctb000", 4:9, sep = ""))
+#' 
+#' Sys.sleep(time = 10)
 #' res <- layer(dataset = "ctb0013")
 # }
 ###############################################################################################################
@@ -125,6 +129,7 @@ layer <-
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$layer$std.cols
+    googlesheets4::sheets_deauth()
     
     # ARGUMENTOS
     ## dataset
@@ -310,6 +315,7 @@ layer <-
     }
     res <- list()
     for (i in 1:length(sheets_keys$camada)) {
+      # Sys.sleep(time = 5)
       # i <- 1
       # Informative messages
       dts <- sheets_keys$ctb[i]

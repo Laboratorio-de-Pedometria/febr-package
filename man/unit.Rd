@@ -21,8 +21,8 @@ is used to standardize the data contained in a dataset when downloading it via \
 \code{\link[febr]{observation}}.
 }
 \examples{
-res <- unit(source = c("\%", "dag/kg"), target = "g/kg")
-res
+#res <- unit(source = c("\%", "dag/kg"), target = "g/kg")
+#res
 }
 \references{
 Teixeira, P. C., Donagemma, G. K., Fontana, A., Teixeira, W. G. (2017)
