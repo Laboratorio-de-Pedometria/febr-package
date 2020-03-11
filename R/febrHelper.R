@@ -264,17 +264,35 @@
 
 # Descarregar cabeçalho das tabelas 'camada' e observacao' ----------------------------------------------------
 .getHeader <- 
-  function (x, ws) {
-    # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
-    # nmax <- 1
-    # nmax <- 2
-    # res <- suppressMessages(
-      # googlesheets::gs_read_csv(
-        # ss = res, ws = ws, 
-        # locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, n_max = nmax)
-      # )
-    res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = ws, n_max = 2, col_types = 'c'))
-    res <- as.data.frame(res)
+  function (x, ws, engine = 'utils') {
+    
+    # download/read engine
+    switch (engine,
+            gs = { # googlesheets ---
+              # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+              # nmax <- 2
+              # res <- suppressMessages(
+              #   googlesheets::gs_read_csv(
+              #     ss = res, ws = ws,
+              #     locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, n_max = nmax)
+              # )
+            },
+            gs4 = { # googlesheets4 ---
+              # res <- suppressMessages(
+                # googlesheets4::read_sheet(ss = x, sheet = ws, n_max = 2, col_types = 'c'))
+              # res <- as.data.frame(res)
+            },
+            utils = { # utils ---
+              url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
+              destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
+              download.file(url = url, destfile = destfile, quiet = TRUE)
+              res <- read.table(
+                file = destfile, header = TRUE, sep = ',', dec = ',', nrows = 2, comment.char = '', 
+                stringsAsFactors = FALSE)
+            }
+    )
+    
+    # output ---
     return (res)
   }
 
@@ -309,23 +327,39 @@
 
 # Descarregar tabela 'febr-padroes' ---------------------------------------------------------------------------
 .getStds <-
-  function (x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI") {
+  function (x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI", ws, engine = 'utils') {
     
-    # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+    # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não
+    # pode ser lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é
+    # possível realizar a padronização das unidades de medida quando descarregamos variáveis sem
+    # unidades de medida. Contudo, no campo 'campo_precisao', '-' significa NA.
+    na <- .opt()$gs$na
+    na <- na[-which(na == "-")]
     
-    # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não pode ser
-    # lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é possível realizar a
-    # padronização das unidades de medida quando descarregamos variáveis sem unidades de medida.
-    # Contudo, no campo 'campo_precisao', '-' significa NA.
-    # na <- .opt()$gs$na
-    # na <- na[-which(na == "-")]
-    # res <- suppressMessages(
-      # googlesheets::gs_read_csv(
-        # ss = res, ws = 'padroes', # Identifica Sheet por seu nome
-        # na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
+    # motor de descarregamento e leitura ---
+    switch (engine,
+            gs = { # googlesheets ---
+              # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+              # res <- suppressMessages(
+              # googlesheets::gs_read_csv(
+              # ss = res, ws = 'padroes', # Identifica Sheet por seu nome
+              # na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
+            },
+            gs4 = { # googlesheets4 ---
+              # res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'padroes', na = na))
+              # res <- as.data.frame(res)
+            },
+            utils = { # utils ---
+              url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
+              destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
+              download.file(url = url, destfile = destfile, quiet = TRUE)
+              res <- read.table(
+                file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '', na.strings = na,
+                stringsAsFactors = FALSE)
+            }
+    )
     
-    res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'padroes'))
-    res <- as.data.frame(res)
+    # saída ---
     res$campo_precisao <- gsub(pattern = "-", NA, res$campo_precisao)
     res$campo_precisao <- suppressWarnings(as.numeric(res$campo_precisao))
     return (res)
@@ -333,21 +367,39 @@
 
 # Descarregar tabela 'febr-unidades' --------------------------------------------------------------------------
 .getUnits <-
-  function (x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo") {
+  function (x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo", ws, engine = 'utils') {
     
-    # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
-    # 
-    # # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não pode ser
-    # # lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é possível realizar a
-    # # padronização das unidades de medida quando descarregamos variáveis sem unidades de medida.
-    # na <- .opt()$gs$na
-    # na <- na[-which(na == "-")]
-    # res <- suppressMessages(
-    #   googlesheets::gs_read_csv(
-    #     ss = res, ws = 'unidades', # identifica Sheet por seu nome
-    #     na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
-    res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'unidades'))
-    res <- as.data.frame(res)
+    # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não pode ser
+    # lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é possível realizar a
+    # padronização das unidades de medida quando descarregamos variáveis sem unidades de medida.
+    na <- .opt()$gs$na
+    na <- na[-which(na == "-")]
+    
+    # motor de descarregamento e leitura ---
+    switch (
+      engine,
+      gs = { # googlesheets ---
+        # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+        # res <- suppressMessages(
+        #   googlesheets::gs_read_csv(
+        #     ss = res, ws = 'unidades', # identifica Sheet por seu nome
+        #     na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
+      },
+      gs4 = { # googlesheets4 ---
+        # res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'unidades', na = na))
+        # res <- as.data.frame(res)
+      },
+      utils = { # utils ---
+        url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
+        destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
+        download.file(url = url, destfile = destfile, quiet = TRUE)
+        res <- read.table(
+          file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '', na.strings = na,
+          stringsAsFactors = FALSE)
+      }
+    )
+    
+    # saída ---
     return (res)
   }
 

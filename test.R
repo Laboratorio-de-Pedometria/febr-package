@@ -48,9 +48,6 @@ download.file(url = url, destfile = destfile)
 str(openxlsx::read.xlsx(xlsxFile = destfile, rows = c(1, 4:100000)))
 str(openxlsx::read.xlsx(xlsxFile = destfile, rows = c(1:3)))
 
-tidyxl::
-
-
 url <- 'https://docs.google.com/spreadsheets/d/1l_ag2vVnEjKSUYyWsy89a6LYCjqQN8QKGolZcoms4NY/export?format=csv&id=1l_ag2vVnEjKSUYyWsy89a6LYCjqQN8QKGolZcoms4NY&sheet=observacao'
 download.file(url = url, destfile = 'tmp.csv')
 utils::read.table(file = 'tmp.csv', nrows = 2, dec = ',', sep = ',', header = T, comment.char = '')
