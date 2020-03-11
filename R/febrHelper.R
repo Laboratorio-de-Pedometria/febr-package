@@ -262,70 +262,128 @@
     return (obj)
   }
 
-# Descarregar cabeçalho das tabelas 'camada' e observacao' ----------------------------------------------------
-.getHeader <- 
-  function (x, ws, engine = 'utils') {
+# Descarregar e ler planilha do Google Sheets #################################################################
+.readGoogleSheetCSV <-
+  function (sheet.id, sheet.name) {
     
-    # download/read engine
-    switch (engine,
-            gs = { # googlesheets ---
-              # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
-              # nmax <- 2
-              # res <- suppressMessages(
-              #   googlesheets::gs_read_csv(
-              #     ss = res, ws = ws,
-              #     locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, n_max = nmax)
-              # )
-            },
-            gs4 = { # googlesheets4 ---
-              # res <- suppressMessages(
-                # googlesheets4::read_sheet(ss = x, sheet = ws, n_max = 2, col_types = 'c'))
-              # res <- as.data.frame(res)
-            },
-            utils = { # utils ---
-              url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
-              destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
-              download.file(url = url, destfile = destfile, quiet = TRUE)
-              res <- read.table(
-                file = destfile, header = TRUE, sep = ',', dec = ',', nrows = 2, comment.char = '', 
-                stringsAsFactors = FALSE)
-            }
-    )
+    if (sheet.name == 'unidades') {
+      sheet.id <- "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo"
+    }
+    
+    # descarregar planilha ---
+    url <- paste('https://docs.google.com/spreadsheets/d/', sheet.id, '/export?format=csv', sep ='')
+    destfile <- tempfile(pattern = sheet.id, tmpdir = tempdir(), fileext = '.csv')
+    utils::download.file(url = url, destfile = destfile, quiet = TRUE)
+    
+    # ler planilha ---
+    if (sheet.name %in% c('observacao', 'camada')) { # observacao e camada ---
+      res <- list(header = NA, table = NA)
+      res[['header']] <- utils::read.table(
+        file = destfile, 
+        header = TRUE, 
+        sep = ',', 
+        dec = ',', 
+        comment.char = '', 
+        nrows = 2,
+        na.strings = .opt()$gs$na[.opt()$gs$na != '-'], # não podemos avaliar '-' como NA no cabeçalho
+        stringsAsFactors = FALSE
+      )
+      res[['table']] <- utils::read.table(
+        file = destfile,
+        header = FALSE,
+        sep = ',', 
+        dec = ',', 
+        comment.char = '', 
+        skip = 3,
+        na.strings = .opt()$gs$na, 
+        stringsAsFactors = FALSE
+      )
+      colnames(res[['table']]) <- colnames(res[['header']])
+      
+    } else if (sheet.name %in% c('dataset', 'metadado')) { # dataset e metadado ---
+      res <- utils::read.table(
+        file = destfile, 
+        header = TRUE, 
+        sep = ',', 
+        dec = ',', 
+        comment.char = '',
+        na.strings = .opt()$gs$na, 
+        stringsAsFactors = FALSE
+      )
+    } else if (sheet.name == 'unidades') { # febr-unidades ---
+      res <- utils::read.table(
+        file = destfile, 
+        header = TRUE, 
+        sep = ',', 
+        dec = ',', 
+        comment.char = '', 
+        na.strings = .opt()$gs$na[.opt()$gs$na != '-'], # não podemos avaliar '-' como NA no cabeçalho
+        stringsAsFactors = FALSE
+      )
+    }
+    
+    # saída ---
+    return (res)
+  }
+
+# Descarregar cabeçalho das tabelas 'camada' e observacao' ####################################################
+.getHeader <-
+  function (x, ws) {
+    
+    # googlesheets ---
+    # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+    # nmax <- 2
+    # res <- suppressMessages(
+    #   googlesheets::gs_read_csv(
+    #     ss = res, ws = ws,
+    #     locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, n_max = nmax)
+    # )
+    
+    # googlesheets4 ---
+    # res <- suppressMessages(
+    # googlesheets4::read_sheet(ss = x, sheet = ws, n_max = 2, col_types = 'c'))
+    # res <- as.data.frame(res)
+    
+    # utils ---
+    url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
+    destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
+    utils::download.file(url = url, destfile = destfile, quiet = TRUE)
+    res <- utils::read.table(
+      file = destfile, header = TRUE, sep = ',', dec = ',', nrows = 2, comment.char = '',
+      na.strings = 'NA', stringsAsFactors = FALSE)
     
     # output ---
     return (res)
   }
+# Descarregar tabela 'camada' e 'observacao' ##################################################################
+# .getTable <-
+#   function (x, ws) {
+#     res <- .readGoogleSheet(
+#       sheet.id = x,
+#       sheet.name = ws,
+#       sheet.headers = 3, # usa as três primeiras linhas para criar o cabeçalho
+#       stringsAsFactors = FALSE,
+#       dec = ',',
+#       header = TRUE,
+#       na.strings = c("NA", "-", "", "na", "tr", "#VALUE!")
+#     )
+#     colnames(res) <- sapply(colnames(res), function (x) strsplit(x, split = '.', fixed = TRUE)[[1]][1])
+#     # ss <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+#     # res <- suppressMessages(
+#     #   googlesheets::gs_read_csv(
+#     #     ss = ss,
+#     #     ws = ws, # identifica Sheet com seu nome
+#     #     na = .opt()$gs$na,
+#     #     locale = .opt()$gs$locale,
+#     #     verbose = .opt()$gs$verbose,
+#     #     comment = .opt()$gs$comment
+#     #   )
+#     # )
+#     # res <- as.data.frame(res)
+#     return (res)
+#   }
 
-# Descarregar tabela 'camada' e 'observacao' ------------------------------------------------------------------
-# 2020-03-09: substitui 'googlesheets::gs_read_csv' por '.readGoogleSheet' 
-.getTable <-
-  function (x, ws) {
-    res <- .readGoogleSheet(
-      sheet.id = x,
-      sheet.name = ws,
-      sheet.headers = 3, # usa as três primeiras linhas para criar o cabeçalho
-      stringsAsFactors = FALSE,
-      dec = ',',
-      header = TRUE,
-      na.strings = c("NA", "-", "", "na", "tr", "#VALUE!")
-    )
-    colnames(res) <- sapply(colnames(res), function (x) strsplit(x, split = '.', fixed = TRUE)[[1]][1])
-    # ss <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
-    # res <- suppressMessages(
-    #   googlesheets::gs_read_csv(
-    #     ss = ss,
-    #     ws = ws, # identifica Sheet com seu nome
-    #     na = .opt()$gs$na,
-    #     locale = .opt()$gs$locale,
-    #     verbose = .opt()$gs$verbose,
-    #     comment = .opt()$gs$comment
-    #   )
-    # )
-    # res <- as.data.frame(res)
-    return (res)
-  }
-
-# Descarregar tabela 'febr-padroes' ---------------------------------------------------------------------------
+# Descarregar tabela 'febr-padroes' ###########################################################################
 .getStds <-
   function (x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI", ws, engine = 'utils') {
     
@@ -337,26 +395,27 @@
     na <- na[-which(na == "-")]
     
     # motor de descarregamento e leitura ---
-    switch (engine,
-            gs = { # googlesheets ---
-              # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
-              # res <- suppressMessages(
-              # googlesheets::gs_read_csv(
-              # ss = res, ws = 'padroes', # Identifica Sheet por seu nome
-              # na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
-            },
-            gs4 = { # googlesheets4 ---
-              # res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'padroes', na = na))
-              # res <- as.data.frame(res)
-            },
-            utils = { # utils ---
-              url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
-              destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
-              download.file(url = url, destfile = destfile, quiet = TRUE)
-              res <- read.table(
-                file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '', na.strings = na,
-                stringsAsFactors = FALSE)
-            }
+    switch (
+      engine,
+      gs = { # googlesheets ---
+        # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+        # res <- suppressMessages(
+        # googlesheets::gs_read_csv(
+        # ss = res, ws = 'padroes', # Identifica Sheet por seu nome
+        # na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
+      },
+      gs4 = { # googlesheets4 ---
+        # res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'padroes', na = na))
+        # res <- as.data.frame(res)
+      },
+      utils = { # utils ---
+        url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
+        destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
+        utils::download.file(url = url, destfile = destfile, quiet = TRUE)
+        res <- utils::read.table(
+          file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '', na.strings = na,
+          stringsAsFactors = FALSE)
+      }
     )
     
     # saída ---
@@ -365,45 +424,45 @@
     return (res)
   }
 
-# Descarregar tabela 'febr-unidades' --------------------------------------------------------------------------
-.getUnits <-
-  function (x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo", ws, engine = 'utils') {
-    
-    # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não pode ser
-    # lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é possível realizar a
-    # padronização das unidades de medida quando descarregamos variáveis sem unidades de medida.
-    na <- .opt()$gs$na
-    na <- na[-which(na == "-")]
-    
-    # motor de descarregamento e leitura ---
-    switch (
-      engine,
-      gs = { # googlesheets ---
-        # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
-        # res <- suppressMessages(
-        #   googlesheets::gs_read_csv(
-        #     ss = res, ws = 'unidades', # identifica Sheet por seu nome
-        #     na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
-      },
-      gs4 = { # googlesheets4 ---
-        # res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'unidades', na = na))
-        # res <- as.data.frame(res)
-      },
-      utils = { # utils ---
-        url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
-        destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
-        download.file(url = url, destfile = destfile, quiet = TRUE)
-        res <- read.table(
-          file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '', na.strings = na,
-          stringsAsFactors = FALSE)
-      }
-    )
-    
-    # saída ---
-    return (res)
-  }
+# Descarregar tabela 'febr-unidades' ##########################################################################
+# .getUnits <-
+#   function (x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo", ws, engine = 'utils') {
+#     
+#     # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não pode ser
+#     # lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é possível realizar a
+#     # padronização das unidades de medida quando descarregamos variáveis sem unidades de medida.
+#     na <- .opt()$gs$na
+#     na <- na[-which(na == "-")]
+#     
+#     # motor de descarregamento e leitura ---
+#     switch (
+#       engine,
+#       gs = { # googlesheets ---
+#         # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
+#         # res <- suppressMessages(
+#         #   googlesheets::gs_read_csv(
+#         #     ss = res, ws = 'unidades', # identifica Sheet por seu nome
+#         #     na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
+#       },
+#       gs4 = { # googlesheets4 ---
+#         # res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'unidades', na = na))
+#         # res <- as.data.frame(res)
+#       },
+#       utils = { # utils ---
+#         url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
+#         destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
+#         utils::download.file(url = url, destfile = destfile, quiet = TRUE)
+#         res <- utils::read.table(
+#           file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '', na.strings = na,
+#           stringsAsFactors = FALSE)
+#       }
+#     )
+#     
+#     # saída ---
+#     return (res)
+#   }
 
-# Which datasets should be downloaded? ----
+# Quais conjuntos de dados devem ser descarregados? ###########################################################
 .getDataset <-
   function (sheets_keys, dataset) {
     
@@ -426,20 +485,32 @@
     }
     return (sheets_keys)
   }
-# Descarregar tabela 'febr-chaves' ----------------------------------------------------------------------------
+# Descarregar tabela 'febr-chaves' ############################################################################
 .getSheetsKeys <- 
-  function (x = "18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", dataset) {
+  function (x = "18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", dataset, engine = 'utils') {
     
-    # Options
-    # opts <- .opt()
-    # 
-    # sheets_keys <- googlesheets::gs_key(x = key, verbose = opts$gs$verbose)
-    # sheets_keys <- suppressMessages(
-    #   googlesheets::gs_read(sheets_keys, na = opts$gs$na, verbose = opts$gs$verbose))
-    sheets_keys <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'chaves'))
-    sheets_keys <- .getDataset(sheets_keys = sheets_keys, dataset = dataset)
-    sheets_keys <- sheets_keys[order(sheets_keys$ctb), ]
+    # motor de descarregamento e leitura ---
+    switch(
+      engine,
+      gs = { # googlesheets ---
+        # res <- googlesheets::gs_key(x = x, verbose = FALSE)
+        # res <- suppressMessages(googlesheets::gs_read(res, na = '', verbose = FALSE))
+      },
+      gs4 = { # googlesheets4 ---
+        # res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'chaves'))
+      },
+      utils = { # utils ---
+        url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
+        destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
+        utils::download.file(url = url, destfile = destfile, quiet = TRUE)
+        res <- utils::read.table(
+          file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '', na.strings = '',
+          stringsAsFactors = FALSE)
+      }
+    )
     
-    # Descarregar chaves de identificação das planilhas do repositório
-    return (sheets_keys)
+    # saída ---
+    res <- .getDataset(sheets_keys = res, dataset = dataset)
+    res <- res[order(res$ctb), ]
+    return (res)
   }

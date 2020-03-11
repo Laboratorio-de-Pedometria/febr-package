@@ -35,7 +35,7 @@ Character vector indicating one dataset. The identification code should be as re
 }
 \examples{
 \donttest{ 
-res <- febr(dataset = "ctb0003", merge = TRUE, variable = "all")
+# res <- febr(dataset = "ctb0013")
 }
 }
 \seealso{

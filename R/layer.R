@@ -105,9 +105,6 @@
 #' @seealso \code{\link[febr]{observation}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
 #' @export
 #' @examples
-#' \donttest{
-#' res <- layer(dataset = paste("ctb000", 4:9, sep = ""))
-#' }
 #' res <- layer(dataset = "ctb0013")
 ###############################################################################################################
 layer <-
@@ -126,7 +123,6 @@ layer <-
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$layer$std.cols
-    googlesheets4::sheets_deauth()
     
     # ARGUMENTOS
     ## dataset
@@ -285,7 +281,8 @@ layer <-
     ## ou quando empilhamento é solicitado
     if (standardization$units || stack) {
       febr_stds <- .getStds()
-      febr_unit <- .getUnits()
+      # febr_unit <- .getUnits()
+      febr_unit <- .readGoogleSheetCSV(sheet.name = 'unidades')
     }
     
     ## stack + stadardization
@@ -312,7 +309,6 @@ layer <-
     }
     res <- list()
     for (i in 1:length(sheets_keys$camada)) {
-      # Sys.sleep(time = 5)
       # i <- 1
       # Informative messages
       dts <- sheets_keys$ctb[i]
@@ -322,12 +318,17 @@ layer <-
       }
       
       # DESCARREGAMENTO
+      unit <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, "camada"], sheet.name = 'camada')
+      tmp <- unit[['table']]
+      unit <- unit[['header']]
+      n_rows <- nrow(tmp)
+      
       ## Cabeçalho com unidades de medida
-      unit <- .getHeader(x = sheets_keys$camada[i], ws = 'camada') # identifica Sheet com seu nome
+      # unit <- .getHeader(x = sheets_keys$camada[i], ws = 'camada') # identifica Sheet com seu nome
       
       ## Dados
-      tmp <- .getTable(x = sheets_keys$camada[i], ws = 'camada')
-      n_rows <- nrow(tmp)
+      # tmp <- .getTable(x = sheets_keys$camada[i], ws = 'camada')
+      # n_rows <- nrow(tmp)
       
       # PROCESSAMENTO I
       ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas profundidades

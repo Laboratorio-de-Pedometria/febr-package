@@ -18,7 +18,7 @@
 dataset <-
   function (dataset, progress = TRUE, verbose = TRUE) {
 
-    googlesheets4::sheets_deauth()
+    # googlesheets4::sheets_deauth()
     
     # ARGUMENTOS
     ## dataset
@@ -62,6 +62,8 @@ dataset <-
         message(paste(par, "Downloading ", dts, "-dataset...", sep = ""))
       }
       
+      # motor de descarregamento e leitura ---
+      # googlesheets ---
       # tmp <- googlesheets::gs_key(sheets_keys$dataset[i], verbose = FALSE)
       # tmp <- suppressMessages(
       #   googlesheets::gs_read_csv(
@@ -69,9 +71,12 @@ dataset <-
       #     na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose
       #   )
       # )
-      tmp <- suppressMessages(
-        googlesheets4::read_sheet(ss = sheets_keys$dataset[i], sheet = 'dataset', na = opts$gs$na))
-
+      # googlesheets4 ---
+      # tmp <- suppressMessages(
+      #   googlesheets4::read_sheet(ss = sheets_keys$dataset[i], sheet = 'dataset', na = opts$gs$na))
+      # utils ---
+      tmp <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, 'dataset'], sheet.name = 'dataset')
+      
       # Dados processados
       obs[[i]] <- as.data.frame(tmp)
       if (progress) {

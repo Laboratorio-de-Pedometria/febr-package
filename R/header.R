@@ -36,7 +36,7 @@
 header <-
   function (dataset, table, variable, stack = FALSE, progress = TRUE, verbose = TRUE) {
     
-    googlesheets4::sheets_deauth()
+    # googlesheets4::sheets_deauth()
     
     # ARGUMENTOS
     ## dataset

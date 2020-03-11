@@ -28,12 +28,11 @@
 ###############################################################################################################
 unit <-
   function (source, target) {
-
-    googlesheets4::sheets_deauth()
     
     # DESCARREGAMENTO
     ## Descarregar tabela com unidades de medida
-    res <- .getUnits()
+    # res <- .getUnits()
+    res <- .readGoogleSheetCSV(sheet.name = 'unidades')
     
     # ARGUMENTOS
     ## source

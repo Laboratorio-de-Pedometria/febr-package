@@ -40,8 +40,6 @@
 standard <-
   function (table, variable, unit, precision, expr) {
     
-    googlesheets4::sheets_deauth()
-    
     # ARGUMENTOS
     ## table
     if (!missing(table) && !table %in% c("observacao", "camada")) {

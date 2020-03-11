@@ -100,8 +100,6 @@
 #'   dataset = paste("ctb000", 4:6, sep = ""), variable = "taxon",
 #'   standardization = list(crs = "EPSG:4674"))
 #' }
-#' # Download single dataset and standardize CRS
-#' res2 <- observation('ctb0005', standardization = list(crs = "EPSG:4674"))
 ###############################################################################################################
 observation <-
   function (dataset, variable, 
@@ -113,7 +111,7 @@ observation <-
             progress = TRUE, verbose = TRUE) {
     
     # OPÇÕES E PADRÕES
-    googlesheets4::sheets_deauth()
+    # googlesheets4::sheets_deauth()
     opts <- .opt()
     std_cols <- opts$observation$std.cols
     
@@ -248,7 +246,8 @@ observation <-
       # febr_stds <- .getTable(x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI")
       # febr_unit <- .getTable(x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo")
       febr_stds <- .getStds()
-      febr_unit <- .getUnits()
+      # febr_unit <- .getUnits()
+      febr_unit <- .readGoogleSheetCSV(sheet.name = 'unidades')
     }
     
     ## stack + stadardization
@@ -285,17 +284,22 @@ observation <-
       }
       
       # DESCARREGAMENTO
-      ## Cabeçalho com unidades de medida
-      unit <- .getHeader(x = sheets_keys$observacao[i], ws = 'observacao') # identifica Sheet com seu nome
-      
-      ## Dados
-      tmp <- .getTable(x = sheets_keys$observacao[i], ws = 'observacao')
+      unit <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, "observacao"], sheet.name = 'observacao')
+      tmp <- unit[['table']]
+      unit <- unit[['header']]
       n_rows <- nrow(tmp)
+      
+      # ## Cabeçalho com unidades de medida
+      # unit <- .getHeader(x = sheets_keys$observacao[i], ws = 'observacao') # identifica Sheet com seu nome
+      # 
+      # ## Dados
+      # tmp <- .getTable(x = sheets_keys$observacao[i], ws = 'observacao')
+      # n_rows <- nrow(tmp)
       
       # PROCESSAMENTO I
       ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas coordenadas e
       ## na data.
-      na_coord <- max(apply(tmp[c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
+      na_coord <- max(apply(tmp[, c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
       na_time <- is.na(tmp$observacao_data)
       n_na_time <- sum(na_time)
       # if (missing$coord == "keep" || missing$coord == "drop" && na_coord < n_rows) {
@@ -370,7 +374,7 @@ observation <-
           # PADRONIZAÇÃO I
           ## Sistema de referência de coordenadas
           ## Primeiro verificar se existem observações com coordenadas e se o SRC deve ser transformado
-          na_coord <- max(apply(tmp[c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
+          na_coord <- max(apply(tmp[, c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
           if (n_rows > na_coord && !is.null(standardization$crs)) {
             tmp <- .crsTransform(obj = tmp, crs = standardization$crs)
           }

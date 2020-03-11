@@ -1,3 +1,7 @@
+# Version 1.0.3.9004 (2020-03-11)
+
+* Getting rid of __googlesheets4__.
+
 # Version 1.0.3.9003 (2020-03-10)
 
 * Using `Sys.sleep(time = 10)` to pass checks in functions examples. This is necessary because the new Google
