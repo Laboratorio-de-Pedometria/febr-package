@@ -38,6 +38,19 @@ cab_new <- .readGoogleSheet(return = 'https.request',
 
 cab_old == cab_new
 
+sheet.id <- '1ucoZYzIS49tsypPb0Hd8a1f0x9pKESrVAho0Q6NP9ww'
+sheet.name <- 0
+url <- 
+  paste('https://docs.google.com/spreadsheets/d/', sheet.id, '/export?format=xlsx', sep ='')
+destfile <- tempfile(pattern = sheet.id, tmpdir = tempdir(), fileext = '.xlsx')
+download.file(url = url, destfile = destfile)
+# read.table(file = destfile, header = TRUE, sep = ',', dec = ',')
+str(openxlsx::read.xlsx(xlsxFile = destfile, rows = c(1, 4:100000)))
+str(openxlsx::read.xlsx(xlsxFile = destfile, rows = c(1:3)))
+
+tidyxl::
+
+
 url <- 'https://docs.google.com/spreadsheets/d/1l_ag2vVnEjKSUYyWsy89a6LYCjqQN8QKGolZcoms4NY/export?format=csv&id=1l_ag2vVnEjKSUYyWsy89a6LYCjqQN8QKGolZcoms4NY&sheet=observacao'
 download.file(url = url, destfile = 'tmp.csv')
 utils::read.table(file = 'tmp.csv', nrows = 2, dec = ',', sep = ',', header = T, comment.char = '')
