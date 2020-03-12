@@ -16,7 +16,7 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
-#' \dontest{
+#' \donttest{
 #' # Go to the main project page
 #' goto(page = "febr")
 #' }
