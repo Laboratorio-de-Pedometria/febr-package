@@ -1,7 +1,7 @@
-# Version 1.0.4 (2020-03-12)
+# Version 1.1.0 (2020-03-12)
 
 * Improvements:
-  + Packages __googlesheets__ and __googlesheets4__ are not dependencies anymore;
+  + Packages __googlesheets__, __googlesheets4__ and __readr__ are not dependencies anymore;
   + A new function `febr2sf` is available as a replacement for `febr2sp` -- __sp__ is not dependencies anymore;
   + `febr2xlsx` is now deprecated -- __xlsx__ is not dependencies anymore;
 * Bug fix:
