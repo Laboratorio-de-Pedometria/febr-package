@@ -1,3 +1,12 @@
+# Version 1.0.4 (2020-03-12)
+
+* Improvements:
+  + Packages __googlesheets__ and __googlesheets4__ are not dependencies anymore;
+  + A new function `febr2sf` is available as a replacement for `febr2sp` -- __sp__ is not dependencies anymore;
+  + `febr2xlsx` is now deprecated -- __xlsx__ is not dependencies anymore;
+* Bug fix:
+  + `layer`: standard variables are only set to type character when `stack = TRUE`.
+
 # Version 1.0.3.9004 (2020-03-11)
 
 * Getting rid of __googlesheets4__.

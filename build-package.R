@@ -28,7 +28,7 @@ devtools::check_win_release()
 devtools::check_win_oldrelease()
 
 # check in R-hub ----
-# rhub::validate_email(email = 'alessandrosamuelrosa@gmail.com')
+rhub::validate_email(email = 'alessandrosamuelrosa@gmail.com')
 devtools::check_rhub()
 # devtools::check_rhub(env_vars = c("_R_CHECK_FORCE_SUGGESTS_" = "false")) # scape missing suggested packages
 
