@@ -14,7 +14,7 @@
       ),
       gs = list(
         comment = "#metadado>",
-        locale = readr::locale(date_names = "pt", decimal_mark = ","),
+        # locale = readr::locale(date_names = "pt", decimal_mark = ","),
         na = c("NA", "-", "", "na", "tr", "#VALUE!"),
         verbose = FALSE
       ),
