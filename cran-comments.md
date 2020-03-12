@@ -1,23 +1,23 @@
 # Changes
 
-This is a patch. It consists of a minor internal modification in all download functions as to cope with 
-changes in data storage in the Free Brazilian Repository for Open Soil Data (___febr___) that will be
-implemented in the near future. It also includes documentation improvements.
-
-When tested locally -- x86_64-pc-linux-gnu --, two examples needed more that five seconds to run during an 
-`R CMD check`. However, when tested on travis-ci and win-builder, these examples where run in less than five 
-seconds. The long time needed to run locally likely is due to the relatively poor Internet connection speed.
+This is a minor release. It consists of a important modifications in order to get rid of dependencies on the 
+following packages: __googlesheets__, __googlesheets4__, __sp__, and __xlsx__. This is done by using new 
+internal functions. None od the changes affect the behavior os the package.
 
 # Test environments
 
-* OK: local, x86_64-pc-linux-gnu (64-bit), Ubuntu 18.04.3 LTS, R 3.6.2
+* OK: local, x86_64-pc-linux-gnu (64-bit), Ubuntu 18.04.3 LTS, R 3.6.1
 * OK: travis-ci, x86_64-pc-linux-gnu (64-bit), Ubuntu 14.04.5 LTS, R 3.6.2
 * OK: winbuilder, x86_64-w64-mingw32 (64-bit), Windows, R 3.5.3
+
+* OK: rhub, Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+
 * OK: winbuilder, x86_64-w64-mingw32 (64-bit), Windows, R 3.6.2
 * OK: winbuilder, x86_64-w64-mingw32 (64-bit), Windows, R Under development (unstable)
-* OK: rhub, Windows Server 2008 R2 SP1, R-devel, 32/64 bit
 * FAIL: rhub, Ubuntu Linux 16.04 LTS, R-release, GCC
 * FAIL: rhub, Fedora Linux, R-devel, clang, gfortran
+
+
 
 Failure in rhub test environments are due to missing software and package dependencies in those test
 environments.
@@ -25,16 +25,7 @@ environments.
 On Ubuntu Linux:
 
 ```
-5859#> Warning messages:
-5860#> 1: In i.p(...) : installation of package ‘rgdal’ had non-zero exit status
-5861#> 2: In i.p(...) : installation of package ‘xml2’ had non-zero exit status
-5862#> 3: In i.p(...) :
-5863#> installation of package ‘openssl’ had non-zero exit status
-5864#> 4: In i.p(...) : installation of package ‘httr’ had non-zero exit status
-5865#> 5: In i.p(...) :
-5866#> installation of package ‘googlesheets’ had non-zero exit status
-5867#> 6: In i.p(...) :
-5868#> installation of package ‘/tmp/Rtmp5y4qjZ/file1323239050a/febr_1.0.2.9001.tar.gz’ had non-zero exit status
+
 ```
 
 On Fedora Linux:
