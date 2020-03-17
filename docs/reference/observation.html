@@ -70,7 +70,7 @@ observation table of a dataset before downloading it." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">febr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -253,7 +253,7 @@ same variable.
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>observation</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0013"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"taxon"</span>)</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Downloading dataset ctb0013...</span></div><div class='output co'>#&gt;   |                                                                              |======================================================================| 100%</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>res</span>)</div><div class='output co'>#&gt; 'data.frame':	1 obs. of  15 variables:
+#&gt; <span class='message'>Downloading ctb0013-observacao...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: incomplete final line found by readTableHeader on '/tmp/RtmpShhmt8/1xL9R8ODfnJNWwpxkxL8q0_WXH-01FOHrRyQVRW9fDAs16f247c9d391.csv'</span></div><div class='output co'>#&gt;   |                                                                              |======================================================================| 100%</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/str'>str</a></span>(<span class='no'>res</span>)</div><div class='output co'>#&gt; 'data.frame':	1 obs. of  15 variables:
 #&gt;  $ dataset_id      : chr "ctb0013"
 #&gt;  $ observacao_id   : chr "PVA"
 #&gt;  $ observacao_data : chr "xx-xx-2006"
@@ -266,11 +266,16 @@ same variable.
 #&gt;  $ estado_id       : chr "RS"
 #&gt;  $ municipio_id    : chr "Santa Maria"
 #&gt;  $ amostra_tipo    : chr "SIMPLES"
-#&gt;  $ amostra_quanti  : num 1
-#&gt;  $ amostra_area    : num 1
+#&gt;  $ amostra_quanti  : int 1
+#&gt;  $ amostra_area    : int 1
 #&gt;  $ taxon_sibcs_2006: chr "Argissolo Vermelho-Amarelo distrófico típico"
 #&gt;  - attr(*, "field_name")= chr  "Identificação do conjunto de dados" "Identificação da observação" "Data da observação" "Sistema de referência de coordenadas" ...
-#&gt;  - attr(*, "field_unit")= chr  "unitless" "unitless" "unitless" "unitless" ...</div></pre>
+#&gt;  - attr(*, "field_unit")= chr  "unitless" "unitless" "unitless" "unitless" ...</div><div class='input'><span class='co'># Download various datasets and standardize CRS</span>
+<span class='no'>res1</span> <span class='kw'>&lt;-</span> <span class='fu'>observation</span>(
+  <span class='kw'>dataset</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste</a></span>(<span class='st'>"ctb000"</span>, <span class='fl'>4</span>:<span class='fl'>5</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>""</span>), <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"taxon"</span>,
+  <span class='kw'>standardization</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>crs</span> <span class='kw'>=</span> <span class='st'>"EPSG:4674"</span>))</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Downloading ctb0004-observacao...</span></div><div class='output co'>#&gt;   |                                                                              |===================================                                   |  50%</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Downloading ctb0005-observacao...</span></div><div class='output co'>#&gt;   |                                                                              |======================================================================| 100%</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

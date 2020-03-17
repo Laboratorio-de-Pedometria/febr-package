@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">febr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -109,9 +109,97 @@
       <small>Source: <a href='https://github.com/febr-team/febr-package/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="version-1-1-0-2020-03-17" class="section level1">
+<h1 class="page-header">
+<a href="#version-1-1-0-2020-03-17" class="anchor"></a>Version 1.1.0 (2020-03-17)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Improvements:
+<ul>
+<li>Packages <strong>googlesheets</strong>, <strong>googlesheets4</strong> and <strong>readr</strong> are not dependencies anymore;</li>
+<li>A new function <code>febr2sf</code> is available as a replacement for <code>febr2sp</code> – <strong>sp</strong> is not dependencies anymore;</li>
+<li>
+<code>febr2xlsx</code> is now deprecated – <strong>xlsx</strong> is not dependencies anymore;</li>
+</ul>
+</li>
+<li>Bug fix:
+<ul>
+<li>
+<code>layer</code>: standard variables are only set to type character when <code>stack = TRUE</code>.</li>
+</ul>
+</li>
+</ul>
+</div>
+    <div id="version-1-0-3-9004-2020-03-11" class="section level1">
+<h1 class="page-header">
+<a href="#version-1-0-3-9004-2020-03-11" class="anchor"></a>Version 1.0.3.9004 (2020-03-11)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Getting rid of <strong>googlesheets4</strong>.</li>
+</ul>
+</div>
+    <div id="version-1-0-3-9003-2020-03-10" class="section level1">
+<h1 class="page-header">
+<a href="#version-1-0-3-9003-2020-03-10" class="anchor"></a>Version 1.0.3.9003 (2020-03-10)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Using <code><a href="https://www.rdocumentation.org/packages/base/topics/Sys.sleep">Sys.sleep(time = 10)</a></code> to pass checks in functions examples. This is necessary because the new Google Sheets API has a limit of 500 requests per 100 seconds per project, and 100 requests per 100 seconds per user (<a href="https://developers.google.com/sheets/api/limits" class="uri">https://developers.google.com/sheets/api/limits</a>). This issue has also been found elsewhere, e.g. <a href="https://stackoverflow.com/questions/53765222/python-google-sheets-api-limit-429-error-with-loop" class="uri">https://stackoverflow.com/questions/53765222/python-google-sheets-api-limit-429-error-with-loop</a>. We soon will remove the dependency upon <strong>googlesheets4</strong> and thus solve this issue.</li>
+<li>Preparing for removal of <strong>googlesheets4</strong> from the list of imports.</li>
+</ul>
+</div>
+    <div id="version-1-0-3-9002-2020-03-09" class="section level1">
+<h1 class="page-header">
+<a href="#version-1-0-3-9002-2020-03-09" class="anchor"></a>Version 1.0.3.9002 (2020-03-09)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Improvements:
+<ul>
+<li>New function: <code>febr2sf</code> as a replacement for <code>febr2sp</code>;</li>
+<li>Replaces <strong>googlesheets</strong> with <code>.readGoogleSheets</code>;</li>
+<li>
+<code>febr2xlsx</code> is now deprecated and <strong>febr</strong> does not depend upon <strong>xlsx</strong> anymore;</li>
+<li>Improves documentation;</li>
+</ul>
+</li>
+<li>Bug fixes:
+<ul>
+<li>
+<code>layer</code>: standard variables are only set to type character when <code>stack = TRUE</code>;</li>
+</ul>
+</li>
+</ul>
+</div>
+    <div id="version-1-0-3-9001-2020-03-08" class="section level1">
+<h1 class="page-header">
+<a href="#version-1-0-3-9001-2020-03-08" class="anchor"></a>Version 1.0.3.9001 (2020-03-08)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Improvements:
+<ul>
+<li>Replaces <strong>sp</strong> with <strong>sf</strong>;</li>
+<li>Exports new data reading function: <code>.readGoogleSheets</code>;</li>
+<li>Improves documentation;</li>
+</ul>
+</li>
+<li>Bug fixes:
+<ul>
+<li>
+<code>metadata</code>: get correct file id.</li>
+</ul>
+</li>
+</ul>
+</div>
+    <div id="version-1-0-3-9000-2020-02-09" class="section level1">
+<h1 class="page-header">
+<a href="#version-1-0-3-9000-2020-02-09" class="anchor"></a>Version 1.0.3.9000 (2020-02-09)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Replacing <strong>googlesheets</strong> with <strong>googlesheets4</strong>.</li>
+</ul>
+</div>
     <div id="version-1-0-3-2020-01-25" class="section level1">
 <h1 class="page-header">
-<a href="#version-1-0-3-2020-01-25" class="anchor"></a>Version 1.0.3 (2020-01-25)<small> Unreleased </small>
+<a href="#version-1-0-3-2020-01-25" class="anchor"></a>Version 1.0.3 (2020-01-25)<small> 2020-01-25 </small>
 </h1>
 <ul>
 <li>New version (patch) including internal changes in download functions and documentation improvements.</li>
@@ -308,6 +396,12 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#version-1-1-0-2020-03-17">1.1.0</a></li>
+        <li><a href="#version-1-0-3-9004-2020-03-11">1.0.3.9004</a></li>
+        <li><a href="#version-1-0-3-9003-2020-03-10">1.0.3.9003</a></li>
+        <li><a href="#version-1-0-3-9002-2020-03-09">1.0.3.9002</a></li>
+        <li><a href="#version-1-0-3-9001-2020-03-08">1.0.3.9001</a></li>
+        <li><a href="#version-1-0-3-9000-2020-02-09">1.0.3.9000</a></li>
         <li><a href="#version-1-0-3-2020-01-25">1.0.3</a></li>
         <li><a href="#version-1-0-2-9001-2020-01-24">1.0.2.9001</a></li>
         <li><a href="#version-1-0-2-9000-2019-09-05">1.0.2.9000</a></li>

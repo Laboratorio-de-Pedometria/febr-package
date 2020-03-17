@@ -67,7 +67,7 @@ http://www.ufsm.br/febr -- to an Excel workbook." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">febr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -138,23 +138,28 @@ with <code>x</code> to the file.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>(optional) Further arguments passed to <code><a href='https://www.rdocumentation.org/packages/xlsx/topics/write.xlsx'>write.xlsx</a></code>.</p></td>
+      <td><p>(optional) Further arguments passed to write function.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>THIS FUNCTION IS DEPRECATED. PLEASE USE <code><a href='https://www.rdocumentation.org/packages/openxlsx/topics/write.xlsx'>write.xlsx</a></code> INSTEAD.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dts</span> <span class='kw'>&lt;-</span>
-  <span class='kw pkg'>febr</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/febr/topics/febr'>febr</a></span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0013"</span>,
-             <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
-             <span class='kw'>merge</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-             <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>febr2xlsx</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>dts</span>, <span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".xlsx"</span>))</div></pre>
+    <pre class="examples"><div class='input'># dts <-
+#   febr(dataset = "ctb0013",
+#        variable = "all",
+#        merge = TRUE,
+#        progress = FALSE, verbose = FALSE)
+# febr2xlsx(x = dts, file = tempfile(fileext = ".xlsx"))
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#note">Note</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
