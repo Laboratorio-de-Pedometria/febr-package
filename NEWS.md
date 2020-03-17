@@ -1,4 +1,4 @@
-# Version 1.1.0 (2020-03-12)
+# Version 1.1.0 (2020-03-17)
 
 * Improvements:
   + Packages __googlesheets__, __googlesheets4__ and __readr__ are not dependencies anymore;

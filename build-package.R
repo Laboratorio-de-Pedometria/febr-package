@@ -13,7 +13,7 @@ devtools::dev_mode()
 # check documentation ----
 roxygen2::roxygenise()
 devtools::check_man()
-spelling::spell_check_package()
+devtools::spell_check()
 # spelling::update_wordlist()
 
 # check examples ----

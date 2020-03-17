@@ -16,7 +16,7 @@ internal functions. None od the changes affect the behavior os the package.
 * FAIL: rhub, Ubuntu Linux 16.04 LTS, R-release, GCC
 
 Failure in rhub test environments are due to missing software and package dependencies in those test
-environments. The __rhub__ package maintainer has been warned about this issue.
+environments. The __rhub__ package maintainer is aware of this issue.
 
 # R CMD check results
 

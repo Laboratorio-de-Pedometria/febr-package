@@ -126,7 +126,7 @@ str(res)
 \donttest{
 # Download various datasets and standardize CRS
 res1 <- observation(
-  dataset = paste("ctb000", 4:6, sep = ""), variable = "taxon",
+  dataset = paste("ctb000", 4:5, sep = ""), variable = "taxon",
   standardization = list(crs = "EPSG:4674"))
 }
 }
