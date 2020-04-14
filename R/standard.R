@@ -42,28 +42,30 @@ standard <-
     
     # ARGUMENTOS
     ## table
-    if (!missing(table) && !table %in% c("observacao", "camada")) {
-      stop (glue::glue("unknown value '{table}' passed to argument 'table'"))
+    if (missing(table)) {
+      stop ("argument 'table' is missing")
+    } else if (!table %in% c("observacao", "camada")) {
+      stop (paste("unknown value '", table, "' passed to argument 'table'", sep = ""))
     }
     
     ## variable
     if (!missing(variable) && !is.character(variable)) {
-      stop (glue::glue("object of class '{class(variable)}' passed to argument 'variable'"))
+      stop (paste("object of class '", class(variable), "' passed to argument 'variable'", sep = ''))
     }
     
     ## unit
     if (!missing(unit) && !is.character(unit)) {
-      stop (glue::glue("object of class '{class(unit)}' passed to argument 'unit'"))
+      stop (paste("object of class '", class(unit), "' passed to argument 'unit'", sep = ""))
     }
     
     ## precision
     if (!missing(precision) && !pedometrics::isNumint(precision)) {
-      stop (glue::glue("object of class '{class(precision)}' passed to argument 'precision'"))
+      stop (paste("object of class '", class(precision), "' passed to argument 'precision'", sep = ""))
     }
     
     ## expr
     if (!missing(expr) && !is.character(expr)) {
-      stop (glue::glue("object of class '{class(expr)}' passed to argument 'expr'"))
+      stop (paste("object of class '", class(expr), "' passed to argument 'expr'", sep = ""))
     }
     
     # DESCARREGAMENTO
@@ -81,7 +83,7 @@ standard <-
     if (!missing(variable)) {
       is_start <- all(grepl(pattern = "_", x = variable))
       if (!is_start) {
-        variable <- glue::glue("^{variable}_")
+        variable <- paste("^", variable, "_", sep = "")
         idx <- lapply(variable, function (pattern) grep(pattern = pattern, x = std$campo_id))
         idx <- unlist(idx)
       } else {
