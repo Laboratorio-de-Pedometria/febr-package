@@ -44,29 +44,29 @@ febr <-
     }
     
     # DESCARREGAMENTO
-    ## Descarregar tabela 'dataset'
+    ## 'identificacao'
     if (verbose) {
-      message(paste("Downloading ", dataset, "-dataset...", sep = ""))
+      message(paste("Downloading ", dataset, "-identificacao...", sep = ""))
     }
     dts <- dataset(dataset = dataset, progress = progress, verbose = FALSE)
     
-    ## Descarregar tabela 'observacao'
+    ## 'metadado'
+    if (verbose) {
+      message(paste("Downloading ", dataset, "-metadado...", sep = ""))
+    }
+    mtd <- try(metadata(dataset = dataset, progress = progress, verbose = FALSE))
+    
+    ## 'observacao'
     if (verbose) {
       message(paste("Downloading ", dataset, "-observacao...", sep = ""))
     }
     obs <- observation(dataset = dataset, progress = progress, verbose = FALSE, ...)
     
-    ## Descarregar tabela 'camada'
+    ## 'camada'
     if (verbose) {
       message(paste("Downloading ", dataset, "-camada...", sep = ""))
     }
     lyr <- layer(dataset = dataset, progress = progress, verbose = FALSE, ...)
-    
-    ## Descarregar tabela 'metadado'
-    if (verbose) {
-      message(paste("Downloading ", dataset, "-metadado...", sep = ""))
-    }
-    mtd <- try(metadata(dataset = dataset, progress = progress, verbose = FALSE))
     
     # PROCESSAMENTO
     ## Fundir tabelas se necessário
@@ -74,14 +74,14 @@ febr <-
       a_obs <- attributes(obs)[["units"]]
       a_lyr <- attributes(lyr)[["units"]]
       a_mer <- c(a_obs, a_lyr[3:length(a_lyr)])
-      res <- list(dataset = dts, 
-                  data = merge(x = obs, y = lyr, by = c("dataset_id", "observacao_id")), 
-                  metadata = mtd)
+      res <- list(identificacao = dts, 
+                  dados = merge(x = obs, y = lyr, by = c("dataset_id", "observacao_id")), 
+                  metadado = mtd)
       a <- attributes(res[[2]])
       a$units <- a_mer
       attributes(res[[2]]) <- a
     } else {
-      res <- list(dataset = dts, observation = obs, layer = lyr, metadata = mtd)
+      res <- list(identificacao = dts, observacao = obs, camada = lyr, metadado = mtd)
     }
     
     # FINAL
