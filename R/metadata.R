@@ -18,34 +18,26 @@
 metadata <-
   function (dataset, progress = TRUE, verbose = TRUE) {
 
-    # googlesheets4::sheets_deauth()
-    
     # ARGUMENTOS
     ## dataset
     if (missing(dataset)) {
       stop ("argument 'dataset' is missing")
     } else if (!is.character(dataset)) {
-      stop (glue::glue("object of class '{class(dataset)}' passed to argument 'dataset'"))
+      stop (paste("object of class", class(dataset), "passed to argument 'dataset'"))
     }
     
     ## progress
     if (!is.logical(progress)) {
-      stop (glue::glue("object of class '{class(progress)}' passed to argument 'progress'"))
+      stop (paste("object of class", class(progress), "passed to argument 'progress'"))
     }
     
     ## verbose
     if (!is.logical(verbose)) {
-      stop (glue::glue("object of class '{class(verbose)}' passed to argument 'verbose'"))
+      stop (paste("object of class", class(verbose), "passed to argument 'verbose'"))
     }
 
     # Descarregar chaves de identificação das planilhas do repositório
     sheets_keys <- .getSheetsKeys(dataset = dataset)
-    if (length(stats::na.omit(sheets_keys$metadado)) == 0) {
-      m <- glue::glue(
-        "metadata for dataset {dataset} has not been published yet
-        Contact febr-forum@googlegroups.com for more info and learn how to help")
-      stop (m)
-    }
     n <- nrow(sheets_keys)
     
     # Opções
@@ -78,7 +70,8 @@ metadata <-
         # googlesheets4::read_sheet(ss = sheets_keys$metadado[i], sheet = 'metadado', na = opts$gs$na))
       
       # utils ---
-      tmp <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, "metadado"], sheet.name = 'metadado')
+      # tmp <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, "metadado"], sheet.name = 'metadado')
+      tmp <- .readOwnCloud(ctb = sheets_keys[i, 'ctb'], table = 'metadado')
       
       # Dados processadas
       obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
