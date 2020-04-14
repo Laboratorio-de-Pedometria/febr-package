@@ -20,7 +20,7 @@
 # 2020-03-08: substitui 'sp' por 'sf'
 febr2spdf <- 
   function (obj) {
-    .Deprecated(new = 'febr2sf')
+    .Defunct(new = 'febr2sf')
   }
 #' @rdname febr2spdf
 #' @export
