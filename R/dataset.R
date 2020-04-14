@@ -23,19 +23,16 @@ dataset <-
     if (missing(dataset)) {
       stop ("argument 'dataset' is missing")
     } else if (!is.character(dataset)) {
-      #stop (glue::glue("object of class '{class(dataset)}' passed to argument 'dataset'"))
       stop (paste("object of class", class(dataset), "passed to argument 'dataset'"))
     }
     
     ## progress
     if (!is.logical(progress)) {
-      #stop (glue::glue("object of class '{class(progress)}' passed to argument 'progress'"))
       stop (paste("object of class", class(progress), "passed to argument 'progress'"))
     }
     
     ## verbose
     if (!is.logical(verbose)) {
-      #stop (glue::glue("object of class '{class(verbose)}' passed to argument 'verbose'"))
       stop (paste("object of class", class(verbose), "passed to argument 'verbose'"))
     }
     
