@@ -1,4 +1,5 @@
 ˈfɛ
+à
 abaixo
 Abaixo
 aberta
@@ -41,8 +42,6 @@ analítico
 analíticos
 ano
 antemão
-antes
-Antes
 ao
 Ao
 ão
@@ -97,6 +96,7 @@ Brasil
 brasileiro
 Brasileiro
 Brasileiros
+Brasília
 bɾe
 busca
 Cabe
@@ -121,7 +121,6 @@ catálogo
 categoria
 categóricas
 cby
-centimeters
 centímetros
 chamado
 chamar
@@ -140,13 +139,11 @@ colaborativa
 colaborativo
 coletivamente
 coletivo
-com
 comando
 combinação
 combinadas
 comerciais
 como
-Como
 compartilhadas
 compartilhado
 compartilham
@@ -182,7 +179,6 @@ constantes
 constituído
 constituir
 Construção
-construída
 construídas
 construir
 consultores
@@ -200,6 +196,7 @@ coordenadas
 cópia
 correntes
 costumam
+cran
 crédito
 créditos
 criação
@@ -210,10 +207,15 @@ critério
 CRS
 cuja
 cujos
+da
+Da
+dados
+Dados
 dar
 das
 datas
-dd
+de
+De
 décadas
 decida
 decidiremos
@@ -275,6 +277,7 @@ diferentes
 dificultando
 dimensão
 diretamente
+discoverability
 discussão
 disponíveis
 disponível
@@ -290,9 +293,12 @@ duas
 duplicados
 durante
 é
+easting
+Edberto
 edição
 edições
 ela
+Ela
 elas
 Elas
 Ele
@@ -318,8 +324,6 @@ eram
 escala
 escassos
 escolhida
-escreve
-escrever
 escrito
 escritos
 esforços
@@ -329,12 +333,13 @@ especializadas
 especificações
 especificamente
 específicas
-específico
 Espectral
 essa
 Essa
 essas
 Essas
+esse
+Esse
 Esses
 Esta
 está
@@ -366,6 +371,7 @@ facilitar
 faltando
 faz
 fazer
+federative
 feita
 Feita
 feitas
@@ -375,10 +381,12 @@ figuras
 fim
 Físicos
 foi
+Fontana
 fonte
 foram
 força
 forem
+forma
 formando
 formato
 formatos
@@ -400,6 +408,7 @@ gerações
 geralmente
 gestão
 GlobalSoilMap
+googlesheets
 Grupo
 grupos
 GSP
@@ -407,6 +416,8 @@ Guia
 harmonização
 harmonizado
 Hidro
+http
+https
 HYBRAS
 IBGE
 idênticos
@@ -458,7 +469,6 @@ invés
 io
 isso
 Isso
-itens
 já
 Já
 julgar
@@ -516,8 +526,10 @@ mostra
 mostradas
 mostram
 mostrem
+Moura
 muitas
 muito
+na
 Nacional
 não
 naquelas
@@ -535,8 +547,7 @@ níveis
 nível
 nome
 nomenclatura
-nos
-Nos
+northing
 nós
 Nós
 nosso
@@ -558,20 +569,20 @@ oficial
 Olá
 onde
 ondulada
+openxlsx
 operador
 optar
 organização
 organizadas
 os
-Os
 ou
 outras
 outro
 outros
 packageversion
 pacote
-padrao
 padrão
+padroes
 padrões
 Padrões
 padronização
@@ -662,6 +673,7 @@ quatro
 que
 racional
 Rdoc
+readr
 reais
 Realização
 realizada
@@ -756,6 +768,7 @@ sistemas
 sobre
 solicitar
 somente
+sp
 sua
 Sua
 suas
@@ -778,6 +791,7 @@ tarde
 tarefas
 taxonômica
 taxonômicas
+Teixeira
 tem
 têm
 temporária
@@ -833,7 +847,6 @@ utilizado
 utilizados
 utilizando
 utilizem
-valor
 valores
 vamos
 Vamos
@@ -857,6 +870,9 @@ visualização
 visualizar
 você
 vontade
+webserver
 WRB
 www
+xlsx
+XLSX
 yyyy

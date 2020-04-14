@@ -4,7 +4,7 @@
 \alias{dataset}
 \title{Get \emph{dataset} table}
 \usage{
-dataset(dataset, progress = TRUE, verbose = TRUE)
+dataset(dataset, progress = TRUE, verbose = TRUE, febr.repo = "remote")
 }
 \arguments{
 \item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
@@ -15,6 +15,10 @@ in \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to downloa
 \item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally
 useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com}
 if you find any issue.}
+
+\item{febr.repo}{(optional) Character vector indicating where the data should be read. Defaults to
+\code{febr.repo = "remote"}, i.e. the remote web server. Alternatively, a local directory path can be passed to
+\code{febr.repo} if the user has a local copy of the data repository.}
 }
 \value{
 A list of data frames or a data frame with data of the chosen dataset(s).

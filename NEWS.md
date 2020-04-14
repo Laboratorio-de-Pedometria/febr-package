@@ -1,3 +1,14 @@
+# Version 1.1.0.9000 (2020-04-14)
+
+* Improvements:
+  + Includes changes to download data from new webserver
+  + New function argument `febr.repo` allows user to set where the data should be read from: the remote
+    web server or a local directory
+* Other changes:
+  + `header()` is now deprecated due to the new file structure used in __FEBR__. Users can now rely on the 
+    already existing `metadata()` to get the same results
+  + `febr2spdf()` is now defunct.
+
 # Version 1.1.0 (2020-03-17)
 
 * Improvements:

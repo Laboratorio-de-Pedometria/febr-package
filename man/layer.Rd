@@ -14,7 +14,8 @@ layer(
     smoothing.fun = "mean", units = FALSE, round = FALSE),
   harmonization = list(harmonize = FALSE, level = 2),
   progress = TRUE,
-  verbose = TRUE
+  verbose = TRUE,
+  febr.repo = "remote"
 )
 }
 \arguments{
@@ -87,6 +88,10 @@ information.
 \item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally
 useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com}
 if you find any issue.}
+
+\item{febr.repo}{(optional) Character vector indicating where the data should be read. Defaults to
+\code{febr.repo = "remote"}, i.e. the remote web server. Alternatively, a local directory path can be passed to
+\code{febr.repo} if the user has a local copy of the data repository.}
 }
 \value{
 A list of data frames or a data frame with data on the chosen variable(s) of the chosen dataset(s).
@@ -130,7 +135,10 @@ same variable.
 }
 }
 \examples{
-res <- layer(dataset = "ctb0013")
+# Read data from local copy of the repository
+res <- layer(
+ dataset = "ctb0003", 
+ febr.repo = '~/ownCloud/febr-repo/public')
 }
 \seealso{
 \code{\link[febr]{observation}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
