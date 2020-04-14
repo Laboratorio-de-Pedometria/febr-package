@@ -23,54 +23,45 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \code{\link[febr]{layer}}, \code{\link[febr]{observation}}
 #' @export
-#' @examples
-#' \donttest{
-#' res <- header(dataset = c("ctb0001", "ctb0003"), table = "camada", 
-#'               variable = "ferro", stack = TRUE)
-#' id <- grep("ferro_", colnames(res))
-#' col <- colnames(res)[id]
-#' col[order(col)]
-#' res <- header(dataset = "ctb0013", table = "observacao")
-#' }
 ###############################################################################################################
 header <-
   function (dataset, table, variable, stack = FALSE, progress = TRUE, verbose = TRUE) {
     
-    # googlesheets4::sheets_deauth()
+    .Deprecated(new = 'metadata', package = 'febr')
     
     # ARGUMENTOS
     ## dataset
     if (missing(dataset)) {
       stop ("argument 'dataset' is missing")
     } else if (!is.character(dataset)) {
-      stop (glue::glue("object of class '{class(dataset)}' passed to argument 'dataset'"))
+      stop (paste("object of class", class(dataset), "passed to argument 'dataset'"))
     }
     
     ## table
     if (missing(table)) {
       stop ("argument 'table' is missing")
     } else if (!table %in% c("observacao", "camada")) {
-      stop (glue::glue("unknown value '{table}' passed to argument 'table'"))
+      stop (paste("unknown value '", table, "' passed to argument 'table'", sep = ""))
     }
     
     ## variable
     if (!missing(variable) && !is.character(variable)) {
-      stop (glue::glue("object of class '{class(variable)}' passed to argument 'variable'"))
+      stop (paste("object of class '", class(variable), "' passed to argument 'variable'", sep = ''))
     }
     
     ## stack
     if (!is.logical(stack)) {
-      stop (glue::glue("object of class '{class(stack)}' passed to argument 'stack'"))
+      stop (paste("object of class '", class(stack), "' passed to argument 'stack'", sep = ""))
     }
     
     ## progress
     if (!is.logical(progress)) {
-      stop (glue::glue("object of class '{class(progress)}' passed to argument 'progress'"))
+      stop (paste("object of class", class(progress), "passed to argument 'progress'"))
     }
     
     ## verbose
     if (!is.logical(verbose)) {
-      stop (glue::glue("object of class '{class(verbose)}' passed to argument 'verbose'"))
+      stop (paste("object of class", class(verbose), "passed to argument 'verbose'"))
     }
     
     ## variable + stack
