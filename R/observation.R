@@ -9,6 +9,10 @@
 #' @template data_template
 #' @template metadata_template
 #' 
+#' @param febr.repo (optional) Character vector indicating where the data should be read. Defaults to
+#' `febr.repo = "remote"`, i.e. the remote web server. Alternatively, a local directory path can be passed to
+#' `febr.repo` if the user has a local copy of the data repository.
+#' 
 #' @param missing (optional) List with named sub-arguments indicating what should be done with an observation
 #' missing spatial coordinates, `coord`, date of observation, `time`, or data on variables, `data`. Options are
 #' `"keep"` (default) and `"drop"`.
@@ -108,10 +112,9 @@ observation <-
               crs = NULL, time.format = NULL,
               units = FALSE, round = FALSE),
             harmonization = list(harmonize = FALSE, level = 2),
-            progress = TRUE, verbose = TRUE) {
+            progress = TRUE, verbose = TRUE, febr.repo = 'remote') {
     
     # OPÇÕES E PADRÕES
-    # googlesheets4::sheets_deauth()
     opts <- .opt()
     std_cols <- opts$observation$std.cols
     
@@ -120,17 +123,17 @@ observation <-
     if (missing(dataset)) {
       stop ("argument 'dataset' is missing")
     } else if (!is.character(dataset)) {
-      stop (glue::glue("object of class '{class(dataset)}' passed to argument 'dataset'"))
+      stop (paste("object of class '", class(dataset), "' passed to argument 'dataset'", sep = ''))
     }
     
     ## variable
     if (!missing(variable) && !is.character(variable)) {
-      stop (glue::glue("object of class '{class(variable)}' passed to argument 'variable'"))
+      stop (paste("object of class '", class(variable), "' passed to argument 'variable'", sep = ''))
     }
     
     ## stack
     if (!is.logical(stack)) {
-      stop (glue::glue("object of class '{class(stack)}' passed to argument 'stack'"))
+      stop (paste("object of class '", class(stack), "' passed to argument 'stack'", sep = ""))
     }
     
     ## missing
@@ -138,17 +141,17 @@ observation <-
       if (is.null(missing$coord)) {
         missing$coord <- "keep"
       } else if (!missing$coord %in% c("drop", "keep")) {
-        stop (glue::glue("unknown value '{missing$coord}' passed to sub-argument 'missing$coord'"))
+        stop (paste("unknown value '", missing$coord, "' passed to sub-argument 'missing$coord'", sep = ""))
       }
       if (is.null(missing$time)) {
         missing$time <- "keep"
       } else if (!missing$time %in% c("drop", "keep")) {
-        stop (glue::glue("unknown value '{missing$time}' passed to sub-argument 'missing$time'"))
+        stop (paste("unknown value '", missing$time,  "' passed to sub-argument 'missing$time'", sep = ""))
       }
       if (is.null(missing$data)) {
         missing$data <- "keep"
       } else if (!missing$data %in% c("drop", "keep")) {
-        stop (glue::glue("unknown value '{missing$data}' passed to sub-argument 'missing$data'"))
+        stop (paste("unknown value '", missing$data,  "' passed to sub-argument 'missing$data'", sep = ""))
       }
     }
     
@@ -158,43 +161,44 @@ observation <-
         standardization$crs <- NULL
       } else if (!is.character(standardization$crs)) {
         y <- class(standardization$crs)
-        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$crs'"))
+        stop (paste("object of class '", y, "' passed to sub-argument 'standardization$crs'", sep = ""))
       } else if (!toupper(standardization$crs) %in% opts$crs) {
         y <- standardization$crs
-        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$crs'"))
+        stop (paste("unknown value '", y, "' passed to sub-argument 'standardization$crs'", sep = ""))
       }
       
       if (is.null(standardization$time.format)) {
         standardization$time.format <- NULL
       } else if (!is.character(standardization$time.format)) {
         y <- class(standardization$time.format)
-        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$time.format'"))
+        stop (
+          paste("object of class '", y, "' passed to sub-argument 'standardization$time.format'", sep = ""))
       }
       
       if (is.null(standardization$units)) {
         standardization$units <- FALSE
       } else if (!is.logical(standardization$units)) {
         y <- class(standardization$units)
-        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$units'"))
+        stop (paste("object of class '", y, "' passed to sub-argument 'standardization$units'", sep = ""))
       }
       if (is.null(standardization$round)) {
         standardization$round <- FALSE
       } else if (!is.logical(standardization$round)) {
         y <- class(standardization$round)
-        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$round'"))
+        stop (paste("object of class '", y, "' passed to sub-argument 'standardization$round'", sep = ""))
       }
       
       if (is.null(standardization$units)) {
         standardization$units <- FALSE
       } else if (!is.logical(standardization$units)) {
         y <- class(standardization$units)
-        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$units'"))
+        stop (paste("object of class '", y, "' passed to sub-argument 'standardization$units'", sep = ""))
       }
       if (is.null(standardization$round)) {
         standardization$round <- FALSE
       } else if (!is.logical(standardization$round)) {
         y <- class(standardization$round)
-        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$round'"))
+        stop (paste("object of class '", y, "' passed to sub-argument 'standardization$round'", sep = ""))
       }
     }
     
@@ -204,24 +208,24 @@ observation <-
         harmonization$harmonize <- FALSE
       } else if (!is.logical(harmonization$harmonize)) {
         y <- class(harmonization$harmonize)
-        stop (glue::glue("object of class '{y}' passed to sub-argument 'harmonization$harmonize'"))
+        stop (paste("object of class '", y, "' passed to sub-argument 'harmonization$harmonize'", sep = ""))
       }
       if (is.null(harmonization$level)) {
         harmonization$level <- 2
       } else if (!pedometrics::isNumint(harmonization$level)) {
         y <- class(harmonization$level)
-        stop (glue::glue("object of class '{y}' passed to sub-argument 'harmonization$level'"))
+        stop (paste("object of class '", y, "' passed to sub-argument 'harmonization$level'", sep = ""))
       }
     }
     
     ## progress
     if (!is.logical(progress)) {
-      stop (glue::glue("object of class '{class(progress)}' passed to argument 'progress'"))
+      stop (paste("object of class '", class(progress), "' passed to argument 'progress'", sep = ""))
     }
     
     ## verbose
     if (!is.logical(verbose)) {
-      stop (glue::glue("object of class '{class(verbose)}' passed to argument 'verbose'"))
+      stop (paste("object of class '", class(verbose), "' passed to argument 'verbose'", sep = ""))
     }
     
     ## variable + stack || variable + harmonization
@@ -254,7 +258,7 @@ observation <-
     ## Padronização não precisa ser feita no caso de descarregamento apenas das variáveis padrão
     ## Também não precisa ser feita no caso de variáveis de tipo 'texto'
     if (stack && !standardization$units && !missing(variable) && variable != "all") {
-      tmp_var <- glue::glue("^{variable}")
+      tmp_var <- paste("^", variable, sep = "")
       idx <- lapply(tmp_var, function (pattern) grep(pattern = pattern, x = febr_stds$campo_id))
       idx <- unlist(idx)
       is_all_text <- all(febr_stds$campo_tipo[idx] == "texto")
@@ -274,8 +278,7 @@ observation <-
     }
     res <- list()
     for (i in 1:length(sheets_keys$observacao)) {
-      # Sys.sleep(time = 5)
-      # i <- 1
+      
       # Informative messages
       dts <- sheets_keys$ctb[i]
       if (verbose) {
@@ -284,9 +287,16 @@ observation <-
       }
       
       # DESCARREGAMENTO
-      unit <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, "observacao"], sheet.name = 'observacao')
-      tmp <- unit[['table']]
-      unit <- unit[['header']]
+      # unit <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, "observacao"], sheet.name = 'observacao')
+      # tmp <- unit[['table']]
+      # unit <- unit[['header']]
+      tmp <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = 'observacao', febr.repo = febr.repo)
+      unit <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = 'metadado', febr.repo = febr.repo)
+      unit$campo_unidade[is.na(unit$campo_unidade)] <- '-'
+      unit <- unit[unit$tabela_id == 'observacao', c('campo_id', 'campo_nome', 'campo_unidade')]
+      rownames(unit) <- unit$campo_id
+      unit <- unit[, -1]
+      unit <- as.data.frame(t(unit), stringsAsFactors = FALSE)
       n_rows <- nrow(tmp)
       
       # ## Cabeçalho com unidades de medida
@@ -477,15 +487,15 @@ observation <-
           
         } else {
           res[[i]] <- data.frame()
-          m <- glue::glue("All observations in {dts} are missing data. None will be returned.")
+          m <- paste("All observations in {dts} are missing data. None will be returned.")
           message(m)
         }
       } else {
         res[[i]] <- data.frame()
         if (na_coord == n_rows) {
-          m <- glue::glue("All observations in {dts} are missing coordinates. None will be returned.")  
+          m <- paste("All observations in", dts, "are missing coordinates. None will be returned.") 
         } else if (n_na_time == n_rows) {
-          m <- glue::glue("All observations in {dts} are missing date. None will be returned.")  
+          m <- paste("All observations in", dts, "are missing date. None will be returned.")  
         }
         message(m)
       }

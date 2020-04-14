@@ -4,6 +4,10 @@
 #' Repository for Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}. This includes dataset title and
 #' description, author and institution identification, dataset license, and much more.
 #'
+#' @param febr.repo (optional) Character vector indicating where the data should be read. Defaults to
+#' `febr.repo = "remote"`, i.e. the remote web server. Alternatively, a local directory path can be passed to
+#' `febr.repo` if the user has a local copy of the data repository.
+#'
 #' @template metadata_template
 #'
 #' @return A list of data frames or a data frame with data of the chosen dataset(s).
@@ -16,7 +20,7 @@
 #' }
 ###############################################################################################################
 dataset <-
-  function (dataset, progress = TRUE, verbose = TRUE) {
+  function (dataset, progress = TRUE, verbose = TRUE, febr.repo = 'remote') {
 
     # ARGUMENTOS
     ## dataset
@@ -54,7 +58,7 @@ dataset <-
       dts <- sheets_keys$ctb[i]
       if (verbose) {
         par <- ifelse(progress, "\n", "")
-        message(paste(par, "Downloading ", dts, "-dataset...", sep = ""))
+        message(paste(par, "Downloading ", dts, "-identificacao...", sep = ""))
       }
       
       # motor de descarregamento e leitura ---
@@ -74,7 +78,7 @@ dataset <-
       
       # Dados processados
       # obs[[i]] <- as.data.frame(tmp)
-      obs[[i]] <- .readOwnCloud(ctb = sheets_keys[i, 'ctb'], table = 'identificacao')
+      obs[[i]] <- .readOwnCloud(ctb = sheets_keys[i, 'ctb'], table = 'identificacao', febr.repo = febr.repo)
       if (progress) {
         utils::setTxtProgressBar(pb, i)
       }

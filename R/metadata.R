@@ -6,6 +6,10 @@
 #'
 #' @template metadata_template
 #' 
+#' @param febr.repo (optional) Character vector indicating where the data should be read. Defaults to
+#' `febr.repo = "remote"`, i.e. the remote web server. Alternatively, a local directory path can be passed to
+#' `febr.repo` if the user has a local copy of the data repository.
+#' 
 #' @return A list of data frames or a data frame with metadata of the chosen dataset(s).
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
@@ -16,7 +20,7 @@
 # }
 ###############################################################################################################
 metadata <-
-  function (dataset, progress = TRUE, verbose = TRUE) {
+  function (dataset, progress = TRUE, verbose = TRUE, febr.repo = 'remote') {
 
     # ARGUMENTOS
     ## dataset
@@ -71,7 +75,7 @@ metadata <-
       
       # utils ---
       # tmp <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, "metadado"], sheet.name = 'metadado')
-      tmp <- .readOwnCloud(ctb = sheets_keys[i, 'ctb'], table = 'metadado')
+      tmp <- .readOwnCloud(ctb = sheets_keys[i, 'ctb'], table = 'metadado', febr.repo = febr.repo)
       
       # Dados processadas
       obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)

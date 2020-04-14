@@ -9,6 +9,10 @@
 #' @template data_template
 #' @template metadata_template
 #'
+#' @param febr.repo (optional) Character vector indicating where the data should be read. Defaults to
+#' `febr.repo = "remote"`, i.e. the remote web server. Alternatively, a local directory path can be passed to
+#' `febr.repo` if the user has a local copy of the data repository.
+#'
 #' @param missing (optional) List with named sub-arguments indicating what should be done with a layer missing
 #' data on sampling depth, `depth`, or data on variable(s), `data`. Options are `"keep"` (default) and 
 #' `"drop"`.
@@ -105,7 +109,10 @@
 #' @seealso \code{\link[febr]{observation}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
 #' @export
 #' @examples
-#' res <- layer(dataset = "ctb0013")
+#' # Read data from local copy of the repository
+#' res <- layer(
+#'  dataset = "ctb0003", 
+#'  febr.repo = '~/ownCloud/febr-repo/public')
 ###############################################################################################################
 layer <-
   function (dataset, variable,
@@ -118,7 +125,7 @@ layer <-
               # broken.transition = "keep", merge.fun = "weighted.mean",
               units = FALSE, round = FALSE),
             harmonization = list(harmonize = FALSE, level = 2),
-            progress = TRUE, verbose = TRUE) {
+            progress = TRUE, verbose = TRUE, febr.repo = 'remote') {
     
     # OPÇÕES E PADRÕES
     opts <- .opt()
@@ -129,17 +136,17 @@ layer <-
     if (missing(dataset)) {
       stop ("argument 'dataset' is missing")
     } else if (!is.character(dataset)) {
-      stop (glue::glue("object of class '{class(dataset)}' passed to argument 'dataset'"))
+      stop (paste("object of class", class(dataset), "passed to argument 'dataset'"))
     }
     
     ## variable
     if (!missing(variable) && !is.character(variable)) {
-      stop (glue::glue("object of class '{class(variable)}' passed to argument 'variable'"))
+      stop (paste("object of class '", class(variable), "' passed to argument 'variable'", sep = ''))
     }
     
     ## stack
     if (!is.logical(stack)) {
-      stop (glue::glue("object of class '{class(stack)}' passed to argument 'stack'"))
+      stop (paste("object of class '", class(stack), "' passed to argument 'stack'", sep = ""))
     }
     
     ## missing
@@ -253,12 +260,12 @@ layer <-
     
     ## progress
     if (!is.logical(progress)) {
-      stop (glue::glue("object of class '{class(progress)}' passed to argument 'progress'"))
+      stop (paste("object of class", class(progress), "passed to argument 'progress'"))
     }
     
     ## verbose
     if (!is.logical(verbose)) {
-      stop (glue::glue("object of class '{class(verbose)}' passed to argument 'verbose'"))
+      stop (paste("object of class", class(verbose), "passed to argument 'verbose'"))
     }
     
     ## variable + stack || variable + harmonization
@@ -318,9 +325,16 @@ layer <-
       }
       
       # DESCARREGAMENTO
-      unit <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, "camada"], sheet.name = 'camada')
-      tmp <- unit[['table']]
-      unit <- unit[['header']]
+      # unit <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, "camada"], sheet.name = 'camada')
+      # tmp <- unit[['table']]
+      # unit <- unit[['header']]
+      tmp <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = 'camada', febr.repo = febr.repo)
+      unit <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = 'metadado', febr.repo = febr.repo)
+      unit$campo_unidade[is.na(unit$campo_unidade)] <- '-'
+      unit <- unit[unit$tabela_id == 'camada', c('campo_id', 'campo_nome', 'campo_unidade')]
+      rownames(unit) <- unit$campo_id
+      unit <- unit[, -1]
+      unit <- as.data.frame(t(unit), stringsAsFactors = FALSE)
       n_rows <- nrow(tmp)
       
       ## Cabeçalho com unidades de medida
