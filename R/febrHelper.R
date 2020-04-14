@@ -528,7 +528,8 @@
         destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
         utils::download.file(url = url, destfile = destfile, quiet = TRUE)
         res <- utils::read.table(
-          file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '', na.strings = '',
+          file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '', 
+          # na.strings = '',
           stringsAsFactors = FALSE)
       }
     )
