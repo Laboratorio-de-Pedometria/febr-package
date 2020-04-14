@@ -18,8 +18,6 @@
 dataset <-
   function (dataset, progress = TRUE, verbose = TRUE) {
 
-    # googlesheets4::sheets_deauth()
-    
     # ARGUMENTOS
     ## dataset
     if (missing(dataset)) {
@@ -40,7 +38,7 @@ dataset <-
       #stop (glue::glue("object of class '{class(verbose)}' passed to argument 'verbose'"))
       stop (paste("object of class", class(verbose), "passed to argument 'verbose'"))
     }
-
+    
     # Descarregar chaves de identificação das planilhas do repositório
     sheets_keys <- .getSheetsKeys(dataset = dataset)
     n <- nrow(sheets_keys)
@@ -75,10 +73,11 @@ dataset <-
       # tmp <- suppressMessages(
       #   googlesheets4::read_sheet(ss = sheets_keys$dataset[i], sheet = 'dataset', na = opts$gs$na))
       # utils ---
-      tmp <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, 'dataset'], sheet.name = 'dataset')
+      # tmp <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, 'dataset'], sheet.name = 'dataset')
       
       # Dados processados
-      obs[[i]] <- as.data.frame(tmp)
+      # obs[[i]] <- as.data.frame(tmp)
+      obs[[i]] <- .readOwnCloud(ctb = sheets_keys[i, 'ctb'], table = 'identificacao')
       if (progress) {
         utils::setTxtProgressBar(pb, i)
       }

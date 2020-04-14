@@ -262,6 +262,17 @@
     return (obj)
   }
 
+# Descarregar e ler arquivo do onwCloud #######################################################################
+.readOwnCloud <-
+  function (ctb, table) {
+    url <- paste(
+      'https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F', ctb, '&files=', 
+      ctb, '-', table, '.csv', sep = '')
+    res <- utils::read.table(
+      file = url, header = TRUE, sep = ';', dec = ',', na.strings = .opt()$gs$na, stringsAsFactors = FALSE)
+    return (res)
+  }
+  
 # Descarregar e ler planilha do Google Sheets #################################################################
 .readGoogleSheetCSV <-
   function (sheet.id, sheet.name) {
