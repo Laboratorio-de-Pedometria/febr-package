@@ -311,16 +311,16 @@
       )
       colnames(res[['table']]) <- colnames(res[['header']])
       
-    } else if (sheet.name %in% c('dataset', 'metadado')) { # dataset e metadado ---
-      res <- utils::read.table(
-        file = destfile, 
-        header = TRUE, 
-        sep = ',', 
-        dec = ',', 
-        comment.char = '',
-        na.strings = .opt()$gs$na, 
-        stringsAsFactors = FALSE
-      )
+    # } else if (sheet.name %in% c('dataset', 'metadado')) { # dataset e metadado ---
+    #   res <- utils::read.table(
+    #     file = destfile, 
+    #     header = TRUE, 
+    #     sep = ',', 
+    #     dec = ',', 
+    #     comment.char = '',
+    #     na.strings = .opt()$gs$na, 
+    #     stringsAsFactors = FALSE
+    #   )
     } else if (sheet.name == 'unidades') { # febr-unidades ---
       res <- utils::read.table(
         file = destfile, 
