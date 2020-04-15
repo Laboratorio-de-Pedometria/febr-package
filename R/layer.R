@@ -110,9 +110,13 @@
 #' @export
 #' @examples
 #' # Read data from local copy of the repository
-#' res <- layer(
-#'  dataset = "ctb0003", 
-#'  febr.repo = '~/ownCloud/febr-repo/public')
+#' if (dir.exists('~/ownCloud/febr-repo/public')) {
+#'   res <- layer(
+#'     dataset = "ctb0003", febr.repo = '~/ownCloud/febr-repo/public')
+#' } else {
+#'   res <- layer(
+#'     dataset = "ctb0003", febr.repo = 'remote')
+#' }
 ###############################################################################################################
 layer <-
   function (dataset, variable,
