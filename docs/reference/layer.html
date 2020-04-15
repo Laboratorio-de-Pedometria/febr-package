@@ -70,7 +70,7 @@ dataset before downloading it." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">febr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
       </span>
     </div>
 
@@ -134,7 +134,8 @@ dataset before downloading it.</p>
     <span class='kw'>smoothing.fun</span> <span class='kw'>=</span> <span class='st'>"mean"</span>, <span class='kw'>units</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>round</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>),
   <span class='kw'>harmonization</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>harmonize</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>2</span>),
   <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>febr.repo</span> <span class='kw'>=</span> <span class='st'>"remote"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -220,6 +221,12 @@ information.</p></li>
 useful to identify datasets with inconsistent data. Please report to <a href='mailto:febr-forum@googlegroups.com'>febr-forum@googlegroups.com</a>
 if you find any issue.</p></td>
     </tr>
+    <tr>
+      <th>febr.repo</th>
+      <td><p>(optional) Character vector indicating where the data should be read. Defaults to
+<code>febr.repo = "remote"</code>, i.e. the remote web server. Alternatively, a local directory path can be passed to
+<code>febr.repo</code> if the user has a local copy of the data repository.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -257,8 +264,11 @@ same variable.
     <div class='dont-index'><p><code><a href='observation.html'>observation</a></code>, <code><a href='standard.html'>standard</a></code>, <code><a href='unit.html'>unit</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>layer</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0013"</span>)</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Downloading ctb0013-camada...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: incomplete final line found by readTableHeader on '/tmp/RtmpShhmt8/1Nnd2BKPyNZmL6juS_g473eF3CSuFUDz3YXLqKgGrpU016f262019411.csv'</span></div><div class='output co'>#&gt;   |                                                                              |======================================================================| 100%</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># Read data from local copy of the repository</span>
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>layer</span>(
+ <span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0003"</span>,
+ <span class='kw'>febr.repo</span> <span class='kw'>=</span> <span class='st'>'~/ownCloud/febr-repo/public'</span>)</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Downloading ctb0003-camada...</span></div><div class='output co'>#&gt;   |                                                                              |======================================================================| 100%</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

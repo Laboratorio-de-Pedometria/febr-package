@@ -68,7 +68,7 @@ description of analytical methods, and identification of analysis laboratories."
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">febr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@ Repository for Open Soil Data -- <em><strong>febr</strong></em>, <a href='http:/
 description of analytical methods, and identification of analysis laboratories.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metadata</span>(<span class='no'>dataset</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>metadata</span>(<span class='no'>dataset</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>febr.repo</span> <span class='kw'>=</span> <span class='st'>"remote"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -139,6 +139,12 @@ in <a href='http://www.ufsm.br/febr/catalog/'>http://www.ufsm.br/febr/catalog/</
       <td><p>(optional) Logical value indicating if informative messages should be displayed. Generally
 useful to identify datasets with inconsistent data. Please report to <a href='mailto:febr-forum@googlegroups.com'>febr-forum@googlegroups.com</a>
 if you find any issue.</p></td>
+    </tr>
+    <tr>
+      <th>febr.repo</th>
+      <td><p>(optional) Character vector indicating where the data should be read. Defaults to
+<code>febr.repo = "remote"</code>, i.e. the remote web server. Alternatively, a local directory path can be passed to
+<code>febr.repo</code> if the user has a local copy of the data repository.</p></td>
     </tr>
     </table>
 
