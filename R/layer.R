@@ -136,7 +136,7 @@ layer <-
     if (missing(dataset)) {
       stop ("argument 'dataset' is missing")
     } else if (!is.character(dataset)) {
-      stop (paste("object of class", class(dataset), "passed to argument 'dataset'"))
+      stop (paste("object of class ", class(dataset), " passed to argument 'dataset'", sep = ""))
     }
     
     ## variable
@@ -154,12 +154,12 @@ layer <-
       if (is.null(missing$depth)) {
         missing$depth <- "keep"
       } else if (!missing$depth %in% c("drop", "keep")) {
-        stop (glue::glue("unknown value '{missing$depth}' passed to sub-argument 'missing$depth'"))
+        stop (paste("unknown value '", missing$depth, "'passed to sub-argument 'missing$depth'", sep = ""))
       }
       if (is.null(missing$data)) {
         missing$data <- "keep"
       } else if (!missing$data %in% c("drop", "keep")) {
-        stop (glue::glue("unknown value '{missing$data}' passed to sub-argument 'missing$data'"))
+        stop (paste("unknown value '", missing$data, "'passed to sub-argument 'missing$data'", sep = ""))
       }
     }
     
@@ -169,76 +169,76 @@ layer <-
         standardization$plus.sign <- "keep"
       } else if (!standardization$plus.sign %in% c("add", "remove", "keep")) {
         y <- standardization$plus.sign
-        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$plus.sign'"))
+        stop (paste("unknown value '", y, "'passed to sub-argument 'standardization$plus.sign'", sep = ""))
       }
       if (is.null(standardization$plus.depth)) {
         standardization$plus.depth <- 2.5  
       } else if (standardization$plus.depth > 100 || standardization$plus.depth < 0) {
         y <- standardization$plus.depth
-        stop (glue::glue("unlikely value '{y}' passed to sub-argument 'standardization$plus.depth'"))
+        stop (paste("unlikely value '", y, "'passed to sub-argument 'standardization$plus.depth'", sep = ""))
       }
       if (is.null(standardization$lessthan.sign)) {
         standardization$lessthan.sign <- "keep"
       } else if (!standardization$lessthan.sign %in% c("subtract", "remove", "keep")) {
         y <- standardization$lessthan.sign
-        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$lessthan.sign'"))
+        stop (paste("unknown value '", y, "'passed to sub-argument 'standardization$lessthan.sign'", sep = ""))
       }
       if (is.null(standardization$lessthan.frac)) {
         standardization$lessthan.frac <- 0.5  
       } else if (standardization$lessthan.frac > 1 || standardization$lessthan.frac < 0) {
         y <- standardization$lessthan.frac
-        stop (glue::glue("unlikely value '{y}' passed to sub-argument 'standardization$lessthan.frac'"))
+        stop (paste("unlikely value '", y, "'passed to sub-argument 'standardization$lessthan.frac'", sep = ""))
       }
       if (is.null(standardization$repetition)) {
         standardization$repetition <- "keep"
       } else if (!standardization$repetition %in% c("combine", "keep")) {
         y <- standardization$repetition
-        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$repetition'"))
+        stop (paste("unknown value '", y, "'passed to sub-argument 'standardization$repetition'", sep = ""))
       }
       if (is.null(standardization$combine.fun)) {
         standardization$combine.fun <- "mean"
       } else if (!standardization$combine.fun %in% c("mean", "min", "max", "median")) {
         y <- standardization$combine.fun
-        stop(glue::glue("unknown value '{y}' passed to sub-argument 'standardization$combine.fun'"))
+        stop(paste("unknown value '", y, "'passed to sub-argument 'standardization$combine.fun'", sep = ""))
       }
       
       if (is.null(standardization$transition)) {
         standardization$transition <- "keep"
       } else if (!standardization$transition %in% c("smooth", "keep")) {
         y <- standardization$transition
-        stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$transition'"))
+        stop (paste("unknown value '", y, "'passed to sub-argument 'standardization$transition'", sep = ""))
       }
       if (is.null(standardization$smoothing.fun)) {
         standardization$smoothing.fun <- "mean"
       } else if (!standardization$smoothing.fun %in% c("mean", "min", "max", "median")) {
         y <- standardization$smoothing.fun
-        stop(glue::glue("unknown value '{y}' passed to sub-argument 'standardization$smoothing.fun'"))
+        stop(paste("unknown value '", y, "'passed to sub-argument 'standardization$smoothing.fun'", sep = ""))
       }
       
       # if (is.null(standardization$broken.transition)) {
       #   standardization$broken.transition <- "keep"
       # } else if (!standardization$broken.transition %in% c("merge", "keep")) {
       #   y <- standardization$broken.transition
-      #   stop (glue::glue("unknown value '{y}' passed to sub-argument 'standardization$broken.transition'"))
+      #   stop (paste("unknown value '", y, "'passed to sub-argument 'standardization$broken.transition'", sep = ""))
       # }
       # if (is.null(standardization$merge.fun)) {
       #   standardization$merge.fun <- "weighted.mean"
-      # } else if (!standardization$merge.fun %in% c("weighted.mean", "mean", "min", "max", "median")) {
+      # } else if (!standardization$merge.fun %in% c("weighted.mean", "mean", "min", "max", "median", sep = "")) {
       #   y <- standardization$merge.fun
-      #   stop(glue::glue("unknown value '{y}' passed to sub-argument 'standardization$merge.fun'"))
+      #   stop(paste("unknown value '", y, "'passed to sub-argument 'standardization$merge.fun'", sep = ""))
       # }
       
       if (is.null(standardization$units)) {
         standardization$units <- FALSE
       } else if (!is.logical(standardization$units)) {
         y <- class(standardization$units)
-        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$units'"))
+        stop (paste("object of class '", y, "'passed to sub-argument 'standardization$units'", sep = ""))
       }
       if (is.null(standardization$round)) {
         standardization$round <- FALSE
       } else if (!is.logical(standardization$round)) {
         y <- class(standardization$round)
-        stop (glue::glue("object of class '{y}' passed to sub-argument 'standardization$round'"))
+        stop (paste("object of class '", y, "'passed to sub-argument 'standardization$round'", sep = ""))
       }
     }
     
@@ -248,24 +248,24 @@ layer <-
         harmonization$harmonize <- FALSE
       } else if (!is.logical(harmonization$harmonize)) {
         y <- class(harmonization$harmonize)
-        stop (glue::glue("object of class '{y}' passed to sub-argument 'harmonization$harmonize'"))
+        stop (paste("object of class '", y, "'passed to sub-argument 'harmonization$harmonize'", sep = ""))
       }
       if (is.null(harmonization$level)) {
         harmonization$level <- 2
       } else if (!pedometrics::isNumint(harmonization$level)) {
         y <- class(harmonization$level)
-        stop (glue::glue("object of class '{y}' passed to sub-argument 'harmonization$level'"))
+        stop (paste("object of class '", y, "'passed to sub-argument 'harmonization$level'", sep = ""))
       }
     }
     
     ## progress
     if (!is.logical(progress)) {
-      stop (paste("object of class", class(progress), "passed to argument 'progress'"))
+      stop (paste("object of class", class(progress), "passed to argument 'progress'", sep = ""))
     }
     
     ## verbose
     if (!is.logical(verbose)) {
-      stop (paste("object of class", class(verbose), "passed to argument 'verbose'"))
+      stop (paste("object of class", class(verbose), "passed to argument 'verbose'", sep = ""))
     }
     
     ## variable + stack || variable + harmonization
@@ -296,7 +296,7 @@ layer <-
     ## Padronização não precisa ser feita no caso de descarregamento apenas das variáveis padrão
     ## Também não precisa ser feita no caso de variáveis de tipo 'texto'
     if (stack && !standardization$units && !missing(variable) && variable != "all") {
-      tmp_var <- glue::glue("^{variable}")
+      tmp_var <- paste("^{variable}")
       idx <- lapply(tmp_var, function (pattern) grep(pattern = pattern, x = febr_stds$campo_id))
       idx <- unlist(idx)
       is_all_text <- all(febr_stds$campo_tipo[idx] == "texto")
@@ -543,12 +543,12 @@ layer <-
           
         } else {
           res[[i]] <- data.frame()
-          m <- glue::glue("All layers in {dts} are missing data. None will be returned.")
+          m <- paste("All layers in ", dts, " are missing data. None will be returned.", sep = "")
           message(m)
         }
       } else {
         res[[i]] <- data.frame()
-        m <- glue::glue("All layers in {dts} are missing depth. None will be returned.")
+        m <- paste("All layers in ", dts, " are missing depth. None will be returned.", sep = "")
         message(m)
       }
     }
