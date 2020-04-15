@@ -469,7 +469,7 @@ observation <-
           
           # IDENTIFICAÇÃO
           ## Código de identificação do conjunto de dados
-          res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
+          res[[i]] <- cbind(dataset_id = sheets_keys$ctb[i], tmp, stringsAsFactors = FALSE)
           
           # ATTRIBUTOS II
           a <- attributes(res[[i]])

@@ -78,7 +78,8 @@ metadata <-
       tmp <- .readOwnCloud(ctb = sheets_keys[i, 'ctb'], table = 'metadado', febr.repo = febr.repo)
       
       # Dados processadas
-      obs[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp)
+      obs[[i]] <- cbind(dataset_id = sheets_keys$ctb[i], tmp, stringsAsFactors = FALSE)
+      
       if (progress) {
         utils::setTxtProgressBar(pb, i)
       }
