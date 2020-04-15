@@ -281,7 +281,12 @@
     
     # ler arquivo
     res <- utils::read.table(
-      file = url, header = TRUE, sep = ';', dec = ',', na.strings = .opt()$gs$na, stringsAsFactors = FALSE,
+      file = url, 
+      header = TRUE, 
+      sep = ';', 
+      dec = ',', 
+      na.strings = .opt()$gs$na, 
+      stringsAsFactors = FALSE,
       ...)
     return (res)
   }
