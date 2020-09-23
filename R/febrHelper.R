@@ -263,34 +263,23 @@
   }
 
 # Descarregar e ler arquivo do onwCloud #######################################################################
-# O usuário pode informar se o repositório de leitura é remoto ou local
+# O repositório de leitura é remoto ou local?
 .readOwnCloud <-
   function (ctb, table, febr.repo, ...) {
-    
     if (febr.repo == 'remote') {
-      url <- paste(
-      'https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F', ctb, '&files=', 
-      ctb, '-', table, '.csv', 
-      sep = '')
+      url <- paste0(
+      'https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F', ctb, '&files=',
+      ctb, '-', table, '.txt')
     } else {
       if (!grepl('./$', febr.repo)) {
         febr.repo <- paste(febr.repo, '/', sep = '')
       }
-      url <- paste(path.expand(febr.repo), ctb, '/', ctb, '-', table, '.csv', sep = '')
+      url <- paste(path.expand(febr.repo), ctb, '/', ctb, '-', table, '.txt', sep = '')
     }
-    
-    # ler arquivo
     res <- utils::read.table(
-      file = url, 
-      header = TRUE, 
-      sep = ';', 
-      dec = ',', 
-      na.strings = .opt()$gs$na, 
-      stringsAsFactors = FALSE,
-      ...)
-    return (res)
+      file = url, header = TRUE, dec = ',', na.strings = .opt()$gs$na, stringsAsFactors = FALSE, ...)
+    return(res)
   }
-  
 # Descarregar e ler planilha do Google Sheets #################################################################
 .readGoogleSheetCSV <-
   function (sheet.id, sheet.name) {

@@ -1,8 +1,8 @@
 Package: febr
 Type: Package
 Title: Free Brazilian Repository for Open Soil Data
-Version: 1.1.0.9000
-Date: 2020-04-14
+Version: 1.1.0.9001
+Date: 2020-09-23
 Authors@R: c(
     person("Alessandro", "Samuel-Rosa", role = c("aut", "cre"), email = "alessandrosamuelrosa@gmail.com", 
            comment = c(ORCID = "0000-0003-0877-1320")),
@@ -31,7 +31,7 @@ Suggests:
 VignetteBuilder: knitr
 SystemRequirements: pandoc
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/febr-team/febr-package/
 BugReports: https://github.com/febr-team/febr-package/issues/

@@ -1,3 +1,7 @@
+# Version 1.1.0.9001 (2020-09-23)
+
+* Bug fix: correct file format i.e. TXT instead of CSV.
+
 # Version 1.1.0.9000 (2020-04-14)
 
 * Improvements:
