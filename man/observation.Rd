@@ -2,7 +2,7 @@
 % Please edit documentation in R/observation.R
 \name{observation}
 \alias{observation}
-\title{Get \emph{observation} table}
+\title{Get soil observations}
 \usage{
 observation(
   dataset,
@@ -68,19 +68,19 @@ information.
 useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com}
 if you find any issue.}
 
-\item{febr.repo}{(optional) Character vector indicating where the data should be read. Defaults to
-\code{febr.repo = "remote"}, i.e. the remote web server. Alternatively, a local directory path can be passed to
-\code{febr.repo} if the user has a local copy of the data repository.}
+\item{febr.repo}{(optional) Character vector indicating where the data should be read from. Defaults to
+\code{febr.repo = "remote"}, i.e. the remote file directory hosted by the Federal University of Technology—
+Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}. Alternatively, a local directory
+path can be passed to \code{febr.repo} if the user has a local copy of the file directory.}
 }
 \value{
 A list of data frames or a data frame with data on the chosen variable(s) of the chosen dataset(s).
 }
 \description{
-Download data from the \emph{observation} ("observacao") table of one or more datasets contained in the Free
-Brazilian Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This includes spatial
-coordinates, observation date, and variables such as geology, land use and vegetation, local topography, and
-much more. Use \code{\link[febr]{header}} if you want to check what are the variables contained in the
-\emph{observation} table of a dataset before downloading it.
+Download data from soil observations of one or more datasets contained in the Free Brazilian Repository
+for Open Soil Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}. This includes 1D data such
+as latitude, longitude, date of observation, underlying geology, land use and vegetation, local topography,
+soil classification, and so on.
 }
 \details{
 \subsection{Standard identification variables}{
