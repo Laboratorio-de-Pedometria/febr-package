@@ -1,3 +1,5 @@
+^renv$
+^renv\.lock$
 ^CRAN-RELEASE$
 ^.*\.Rproj$
 ^\.Rproj\.user$
@@ -11,3 +13,4 @@ pkgdown
 vignettes/_febr.Rmd
 ^cran-comments\.md$
 test.R
+.lintr
