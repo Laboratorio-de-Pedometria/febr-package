@@ -10,6 +10,9 @@ devtools::revdep()
 # turn on/off development mode
 devtools::dev_mode()
 
+# Render README
+rmarkdown::render("README.Rmd")
+
 # check documentation ----
 roxygen2::roxygenise()
 devtools::check_man()
