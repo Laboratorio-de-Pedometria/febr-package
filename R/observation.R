@@ -22,7 +22,7 @@
 #' \itemize{
 #' \item `crs` Character string indicating the EPSG code of the coordinate reference system (CRS) to which
 #'       spatial coordinates should be transformed. For example, `crs = "EPSG:4674"`, i.e. SIRGAS 2000, the
-#'       standard CRS for Brazil -- see more at \url{http://spatialreference.org/ref/epsg/}. Defaults to 
+#'       standard CRS for Brazil -- see more at \url{https://spatialreference.org/ref/epsg/}. Defaults to 
 #'       `crs = NULL`, i.e. no transformation is performed.
 #' \item `time.format` Character string indicating how to format dates. For example, 
 #'       \code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to 
