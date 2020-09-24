@@ -1,3 +1,8 @@
+# Version 1.2.1 (2020-09-24) (unreleased)
+
+* Improves package documentation.
+* `readFEBR()`: new general purpose function to download raw data.
+
 # Version 1.1.0.9001 (2020-09-23)
 
 * Bug fix: correct file format i.e. TXT instead of CSV.
