@@ -1,32 +1,32 @@
 #' Get soil data
-#' 
+#'
 #' Download soil data from one or more data sets published in the Free Brazilian Repository for Open Soil Data
 #' -- FEBR, \url{https://www.pedometria.org/projeto/febr/}.
-#' 
+#'
 #' @param data.set Character vector indicating the identification code of one or more data sets. Identification
 #' codes should be as recorded in \url{https://pedometria.shinyapps.io/febr/}. Use `data.set = "all"` to
 #' download all data sets.
-#' 
+#'
 #' @param data.table Character vector indicating one or more data tables, with supported values 
-#' `"identificacao"`, `"versionamento"`, `"metadado"`, `"observacao"`, e `"camada"`.
-#' 
+#' `"identificacao"`, `"versionamento"`, `"metadado"`, `"observacao"`, and `"camada"`.
+#'
 #' @param verbose (optional) Logical value indicating if informative messages should be displayed. Generally
 #' useful to identify issues—please report to \email{febr-forum@@googlegroups.com} if you find any.
-#' 
+#'
 #' @param ... (optional) Arguments passed to \code{\link[utils]{read.table}}.
-#' 
+#'
 #' @return A list of data frames with data from the chosen data sets.
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' 
+#'
 #' @export
 #' @examples
-#' \donttest{ 
+#' \donttest{
 #' res <- readFEBR(data.set = "ctb0003")
 #' }
 ###############################################################################################################
-readFEBR <- 
-  function (
+readFEBR <-
+  function(
     data.set,
     data.table = c("identificacao", "versionamento", "metadado", "observacao", "camada"),
     verbose = TRUE, ...) {
