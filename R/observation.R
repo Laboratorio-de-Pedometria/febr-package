@@ -1,17 +1,17 @@
-#' Get *observation* table
+#' Get soil observations
 #'
-#' Download data from the *observation* ("observacao") table of one or more datasets contained in the Free
-#' Brazilian Repository for Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}. This includes spatial
-#' coordinates, observation date, and variables such as geology, land use and vegetation, local topography, and
-#' much more. Use \code{\link[febr]{header}} if you want to check what are the variables contained in the 
-#' *observation* table of a dataset before downloading it.
+#' Download data from soil observations of one or more datasets contained in the Free Brazilian Repository
+#' for Open Soil Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}. This includes 1D data such
+#' as latitude, longitude, date of observation, underlying geology, land use and vegetation, local topography,
+#' soil classification, and so on.
 #' 
 #' @template data_template
 #' @template metadata_template
 #' 
-#' @param febr.repo (optional) Character vector indicating where the data should be read. Defaults to
-#' `febr.repo = "remote"`, i.e. the remote web server. Alternatively, a local directory path can be passed to
-#' `febr.repo` if the user has a local copy of the data repository.
+#' @param febr.repo (optional) Character vector indicating where the data should be read from. Defaults to
+#' `febr.repo = "remote"`, i.e. the remote file directory hosted by the Federal University of Technology—
+#' Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}. Alternatively, a local directory
+#' path can be passed to `febr.repo` if the user has a local copy of the file directory.
 #' 
 #' @param missing (optional) List with named sub-arguments indicating what should be done with an observation
 #' missing spatial coordinates, `coord`, date of observation, `time`, or data on variables, `data`. Options are
@@ -106,11 +106,9 @@
 #' }
 ###############################################################################################################
 observation <-
-  function (dataset, variable, 
-            stack = FALSE, missing = list(coord = "keep", time = "keep", data = "keep"),
-            standardization = list(
-              crs = NULL, time.format = NULL,
-              units = FALSE, round = FALSE),
+  function (dataset, variable, stack = FALSE,
+            missing = list(coord = "keep", time = "keep", data = "keep"),
+            standardization = list(crs = NULL, time.format = NULL, units = FALSE, round = FALSE),
             harmonization = list(harmonize = FALSE, level = 2),
             progress = TRUE, verbose = TRUE, febr.repo = 'remote') {
     
