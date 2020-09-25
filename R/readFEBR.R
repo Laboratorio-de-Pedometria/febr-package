@@ -63,13 +63,13 @@ readFEBR <-
       if (verbose) {
         message(paste0("Downloading...\n", paste0(x, collapse = "\n")))
       }
-      out <- sapply(x, utils::read.table, header = TRUE, dec = ',', stringsAsFactors = FALSE, ...)
+      out <- lapply(x, utils::read.table, header = TRUE, dec = ',', stringsAsFactors = FALSE, ...)
       names(out) <- data.table
       out
     })
     # PREPARE OUTPUT ----
     if(length(res) == 1) {
-      res <- res[[1]]
+      res <- res[[1]][[1]]
     } else {
       names(res) <- data.set
     }
