@@ -48,7 +48,7 @@ readFEBR <-
       stop(paste0("object of class '", class(verbose), "' passed to argument 'verbose'"))
     }
     # DOWNLOAD DATA ----
-    if (data.set == "all") {
+    if ("all" %in% data.set) {
       keys <- "18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q"
       keys <- paste0('https://docs.google.com/spreadsheets/d/', keys, '/export?format=csv')
       data.set <- utils::read.table(
@@ -68,9 +68,12 @@ readFEBR <-
       out
     })
     # PREPARE OUTPUT ----
-    if(length(res) == 1) {
+    if(length(data.set) == 1 & length(data.table) == 1) {
       res <- res[[1]][[1]]
-    } else {
+    } else if (length(data.set) > 1) {
+      if (length(data.table) == 1) {
+        res <- lapply(res, function(x) x[[1]])
+      }
       names(res) <- data.set
     }
     return(res)

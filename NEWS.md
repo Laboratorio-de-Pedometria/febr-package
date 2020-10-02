@@ -1,3 +1,7 @@
+# Version 1.2.2 (2020-10-02) (unreleased)
+
+* `readFEBR()`: improves output object.
+
 # Version 1.2.1 (2020-09-24) (unreleased)
 
 * Improves package documentation.

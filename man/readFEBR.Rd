@@ -17,7 +17,7 @@ codes should be as recorded in \url{https://pedometria.shinyapps.io/febr/}. Use 
 download all data sets.}
 
 \item{data.table}{Character vector indicating one or more data tables, with supported values
-\code{"identificacao"}, \code{"versionamento"}, \code{"metadado"}, \code{"observacao"}, e \code{"camada"}.}
+\code{"identificacao"}, \code{"versionamento"}, \code{"metadado"}, \code{"observacao"}, and \code{"camada"}.}
 
 \item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally
 useful to identify issues—please report to \email{febr-forum@googlegroups.com} if you find any.}
@@ -32,7 +32,7 @@ Download soil data from one or more data sets published in the Free Brazilian Re
 -- FEBR, \url{https://www.pedometria.org/projeto/febr/}.
 }
 \examples{
-\donttest{ 
+\donttest{
 res <- readFEBR(data.set = "ctb0003")
 }
 }
