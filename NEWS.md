@@ -1,8 +1,12 @@
-# Version 1.2.2 (2020-10-02) (unreleased)
+# Version 1.2.3 (2020-10-11)
+
+* Improves documentation for new release.
+
+# Version 1.2.2 (2020-10-02)
 
 * `readFEBR()`: improves output object.
 
-# Version 1.2.1 (2020-09-24) (unreleased)
+# Version 1.2.1 (2020-09-24)
 
 * Improves package documentation.
 * `readFEBR()`: new general purpose function to download raw data.

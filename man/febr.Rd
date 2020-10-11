@@ -25,13 +25,12 @@ if you find any issue.}
 A list of data frames with data on the chosen dataset.
 }
 \description{
-Download data from the \emph{dataset} ("dataset"), \emph{observation} ("observacao"), \emph{layer} ("camada"), and
-\emph{metadata} ("metadado") tables of a dataset contained in the Free Brazilian Repository for Open Soil Data
--- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}.
+Download data from the \emph{identification} ("identificacao"), \emph{observation} ("observacao"), \emph{layer} ("camada"),
+and \emph{metadata} ("metadado") tables of a dataset contained in the Free Brazilian Repository for Open Soil
+Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}.
 }
-\details{
-Character vector indicating one dataset. The identification code should be as recorded in
-\url{http://www.ufsm.br/febr/catalog/}.
+\note{
+Check the new core data download function \code{readFEBR()}.
 }
 \examples{
 \donttest{ 

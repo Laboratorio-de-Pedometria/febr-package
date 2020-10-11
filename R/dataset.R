@@ -1,8 +1,9 @@
-#' Get *dataset* table
+#' Get *identification* table
 #'
-#' Download data from the *dataset* ("dataset") table of one or more datasets contained in the Free Brazilian
-#' Repository for Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}. This includes dataset title and
-#' description, author and institution identification, dataset license, and much more.
+#' Download data from the *identification* ("identificacao") table of one or more datasets contained in the 
+#' Free Brazilian Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}. This
+#' includes dataset title and description, author and institution identification, dataset license, and much
+#' more.
 #'
 #' @param febr.repo (optional) Character vector indicating where the data should be read. Defaults to
 #' `febr.repo = "remote"`, i.e. the remote web server. Alternatively, a local directory path can be passed to
@@ -12,14 +13,16 @@
 #'
 #' @return A list of data frames or a data frame with data of the chosen dataset(s).
 #'
+#' @note Check the new core data download function `readFEBR()`.
+#' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
 #' \donttest{
-#' res <- dataset(dataset = "ctb0003")
+#' res <- identification(dataset = "ctb0003")
 #' }
 ###############################################################################################################
-dataset <-
+identification <-
   function (dataset, progress = TRUE, verbose = TRUE, febr.repo = 'remote') {
 
     # ARGUMENTOS
@@ -93,3 +96,6 @@ dataset <-
     
     return (obs)
   }
+#' @rdname identification
+#' @export
+dataset <- identification

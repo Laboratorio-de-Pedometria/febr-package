@@ -1,10 +1,10 @@
 #' Get *layer* table
 #'
 #' Download data from the *layer* ("camada") table of one or more datasets contained in the Free Brazilian
-#' Repository for Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}. This includes sampling depth,
-#' horizon designation, and variables such as pH, carbon content, clay content, and much more. Use 
-#' \code{\link[febr]{header}} if you want to check what are the variables contained in the *layer* table of a
-#' dataset before downloading it.
+#' Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}. This includes 
+#' sampling depth, horizon designation, and variables such as pH, carbon content, clay content, and much more.
+#' Use \code{\link[febr]{header}} if you want to check what are the variables contained in the *layer* table 
+#' of a dataset before downloading it.
 #' 
 #' @template data_template
 #' @template metadata_template
@@ -76,7 +76,7 @@
 #' \subsection{Standard identification variables}{
 #' Standard identification variables and their content are as follows:
 #' \itemize{
-#' \item \code{dataset_id}. Identification code of the dataset in ___febr___ to which an observation belongs.
+#' \item \code{dataset_id}. Identification code of the dataset in the FEBR to which an observation belongs.
 #' \item \code{observacao_id}. Identification code of an observation in a dataset.
 #' \item \code{camada_id}. Sequential layer number, from top to bottom.
 #' \item \code{camada_nome}. Layer designation according to some standard description guide.
@@ -105,18 +105,13 @@
 #' 
 #' @return A list of data frames or a data frame with data on the chosen variable(s) of the chosen dataset(s).
 #'
+#' @note Check the new core data download function `readFEBR()`.
+#' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \code{\link[febr]{observation}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
 #' @export
 #' @examples
-#' # Read data from local copy of the repository
-#' if (dir.exists('~/ownCloud/febr-repo/public')) {
-#'   res <- layer(
-#'     dataset = "ctb0003", febr.repo = '~/ownCloud/febr-repo/public')
-#' } else {
-#'   res <- layer(
-#'     dataset = "ctb0003", febr.repo = 'remote')
-#' }
+#' res <- layer(dataset = "ctb0003")
 ###############################################################################################################
 layer <-
   function (dataset, variable,

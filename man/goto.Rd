@@ -2,23 +2,24 @@
 % Please edit documentation in R/goto.R
 \name{goto}
 \alias{goto}
-\title{Go to \emph{\strong{febr}}}
+\title{Go to FEBR}
 \usage{
 goto(dataset, table, page)
 }
 \arguments{
 \item{dataset}{(optional) Character vector indicating one dataset. The identification code should be as
-recorded in \url{http://www.ufsm.br/febr/catalog/}.}
+recorded in \url{https://www.pedometria.shinyapps.io/febr/}.}
 
-\item{table}{(optional) Character string indicating a table, i.e. the \emph{dataset} table, \code{"dataset"}, the
-\emph{observation} table, \code{"observacao"}, the \emph{layer} table, \code{"camada"}, or the \emph{metadata} table, \code{"metadado"}.}
+\item{table}{(optional) Character string indicating a table, i.e. the \emph{identification} table,
+\code{"identificacao"}, the \emph{observation} table, \code{"observacao"}, the \emph{layer} table, \code{"camada"}, or the
+\emph{metadata} table, \code{"metadado"}.}
 
-\item{page}{(optional) Character string indicating a web page of the \emph{\strong{febr}}. Options are: \code{"febr"},
-\code{"view"}, \code{"catalog"}, \code{"search"}, \code{"book"}, \code{"package"}, \code{"github"}, \code{"forum"}, \code{"units"}, \code{"standards"},
-and \code{"index"}.}
+\item{page}{(optional) Character string indicating a web page of the FEBR. Options are: \code{"febr"}, \code{"view"},
+\code{"catalog"}, \code{"search"}, \code{"book"}, \code{"package"}, \code{"github"}, \code{"forum"}, \code{"units"}, \code{"standards"}, and
+\code{"index"}.}
 }
 \description{
-Go to one of the web pages of the Free Brazilian Repository for Open Soil Data -- \emph{\strong{febr}} --, including
+Go to one of the web pages of the Free Brazilian Repository for Open Soil Data -- FEBR --, including
 project and dataset web pages.
 }
 \examples{

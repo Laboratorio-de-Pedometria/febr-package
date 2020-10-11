@@ -16,9 +16,9 @@ A data.frame with source and target measurement units and their corresponding co
 }
 \description{
 Download data from the \emph{units} ("unidades") table of the Free Brazilian Repository for Open Soil Data --
-\emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This includes measurement units and conversion factors. This
-is used to standardize the data contained in a dataset when downloading it via \code{\link[febr]{layer}} or
-\code{\link[febr]{observation}}.
+FEBR, \url{https://www.pedometria.org/projeto/febr/}. This includes measurement units and conversion
+factors. This is used to standardize the data contained in a dataset when downloading it via
+\code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
 }
 \examples{
 #res <- unit(source = c("\%", "dag/kg"), target = "g/kg")

@@ -50,7 +50,7 @@
 #' \subsection{Standard identification variables}{
 #' Standard identification variables and their content are as follows:
 #' \itemize{
-#' \item `dataset_id`. Identification code of the dataset in ___febr___ to which an observation belongs.
+#' \item `dataset_id`. Identification code of the dataset in the FEBR to which an observation belongs.
 #' \item `observacao_id`. Identification code of an observation in a dataset.
 #' \item `sisb_id`. Identification code of an observation in the Brazilian Soil Information System
 #' maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at

@@ -9,10 +9,9 @@
           "febr version ", pkg.info["Version"],                               " \n",
           "(built on ", pkg.info["Date"], ") is now loaded                      \n",
           "                                                                     \n",
-          "Making the access to the Free Brazilian Repository for Open Soil Data\n",
-          "as easy as possible. Access http://www.ufsm.br/febr/.                \n",
-          "Contact febr-forum@googlegroups.com for more information             \n",
-          "and to learn how you can help!                                       \n",
+          "Check the new core data download function readFEBR()                 \n",
+          "                                                                     \n",
+          "Visit https://www.pedometria.org/projeto/febr for more information   \n",
           "---------------------------------------------------------------------\n",
           sep = "")
   )

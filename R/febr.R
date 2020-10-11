@@ -1,11 +1,11 @@
 #' Get all dataset tables
 #' 
-#' Download data from the *dataset* ("dataset"), *observation* ("observacao"), *layer* ("camada"), and 
-#' *metadata* ("metadado") tables of a dataset contained in the Free Brazilian Repository for Open Soil Data 
-#' -- ___febr___, \url{http://www.ufsm.br/febr}.
+#' Download data from the *identification* ("identificacao"), *observation* ("observacao"), *layer* ("camada"),
+#' and *metadata* ("metadado") tables of a dataset contained in the Free Brazilian Repository for Open Soil 
+#' Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}.
 #' 
-#' Character vector indicating one dataset. The identification code should be as recorded in 
-#' \url{http://www.ufsm.br/febr/catalog/}.
+#' @param dataset Character vector indicating one dataset. The identification code should be as recorded in 
+#' \url{https://www.pedometria.shinyapps.io/febr/}.
 #' 
 #' @template metadata_template
 #' 
@@ -16,6 +16,8 @@
 #' 
 #' @return A list of data frames with data on the chosen dataset.
 #'
+#' @note Check the new core data download function `readFEBR()`.
+#' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \code{\link[febr]{dataset}}, \code{\link[febr]{observation}}, \code{\link[febr]{layer}}, 
 #' \code{\link[febr]{metadata}}

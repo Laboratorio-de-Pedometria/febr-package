@@ -15,15 +15,14 @@ navbar:
       href: news/index.html
   right:
     - icon: fa-github
-      href: https://github.com/febr-team/febr-package
+      href: https://github.com/samuel-rosa/febr-package
 
 reference:
   - title: "Funções estruturais"
     desc: >
       As funções estruturais servem para conhecer a estrutura das tabelas dos conjuntos de dados publicados 
-      no ___febr___. Elas também servem para conhecer os padrões de codificação, 
-      nomenclatura, unidades de medida, número de casas decimais, entre outros, usados no 
-      ___febr___.
+      no FEBR. Elas também servem para conhecer os padrões de codificação, nomenclatura, unidades de medida, 
+      número de casas decimais, entre outros, usados no FEBR.
     contents: 
       - header
       - standard
@@ -31,20 +30,18 @@ reference:
   - title: "Funções de acesso"
     desc: >
       As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados publicados no 
-      ___febr___. Isso inclui as tabelas `dataset`, `observacao`, `camada`, e 
-      `metadado`.
+      FEBR. Isso inclui as tabelas `dataset`, `observacao`, `camada`, e `metadado`.
     contents:
-      - dataset
+      - readFEBR
+      - identification
+      - metadata
       - observation
       - layer
-      - metadata
-      - febr
   - title: "Funções auxiliares"
     desc: >
       As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de acesso, 
-      assim apoiando o processamento e uso dos dados descarregados do ___febr___,
-      por exemplo, a criação de objetos de outras classes e a exportação dos dados.
+      assim apoiando o processamento e uso dos dados descarregados do FEBR, por exemplo, a criação de objetos
+      de outras classes e a exportação dos dados.
     contents:
-      - febr2spdf
-      - febr2xlsx
+      - febr2sf
       - goto

@@ -98,16 +98,16 @@ A list of data frames or a data frame with data on the chosen variable(s) of the
 }
 \description{
 Download data from the \emph{layer} ("camada") table of one or more datasets contained in the Free Brazilian
-Repository for Open Soil Data -- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This includes sampling depth,
-horizon designation, and variables such as pH, carbon content, clay content, and much more. Use
-\code{\link[febr]{header}} if you want to check what are the variables contained in the \emph{layer} table of a
-dataset before downloading it.
+Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}. This includes
+sampling depth, horizon designation, and variables such as pH, carbon content, clay content, and much more.
+Use \code{\link[febr]{header}} if you want to check what are the variables contained in the \emph{layer} table
+of a dataset before downloading it.
 }
 \details{
 \subsection{Standard identification variables}{
 Standard identification variables and their content are as follows:
 \itemize{
-\item \code{dataset_id}. Identification code of the dataset in \emph{\strong{febr}} to which an observation belongs.
+\item \code{dataset_id}. Identification code of the dataset in the FEBR to which an observation belongs.
 \item \code{observacao_id}. Identification code of an observation in a dataset.
 \item \code{camada_id}. Sequential layer number, from top to bottom.
 \item \code{camada_nome}. Layer designation according to some standard description guide.
@@ -134,15 +134,11 @@ separate variables. But if \code{level = 2}, then both variables will be re-code
 same variable.
 }
 }
-\examples{
-# Read data from local copy of the repository
-if (dir.exists('~/ownCloud/febr-repo/public')) {
-  res <- layer(
-    dataset = "ctb0003", febr.repo = '~/ownCloud/febr-repo/public')
-} else {
-  res <- layer(
-    dataset = "ctb0003", febr.repo = 'remote')
+\note{
+Check the new core data download function \code{readFEBR()}.
 }
+\examples{
+res <- layer(dataset = "ctb0003")
 }
 \seealso{
 \code{\link[febr]{observation}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}

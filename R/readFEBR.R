@@ -4,7 +4,7 @@
 #' -- FEBR, \url{https://www.pedometria.org/projeto/febr/}.
 #'
 #' @param data.set Character vector indicating the identification code of one or more data sets. Identification
-#' codes should be as recorded in \url{https://pedometria.shinyapps.io/febr/}. Use `data.set = "all"` to
+#' codes should be as recorded in \url{https://www.pedometria.shinyapps.io/febr/}. Use `data.set = "all"` to
 #' download all data sets.
 #'
 #' @param data.table Character vector indicating one or more data tables, with supported values 

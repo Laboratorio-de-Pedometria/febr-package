@@ -17,8 +17,8 @@ with \code{x} to the file.}
 \item{...}{(optional) Further arguments passed to write function.}
 }
 \description{
-Write data downloaded from the Free Brazilian Repository for Open Soil Data -- \emph{\strong{febr}},
-\url{http://www.ufsm.br/febr} -- to an Excel workbook.
+Write data downloaded from the Free Brazilian Repository for Open Soil Data -- FEBR,
+\url{https://www.pedometria.org/projeto/febr/} -- to an Excel workbook.
 }
 \note{
 THIS FUNCTION IS DEPRECATED. PLEASE USE \code{\link[openxlsx]{write.xlsx}} INSTEAD.

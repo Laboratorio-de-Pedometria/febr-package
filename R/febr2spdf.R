@@ -2,9 +2,9 @@
 #' 
 #' Set spatial coordinates and projection attributes to create an sf object from the *observation* 
 #' ("observacao") table of one or more standardized datasets contained in the Free Brazilian Repository for 
-#' Open Soil Data -- ___febr___, \url{http://www.ufsm.br/febr}.
+#' Open Soil Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}.
 #' 
-#' @param obj Object of class `data.frame` downloaded from ___febr___ using function
+#' @param obj Object of class `data.frame` downloaded from the FEBR using function
 #' \code{\link[febr]{observation}}.
 #' 
 #' @return An sf object

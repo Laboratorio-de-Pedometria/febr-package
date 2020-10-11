@@ -13,7 +13,7 @@ readFEBR(
 }
 \arguments{
 \item{data.set}{Character vector indicating the identification code of one or more data sets. Identification
-codes should be as recorded in \url{https://pedometria.shinyapps.io/febr/}. Use \code{data.set = "all"} to
+codes should be as recorded in \url{https://www.pedometria.shinyapps.io/febr/}. Use \code{data.set = "all"} to
 download all data sets.}
 
 \item{data.table}{Character vector indicating one or more data tables, with supported values

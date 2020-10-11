@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get <em>metadata</em> table — metadata • febr</title>
+<title>Get <em>identification</em> table — identification • febr</title>
 
 
 <!-- jquery -->
@@ -33,10 +33,11 @@
 
 
 
-<meta property="og:title" content="Get <em>metadata</em> table — metadata" />
-<meta property="og:description" content="Download data from the metadata (&quot;metadado&quot;) table of one or more datasets contained in the Free Brazilian
-Repository for Open Soil Data -- FEBR, https://www.pedometria.org/projeto/febr/. This includes
-variable names, description of analytical methods, and identification of analysis laboratories." />
+<meta property="og:title" content="Get <em>identification</em> table — identification" />
+<meta property="og:description" content="Download data from the identification (&quot;identificacao&quot;) table of one or more datasets contained in the
+Free Brazilian Repository for Open Soil Data -- FEBR, https://www.pedometria.org/projeto/febr/. This
+includes dataset title and description, author and institution identification, dataset license, and much
+more." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,18 +110,21 @@ variable names, description of analytical methods, and identification of analysi
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get <em>metadata</em> table</h1>
-    <small class="dont-index">Source: <a href='https://github.com/samuel-rosa/febr-package/blob/master/R/metadata.R'><code>R/metadata.R</code></a></small>
-    <div class="hidden name"><code>metadata.Rd</code></div>
+    <h1>Get <em>identification</em> table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/samuel-rosa/febr-package/blob/master/R/dataset.R'><code>R/dataset.R</code></a></small>
+    <div class="hidden name"><code>identification.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Download data from the <em>metadata</em> ("metadado") table of one or more datasets contained in the Free Brazilian
-Repository for Open Soil Data -- FEBR, <a href='https://www.pedometria.org/projeto/febr/'>https://www.pedometria.org/projeto/febr/</a>. This includes
-variable names, description of analytical methods, and identification of analysis laboratories.</p>
+    <p>Download data from the <em>identification</em> ("identificacao") table of one or more datasets contained in the
+Free Brazilian Repository for Open Soil Data -- FEBR, <a href='https://www.pedometria.org/projeto/febr/'>https://www.pedometria.org/projeto/febr/</a>. This
+includes dataset title and description, author and institution identification, dataset license, and much
+more.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metadata</span>(<span class='no'>dataset</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>febr.repo</span> <span class='kw'>=</span> <span class='st'>"remote"</span>)</pre>
+    <pre class="usage"><span class='fu'>identification</span>(<span class='no'>dataset</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>febr.repo</span> <span class='kw'>=</span> <span class='st'>"remote"</span>)
+
+<span class='fu'>dataset</span>(<span class='no'>dataset</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>febr.repo</span> <span class='kw'>=</span> <span class='st'>"remote"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,14 +154,14 @@ if you find any issue.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of data frames or a data frame with metadata of the chosen dataset(s).</p>
+    <p>A list of data frames or a data frame with data of the chosen dataset(s).</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Check the new core data download function <code><a href='readFEBR.html'>readFEBR()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>metadata</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0003"</span>)</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Downloading ctb0003-metadado...</span></div><div class='output co'>#&gt;   |                                                                              |======================================================================| 100%</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>identification</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0003"</span>)</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Downloading ctb0003-identificacao...</span></div><div class='output co'>#&gt;   |                                                                              |======================================================================| 100%</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

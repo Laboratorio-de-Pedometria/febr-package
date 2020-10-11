@@ -35,10 +35,10 @@
 
 <meta property="og:title" content="Get <em>layer</em> table — layer" />
 <meta property="og:description" content="Download data from the layer (&quot;camada&quot;) table of one or more datasets contained in the Free Brazilian
-Repository for Open Soil Data -- febr, http://www.ufsm.br/febr. This includes sampling depth,
-horizon designation, and variables such as pH, carbon content, clay content, and much more. Use
-header if you want to check what are the variables contained in the layer table of a
-dataset before downloading it." />
+Repository for Open Soil Data -- FEBR, https://www.pedometria.org/projeto/febr/. This includes
+sampling depth, horizon designation, and variables such as pH, carbon content, clay content, and much more.
+Use header if you want to check what are the variables contained in the layer table
+of a dataset before downloading it." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +70,7 @@ dataset before downloading it." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">febr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@ dataset before downloading it." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/febr-team/febr-package">
+  <a href="https://github.com/samuel-rosa/febr-package">
     <span class="fa fa-github"></span>
      
   </a>
@@ -112,16 +112,16 @@ dataset before downloading it." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get <em>layer</em> table</h1>
-    <small class="dont-index">Source: <a href='https://github.com/febr-team/febr-package/blob/master/R/layer.R'><code>R/layer.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/samuel-rosa/febr-package/blob/master/R/layer.R'><code>R/layer.R</code></a></small>
     <div class="hidden name"><code>layer.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Download data from the <em>layer</em> ("camada") table of one or more datasets contained in the Free Brazilian
-Repository for Open Soil Data -- <em><strong>febr</strong></em>, <a href='http://www.ufsm.br/febr'>http://www.ufsm.br/febr</a>. This includes sampling depth,
-horizon designation, and variables such as pH, carbon content, clay content, and much more. Use
-<code><a href='header.html'>header</a></code> if you want to check what are the variables contained in the <em>layer</em> table of a
-dataset before downloading it.</p>
+Repository for Open Soil Data -- FEBR, <a href='https://www.pedometria.org/projeto/febr/'>https://www.pedometria.org/projeto/febr/</a>. This includes
+sampling depth, horizon designation, and variables such as pH, carbon content, clay content, and much more.
+Use <code><a href='header.html'>header</a></code> if you want to check what are the variables contained in the <em>layer</em> table
+of a dataset before downloading it.</p>
     </div>
 
     <pre class="usage"><span class='fu'>layer</span>(
@@ -237,7 +237,7 @@ if you find any issue.</p></td>
     <h3>Standard identification variables</h3>
     Standard identification variables and their content are as follows:
 <ul>
-<li><p><code>dataset_id</code>. Identification code of the dataset in <em><strong>febr</strong></em> to which an observation belongs.</p></li>
+<li><p><code>dataset_id</code>. Identification code of the dataset in the FEBR to which an observation belongs.</p></li>
 <li><p><code>observacao_id</code>. Identification code of an observation in a dataset.</p></li>
 <li><p><code>camada_id</code>. Sequential layer number, from top to bottom.</p></li>
 <li><p><code>camada_nome</code>. Layer designation according to some standard description guide.</p></li>
@@ -259,15 +259,15 @@ with an identification code composed of four levels, <code>aaa_bbb_ccc_ddd</code
 is to consider all four coding levels (<code>level = 4</code>), then these two variables will remain coded as
 separate variables. But if <code>level = 2</code>, then both variables will be re-coded as <code>aaa_bbb</code>, thus becoming the
 same variable.
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Check the new core data download function <code><a href='readFEBR.html'>readFEBR()</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='observation.html'>observation</a></code>, <code><a href='standard.html'>standard</a></code>, <code><a href='unit.html'>unit</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Read data from local copy of the repository</span>
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>layer</span>(
- <span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0003"</span>,
- <span class='kw'>febr.repo</span> <span class='kw'>=</span> <span class='st'>'~/ownCloud/febr-repo/public'</span>)</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%</div><div class='output co'>#&gt; <span class='message'></span>
+    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>layer</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0003"</span>)</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Downloading ctb0003-camada...</span></div><div class='output co'>#&gt;   |                                                                              |======================================================================| 100%</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -276,6 +276,7 @@ same variable.
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#note">Note</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

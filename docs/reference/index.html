@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">febr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/febr-team/febr-package">
+  <a href="https://github.com/samuel-rosa/febr-package">
     <span class="fa fa-github"></span>
      
   </a>
@@ -120,7 +120,7 @@
       <tr>
         <th colspan="2">
           <h2 id="section-fun-es-estruturais" class="hasAnchor"><a href="#section-fun-es-estruturais" class="anchor"></a>Funções estruturais</h2>
-          <p class="section-desc"><p>As funções estruturais servem para conhecer a estrutura das tabelas dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Elas também servem para conhecer os padrões de codificação, nomenclatura, unidades de medida, número de casas decimais, entre outros, usados no <strong><em>febr</em></strong>.</p></p>
+          <p class="section-desc"><p>As funções estruturais servem para conhecer a estrutura das tabelas dos conjuntos de dados publicados no FEBR. Elas também servem para conhecer os padrões de codificação, nomenclatura, unidades de medida, número de casas decimais, entre outros, usados no FEBR.</p></p>
         </th>
       </tr>
       <tr>
@@ -146,27 +146,21 @@
       <tr>
         <th colspan="2">
           <h2 id="section-fun-es-de-acesso" class="hasAnchor"><a href="#section-fun-es-de-acesso" class="anchor"></a>Funções de acesso</h2>
-          <p class="section-desc"><p>As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Isso inclui as tabelas <code>dataset</code>, <code>observacao</code>, <code>camada</code>, e <code>metadado</code>.</p></p>
+          <p class="section-desc"><p>As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados publicados no FEBR. Isso inclui as tabelas <code>dataset</code>, <code>observacao</code>, <code>camada</code>, e <code>metadado</code>.</p></p>
         </th>
       </tr>
       <tr>
         
         <td>
-          <p><code><a href="dataset.html">dataset()</a></code> </p>
+          <p><code><a href="readFEBR.html">readFEBR()</a></code> </p>
         </td>
-        <td><p>Get <em>dataset</em> table</p></td>
+        <td><p>Get soil data</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="observation.html">observation()</a></code> </p>
+          <p><code><a href="identification.html">identification()</a></code> <code><a href="identification.html">dataset()</a></code> </p>
         </td>
-        <td><p>Get <em>observation</em> table</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="layer.html">layer()</a></code> </p>
-        </td>
-        <td><p>Get <em>layer</em> table</p></td>
+        <td><p>Get <em>identification</em> table</p></td>
       </tr><tr>
         
         <td>
@@ -176,15 +170,21 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="febr.html">febr()</a></code> </p>
+          <p><code><a href="observation.html">observation()</a></code> </p>
         </td>
-        <td><p>Get all dataset tables</p></td>
+        <td><p>Get soil observations</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="layer.html">layer()</a></code> </p>
+        </td>
+        <td><p>Get <em>layer</em> table</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
           <h2 id="section-fun-es-auxiliares" class="hasAnchor"><a href="#section-fun-es-auxiliares" class="anchor"></a>Funções auxiliares</h2>
-          <p class="section-desc"><p>As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de acesso, assim apoiando o processamento e uso dos dados descarregados do <strong><em>febr</em></strong>, por exemplo, a criação de objetos de outras classes e a exportação dos dados.</p></p>
+          <p class="section-desc"><p>As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de acesso, assim apoiando o processamento e uso dos dados descarregados do FEBR, por exemplo, a criação de objetos de outras classes e a exportação dos dados.</p></p>
         </th>
       </tr>
       <tr>
@@ -196,15 +196,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="febr2xlsx.html">febr2xlsx()</a></code> </p>
-        </td>
-        <td><p>Write data to an Excel workbook</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="goto.html">goto()</a></code> </p>
         </td>
-        <td><p>Go to <em><strong>febr</strong></em></p></td>
+        <td><p>Go to FEBR</p></td>
       </tr>
     </tbody>
     </table>

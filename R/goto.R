@@ -1,17 +1,18 @@
-#' Go to ___febr___
+#' Go to FEBR
 #' 
-#' Go to one of the web pages of the Free Brazilian Repository for Open Soil Data -- ___febr___ --, including
+#' Go to one of the web pages of the Free Brazilian Repository for Open Soil Data -- FEBR --, including
 #' project and dataset web pages.
 #' 
 #' @param dataset (optional) Character vector indicating one dataset. The identification code should be as
-#' recorded in \url{http://www.ufsm.br/febr/catalog/}.
+#' recorded in \url{https://www.pedometria.shinyapps.io/febr/}.
 #' 
-#' @param table (optional) Character string indicating a table, i.e. the *dataset* table, `"dataset"`, the
-#' *observation* table, `"observacao"`, the *layer* table, `"camada"`, or the *metadata* table, `"metadado"`.
+#' @param table (optional) Character string indicating a table, i.e. the *identification* table, 
+#' `"identificacao"`, the *observation* table, `"observacao"`, the *layer* table, `"camada"`, or the 
+#' *metadata* table, `"metadado"`.
 #' 
-#' @param page (optional) Character string indicating a web page of the ___febr___. Options are: `"febr"`,
-#' `"view"`, `"catalog"`, `"search"`, `"book"`, `"package"`, `"github"`, `"forum"`, `"units"`, `"standards"`,
-#' and `"index"`.
+#' @param page (optional) Character string indicating a web page of the FEBR. Options are: `"febr"`, `"view"`,
+#' `"catalog"`, `"search"`, `"book"`, `"package"`, `"github"`, `"forum"`, `"units"`, `"standards"`, and
+#' `"index"`.
 #' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
@@ -61,27 +62,25 @@ goto <-
     if (missing(dataset) && missing(table) && !missing(page)) { # Ir para alguma página do projeto
       switch (page,
         febr = {
-          url <- "http://coral.ufsm.br/febr/"
+          url <- "https://www.pedometria.org/projeto/febr/"
           },
         view = {
-          url <- "http://coral.ufsm.br/febr/view"
+          url <- "https://www.pedometria.shinyapps.io/febr/"
         },
         catalog = {
-          url <- "http://coral.ufsm.br/febr/catalog/"
+          url <- "https://www.pedometria.shinyapps.io/febr/"
         },
         search = {
-          # url <- "http://coral.ufsm.br/febr/search"
-          url <- 'https://pedometria.shinyapps.io/febr/'
+          url <- "https://www.pedometria.shinyapps.io/febr/"
         },
         book = {
-          # url <- "http://coral.ufsm.br/febr/book/"
-          url <- 'https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM'
+          url <- "https://www.pedometria.org/projeto/febr/"
         },
         package = {
-          url <- "https://febr-team.github.io/febr-package/"
+          url <- "https://CRAN.R-project.org/package=febr"
         },
         github = {
-          url <- "https://github.com/febr-team"
+          url <- "https://github.com/samuel-rosa/febr-package"
         },
         forum = {
           url <- "https://groups.google.com/forum/#!forum/febr-forum"
@@ -93,21 +92,19 @@ goto <-
           url <- "https://docs.google.com/spreadsheets/d/1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI"
         },
         index = {
-          url <- "https://docs.google.com/spreadsheets/d/1Z0JwcmRRUDCyTB9yFlvHPsN6mCSQPzSczIOv88SPtcw"
+          url <- "https://cloud.utfpr.edu.br/index.php/apps/onlyoffice/s/JDcb8XBvkpQeyXm"
         },
         template = {
-          url <- "https://docs.google.com/spreadsheets/d/1crDNClXIzAuZNQLILKMMYk9rgCdYsZimX2Z2dKK6Ivo"
+          url <- "https://docs.google.com/spreadsheets/d/1rXIiT1zSYhFegSdAvE0yJX16q-bvXVNpYIYdd5YgjhI"
         }
       )
       
-    } else if (missing(table) && missing(page) && !missing(dataset)) { # Ir para página do conjunto de dados
-      url <- glue::glue("http://coral.ufsm.br/febr/catalog/{dataset}.html")
+    } else if (missing(table) && missing(page) && !missing(dataset)) { # Ir para diretório do conjunto de dados
+      url <- paste0("https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso?path=%2F", dataset)
       
-    } else { # Ir para tabela do conjunto de dados no GoogleDrive
+    } else { # Ir para tabela do conjunto de dados
       sheets_keys <- .getSheetsKeys(dataset = dataset)
       url <- paste('https://docs.google.com/spreadsheets/d/', sheets_keys[[table]], sep = '')
-      # key <- googlesheets::gs_key(x = sheets_keys[[table]], verbose = FALSE)
-      # url <- key$browser_url
     }
     
     ## Lançar navegador

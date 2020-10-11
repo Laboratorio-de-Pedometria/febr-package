@@ -1,9 +1,9 @@
 #' Get *standards* table
 #'
 #' Download data from the *standards* ("padroes") table of the Free Brazilian Repository for Open Soil Data
-#' -- ___febr___, \url{http://www.ufsm.br/febr}. This includes codes and names of variable, measurement units, 
-#' number of decimal places, type of data, and description of analytical methods. This is used to standardize 
-#' the data contained in a dataset when downloading it via \code{\link[febr]{layer}} or 
+#' -- FEBR, \url{https://www.pedometria.org/projeto/febr/}. This includes codes and names of variable,
+#' measurement units, number of decimal places, type of data, and description of analytical methods. This is
+#' used to standardize the data contained in a dataset when downloading it via \code{\link[febr]{layer}} or 
 #' \code{\link[febr]{observation}}.
 #' 
 #' @param table (optional) Character string indicating a table, i.e. the *layer* table, `"camada"`, or the 

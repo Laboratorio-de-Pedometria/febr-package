@@ -42,8 +42,9 @@ the chosen variable(s) of the chosen dataset(s).
 \description{
 Download header data (column names and measurement units) from the \emph{layer} ("camada") or \emph{observation}
 ("observacao") table of one or more datasets contained in the Free Brazilian Repository for Open Soil Data
--- \emph{\strong{febr}}, \url{http://www.ufsm.br/febr}. This is useful to check what are the variables contained in a
-dataset before downloading it via \code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
+-- FEBR, \url{https://www.pedometria.org/projeto/febr/}. This is useful to check what are the variables
+contained in a dataset before downloading it via \code{\link[febr]{layer}} or
+\code{\link[febr]{observation}}.
 }
 \details{
 \subsection{Standard identification variables}{

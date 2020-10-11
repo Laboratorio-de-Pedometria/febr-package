@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get <em>metadata</em> table — metadata • febr</title>
+<title>Get soil data — readFEBR • febr</title>
 
 
 <!-- jquery -->
@@ -33,10 +33,9 @@
 
 
 
-<meta property="og:title" content="Get <em>metadata</em> table — metadata" />
-<meta property="og:description" content="Download data from the metadata (&quot;metadado&quot;) table of one or more datasets contained in the Free Brazilian
-Repository for Open Soil Data -- FEBR, https://www.pedometria.org/projeto/febr/. This includes
-variable names, description of analytical methods, and identification of analysis laboratories." />
+<meta property="og:title" content="Get soil data — readFEBR" />
+<meta property="og:description" content="Download soil data from one or more data sets published in the Free Brazilian Repository for Open Soil Data
+-- FEBR, https://www.pedometria.org/projeto/febr/." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,62 +108,65 @@ variable names, description of analytical methods, and identification of analysi
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get <em>metadata</em> table</h1>
-    <small class="dont-index">Source: <a href='https://github.com/samuel-rosa/febr-package/blob/master/R/metadata.R'><code>R/metadata.R</code></a></small>
-    <div class="hidden name"><code>metadata.Rd</code></div>
+    <h1>Get soil data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/samuel-rosa/febr-package/blob/master/R/readFEBR.R'><code>R/readFEBR.R</code></a></small>
+    <div class="hidden name"><code>readFEBR.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Download data from the <em>metadata</em> ("metadado") table of one or more datasets contained in the Free Brazilian
-Repository for Open Soil Data -- FEBR, <a href='https://www.pedometria.org/projeto/febr/'>https://www.pedometria.org/projeto/febr/</a>. This includes
-variable names, description of analytical methods, and identification of analysis laboratories.</p>
+    <p>Download soil data from one or more data sets published in the Free Brazilian Repository for Open Soil Data
+-- FEBR, <a href='https://www.pedometria.org/projeto/febr/'>https://www.pedometria.org/projeto/febr/</a>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>metadata</span>(<span class='no'>dataset</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>febr.repo</span> <span class='kw'>=</span> <span class='st'>"remote"</span>)</pre>
+    <pre class="usage"><span class='fu'>readFEBR</span>(
+  <span class='no'>data.set</span>,
+  <span class='kw'>data.table</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"identificacao"</span>, <span class='st'>"versionamento"</span>, <span class='st'>"metadado"</span>, <span class='st'>"observacao"</span>, <span class='st'>"camada"</span>),
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dataset</th>
-      <td><p>Character vector indicating one or more datasets. Identification codes should be as recorded
-in <a href='http://www.ufsm.br/febr/catalog/'>http://www.ufsm.br/febr/catalog/</a>. Use <code>dataset = "all"</code> to download all datasets.</p></td>
+      <th>data.set</th>
+      <td><p>Character vector indicating the identification code of one or more data sets. Identification
+codes should be as recorded in <a href='https://www.pedometria.shinyapps.io/febr/'>https://www.pedometria.shinyapps.io/febr/</a>. Use <code>data.set = "all"</code> to
+download all data sets.</p></td>
     </tr>
     <tr>
-      <th>progress</th>
-      <td><p>(optional) Logical value indicating if a download progress bar should be displayed.</p></td>
+      <th>data.table</th>
+      <td><p>Character vector indicating one or more data tables, with supported values
+<code>"identificacao"</code>, <code>"versionamento"</code>, <code>"metadado"</code>, <code>"observacao"</code>, and <code>"camada"</code>.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
       <td><p>(optional) Logical value indicating if informative messages should be displayed. Generally
-useful to identify datasets with inconsistent data. Please report to <a href='mailto:febr-forum@googlegroups.com'>febr-forum@googlegroups.com</a>
-if you find any issue.</p></td>
+useful to identify issues—please report to <a href='mailto:febr-forum@googlegroups.com'>febr-forum@googlegroups.com</a> if you find any.</p></td>
     </tr>
     <tr>
-      <th>febr.repo</th>
-      <td><p>(optional) Character vector indicating where the data should be read. Defaults to
-<code>febr.repo = "remote"</code>, i.e. the remote web server. Alternatively, a local directory path can be passed to
-<code>febr.repo</code> if the user has a local copy of the data repository.</p></td>
+      <th>...</th>
+      <td><p>(optional) Arguments passed to <code><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.table</a></code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of data frames or a data frame with metadata of the chosen dataset(s).</p>
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>Check the new core data download function <code><a href='readFEBR.html'>readFEBR()</a></code>.</p>
+    <p>A list of data frames with data from the chosen data sets.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>metadata</span>(<span class='kw'>dataset</span> <span class='kw'>=</span> <span class='st'>"ctb0003"</span>)</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Downloading ctb0003-metadado...</span></div><div class='output co'>#&gt;   |                                                                              |======================================================================| 100%</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>readFEBR</span>(<span class='kw'>data.set</span> <span class='kw'>=</span> <span class='st'>"ctb0003"</span>)</div><div class='output co'>#&gt; <span class='message'>Downloading...</span>
+#&gt; <span class='message'>https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2Fctb0003&amp;files=ctb0003-identificacao.txt</span>
+#&gt; <span class='message'>https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2Fctb0003&amp;files=ctb0003-versionamento.txt</span>
+#&gt; <span class='message'>https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2Fctb0003&amp;files=ctb0003-metadado.txt</span>
+#&gt; <span class='message'>https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2Fctb0003&amp;files=ctb0003-observacao.txt</span>
+#&gt; <span class='message'>https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2Fctb0003&amp;files=ctb0003-camada.txt</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#note">Note</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

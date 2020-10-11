@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">febr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/febr-team/febr-package">
+  <a href="https://github.com/samuel-rosa/febr-package">
     <span class="fa fa-github"></span>
      
   </a>
@@ -68,31 +68,31 @@
 <!--/.navbar -->
 
       
-      </header><div class="row">
+      </header><script src="febr_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Repositório Brasileiro Livre para Dados Abertos do Solo – Guia Básico</h1>
                         <h4 class="author">Alessandro Samuel-Rosa</h4>
             
-            <h4 class="date">14-04-2020</h4>
+            <h4 class="date">11-10-2020</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/febr-team/febr-package/blob/master/vignettes/febr.Rmd"><code>vignettes/febr.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/samuel-rosa/febr-package/blob/master/vignettes/febr.Rmd"><code>vignettes/febr.Rmd</code></a></small>
       <div class="hidden name"><code>febr.Rmd</code></div>
 
     </div>
 
     
     
-<div id="introducao" class="section level1">
+<div id="introdução" class="section level1">
 <h1 class="hasAnchor">
-<a href="#introducao" class="anchor"></a>Introdução</h1>
-<p>O pacote <code>febr</code> (/ˈfɛ.bɾe/) para R <span class="citation">(R Core Team <a href="#ref-r">2017</a>)</span> foi criado para facilitar o acesso aos dados dos conjuntos de dados publicados no Repositório Brasileiro Livre para Dados Abertos do Solo (<a href="http://www.ufsm.br/febr/"><strong><em>febr</em></strong></a>). Ele pode ser descarregado do <a href="https://CRAN.R-project.org/package=febr">CRAN</a> da seguinte maneira:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"febr"</span>)</a></code></pre></div>
-<p>Já a versão de desenvolvimento, disponível no <a href="https://github.com/febr-team/febr-package">GitHub</a>, pode ser instalada – usando o pacote <code>devtools</code> <span class="citation">(Wickham e Chang <a href="#ref-devtools">2017</a>)</span> – da seguinte maneira:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(devtools)) {</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="dt">pkgs =</span> <span class="st">"devtools"</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">}</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"febr-team/febr-package"</span>)</a></code></pre></div>
+<a href="#introdu%C3%A7%C3%A3o" class="anchor"></a>Introdução</h1>
+<p>O pacote <code>febr</code> (/ˈfɛ.bɾe/) para R <span class="citation">(R Core Team <a href="#ref-r" role="doc-biblioref">2017</a>)</span> foi criado para facilitar o acesso aos dados dos conjuntos de dados publicados no Repositório Brasileiro Livre para Dados Abertos do Solo (<a href="http://www.ufsm.br/febr/"><strong><em>febr</em></strong></a>). Ele pode ser descarregado do <a href="https://CRAN.R-project.org/package=febr">CRAN</a> da seguinte maneira:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"febr"</span>)</span></code></pre></div>
+<p>Já a versão de desenvolvimento, disponível no <a href="https://github.com/febr-team/febr-package">GitHub</a>, pode ser instalada – usando o pacote <code>devtools</code> <span class="citation">(Wickham e Chang <a href="#ref-devtools" role="doc-biblioref">2017</a>)</span> – da seguinte maneira:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(devtools)) {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="dt">pkgs =</span> <span class="st">"devtools"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>}</span>
+<span id="cb2-4"><a href="#cb2-4"></a>devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="dt">repo =</span> <span class="st">"febr-team/febr-package"</span>)</span></code></pre></div>
 <p>O pacote <code>febr</code> possui três grupos de funções: as funções estruturais, as funções de acesso, e as funções auxiliares – veja tabela abaixo. Uma demonstração básica da forma de uso e aplicações dessas funções é apresentada nas próximas seções.</p>
 <table class="table">
 <caption>Funções disponíveis no pacote <code>febr</code> versão 1.0-0.</caption>
@@ -168,57 +168,57 @@
 </tbody>
 </table>
 </div>
-<div id="funcoes-estruturais" class="section level1">
+<div id="funções-estruturais" class="section level1">
 <h1 class="hasAnchor">
-<a href="#funcoes-estruturais" class="anchor"></a>Funções estruturais</h1>
-<p>As funções estruturais servem para conhecer a estrutura das tabelas dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Elas também servem para conhecer os padrões de codificação, nomenclatura, unidades de medida e número de casas decimais usados no <strong><em>febr</em></strong>. Todas as funções estruturais são construídas sobre funções do pacote <code>googlesheets</code> <span class="citation">(Bryan e Zhao <a href="#ref-googlesheets">2018</a>)</span>.</p>
+<a href="#fun%C3%A7%C3%B5es-estruturais" class="anchor"></a>Funções estruturais</h1>
+<p>As funções estruturais servem para conhecer a estrutura das tabelas dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Elas também servem para conhecer os padrões de codificação, nomenclatura, unidades de medida e número de casas decimais usados no <strong><em>febr</em></strong>. Todas as funções estruturais são construídas sobre funções do pacote <code>googlesheets</code> <span class="citation">(Bryan e Zhao <a href="#ref-googlesheets" role="doc-biblioref">2018</a>)</span>.</p>
 <p>A função <code>header</code> (do inglês, <em>header</em>, para cabeçalho) serve para descarregar o cabeçalho – as duas primeiras linhas – de uma das duas tabelas de dados – <code>observacao</code> ou <code>camada</code> – dos conjuntos de dados. Isso permite verificar quais são as variáveis incluídas nos conjuntos de dados, os códigos de identificação utilizados, e as respectivas unidades de medida. Por exemplo, o cabeçalho completo da tabela <code>camada</code> do conjunto de dados <code>ctb0003</code> é descarregado da seguinte maneira:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">cab &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/header">header</a></span>(<span class="dt">dataset =</span> <span class="st">"ctb0003"</span>, <span class="dt">table =</span> <span class="st">"camada"</span>, <span class="dt">variable =</span> <span class="st">"all"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>cab &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/header">header</a></span>(<span class="dt">dataset =</span> <span class="st">"ctb0003"</span>, <span class="dt">table =</span> <span class="st">"camada"</span>, <span class="dt">variable =</span> <span class="st">"all"</span>)</span></code></pre></div>
 <p>A função <code>standard</code> (do inglês, <em>standard</em>, para padrão) fornece uma interface para descarregar informações sobre os padrões usados para as variáveis incluídas nas tabelas <code>observacao</code> e <code>camada</code> de todos os conjuntos de dados. Isso inclui a codificação e nomenclatura, a descrição de cada variável, a unidade de medida e o número de casas decimais, o tipo de dado, e a categoria da variável. Tais informações estão organizadas numa planilha disponível em <a href="https://goo.gl/hi77sB" class="uri">https://goo.gl/hi77sB</a>. Por exemplo, caso tenhamos interesse em conhecer os padrões usados no <strong><em>febr</em></strong> para as variáveis <code>argila</code>, <code>densidade</code>, <code>carbono</code> e <code>ph</code>, basta usar o seguinte código:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">pad &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/standard">standard</a></span>(<span class="dt">variable =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"argila"</span>, <span class="st">"densidade"</span>, <span class="st">"carbono"</span>, <span class="st">"ph"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>pad &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/standard">standard</a></span>(<span class="dt">variable =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"argila"</span>, <span class="st">"densidade"</span>, <span class="st">"carbono"</span>, <span class="st">"ph"</span>))</span></code></pre></div>
 <p>A função <code>unit</code> (do inglês, <em>unit</em>, para unidade) serve de interface para uma planilha – disponível em <a href="https://goo.gl/Vvvsf2" class="uri">https://goo.gl/Vvvsf2</a> – contendo diversas unidades de medida e as constantes utilizadas para a conversão dos dados entre elas. Essas informações são úteis durante o descarregamento dos dados usando as funções <code>observation</code> e <code>layer</code> – veja mais abaixo. Por exemplo, a densidade do solo é comumente expressa em <code>Mg/m^3</code> e <code>kg/dm^3</code>. Para descarregar as constantes de transformação entre essas duas unidades de medida, basta usar o seguinte código:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">uni &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/unit">unit</a></span>(<span class="dt">source =</span> <span class="st">"Mg/m^3"</span>, <span class="dt">target =</span> <span class="st">"kg/dm^3"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>uni &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/unit">unit</a></span>(<span class="dt">source =</span> <span class="st">"Mg/m^3"</span>, <span class="dt">target =</span> <span class="st">"kg/dm^3"</span>)</span></code></pre></div>
 </div>
-<div id="funcoes-de-acesso" class="section level1">
+<div id="funções-de-acesso" class="section level1">
 <h1 class="hasAnchor">
-<a href="#funcoes-de-acesso" class="anchor"></a>Funções de acesso</h1>
-<p>As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Isso inclui as tabelas <code>dataset</code>, <code>observacao</code>, <code>camada</code>, e <code>metadado</code>. Assim como as funções estruturais, as funções de acesso também são construídas sobre funções do pacote <code>googlesheets</code> <span class="citation">(Bryan e Zhao <a href="#ref-googlesheets">2018</a>)</span>.</p>
+<a href="#fun%C3%A7%C3%B5es-de-acesso" class="anchor"></a>Funções de acesso</h1>
+<p>As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados publicados no <strong><em>febr</em></strong>. Isso inclui as tabelas <code>dataset</code>, <code>observacao</code>, <code>camada</code>, e <code>metadado</code>. Assim como as funções estruturais, as funções de acesso também são construídas sobre funções do pacote <code>googlesheets</code> <span class="citation">(Bryan e Zhao <a href="#ref-googlesheets" role="doc-biblioref">2018</a>)</span>.</p>
 <p>Os dados sobre um ou mais conjuntos de dados, contidos na tabela <code>dataset</code> (do inglês, <em>dataset</em>, para conjunto de dados), podem ser descarregados usando uma função de mesmo nome. Para isso, basta informar o código de identificação do(s) conjunto(s) de dados que se deseja descarregar – conforme catalogado em <a href="http://www.ufsm.br/febr/catalog/" class="uri">http://www.ufsm.br/febr/catalog/</a> –, por exemplo:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">conj &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/dataset">dataset</a></span>(<span class="dt">dataset =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ctb0003"</span>, <span class="st">"ctb0036"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>conj &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/identification">dataset</a></span>(<span class="dt">dataset =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ctb0003"</span>, <span class="st">"ctb0036"</span>))</span></code></pre></div>
 <p>Já os dados sobre os dados contidos em um ou mais conjuntos de dados, armazenados na tabela <code>metadado</code>, podem ser descarregados usando a função <code>metadata</code> (do inglês, <em>metadata</em>, para metadados), por exemplo:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">meta &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/metadata">metadata</a></span>(<span class="dt">dataset =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ctb0003"</span>, <span class="st">"ctb0036"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>meta &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/metadata">metadata</a></span>(<span class="dt">dataset =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ctb0003"</span>, <span class="st">"ctb0036"</span>))</span></code></pre></div>
 <p>Os dados das observações do solo, contidos na tabela <code>observacao</code>, podem ser descarregados usando a função <code>observation</code> (do inglês, <em>observation</em>, para observação). Assim como as funções <code>header</code> e <code>standard</code> vistas acima, a função <code>observation</code> também possui o argumento <code>variable</code>, que permite selecionar as variáveis que devem ser retornadas. Por exemplo, para retornar apenas a variável <code>taxon</code> do conjunto de dados <code>ctb0003</code>, usamos o seguinte código:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">obs &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/observation">observation</a></span>(<span class="dt">dataset =</span> <span class="st">"ctb0003"</span>, <span class="dt">variable =</span> <span class="st">"taxon"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>obs &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/observation">observation</a></span>(<span class="dt">dataset =</span> <span class="st">"ctb0003"</span>, <span class="dt">variable =</span> <span class="st">"taxon"</span>)</span></code></pre></div>
 <p>A função <code>layer</code> (do inglês, <em>layer</em>, para camada) serve para descarregar os dados contidos na tabela <code>camada</code> dos conjunto de dados. Por exemplo, para descarregar os dados da tabela <code>camada</code> dos conjuntos de dados <code>ctb0003</code> e <code>ctb0036</code>, retornando apenas as variáveis <code>argila</code>, <code>carbono</code> e <code>densidade</code>, usamos o seguinte código:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">cam &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/layer">layer</a></span>(<span class="dt">dataset =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ctb0003"</span>, <span class="st">"ctb0036"</span>), <span class="dt">variable =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"argila"</span>, <span class="st">"carbono"</span>, <span class="st">"densidade"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>cam &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/layer">layer</a></span>(<span class="dt">dataset =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ctb0003"</span>, <span class="st">"ctb0036"</span>), <span class="dt">variable =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"argila"</span>, <span class="st">"carbono"</span>, <span class="st">"densidade"</span>))</span></code></pre></div>
 <p>A última função de acesso é <code>febr</code>. Ela serve para descarregar todos os dados e metadados de um único conjunto de dados. Essa função aceita os mesmos argumentos das funções <code>observation</code> e <code>layer</code> – que são idênticos devido à similaridade da estrutura das tabelas <code>observacao</code> e <code>camada</code>. Assim, como naquelas funções, é possível solicitar que os dados passem por uma rotina de limpeza e padronização:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">tudo &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/febr">febr</a></span>(</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">  <span class="dt">dataset =</span> <span class="st">"ctb0003"</span>, <span class="dt">variable =</span> <span class="st">"all"</span>, <span class="dt">merge =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">  <span class="dt">missing =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">coord =</span> <span class="st">"drop"</span>, <span class="dt">time =</span> <span class="st">"drop"</span>, <span class="dt">depth =</span> <span class="st">"drop"</span>),</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">  <span class="dt">standardization =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">    <span class="dt">crs =</span> <span class="st">"EPSG:4674"</span>, <span class="dt">time.format =</span> <span class="st">"%Y-%m-%d"</span>,</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">    <span class="dt">repetition =</span> <span class="st">"combine"</span>, <span class="dt">combine.fun =</span> <span class="st">"mean"</span>,</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">    <span class="dt">transition =</span> <span class="st">"smooth"</span>, <span class="dt">smoothing.fun =</span> <span class="st">"mean"</span>,</a>
-<a class="sourceLine" id="cb10-8" data-line-number="8">    <span class="dt">plus.sign =</span> <span class="st">"add"</span>, <span class="dt">plus.depth =</span> <span class="fl">2.5</span>,</a>
-<a class="sourceLine" id="cb10-9" data-line-number="9">    <span class="dt">lessthan.sign =</span> <span class="st">"subtract"</span>, <span class="dt">lessthan.frac =</span> <span class="fl">0.1</span>,</a>
-<a class="sourceLine" id="cb10-10" data-line-number="10">    <span class="dt">units =</span> <span class="ot">TRUE</span>, <span class="dt">round =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>tudo &lt;-<span class="st"> </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/febr">febr</a></span>(</span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="dt">dataset =</span> <span class="st">"ctb0003"</span>, <span class="dt">variable =</span> <span class="st">"all"</span>, <span class="dt">merge =</span> <span class="ot">TRUE</span>, </span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="dt">missing =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">coord =</span> <span class="st">"drop"</span>, <span class="dt">time =</span> <span class="st">"drop"</span>, <span class="dt">depth =</span> <span class="st">"drop"</span>),</span>
+<span id="cb10-4"><a href="#cb10-4"></a>  <span class="dt">standardization =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</span>
+<span id="cb10-5"><a href="#cb10-5"></a>    <span class="dt">crs =</span> <span class="st">"EPSG:4674"</span>, <span class="dt">time.format =</span> <span class="st">"%Y-%m-%d"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6"></a>    <span class="dt">repetition =</span> <span class="st">"combine"</span>, <span class="dt">combine.fun =</span> <span class="st">"mean"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7"></a>    <span class="dt">transition =</span> <span class="st">"smooth"</span>, <span class="dt">smoothing.fun =</span> <span class="st">"mean"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8"></a>    <span class="dt">plus.sign =</span> <span class="st">"add"</span>, <span class="dt">plus.depth =</span> <span class="fl">2.5</span>,</span>
+<span id="cb10-9"><a href="#cb10-9"></a>    <span class="dt">lessthan.sign =</span> <span class="st">"subtract"</span>, <span class="dt">lessthan.frac =</span> <span class="fl">0.1</span>,</span>
+<span id="cb10-10"><a href="#cb10-10"></a>    <span class="dt">units =</span> <span class="ot">TRUE</span>, <span class="dt">round =</span> <span class="ot">TRUE</span>))</span></code></pre></div>
 </div>
-<div id="funcoes-auxiliares" class="section level1">
+<div id="funções-auxiliares" class="section level1">
 <h1 class="hasAnchor">
-<a href="#funcoes-auxiliares" class="anchor"></a>Funções auxiliares</h1>
+<a href="#fun%C3%A7%C3%B5es-auxiliares" class="anchor"></a>Funções auxiliares</h1>
 <p>As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de acesso, assim apoiando o processamento e uso dos dados descarregados do <strong><em>febr</em></strong>, por exemplo, a criação de objetos de outras classes e a exportação dos dados.</p>
-<p>A função <code>febr2sf</code> serve para criar um objeto do tipo <em>simple feature</em> <span class="citation">(Pebesma e Bivand <a href="#ref-sp">2005</a>)</span> a partir da tabela <code>observacao</code> descarregada usando a função <code>observation</code>. O código a seguir demonstra como fazer isso – note que as funções do pacote <code>febr</code> são compatíveis com o uso do operador <code>%&gt;%</code> do pacote <code>magrittr</code> <span class="citation">(Bache e Wickham <a href="#ref-magrittr">2014</a>)</span>:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(magrittr)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">obs &lt;-<span class="st"> </span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/observation">observation</a></span>(<span class="dt">dataset =</span> <span class="st">"ctb0003"</span>, <span class="dt">variable =</span> <span class="st">"taxon"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/febr2spdf">febr2sf</a></span>()</a></code></pre></div>
+<p>A função <code>febr2sf</code> serve para criar um objeto do tipo <em>simple feature</em> <span class="citation">(Pebesma e Bivand <a href="#ref-sp" role="doc-biblioref">2005</a>)</span> a partir da tabela <code>observacao</code> descarregada usando a função <code>observation</code>. O código a seguir demonstra como fazer isso – note que as funções do pacote <code>febr</code> são compatíveis com o uso do operador <code>%&gt;%</code> do pacote <code>magrittr</code> <span class="citation">(Bache e Wickham <a href="#ref-magrittr" role="doc-biblioref">2014</a>)</span>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(magrittr)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>obs &lt;-<span class="st"> </span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="st">  </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/observation">observation</a></span>(<span class="dt">dataset =</span> <span class="st">"ctb0003"</span>, <span class="dt">variable =</span> <span class="st">"taxon"</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="st">  </span>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/febr2spdf">febr2sf</a></span>()</span></code></pre></div>
 <p>A segunda função auxiliar do pacote <code>febr</code> é <code>goto</code>. A função <code>goto</code> serve de interface para navegação nas diversas páginas na Internet do <strong><em>febr</em></strong>: página principal, visualização geográfica, catálogo de conjuntos de dados, página de busca, manual do mantenedor, pacote para R, GitHub, fórum de discussão, e tabelas com padrões de unidades de medida e de codificação e nomenclatura. Além disso, a função <code>goto</code> serve para visitar as tabelas dos conjuntos de dados. Por exemplo, para visitar a tabela <code>camada</code> do conjunto de dados <code>ctb0036</code>, usamos o seguinte código:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/goto">goto</a></span>(<span class="dt">dataset =</span> <span class="st">"ctb0036"</span>, <span class="dt">table =</span> <span class="st">"camada"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>febr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/febr/topics/goto">goto</a></span>(<span class="dt">dataset =</span> <span class="st">"ctb0036"</span>, <span class="dt">table =</span> <span class="st">"camada"</span>)</span></code></pre></div>
 <p>Novas funções auxiliares podem ser criadas à medida que as usuárias do pacote <code>febr</code> apontarem a sua necessidade. Alternativamente, as usuárias são encorajadas a submeter funções auxiliares para inclusão no pacote <code>febr</code> seguindo o modelo de desenvolvimento colaborativo <em>fork &amp; pull</em>.</p>
 </div>
-<div id="referencias" class="section level1 unnumbered">
+<div id="referências" class="section level1 unnumbered">
 <h1 class="hasAnchor">
-<a href="#referencias" class="anchor"></a>Referências</h1>
+<a href="#refer%C3%AAncias" class="anchor"></a>Referências</h1>
 <div id="refs" class="references">
 <div id="ref-magrittr">
 <p>Bache, S. M., Wickham, H. <em>magrittr: A Forward-Pipe Operator for R</em>. [s.l: s.n.]. <a href="https://CRAN.R-project.org/package=magrittr">https://CRAN.R-project.org/package=magrittr</a>. R package version 1.5</p>
@@ -245,11 +245,11 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#introducao">Introdução</a></li>
-      <li><a href="#funcoes-estruturais">Funções estruturais</a></li>
-      <li><a href="#funcoes-de-acesso">Funções de acesso</a></li>
-      <li><a href="#funcoes-auxiliares">Funções auxiliares</a></li>
-      <li><a href="#referencias">Referências</a></li>
+<li><a href="#introdu%C3%A7%C3%A3o">Introdução</a></li>
+      <li><a href="#fun%C3%A7%C3%B5es-estruturais">Funções estruturais</a></li>
+      <li><a href="#fun%C3%A7%C3%B5es-de-acesso">Funções de acesso</a></li>
+      <li><a href="#fun%C3%A7%C3%B5es-auxiliares">Funções auxiliares</a></li>
+      <li><a href="#refer%C3%AAncias">Referências</a></li>
       </ul>
 </div>
       </div>

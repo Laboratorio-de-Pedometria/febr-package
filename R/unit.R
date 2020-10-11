@@ -1,9 +1,9 @@
 #' Get *units* table
 #' 
 #' Download data from the *units* ("unidades") table of the Free Brazilian Repository for Open Soil Data --
-#' ___febr___, \url{http://www.ufsm.br/febr}. This includes measurement units and conversion factors. This 
-#' is used to standardize the data contained in a dataset when downloading it via \code{\link[febr]{layer}} or
-#' \code{\link[febr]{observation}}.
+#' FEBR, \url{https://www.pedometria.org/projeto/febr/}. This includes measurement units and conversion 
+#' factors. This is used to standardize the data contained in a dataset when downloading it via
+#' \code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
 #' 
 #' @param source (optional) Character vector indicating one or more source measurement units.
 #' 
