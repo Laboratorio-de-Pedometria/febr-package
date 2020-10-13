@@ -43,7 +43,7 @@ standard <-
     # ARGUMENTOS
     ## table
     if (missing(table)) {
-      stop ("argument 'table' is missing")
+      # stop ("argument 'table' is missing")
     } else if (!table %in% c("observacao", "camada")) {
       stop (paste("unknown value '", table, "' passed to argument 'table'", sep = ""))
     }

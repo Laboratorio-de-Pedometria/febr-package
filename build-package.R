@@ -42,6 +42,26 @@ devtools::load_all()
 
 # Build package site
 pkgdown::build_site()
+html_files <- list.files(path = "docs", pattern = ".html", recursive = TRUE, full.names = TRUE)
+for (con in html_files) {
+  x <- readLines(con)
+  x <- sub("Download from CRAN at ", "Descarregue do CRAN em ", x)
+  x <- sub("Browse source code at ", "Navegue pelo código fonte em ", x)
+  x <- sub("Report a bug at ", "Reporte um problema em ", x)
+  x <- sub("<h2>License</h2>", "<h2>Licença</h2>", x)
+  x <- sub("<h2>Developers</h2>", "<h2>Desenvolvedores</h2>", x)
+  x <- sub(" Author, maintainer ", " Autor, mantenedor ", x)
+  x <- sub(" Funder ", " Financiador ", x)
+  x <- sub("Developed by ", "Desenvolvido por ", x)
+  x <- sub("Site built with ", "Página construída com ", x)
+  x <- sub("<h2>Contents</h2>", "<h2>Conteúdo</h2>", x)
+  x <- sub("<h1>Reference</h1>", "<h1>Referência</h1>", x)
+  x <- sub(">Source: ", ">Fonte: ", x)
+  writeLines(x, con)
+}
+if (dir.exists("~/projects/web/pedometria.org/static/software/febr")) {
+  system("cp -a docs/. ~/projects/web/pedometria.org/static/software/febr")
+}
 # pkgdown::build_articles()
 # pkgdown::build_home()
 # pkgdown::build_reference()

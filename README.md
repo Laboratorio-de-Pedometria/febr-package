@@ -6,7 +6,7 @@ Repositório Brasileiro Livre para Dados Abertos do Solo (FEBR)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
-[![packageversion](https://img.shields.io/badge/devel%20version-1.2.3-firebrick.svg?style=flat-square)](commits/master)
+[![packageversion](https://img.shields.io/badge/devel%20version-1.2.4-firebrick.svg?style=flat-square)](commits/master)
 [![Build
 Status](https://travis-ci.org/samuel-rosa/febr-package.svg?branch=master)](https://travis-ci.org/samuel-rosa/febr-package)
 [![CRAN](https://www.r-pkg.org/badges/version/febr)](https://cran.r-project.org/package=febr)
@@ -15,31 +15,50 @@ checks](https://cranchecks.info/badges/worst/febr)](https://cran.r-project.org/w
 [![Rdoc](http://www.rdocumentation.org/badges/version/febr)](http://www.rdocumentation.org/packages/febr)
 [![Downloads](http://cranlogs.r-pkg.org/badges/febr?color=brightgreen)](http://www.r-pkg.org/pkg/febr)
 
-Olá! Este é o repositório do código fonte do *pacote para R* do
-Repositório Brasileiro Livre para Dados Abertos do Solo, também
-conhecido como [FEBR](http://www.ufsm.br/febr/) (/ˈfɛ.bɾe/). Sinta-se à
-vontade para propor melhorias e estudar o código fonte. Afinal de
-contas, o FEBR é um repositório livre!
-
 Instalação
 ----------
 
-O pacote `febr` foi criado para facilitar o acesso aos conjuntos de
-dados publicados no FEBR. Ele pode ser descarregado do
-[CRAN](https://CRAN.R-project.org/package=febr) da seguinte maneira:
+O pacote febr para [R](https://www.r-project.org/) foi criado para
+facilitar o acesso aos conjuntos de dados publicados no Repositório
+Brasileiro Livre para Dados Abertos do Solo, também conhecido como
+[FEBR](https://www.pedometria.org/projeto/febr/) (/ˈfɛ.bɾe/). Ele pode
+ser descarregado do [CRAN](https://CRAN.R-project.org/package=febr) da
+seguinte maneira:
 
     install.packages(pkgs = "febr")
 
 Já a versão de desenvolvimento, disponível no
 [GitHub](https://github.com/samuel-rosa/febr-package), pode ser
-instalada – usando o pacote `remotes` – da seguinte maneira:
+instalada—usando o pacote `remotes`—da seguinte maneira:
 
     if (!require(remotes)) {
       install.packages(pkgs = "remotes")
     }
     remotes::install_github("samuel-rosa/febr-package")
 
-<!-- ## Utilização básica -->
+Utilização básica
+-----------------
+
+A principal função de descarregamento de dados do pacote febr chama-se
+`readFEBR`. Ela aceita dois argumentos: `data.set`, o código de
+identificação do conjunto de dados no FEBR, e `data.table`, o nome de
+uma ou mais tabelas de dados contidas no conjunto de dados escolhido—as
+opções são `"identificacao"`, `"versionamento"`, `"metadado"`,
+`"observacao"`, and `"camada"`. Veja alguns exemplos a seguir:
+
+    # Descarregar todas as tabelas de dados do conjunto de dados ctb0003
+    dados <- febr::readFEBR(data.set = "ctb0003")
+
+    # Descarregar todas as tabelas de dados dos conjuntos de dados ctb0001, ctb0002 e ctb0003
+    dados <- febr::readFEBR(data.set = c("ctb0001", "ctb0002", "ctb0003"))
+
+    # Descarregar apenas a tabela de dados de identificação dos conjuntos de dados ctb0001, ctb0002 e ctb0003
+    dados <- febr::readFEBR(data.set = c("ctb0001", "ctb0002", "ctb0003"), data.table = "identificacao")
+
+O objeto retornado é uma lista de conjuntos de dados, os quais são
+listas com suas próprias tabelas de dados. Para processar esses dados,
+você pode usar funções como `lapply`.
+
 <!-- O pacote `febr` possui cinco funções para descarregamento de dados: -->
 <!-- 1. `dataset`, para descarregar os dados de identificação de um ou mais conjuntos de dados; -->
 <!-- 2. `observation`, para descarregar os dados das observações do solo de um ou mais conjuntos de dados; -->
@@ -57,17 +76,15 @@ instalada – usando o pacote `remotes` – da seguinte maneira:
 <!-- ``` -->
 <!-- retorna os dados da variável `argila` do conjunto de dados `ctb0003`. O código de identificação de todas as variáveis contidas nos conjuntos de dados publicados no FEBR estão catalogados em https://goo.gl/hi77sB. -->
 
-Como colaborar
---------------
+Quero colaborar
+---------------
 
 Nós usamos o modelo de desenvolvimento colaborativo *fork & pull*. Isso
 significa que você tem liberdade para fazer um cópia paralela – *fork* –
-deste repositório, alterar o código fonte conforme julgar necessário e
-depois empurrar – *push* – as alterações para a sua cópia pessoal deste
-repositório. Isso tudo sem que seja necessário pedir qualquer
-autorização. Caso as alterações que você realizou na sua cópia pessoal
-deste repositório sejam interessantes e você tem interesse em
-compartilhar as mesmas conosco, então basta solicitar que sejam puxadas
-– *pull request* – para este repositório. Depois de uma revisão das
-alterações, nós decidiremos se elas podem ser fundidas – *merge* – com o
-código fonte deste repositório.
+do código fonte e fazer as alterações que julgar necessárias. Isso tudo
+sem que seja necessário pedir qualquer autorização para a gente. Caso as
+alterações que você realizou na sua cópia pessoal do código fonte sejam
+interessantes e você tenha interesse em compartilhar as mesmas conosco,
+então basta solicitar que sejam puxadas – *pull request* – para o código
+fonte original. Depois de uma revisão das alterações, nós decidiremos se
+elas podem ser fundidas – *merge* – com o código fonte original.

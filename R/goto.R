@@ -6,13 +6,8 @@
 #' @param dataset (optional) Character vector indicating one dataset. The identification code should be as
 #' recorded in \url{https://www.pedometria.shinyapps.io/febr/}.
 #' 
-#' @param table (optional) Character string indicating a table, i.e. the *identification* table, 
-#' `"identificacao"`, the *observation* table, `"observacao"`, the *layer* table, `"camada"`, or the 
-#' *metadata* table, `"metadado"`.
-#' 
-#' @param page (optional) Character string indicating a web page of the FEBR. Options are: `"febr"`, `"view"`,
-#' `"catalog"`, `"search"`, `"book"`, `"package"`, `"github"`, `"forum"`, `"units"`, `"standards"`, and
-#' `"index"`.
+#' @param page (optional) Character string indicating a web page of the FEBR. Options are: `"febr"`,
+#' `"search"`, `"package"`, `"github"`, `"forum"`, `"units"`, `"standards"`, `"index"`, and `"template"`.
 #' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
@@ -23,58 +18,38 @@
 #' }
 ###############################################################################################################
 goto <-
-  function (dataset, table, page) {
+  function (dataset, page) {
     
     # ARGUMENTOS
     ## dataset
     if (!missing(dataset)) {
       if (!is.character(dataset)) {
-        stop (glue::glue("object of class '{class(dataset)}' passed to argument 'dataset'"))
+        stop(paste0("object of class '", class(dataset), "' passed to argument 'dataset'"))
       }
       if (length(dataset) > 1) {
-        stop ("a single identification code must be passed to argument 'dataset'")
-      }
-    }
-    
-    ## table
-    if (!missing(table)) {
-      if (!is.character(table)) {
-        stop (glue::glue("object of class '{class(table)}' passed to argument 'table'"))
-      }
-      if (!table %in% c("dataset", "observacao", "camada", "metadado")) {
-        stop (glue::glue("unknown value '{table}' passed to argument 'table'"))
+        stop("a single identification code must be passed to argument 'dataset'")
       }
     }
     
     ## page
     if (!missing(page)) {
       if (!is.character(page)) {
-        stop (glue::glue("object of class '{class(page)}' passed to argument 'page'"))
+        stop(paste0("object of class '", class(page), "}' passed to argument 'page'"))
       }
-      ops <- c("febr", "view", "catalog", "search", "book", "package", "github", "forum", "units", "standards",
-               "index", "template")
+      ops <- c("febr", "search", "package", "github", "forum", "units", "standards", "index", "template")
       if (!page %in% ops) {
         stop (glue::glue("unknown value '{page}' passed to argument 'page'"))
       }
     }
     
     ## Identificar URL
-    if (missing(dataset) && missing(table) && !missing(page)) { # Ir para alguma página do projeto
+    if (missing(dataset) && !missing(page)) { # Ir para alguma página do projeto
       switch (page,
         febr = {
           url <- "https://www.pedometria.org/projeto/febr/"
           },
-        view = {
-          url <- "https://www.pedometria.shinyapps.io/febr/"
-        },
-        catalog = {
-          url <- "https://www.pedometria.shinyapps.io/febr/"
-        },
         search = {
           url <- "https://www.pedometria.shinyapps.io/febr/"
-        },
-        book = {
-          url <- "https://www.pedometria.org/projeto/febr/"
         },
         package = {
           url <- "https://CRAN.R-project.org/package=febr"
@@ -98,13 +73,8 @@ goto <-
           url <- "https://docs.google.com/spreadsheets/d/1rXIiT1zSYhFegSdAvE0yJX16q-bvXVNpYIYdd5YgjhI"
         }
       )
-      
-    } else if (missing(table) && missing(page) && !missing(dataset)) { # Ir para diretório do conjunto de dados
+    } else if (missing(page) && !missing(dataset)) { # Ir para diretório do conjunto de dados
       url <- paste0("https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso?path=%2F", dataset)
-      
-    } else { # Ir para tabela do conjunto de dados
-      sheets_keys <- .getSheetsKeys(dataset = dataset)
-      url <- paste('https://docs.google.com/spreadsheets/d/', sheets_keys[[table]], sep = '')
     }
     
     ## Lançar navegador

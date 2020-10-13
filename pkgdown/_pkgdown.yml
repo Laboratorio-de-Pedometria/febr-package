@@ -1,6 +1,11 @@
+url: https://www.pedometria.org/software/febr
+authors:
+  Alessandro Samuel-Rosa:
+    href: https://www.pedometria.org/autor/alessandro-samuel-rosa/
 template:
   params:
     bootswatch: simplex
+  path: pkgdown/templates
 navbar:
   title: "febr"
   type: default
@@ -11,7 +16,7 @@ navbar:
       href: articles/febr.html
     - text: "Funções"
       href: reference/index.html
-    - text: "Changelog"
+    - text: "Mudanças"
       href: news/index.html
   right:
     - icon: fa-github
@@ -37,6 +42,7 @@ reference:
       - metadata
       - observation
       - layer
+      - febr
   - title: "Funções auxiliares"
     desc: >
       As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de acesso, 
@@ -45,3 +51,4 @@ reference:
     contents:
       - febr2sf
       - goto
+      - febr2xlsx
