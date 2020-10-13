@@ -5,15 +5,14 @@ Repositório Brasileiro Livre para Dados Abertos do Solo (FEBR)
 
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
-developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![packageversion](https://img.shields.io/badge/devel%20version-1.2.4-firebrick.svg?style=flat-square)](commits/master)
 [![Build
 Status](https://travis-ci.org/samuel-rosa/febr-package.svg?branch=master)](https://travis-ci.org/samuel-rosa/febr-package)
 [![CRAN](https://www.r-pkg.org/badges/version/febr)](https://cran.r-project.org/package=febr)
 [![cran
 checks](https://cranchecks.info/badges/worst/febr)](https://cran.r-project.org/web/checks/check_results_febr.html)
-[![Rdoc](http://www.rdocumentation.org/badges/version/febr)](http://www.rdocumentation.org/packages/febr)
-[![Downloads](http://cranlogs.r-pkg.org/badges/febr?color=brightgreen)](http://www.r-pkg.org/pkg/febr)
+[![Downloads](https://cranlogs.r-pkg.org/badges/febr?color=brightgreen)](https://www.r-pkg.org/pkg/febr)
 
 Instalação
 ----------
