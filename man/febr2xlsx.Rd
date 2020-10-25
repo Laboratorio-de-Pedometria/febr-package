@@ -20,9 +20,6 @@ with \code{x} to the file.}
 Write data downloaded from the Free Brazilian Repository for Open Soil Data -- FEBR,
 \url{https://www.pedometria.org/projeto/febr/} -- to an Excel workbook.
 }
-\note{
-THIS FUNCTION IS DEPRECATED. PLEASE USE \code{\link[openxlsx]{write.xlsx}} INSTEAD.
-}
 \examples{
 \donttest{
 # dts <-

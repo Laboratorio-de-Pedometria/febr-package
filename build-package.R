@@ -67,7 +67,6 @@ if (dir.exists("~/projects/web/pedometria.org/static/software/febr")) {
 # pkgdown::build_reference()
 # pkgdown::build_news()
 
-
 # turn on/off development mode
 # devtools::dev_mode()
 
