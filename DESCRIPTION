@@ -17,12 +17,13 @@ Imports:
   dplyr,
   glue,
   jsonlite,
-  knitr,
   pedometrics,
-  rmarkdown,
   sf,
   stringr
-VignetteBuilder: knitr, rmarkdown
+Suggests:
+  knitr,
+  rmarkdown
+VignetteBuilder: knitr
 SystemRequirements: pandoc
 LazyData: true
 RoxygenNote: 7.1.1

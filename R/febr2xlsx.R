@@ -12,8 +12,6 @@
 #' 
 #' @param ... (optional) Further arguments passed to write function.
 #' 
-#' @note THIS FUNCTION IS DEPRECATED. PLEASE USE \code{\link[openxlsx]{write.xlsx}} INSTEAD.
-#' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
@@ -29,6 +27,6 @@
 febr2xlsx <-
   function (x, file, row.names = FALSE, ...) {
     .Deprecated(
-      # new = 'openxlsx::write.xlsx', 
+      #new = 'openxlsx::write.xlsx', 
       msg = "'febr2xlsx' is deprecated.\nUse 'openxlsx::write.xlsx' instead.")
   }
