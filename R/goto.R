@@ -3,8 +3,7 @@
 #' Go to one of the web pages of the Free Brazilian Repository for Open Soil Data -- FEBR --, including
 #' project and dataset web pages.
 #' 
-#' @param dataset (optional) Character vector indicating one dataset. The identification code should be as
-#' recorded in \url{https://www.pedometria.shinyapps.io/febr/}.
+#' @param dataset (optional) Character vector indicating one dataset.
 #' 
 #' @param page (optional) Character string indicating a web page of the FEBR. Options are: `"febr"`,
 #' `"search"`, `"package"`, `"github"`, `"forum"`, `"units"`, `"standards"`, `"index"`, and `"template"`.
@@ -38,7 +37,7 @@ goto <-
       }
       ops <- c("febr", "search", "package", "github", "forum", "units", "standards", "index", "template")
       if (!page %in% ops) {
-        stop (glue::glue("unknown value '{page}' passed to argument 'page'"))
+        stop (paste0("unknown value '", page, "' passed to argument 'page'"))
       }
     }
     
@@ -49,7 +48,7 @@ goto <-
           url <- "https://www.pedometria.org/projeto/febr/"
           },
         search = {
-          url <- "https://www.pedometria.shinyapps.io/febr/"
+          url <- "https://www.pedometria.org/projeto/febr/"
         },
         package = {
           url <- "https://CRAN.R-project.org/package=febr"

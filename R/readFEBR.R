@@ -3,9 +3,8 @@
 #' Download soil data from one or more data sets published in the Free Brazilian Repository for Open Soil Data
 #' -- FEBR, \url{https://www.pedometria.org/projeto/febr/}.
 #'
-#' @param data.set Character vector indicating the identification code of one or more data sets. Identification
-#' codes should be as recorded in \url{https://www.pedometria.shinyapps.io/febr/}. Use `data.set = "all"` to
-#' download all data sets.
+#' @param data.set Character vector indicating the identification code of one or more data sets. Use 
+#' `data.set = "all"` to download all data sets.
 #'
 #' @param data.table Character vector indicating one or more data tables, with supported values 
 #' `"identificacao"`, `"versionamento"`, `"metadado"`, `"observacao"`, and `"camada"`.

@@ -19,8 +19,8 @@ layer(
 )
 }
 \arguments{
-\item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
-in \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
+\item{dataset}{Character vector indicating one or more datasets. Use \code{dataset = "all"} to download all
+datasets.}
 
 \item{variable}{(optional) Character vector indicating one or more variables. Accepts only general
 identification codes, e.g. \code{"ferro"} and \code{"carbono"}. If missing, then a set of standard identification

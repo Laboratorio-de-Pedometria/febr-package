@@ -135,12 +135,7 @@
         x_coords <- sf::st_coordinates(x = x)
         colnames(x_coords) <- xy
         x <- cbind(x_coords, sf::st_drop_geometry(x))
-        # sp::coordinates(x) <- c("coord_x", "coord_y")
-        # sp::proj4string(x) <- sp::CRS(paste("+init=", tolower(x$coord_sistema[1]), sep = ""))
-        # x <- sp::spTransform(x, sp::CRS(paste("+init=", crs_lower, sep = "")))
-        # as.data.frame(x)
       })
-      # tmp_obj <- suppressWarnings(dplyr::bind_rows(tmp_obj))
       tmp_obj <- do.call(rbind, tmp_obj)
       tmp_obj$coord_sistema <- crs_upper
       
@@ -152,10 +147,6 @@
       tmp_obj_coords <- sf::st_coordinates(x = tmp_obj)
       colnames(tmp_obj_coords) <- xy
       tmp_obj <- cbind(tmp_obj_coords, sf::st_drop_geometry(tmp_obj))
-      # sp::coordinates(tmp_obj) <- xy
-      # sp::proj4string(tmp_obj) <- sp::CRS(paste("+init=", tolower(tmp_obj$coord_sistema[1]), sep = ""))
-      # tmp_obj <- sp::spTransform(tmp_obj, sp::CRS(paste("+init=", crs_lower, sep = "")))
-      # tmp_obj <- as.data.frame(tmp_obj)
       tmp_obj$coord_sistema <- crs_upper
     }
     
@@ -165,7 +156,6 @@
     res <- rbind(tmp_obj, obj[-id_coords, ])
     res <- res[, col_names]
     res <- res[order(res$observacao_id), ]
-    # res <- dplyr::select(res, col_names)
     
     return (res)
   }
@@ -346,60 +336,15 @@
 # Descarregar cabeçalho das tabelas 'camada' e observacao' ####################################################
 .getHeader <-
   function (x, ws) {
-    
-    # googlesheets ---
-    # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
-    # nmax <- 2
-    # res <- suppressMessages(
-    #   googlesheets::gs_read_csv(
-    #     ss = res, ws = ws,
-    #     locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, n_max = nmax)
-    # )
-    
-    # googlesheets4 ---
-    # res <- suppressMessages(
-    # googlesheets4::read_sheet(ss = x, sheet = ws, n_max = 2, col_types = 'c'))
-    # res <- as.data.frame(res)
-    
-    # utils ---
     url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
     destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
     utils::download.file(url = url, destfile = destfile, quiet = TRUE)
     res <- utils::read.table(
       file = destfile, header = TRUE, sep = ',', dec = ',', nrows = 2, comment.char = '',
       na.strings = 'NA', stringsAsFactors = FALSE)
-    
     # output ---
     return (res)
   }
-# Descarregar tabela 'camada' e 'observacao' ##################################################################
-# .getTable <-
-#   function (x, ws) {
-#     res <- .readGoogleSheet(
-#       sheet.id = x,
-#       sheet.name = ws,
-#       sheet.headers = 3, # usa as três primeiras linhas para criar o cabeçalho
-#       stringsAsFactors = FALSE,
-#       dec = ',',
-#       header = TRUE,
-#       na.strings = c("NA", "-", "", "na", "tr", "#VALUE!")
-#     )
-#     colnames(res) <- sapply(colnames(res), function (x) strsplit(x, split = '.', fixed = TRUE)[[1]][1])
-#     # ss <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
-#     # res <- suppressMessages(
-#     #   googlesheets::gs_read_csv(
-#     #     ss = ss,
-#     #     ws = ws, # identifica Sheet com seu nome
-#     #     na = .opt()$gs$na,
-#     #     locale = .opt()$gs$locale,
-#     #     verbose = .opt()$gs$verbose,
-#     #     comment = .opt()$gs$comment
-#     #   )
-#     # )
-#     # res <- as.data.frame(res)
-#     return (res)
-#   }
-
 # Descarregar tabela 'febr-padroes' ###########################################################################
 .getStds <-
   function (x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI", ws, engine = 'utils') {
@@ -440,45 +385,6 @@
     res$campo_precisao <- suppressWarnings(as.numeric(res$campo_precisao))
     return (res)
   }
-
-# Descarregar tabela 'febr-unidades' ##########################################################################
-# .getUnits <-
-#   function (x = "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo", ws, engine = 'utils') {
-#     
-#     # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não pode ser
-#     # lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é possível realizar a
-#     # padronização das unidades de medida quando descarregamos variáveis sem unidades de medida.
-#     na <- .opt()$gs$na
-#     na <- na[-which(na == "-")]
-#     
-#     # motor de descarregamento e leitura ---
-#     switch (
-#       engine,
-#       gs = { # googlesheets ---
-#         # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
-#         # res <- suppressMessages(
-#         #   googlesheets::gs_read_csv(
-#         #     ss = res, ws = 'unidades', # identifica Sheet por seu nome
-#         #     na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
-#       },
-#       gs4 = { # googlesheets4 ---
-#         # res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'unidades', na = na))
-#         # res <- as.data.frame(res)
-#       },
-#       utils = { # utils ---
-#         url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
-#         destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
-#         utils::download.file(url = url, destfile = destfile, quiet = TRUE)
-#         res <- utils::read.table(
-#           file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '', na.strings = na,
-#           stringsAsFactors = FALSE)
-#       }
-#     )
-#     
-#     # saída ---
-#     return (res)
-#   }
-
 # Quais conjuntos de dados devem ser descarregados? ###########################################################
 .getDataset <-
   function (sheets_keys, dataset) {
@@ -526,7 +432,6 @@
           stringsAsFactors = FALSE)
       }
     )
-    
     # saída ---
     res <- .getDataset(sheets_keys = res, dataset = dataset)
     res <- res[order(res$ctb), ]

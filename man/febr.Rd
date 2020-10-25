@@ -7,8 +7,8 @@
 febr(dataset, merge = FALSE, progress = TRUE, verbose = TRUE, ...)
 }
 \arguments{
-\item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
-in \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
+\item{dataset}{Character vector indicating one or more datasets. Use \code{dataset = "all"} to download all
+datasets.}
 
 \item{merge}{(optional) Logical value indicating if the \emph{observation} ("observacao") and \emph{layer} ("camada")
 tables should be merged. Defaults to \code{merge = FALSE}. See \code{\link[base]{merge}} for more details.}

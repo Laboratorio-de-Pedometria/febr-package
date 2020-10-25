@@ -14,8 +14,8 @@ header(
 )
 }
 \arguments{
-\item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
-in \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
+\item{dataset}{Character vector indicating one or more datasets. Use \code{dataset = "all"} to download all
+datasets.}
 
 \item{table}{Character string indicating a table, i.e. the \emph{layer} table, \code{"camada"}, or the \emph{observation}
 table, \code{"observacao"}.}

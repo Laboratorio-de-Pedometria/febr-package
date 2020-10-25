@@ -1,3 +1,8 @@
+# 1.3.0
+
+* New functions `febr2smartsolos()` and `smartsolos2febr()` for soil profile data conversion between FEBR and
+  SMARTSolos.
+
 # febr 1.2.4
 
 * Improves documentation for new release.

@@ -16,24 +16,15 @@ vignette: >
 
 # Introdução
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
-library(magrittr)
-library(glue)
-library(pander)
-panderOptions("table.alignment.default", "left")
-panderOptions("table.split.table", Inf)
-```
-
 O pacote febr para [R](https://www.r-project.org/) [@r] foi criado para facilitar o acesso aos conjuntos de dados publicados no Repositório Brasileiro Livre para Dados Abertos do Solo, também conhecido como [FEBR](https://www.pedometria.org/projeto/febr/) (/ˈfɛ.bɾe/). Ele pode ser descarregado do [CRAN](https://CRAN.R-project.org/package=febr) da seguinte maneira:
 
-```{r}
+```{r, echo=TRUE, eval=FALSE}
 install.packages("febr")
 ```
 
 Já a versão de desenvolvimento, disponível no [GitHub](https://github.com/samuel-rosa/febr-package), pode ser instalada, usando o pacote `remotes` [@remotes], da seguinte maneira:
 
-```{r}
+```{r, echo=TRUE, eval=FALSE}
 if (!require(remotes)) {
   install.packages(pkgs = "remotes")
 }
@@ -44,9 +35,9 @@ O pacote febr possui três grupos de funções: estruturais, acesso e auxiliares
 
 ```{r, echo=FALSE, results='asis', eval=TRUE}
 pkg.info <- drop(read.dcf(file = "../DESCRIPTION", fields = c("Title", "Version", "Date")))
-rbind(
-  c("`standard`", "Estrutural", glue("Descarregar os padrões de codificação e nomenclatura do FEBR")),
-  c("`unit`", "Estrutural", glue("Descarregar os padrões de unidades de medida do FEBR")),
+t <- rbind(
+  c("`standard`", "Estrutural", "Descarregar os padrões de codificação e nomenclatura do FEBR"),
+  c("`unit`", "Estrutural", "Descarregar os padrões de unidades de medida do FEBR"),
   c("`readFEBR`", "Acesso", "Descarregar tabelas de dados um ou mais conjuntos de dados"),
   c("`identification`", "Acesso", "Descarregar dados de identificação um conjunto de dados"),
   c("`metadata`", "Acesso", "Descarregar metadados de um conjunto de dados"),
@@ -54,11 +45,11 @@ rbind(
   c("`layer`", "Acesso", "Descarregar dados das camadas das observações do solo de um conjunto de dados"),
   c("`febr`", "Acesso", "Descarregar todos os dados e metadados de um conjunto de dados"),
   c("`febr2sf`", "Auxiliar", "Criar objeto de classe `sf`"),
-  c("`goto`", "Auxiliar", glue("Visitar páginas do FEBR na Internet"))
-  ) %>% 
-  pandoc.table(
-    caption = paste0("Funções disponíveis no pacote febr ", pkg.info["Version"], "."),
-    col.names = c("Função", "Grupo", "Descrição"))
+  c("`goto`", "Auxiliar", "Visitar páginas do FEBR na Internet")
+  )
+knitr::kable(
+  x = t, caption = paste0("Funções disponíveis no pacote febr ", pkg.info["Version"], "."), 
+  col.names = c("Função", "Grupo", "Descrição"))
 ```
 
 # Funções estruturais
@@ -73,13 +64,13 @@ cab <- febr::header(dataset = "ctb0003", table = "camada", variable = "all")
 
 A função `standard` (do inglês, *standard*, para padrão) fornece uma interface para descarregar informações sobre os padrões usados para as variáveis incluídas nas tabelas `observacao` e `camada` de todos os conjuntos de dados. Isso inclui a codificação e nomenclatura, a descrição de cada variável, a unidade de medida e o número de casas decimais, o tipo de dado e a categoria da variável. Tais informações estão organizadas numa planilha disponível em https://goo.gl/hi77sB. Por exemplo, caso tenhamos interesse em conhecer os padrões usados no FEBR para as variáveis `argila`, `densidade`, `carbono` e `ph`, basta usar o seguinte código:
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 pad <- febr::standard(variable = c("argila", "densidade", "carbono", "ph"))
 ```
 
 A função `unit` (do inglês, *unit*, para unidade) serve de interface para uma planilha (disponível em https://goo.gl/Vvvsf2) contendo diversas unidades de medida e as constantes utilizadas para a conversão dos dados entre elas. Essas informações são úteis durante o descarregamento dos dados usando as funções `observation` e `layer` (veja mais abaixo). Por exemplo, a densidade do solo é comumente expressa em `Mg/m^3` e `kg/dm^3`. Para descarregar as constantes de transformação entre essas duas unidades de medida, basta usar o seguinte código:
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 uni <- febr::unit(source = "Mg/m^3", target = "kg/dm^3")
 ```
 
@@ -87,33 +78,33 @@ uni <- febr::unit(source = "Mg/m^3", target = "kg/dm^3")
 
 As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados publicados no FEBR. Isso inclui as tabelas `identificacao`, `metadado`, `observacao` e `camada`.
 
-Os dados de identificação de um ou mais conjuntos de dados, contidos na tabela `identificacao`, podem ser descarregados usando a função `identification`. Para isso, basta informar o código de identificação do(s) conjunto(s) de dados que se deseja descarregar (conforme catalogado em https://pedometria.shinyapps.io/febr/), por exemplo:
+Os dados de identificação de um ou mais conjuntos de dados, contidos na tabela `identificacao`, podem ser descarregados usando a função `identification`. Para isso, basta informar o código de identificação do(s) conjunto(s) de dados que se deseja descarregar, por exemplo:
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 conj <- febr::identification(dataset = c("ctb0003", "ctb0036"))
 ```
 
 Já os dados sobre os métodos usados para produzir os dados contidos em um ou mais conjuntos de dados, armazenados na tabela `metadado`, podem ser descarregados usando a função `metadata` (do inglês, *metadata*, para metadados), por exemplo:
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 meta <- febr::metadata(dataset = c("ctb0003", "ctb0036"))
 ```
 
 Os dados das observações do solo, contidos na tabela `observacao`, podem ser descarregados usando a função `observation` (do inglês, *observation*, para observação). Assim como a função `standard` vista acima, a função `observation` também possui o argumento `variable`, que permite selecionar as variáveis que devem ser retornadas. Por exemplo, para retornar apenas a variável `taxon` do conjunto de dados `ctb0003`, usamos o seguinte código:
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 obs <- febr::observation(dataset = "ctb0003", variable = "taxon")
 ```
 
 A função `layer` (do inglês, *layer*, para camada) serve para descarregar os dados contidos na tabela `camada` dos conjunto de dados. Por exemplo, para descarregar os dados da tabela `camada` dos conjuntos de dados `ctb0003` e `ctb0036`, retornando apenas as variáveis `argila`, `carbono` e `densidade`, usamos o seguinte código:
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 cam <- febr::layer(dataset = c("ctb0003", "ctb0036"), variable = c("argila", "carbono", "densidade"))
 ```
 
 A última função de acesso é `febr`. Ela serve para descarregar todos os dados e metadados de um único conjunto de dados. Essa função aceita os mesmos argumentos das funções `observation` e `layer` (que são idênticos devido à similaridade da estrutura das tabelas `observacao` e `camada`).
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 tudo <- febr::febr(dataset = "ctb0003", variable = "all")
 ```
 
@@ -123,14 +114,14 @@ As funções auxiliares servem para realizar tarefas complementares às funçõe
 
 A função `febr2sf` serve para criar um objeto do tipo _simple feature_  [@sf] a partir da tabela `observacao` descarregada usando a função `observation`. O código a seguir demonstra como fazer isso.
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 obs <- febr::observation(dataset = "ctb0003", variable = "taxon")
 obs <- febr::febr2sf(obs)
 ```
 
 A segunda função auxiliar do pacote febr é `goto`. A função `goto` serve de interface para navegação nas diversas páginas na Internet do FEBR: página principal, visualização geográfica, catálogo de conjuntos de dados, página de busca, manual do mantenedor, pacote para R, GitHub, fórum de discussão, e tabelas com padrões de unidades de medida e de codificação e nomenclatura. Além disso, a função `goto` serve para visitar as tabelas dos conjuntos de dados. Por exemplo, para visitar as tabelas do conjunto de dados `ctb0003`, usamos o seguinte código: 
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 febr::goto(dataset = "ctb0003")
 ```
 

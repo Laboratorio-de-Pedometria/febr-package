@@ -28,21 +28,7 @@
 ###############################################################################################################
 febr2xlsx <-
   function (x, file, row.names = FALSE, ...) {
-    
-    .Deprecated(new = 'openxlsx::write.xlsx')
-    
-    # if (inherits(x, what = "list")) {
-    # 
-    #   # Multiplas tabelas
-    #   for (i in 1:length(x)) {
-    #     xlsx::write.xlsx(
-    #       x[[i]], file = file,
-    #       # sheetName = glue::glue("sheet{i}"),
-    #       sheetName = paste("sheet", i, sep = ""),
-    #       append = TRUE, row.names = row.names, ...)
-    #   }
-    # } else {
-    #   # Uma tabela
-    #   xlsx::write.xlsx(x, file = file, row.names = row.names, ...)
-    # }
+    .Deprecated(
+      # new = 'openxlsx::write.xlsx', 
+      msg = "'febr2xlsx' is deprecated.\nUse 'openxlsx::write.xlsx' instead.")
   }

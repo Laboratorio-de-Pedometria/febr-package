@@ -62,21 +62,6 @@ metadata <-
         par <- ifelse(progress, "\n", "")
         message(paste(par, "Downloading ", dts, "-metadado...", sep = ""))
       }
-      
-      # googlesheets ---
-      # tmp <- googlesheets::gs_key(stats::na.omit(sheets_keys$metadado)[i], verbose = FALSE)
-      # tmp <- suppressMessages(
-      #   googlesheets::gs_read_csv(
-      #     ss = tmp, ws = 'metadado', # identifica Sheet por seu nome
-      #     na = opts$gs$na, locale = opts$gs$locale, verbose = opts$gs$verbose)
-      # )
-      
-      # googlesheets4 ---
-      # tmp <- suppressMessages(
-        # googlesheets4::read_sheet(ss = sheets_keys$metadado[i], sheet = 'metadado', na = opts$gs$na))
-      
-      # utils ---
-      # tmp <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, "metadado"], sheet.name = 'metadado')
       tmp <- .readOwnCloud(ctb = sheets_keys[i, 'ctb'], table = 'metadado', febr.repo = febr.repo)
       
       # Dados processadas

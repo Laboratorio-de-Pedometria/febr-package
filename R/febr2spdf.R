@@ -26,19 +26,13 @@ febr2spdf <-
 #' @export
 febr2sf <-
   function (obj) {
-    
     # Verificar sistema de referência de coordenadas
     crs <- unique(obj$coord_sistema)
     n_crs <- length(crs)
     if (n_crs == 1) {
       obj <- sf::st_as_sf(x = obj, coords = c('coord_x', 'coord_y'), crs = as.integer(gsub('EPSG:', '', crs)))
-      # sp::coordinates(obj) <- ~ coord_x + coord_y
-      #sp::proj4string(obj = obj) <- sp::CRS(glue::glue("+init={tolower(crs)}"))
-      # sp::proj4string(obj = obj) <- sp::CRS(paste("+init=", tolower(crs), sep = ""))
-      # obj@data <- dplyr::select(obj@data, -coord_sistema)
     } else {
       stop ("coordinate reference system has not been standardized")
     }
-    
     return (obj)
   }

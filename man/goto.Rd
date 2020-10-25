@@ -7,8 +7,7 @@
 goto(dataset, page)
 }
 \arguments{
-\item{dataset}{(optional) Character vector indicating one dataset. The identification code should be as
-recorded in \url{https://www.pedometria.shinyapps.io/febr/}.}
+\item{dataset}{(optional) Character vector indicating one dataset.}
 
 \item{page}{(optional) Character string indicating a web page of the FEBR. Options are: \code{"febr"},
 \code{"search"}, \code{"package"}, \code{"github"}, \code{"forum"}, \code{"units"}, \code{"standards"}, \code{"index"}, and \code{"template"}.}

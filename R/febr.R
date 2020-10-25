@@ -4,8 +4,7 @@
 #' and *metadata* ("metadado") tables of a dataset contained in the Free Brazilian Repository for Open Soil 
 #' Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}.
 #' 
-#' @param dataset Character vector indicating one dataset. The identification code should be as recorded in 
-#' \url{https://www.pedometria.shinyapps.io/febr/}.
+#' @param dataset Character vector indicating one dataset.
 #' 
 #' @template metadata_template
 #' 

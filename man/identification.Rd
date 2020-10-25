@@ -10,8 +10,8 @@ identification(dataset, progress = TRUE, verbose = TRUE, febr.repo = "remote")
 dataset(dataset, progress = TRUE, verbose = TRUE, febr.repo = "remote")
 }
 \arguments{
-\item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
-in \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
+\item{dataset}{Character vector indicating one or more datasets. Use \code{dataset = "all"} to download all
+datasets.}
 
 \item{progress}{(optional) Logical value indicating if a download progress bar should be displayed.}
 

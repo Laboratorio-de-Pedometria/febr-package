@@ -17,8 +17,8 @@ observation(
 )
 }
 \arguments{
-\item{dataset}{Character vector indicating one or more datasets. Identification codes should be as recorded
-in \url{http://www.ufsm.br/febr/catalog/}. Use \code{dataset = "all"} to download all datasets.}
+\item{dataset}{Character vector indicating one or more datasets. Use \code{dataset = "all"} to download all
+datasets.}
 
 \item{variable}{(optional) Character vector indicating one or more variables. Accepts only general
 identification codes, e.g. \code{"ferro"} and \code{"carbono"}. If missing, then a set of standard identification
@@ -89,10 +89,9 @@ Standard identification variables and their content are as follows:
 \item \code{dataset_id}. Identification code of the dataset in the FEBR to which an observation belongs.
 \item \code{observacao_id}. Identification code of an observation in a dataset.
 \item \code{sisb_id}. Identification code of an observation in the Brazilian Soil Information System
-maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
-\url{https://www.bdsolos.cnptia.embrapa.br/consulta_publica.html}.
+maintained by the Brazilian Agricultural Research Corporation (EMBRAPA).
 \item \code{ibge_id}. Identification code of an observation in the database of the Brazilian Institute
-of Geography and Statistics (IBGE) at \url{https://www.ibge.gov.br/geociencias/downloads-geociencias.html}.
+of Geography and Statistics (IBGE).
 \item \code{observacao_data}. Date (dd-mm-yyyy) in which an observation was made.
 \item \code{coord_sistema}. EPSG code of the coordinate reference system.
 \item \code{coord_x}. Longitude (deg) or easting (m).

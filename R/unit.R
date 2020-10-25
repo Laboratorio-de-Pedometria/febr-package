@@ -38,13 +38,13 @@ unit <-
     ## source
     if (!missing(source) && any(!source %in% res$unidade_origem)) {
       source <- source[which(!source %in% res$unidade_origem)]
-      stop (glue::glue("unknown value '{source}' passed to argument 'source'"))
+      stop (paste0("unknown value '", source, "' passed to argument 'source'"))
     }
     
     ## target
     if (!missing(target) && any(!target %in% res$unidade_destino)) {
       target <- target[which(!target %in% res$unidade_destino)]
-      stop (glue::glue("unknown value '{target}' passed to argument 'target'"))
+      stop (paste0("unknown value '", target, "}' passed to argument 'target'"))
     }
     
     # PROCESSAMENTO

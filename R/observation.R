@@ -53,10 +53,9 @@
 #' \item `dataset_id`. Identification code of the dataset in the FEBR to which an observation belongs.
 #' \item `observacao_id`. Identification code of an observation in a dataset.
 #' \item `sisb_id`. Identification code of an observation in the Brazilian Soil Information System
-#' maintained by the Brazilian Agricultural Research Corporation (EMBRAPA) at
-#' \url{https://www.bdsolos.cnptia.embrapa.br/consulta_publica.html}.
+#' maintained by the Brazilian Agricultural Research Corporation (EMBRAPA).
 #' \item `ibge_id`. Identification code of an observation in the database of the Brazilian Institute
-#' of Geography and Statistics (IBGE) at \url{https://www.ibge.gov.br/geociencias/downloads-geociencias.html}.
+#' of Geography and Statistics (IBGE).
 #' \item `observacao_data`. Date (dd-mm-yyyy) in which an observation was made.
 #' \item `coord_sistema`. EPSG code of the coordinate reference system.
 #' \item `coord_x`. Longitude (deg) or easting (m).
