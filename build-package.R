@@ -72,10 +72,3 @@ if (dir.exists("~/projects/web/pedometria.org/static/software/febr")) {
 
 # upload to CRAN
 devtools::release(check = FALSE)
-
-# febr2xlsx
-# WARNING: An illegal reflective access operation has occurred
-# WARNING: Illegal reflective access by org.apache.poi.util.SAXHelper (file:/home/alessandro/Rlibs/xlsxjars/java/poi-ooxml-3.10.1-20140818.jar) to method com.sun.org.apache.xerces.internal.util.SecurityManager.setEntityExpansionLimit(int)
-# WARNING: Please consider reporting this to the maintainers of org.apache.poi.util.SAXHelper
-# WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
-# WARNING: All illegal access operations will be denied in a future release
