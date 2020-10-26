@@ -17,7 +17,7 @@
 #' 
 #' @examples 
 #' \donttest{
-#' soil <- febr::readFEBR("ctb0770", c("observacao", "camada"))[[1]]
+#' soil <- readFEBR("ctb0770", c("observacao", "camada"))[[1]]
 #' febr2smartsolos(profiles = soil$observacao, horizons = soil$camada, file = "febr2smartsolos.json")
 #' }
 ###############################################################################################################
