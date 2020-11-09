@@ -4,3 +4,4 @@
 .Ruserdata
 CRAN-RELEASE
 docs
+*.json
