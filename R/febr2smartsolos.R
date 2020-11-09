@@ -23,10 +23,23 @@
 ###############################################################################################################
 febr2smartsolos <-
   function (profiles, horizons, file, ...) {
-    # falta incluir funções para renomear colunas
-    # https://docs.google.com/spreadsheets/d/1mc5S-HsoCcxLeue97eMoWLMse4RzFZ1_MCQyQhfzXUg/edit
+    # Tradução dos nomes das variáveis
+    gs <- "1mc5S-HsoCcxLeue97eMoWLMse4RzFZ1_MCQyQhfzXUg"
+    sheet <- "dados"
+    https_request <- paste0("https://docs.google.com/spreadsheets/d/", gs, "/gviz/tq?tqx=out:csv&sheet=", sheet)
+    translation <- suppressWarnings(
+      utils::read.table(file = https_request, sep = ",", header = TRUE, stringsAsFactors = FALSE))
+    # profiles
+    idx_old <- which(colnames(profiles) %in% translation$febr_var_name)
+    idx_new <- match(colnames(profiles)[idx_old], translation$febr_var_name)
+    colnames(profiles)[idx_old] <- translation$ss_var_name[idx_new]
+    # horizons
+    idx_old <- which(colnames(horizons) %in% translation$febr_var_name)
+    idx_new <- match(colnames(horizons)[idx_old], translation$febr_var_name)
+    colnames(horizons)[idx_old] <- translation$ss_var_name[idx_new]
+    # Conversão para JSON
     profiles$HORIZONTES <- NA
-    horizons <- split(x = horizons, f = horizons$observacao_id)
+    horizons <- split(x = horizons, f = horizons$ID_PONTO)
     for (i in seq_along(horizons)) {
       profiles$HORIZONTES[i] <- list(horizons[[i]])
     }

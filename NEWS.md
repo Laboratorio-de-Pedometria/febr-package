@@ -1,3 +1,7 @@
+# febr 1.3.2
+
+* Improves translation of variable names when converting soil profile data between FEBR and SMARTSolos.
+
 # febr 1.3.1
 
 * Deals with suggested packages.
