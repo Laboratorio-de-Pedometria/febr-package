@@ -7,7 +7,7 @@
 #' 
 #' @param horizons Data frame with soil horizon data, i.e. sampling layers.
 #' 
-#' @param file Character string naming the JSON file to be read from or written to disk.
+#' @param file (optional) Character string naming the JSON file to be read from or written to disk.
 #' 
 #' @param ... (optional) Arguments passed to \code{\link[base]{writeLines}} and \code{\link[jsonlite]{fromJSON}}.
 #' 
@@ -17,8 +17,25 @@
 #' 
 #' @examples 
 #' \donttest{
-#' soil <- readFEBR("ctb0770", c("observacao", "camada"))[[1]]
-#' febr2smartsolos(profiles = soil$observacao, horizons = soil$camada, file = "febr2smartsolos.json")
+#' profiles <- observation(
+#'   dataset = "ctb0025", variable = c("taxon_sibcs", "relevo_drenagem"),
+#'   standardization = list(units = TRUE, round = TRUE))
+#' idx <- profiles$observacao_id[1]
+#' profiles <- profiles[profiles$observacao_id %in% idx, ]
+#' str(profiles)
+#' 
+#' horizons <- layer(
+#'   dataset = "ctb0025", variable = "all",
+#'   standardization =
+#'     list(plus.sign = "remove", lessthan.sign = "remove", 
+#'          transition = "smooth", units = TRUE, round = TRUE))
+#' horizons <- horizons[horizons$observacao_id %in% idx, ]
+#' horizons[, 7:46] <- lapply(horizons[, 7:46], as.numeric)
+#' str(horizons)
+#' 
+#' febr2smartsolos(
+#'   profiles = profiles, horizons = horizons,
+#'   file = paste0("tmp/febr2smartsolos-", idx, ".json"))
 #' }
 ###############################################################################################################
 febr2smartsolos <-
@@ -44,8 +61,13 @@ febr2smartsolos <-
       profiles$HORIZONTES[i] <- list(horizons[[i]])
     }
     profiles <- list(items = profiles)
+    # Saída: arquivo ou string JSON
     ss <- jsonlite::toJSON(profiles, pretty = TRUE)
-    writeLines(text = ss, con = file, ...)
+    if (!missing(file)) {
+      writeLines(text = ss, con = file, ...)
+    } else {
+      return(ss)
+    }
   }
 ###############################################################################################################
 #' @rdname febr2smartsolos
