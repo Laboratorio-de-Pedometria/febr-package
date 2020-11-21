@@ -226,7 +226,7 @@ observation <-
     }
     
     ## variable + stack || variable + harmonization
-    if (!missing(variable) && variable == "all") {
+    if (!missing(variable) & variable == "all") {
       if (stack) {
         stop ("data cannot be stacked when downloading all variables")
       }
