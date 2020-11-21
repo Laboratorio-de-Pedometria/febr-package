@@ -1,3 +1,10 @@
+# febr 1.4.0
+
+* New function `morphology` to extract and process soil morphological properties from field soil morphology
+  descriptions.
+* Adds data conversion routines in `febr2smartsolos` for the following soil variables: taxonomic 
+  classification, soil matrix color (wet and dry), soil structure.
+
 # febr 1.3.2
 
 * Improves translation of variable names when converting soil profile data between FEBR and SMARTSolos.
