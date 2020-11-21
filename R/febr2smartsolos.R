@@ -1,7 +1,6 @@
 #' Conversion between FEBR and SMARTSolos soil profile data formats
 #' 
-#' Export FEBR soil profile data to the JSON file format required by the SMARTSolos API—and the other way
-#' around.
+#' Export FEBR soil profile data to the JSON file format required by the SMARTSolos API.
 #' 
 #' @param profiles Data frame with soil profile data, i.e. observation locations.
 #' 
@@ -9,7 +8,8 @@
 #' 
 #' @param file (optional) Character string naming the JSON file to be read from or written to disk.
 #' 
-#' @param ... (optional) Arguments passed to \code{\link[base]{writeLines}} and \code{\link[jsonlite]{fromJSON}}.
+#' @param ... (optional) Arguments passed to \code{\link[base]{writeLines}} and 
+#' \code{\link[jsonlite]{fromJSON}}.
 #' 
 #' @export
 #' 
@@ -20,32 +20,83 @@
 #' profiles <- observation(
 #'   dataset = "ctb0025", variable = c("taxon_sibcs", "relevo_drenagem"),
 #'   standardization = list(units = TRUE, round = TRUE))
-#' idx <- profiles$observacao_id[1]
+#' idx <- profiles$observacao_id[18]
 #' profiles <- profiles[profiles$observacao_id %in% idx, ]
 #' str(profiles)
 #' 
 #' horizons <- layer(
 #'   dataset = "ctb0025", variable = "all",
 #'   standardization =
-#'     list(plus.sign = "remove", lessthan.sign = "remove", 
+#'     list(plus.sign = "remove", lessthan.sign = "remove",
 #'          transition = "smooth", units = TRUE, round = TRUE))
 #' horizons <- horizons[horizons$observacao_id %in% idx, ]
 #' horizons[, 7:46] <- lapply(horizons[, 7:46], as.numeric)
+#' horizons <- cbind(
+#'   horizons,
+#'   morphology(x = horizons$morfologia_descricao, variable = "color"),
+#'   morphology(x = horizons$morfologia_descricao, variable = "structure"),
+#'   stringsAsFactors = FALSE)
 #' str(horizons)
 #' 
-#' febr2smartsolos(
-#'   profiles = profiles, horizons = horizons,
-#'   file = paste0("tmp/febr2smartsolos-", idx, ".json"))
+#' file <- ifelse(
+#'   dir.exists("tmp"),
+#'   paste0("tmp/febr2smartsolos-", idx, ".json"),
+#'   paste0("febr2smartsolos-", idx, ".json"))
+#' febr2smartsolos(profiles, horizons, file)
 #' }
 ###############################################################################################################
 febr2smartsolos <-
   function (profiles, horizons, file, ...) {
-    # Tradução dos nomes das variáveis
+    # Tradução das variáveis
     gs <- "1mc5S-HsoCcxLeue97eMoWLMse4RzFZ1_MCQyQhfzXUg"
     sheet <- "dados"
-    https_request <- paste0("https://docs.google.com/spreadsheets/d/", gs, "/gviz/tq?tqx=out:csv&sheet=", sheet)
+    https_request <- paste0(
+      "https://docs.google.com/spreadsheets/d/", gs, "/gviz/tq?tqx=out:csv&sheet=", sheet)
     translation <- suppressWarnings(
       utils::read.table(file = https_request, sep = ",", header = TRUE, stringsAsFactors = FALSE))
+    sheet <- "vocabulario"
+    https_request <- paste0(
+      "https://docs.google.com/spreadsheets/d/", gs, "/gviz/tq?tqx=out:csv&sheet=", sheet)
+    vocabulary <- suppressWarnings(
+      utils::read.table(file = https_request, sep = ",", header = TRUE, stringsAsFactors = FALSE))
+    
+    # Processar classificação taxonômica
+    taxon <- profiles[, startsWith(colnames(profiles), "taxon_sibcs")]
+    taxon <- strsplit(taxon, " ")
+    profiles$ORDEM <- sapply(taxon, function (x) x[1])
+    profiles$SUBORDEM <- sapply(taxon, function (x) x[2])
+    profiles$GDE_GRUPO <- sapply(taxon, function (x) x[3])
+    idx <- sapply(profiles$GDE_GRUPO, function (x) x %in% c("Ta", "Tb"))
+    profiles$GDE_GRUPO[idx] <- as.character(sapply(taxon[idx], function (x) paste0(x[3:4], collapse = " ")))
+    profiles$SUBGRUPO[idx] <- as.character(sapply(taxon[idx], function (x) x[5]))
+    profiles$SUBGRUPO[!idx] <- as.character(sapply(taxon[!idx], function (x) x[4]))
+    # Processar cor do solo úmido
+    cor <- strsplit(horizons$cor_matriz_umido_munsell, " ")
+    horizons$COR_UMIDA_MATIZ <- sapply(cor, function (x) x[1])
+    cor <- sapply(cor, function (x) x[2])
+    cor <- strsplit(cor, "/")
+    horizons$COR_UMIDA_VALOR <- as.integer(sapply(cor, function (x) x[1]))
+    horizons$COR_UMIDA_CROMA <- as.integer(sapply(cor, function (x) x[2]))
+    # Processar cor do solo seco
+    cor <- strsplit(horizons$cor_matriz_seco_munsell, " ")
+    horizons$COR_SECA_MATIZ <- sapply(cor, function (x) x[1])
+    cor <- sapply(cor, function (x) x[2])
+    cor <- strsplit(cor, "/")
+    horizons$COR_SECA_VALOR <- as.integer(sapply(cor, function (x) x[1]))
+    horizons$COR_SECA_CROMA <- as.integer(sapply(cor, function (x) x[2]))
+    # Processar estrutura do solo
+    idx <- match(
+      horizons$estrutura_tipo,
+      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TIPO", "var_value_ss"])
+    horizons$estrutura_tipo <- vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TIPO", "var_code_ss"][idx]
+    idx <- match(
+      horizons$estrutura_grau,
+      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_GRAU", "var_value_ss"])
+    horizons$estrutura_grau <- vocabulary[vocabulary$var_name_ss == "ESTRUTURA_GRAU", "var_code_ss"][idx]
+    idx <- match(
+      horizons$estrutura_cdiam, 
+      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TAMANHO", "var_value_ss"])
+    horizons$estrutura_cdiam <- vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TAMANHO", "var_code_ss"][idx]
     # profiles
     idx_old <- which(colnames(profiles) %in% translation$febr_var_name)
     idx_new <- match(colnames(profiles)[idx_old], translation$febr_var_name)
@@ -70,16 +121,16 @@ febr2smartsolos <-
     }
   }
 ###############################################################################################################
-#' @rdname febr2smartsolos
-#' @export
-smartsolos2febr <-
-  function (file, ...) {
-    profiles <- jsonlite::fromJSON(txt = file, ...)
-    horizons <- profiles$items$HORIZONTES
-    horizons <- lapply(horizons, data.table::as.data.table)
-    horizons <- data.table::rbindlist(horizons, fill = TRUE)
-    profiles <- profiles$items[, !colnames(profiles$items) == "HORIZONTES"]
-    # falta incluir funções para renomear colunas
-    # https://docs.google.com/spreadsheets/d/1mc5S-HsoCcxLeue97eMoWLMse4RzFZ1_MCQyQhfzXUg/edit
-    return(list(observacao = profiles, camada = horizons))
-  }
+# @rdname febr2smartsolos
+# @export
+# smartsolos2febr <-
+#   function (file, ...) {
+#     profiles <- jsonlite::fromJSON(txt = file, ...)
+#     horizons <- profiles$items$HORIZONTES
+#     horizons <- lapply(horizons, data.table::as.data.table)
+#     horizons <- data.table::rbindlist(horizons, fill = TRUE)
+#     profiles <- profiles$items[, !colnames(profiles$items) == "HORIZONTES"]
+#     # falta incluir funções para renomear colunas
+#     # https://docs.google.com/spreadsheets/d/1mc5S-HsoCcxLeue97eMoWLMse4RzFZ1_MCQyQhfzXUg/edit
+#     return(list(observacao = profiles, camada = horizons))
+#   }
