@@ -2,30 +2,51 @@
 % Please edit documentation in R/febr2smartsolos.R
 \name{febr2smartsolos}
 \alias{febr2smartsolos}
-\alias{smartsolos2febr}
 \title{Conversion between FEBR and SMARTSolos soil profile data formats}
 \usage{
 febr2smartsolos(profiles, horizons, file, ...)
-
-smartsolos2febr(file, ...)
 }
 \arguments{
 \item{profiles}{Data frame with soil profile data, i.e. observation locations.}
 
 \item{horizons}{Data frame with soil horizon data, i.e. sampling layers.}
 
-\item{file}{Character string naming the JSON file to be read from or written to disk.}
+\item{file}{(optional) Character string naming the JSON file to be read from or written to disk.}
 
-\item{...}{(optional) Arguments passed to \code{\link[base]{writeLines}} and \code{\link[jsonlite]{fromJSON}}.}
+\item{...}{(optional) Arguments passed to \code{\link[base]{writeLines}} and
+\code{\link[jsonlite]{fromJSON}}.}
 }
 \description{
-Export FEBR soil profile data to the JSON file format required by the SMARTSolos API—and the other way
-around.
+Export FEBR soil profile data to the JSON file format required by the SMARTSolos API.
 }
 \examples{
 \donttest{
-soil <- readFEBR("ctb0770", c("observacao", "camada"))[[1]]
-febr2smartsolos(profiles = soil$observacao, horizons = soil$camada, file = "febr2smartsolos.json")
+profiles <- observation(
+  dataset = "ctb0025", variable = c("taxon_sibcs", "relevo_drenagem"),
+  standardization = list(units = TRUE, round = TRUE))
+idx <- profiles$observacao_id[18]
+profiles <- profiles[profiles$observacao_id \%in\% idx, ]
+str(profiles)
+
+horizons <- layer(
+  dataset = "ctb0025", variable = "all",
+  standardization =
+    list(plus.sign = "remove", lessthan.sign = "remove",
+         transition = "smooth", units = TRUE, round = TRUE))
+horizons <- horizons[horizons$observacao_id \%in\% idx, ]
+horizons[, 7:46] <- lapply(horizons[, 7:46], as.numeric)
+horizons <- cbind(
+  horizons,
+  morphology(x = horizons$morfologia_descricao, variable = "color"),
+  morphology(x = horizons$morfologia_descricao, variable = "structure"),
+  stringsAsFactors = FALSE)
+str(horizons)
+
+file <- ifelse(
+  dir.exists("tmp"),
+  paste0("tmp/febr2smartsolos-", idx, ".json"),
+  paste0("febr2smartsolos-", idx, ".json"))
+febr2smartsolos(profiles, horizons, file)
 }
 }
 \author{
