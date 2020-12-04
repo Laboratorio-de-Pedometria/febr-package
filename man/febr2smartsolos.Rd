@@ -11,8 +11,7 @@ febr2smartsolos(profiles, horizons, file, ...)
 
 \item{horizons}{Data frame with soil horizon data, i.e. sampling layers.}
 
-\item{file}{(optional) Character string naming the JSON file to be read from
-or written to disk.}
+\item{file}{(optional) Character string naming the JSON file to be read from or written to disk.}
 
 \item{...}{(optional) Arguments passed to \code{\link[base]{writeLines}} and
 \code{\link[jsonlite]{fromJSON}}.}
