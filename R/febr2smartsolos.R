@@ -23,7 +23,6 @@
 #'   standardization = list(units = TRUE, round = TRUE))
 #' idx <- profiles$observacao_id[18]
 #' profiles <- profiles[profiles$observacao_id %in% idx, ]
-#'
 #' horizons <- layer(
 #'   dataset = "ctb0025", variable = "all",
 #'   standardization =
@@ -36,17 +35,15 @@
 #'   morphology(x = horizons$morfologia_descricao, variable = "color"),
 #'   morphology(x = horizons$morfologia_descricao, variable = "structure"),
 #'   stringsAsFactors = FALSE)
-#' str(horizons)
-#' 
 #' file <- ifelse(
 #'   dir.exists("tmp"),
 #'   paste0("tmp/febr2smartsolos-", idx, ".json"),
 #'   paste0("febr2smartsolos-", idx, ".json"))
 #' febr2smartsolos(profiles, horizons, file)
 #' }
-###############################################################################################################
+####################################################################################################
 febr2smartsolos <-
-  function (profiles, horizons, file, ...) {
+  function(profiles, horizons, file, ...) {
     # Mapeamento de metadados
     gs <- "1mc5S-HsoCcxLeue97eMoWLMse4RzFZ1_MCQyQhfzXUg"
     sheet <- "dados"
@@ -61,41 +58,40 @@ febr2smartsolos <-
       utils::read.table(file = https_request, sep = ",", header = TRUE, stringsAsFactors = FALSE))
     # Processar classificação taxonômica
     taxon <- profiles[, startsWith(colnames(profiles), "taxon_sibcs")]
-    taxon <- strsplit(taxon, " ")
-    profiles$ORDEM <- sapply(taxon, function (x) x[1])
-    profiles$SUBORDEM <- sapply(taxon, function (x) x[2])
-    profiles$GDE_GRUPO <- sapply(taxon, function (x) x[3])
-    idx <- sapply(profiles$GDE_GRUPO, function (x) x %in% c("Ta", "Tb"))
-    profiles$GDE_GRUPO[idx] <- as.character(sapply(taxon[idx], function (x) paste0(x[3:4], collapse = " ")))
-    profiles$SUBGRUPO[idx] <- as.character(sapply(taxon[idx], function (x) x[5]))
-    profiles$SUBGRUPO[!idx] <- as.character(sapply(taxon[!idx], function (x) x[4]))
+    taxon <- taxonomy(text = taxon, method = "decompose",
+      sep = " ", pattern = c(", ", " A ", " textura "))
+    colnames(taxon) <- c("ORDEM", "SUBORDEM", "GDE_GRUPO", "SUBGRUPO")
+    profiles <- cbind(profiles, taxon)
     # Processar cor do solo úmido
     cor <- strsplit(horizons$cor_matriz_umido_munsell, " ")
-    horizons$COR_UMIDA_MATIZ <- sapply(cor, function (x) x[1])
-    cor <- sapply(cor, function (x) x[2])
+    horizons[["COR_UMIDA_MATIZ"]] <- sapply(cor, function(x) x[1])
+    cor <- sapply(cor, function(x) x[2])
     cor <- strsplit(cor, "/")
-    horizons$COR_UMIDA_VALOR <- as.integer(sapply(cor, function (x) x[1]))
-    horizons$COR_UMIDA_CROMA <- as.integer(sapply(cor, function (x) x[2]))
+    horizons[["COR_UMIDA_VALOR"]] <- as.integer(sapply(cor, function(x) x[1]))
+    horizons[["COR_UMIDA_CROMA"]] <- as.integer(sapply(cor, function(x) x[2]))
     # Processar cor do solo seco
     cor <- strsplit(horizons$cor_matriz_seco_munsell, " ")
-    horizons$COR_SECA_MATIZ <- sapply(cor, function (x) x[1])
-    cor <- sapply(cor, function (x) x[2])
+    horizons[["COR_SECA_MATIZ"]] <- sapply(cor, function(x) x[1])
+    cor <- sapply(cor, function(x) x[2])
     cor <- strsplit(cor, "/")
-    horizons$COR_SECA_VALOR <- as.integer(sapply(cor, function (x) x[1]))
-    horizons$COR_SECA_CROMA <- as.integer(sapply(cor, function (x) x[2]))
+    horizons[["COR_SECA_VALOR"]] <- as.integer(sapply(cor, function(x) x[1]))
+    horizons[["COR_SECA_CROMA"]] <- as.integer(sapply(cor, function(x) x[2]))
     # Processar estrutura do solo
     idx <- match(
       horizons$estrutura_tipo,
       vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TIPO", "febr_var_value"])
-    horizons$estrutura_tipo <- vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TIPO", "ss_var_code"][idx]
+    horizons$estrutura_tipo <-
+      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TIPO", "ss_var_code"][idx]
     idx <- match(
       horizons$estrutura_grau,
       vocabulary[vocabulary$var_name_ss == "ESTRUTURA_GRAU", "febr_var_value"])
-    horizons$estrutura_grau <- vocabulary[vocabulary$var_name_ss == "ESTRUTURA_GRAU", "ss_var_code"][idx]
+    horizons$estrutura_grau <-
+      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_GRAU", "ss_var_code"][idx]
     idx <- match(
-      horizons$estrutura_cdiam, 
+      horizons$estrutura_cdiam,
       vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TAMANHO", "febr_var_value"])
-    horizons$estrutura_cdiam <- vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TAMANHO", "ss_var_code"][idx]
+    horizons$estrutura_cdiam <-
+    vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TAMANHO", "ss_var_code"][idx]
     # profiles
     idx_old <- which(colnames(profiles) %in% translation$febr_var_name)
     idx_new <- match(colnames(profiles)[idx_old], translation$febr_var_name)
@@ -105,7 +101,7 @@ febr2smartsolos <-
     idx_new <- match(colnames(horizons)[idx_old], translation$febr_var_name)
     colnames(horizons)[idx_old] <- translation$ss_var_name[idx_new]
     # Conversão para JSON
-    profiles$HORIZONTES <- NA
+    profiles[["HORIZONTES"]] <- NA
     horizons <- split(x = horizons, f = horizons$ID_PONTO)
     for (i in seq_along(horizons)) {
       profiles$HORIZONTES[i] <- list(horizons[[i]])
@@ -119,11 +115,11 @@ febr2smartsolos <-
       return(ss)
     }
   }
-###############################################################################################################
+####################################################################################################
 # @rdname febr2smartsolos
 # @export
 # smartsolos2febr <-
-#   function (file, ...) {
+#   function(file, ...) {
 #     profiles <- jsonlite::fromJSON(txt = file, ...)
 #     horizons <- profiles$items$HORIZONTES
 #     horizons <- lapply(horizons, data.table::as.data.table)
