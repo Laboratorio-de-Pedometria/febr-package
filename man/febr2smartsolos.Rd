@@ -11,7 +11,8 @@ febr2smartsolos(profiles, horizons, file, ...)
 
 \item{horizons}{Data frame with soil horizon data, i.e. sampling layers.}
 
-\item{file}{(optional) Character string naming the JSON file to be read from or written to disk.}
+\item{file}{(optional) Character string naming the JSON file to be read from
+or written to disk.}
 
 \item{...}{(optional) Arguments passed to \code{\link[base]{writeLines}} and
 \code{\link[jsonlite]{fromJSON}}.}
@@ -26,8 +27,6 @@ profiles <- observation(
   standardization = list(units = TRUE, round = TRUE))
 idx <- profiles$observacao_id[18]
 profiles <- profiles[profiles$observacao_id \%in\% idx, ]
-str(profiles)
-
 horizons <- layer(
   dataset = "ctb0025", variable = "all",
   standardization =
@@ -40,8 +39,6 @@ horizons <- cbind(
   morphology(x = horizons$morfologia_descricao, variable = "color"),
   morphology(x = horizons$morfologia_descricao, variable = "structure"),
   stringsAsFactors = FALSE)
-str(horizons)
-
 file <- ifelse(
   dir.exists("tmp"),
   paste0("tmp/febr2smartsolos-", idx, ".json"),

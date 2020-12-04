@@ -1,6 +1,5 @@
 ---
 title: "Mapeamento de Dados e Metadados de Perfis do Solo entre FEBR e SMARTSolos"
-author: "Alessandro Samuel-Rosa"
 date: "`r format(Sys.Date(), '%d-%m-%Y')`"
 output:
   rmarkdown::html_vignette:
@@ -9,10 +8,24 @@ bibliography: biblio.bib
 link-citations: yes
 csl: abnt.csl
 vignette: |
-  %\VignetteIndexEntry{Mapeamento de dados e metadados de perfis do solo entre FEBR e SMARTSolos}
+  %\VignetteIndexEntry{Mapeamento de Dados e Metadados de Perfis do Solo entre FEBR e SMARTSolos}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+**Alessandro Samuel-Rosa**<br/>
+Doutor em Agronomia-Ciência do Solo, Universidade Federal Rural do Rio de Janeiro (UFRRJ), Seropédica, Rio de Janeiro, Brasil.<br/>
+Professor do Magistério Superior, Universidade Tecnológica Federal do Paraná (UFFPR), Santa Helena, Paraná, Brasil.<br/>
+http://lattes.cnpq.br/1609751519717461<br/>
+_E-mail_: alessandrorosa@utfpr.edu.br
+
+**Glauber José Vaz**<br/>
+Ultima graduação, nome da instituição por extenso (sigla entre parênteses), cidade, estado, Brasil.
+Cargo, nome da instituição por extenso (sigla entre parênteses), Campinas, São Paulo, Brasil.<br/>
+URL (Lattes, ou página pessoal)<br/>
+_E-mail_:<br/>
+
+Submetido em: dd/mm/yyyy. Aprovado em: dd/mm/yyyy. Publicado em: dd/mm/yyyy.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -44,14 +57,98 @@ Parágrafo sobre o FEBR.
 
 Parágrafo sobre o SMARTSolos.
 
-O objetivo deste artigo é relatar nossa experiência na implementação de uma rotina de mapeamento de dados de perfis do solo entre o FEBR e o SMARTSolos.
+O objetivo deste artigo é relatar nossa experiência na implementação de uma rotina de mapeamento de dados e metadados de perfis do solo entre o FEBR e o SMARTSolos.
 
 ## MODELO DE DADOS E ESQUEMA DE METADADOS
 
-### FEBR
-
 ### SMARTSolos
 
-## CONCLUSÕES
+```json
+{
+  "items": [
+    {
+      "ID_PONTO": "Perfil 14",
+      "ORDEM": "ARGISSOLO",
+      "SUBORDEM": "VERMELHO",
+      "HORIZONTES": [
+        {
+          "SIMB_HORIZ": "Ap1",
+          "LIMITE_SUP": 0,
+          "LIMITE_INF": 12
+        },
+        {
+          "SIMB_HORIZ": "Ap2",
+          "LIMITE_SUP": 12,
+          "LIMITE_INF": 40
+        },
+        {
+          "SIMB_HORIZ": "2Bt1",
+          "LIMITE_SUP": 40,
+          "LIMITE_INF": 130
+        },
+        {
+          "SIMB_HORIZ": "2Bt2",
+          "LIMITE_SUP": 130,
+          "LIMITE_INF": 200
+        }
+      ]
+    }
+  ]
+}
+```
+
+### FEBR
+
+observacao_id | taxon_sibcs
+------------- | ------------------
+Perfil 14     | ARGISSOLO VERMELHO
+
+Table: Tabela `observacao` utilizada no FEBR.
+
+observacao_id | camada_id | profund_sup | profund_inf
+------------- | --------- | ----------- | -----------
+Perfil 14     | Ap1      | 0            | 12
+Perfil 14     | Ap2      | 12           | 40
+Perfil 14     | 2Bt1     | 40           | 130
+Perfil 14     | 2Bt2     | 130          | 200
+
+Table: Tabela `camada` utilizada no FEBR.
+
+## METODOLOGIA
+
+A rotina de mapeamento de dados e metadados entre FEBR e SMARTSolos foi implementada na linguagem R utilizando a infraestrutura do pacote febr [@SamuelRosa2020]. O pacote febr foi originalmente criado para facilitar o acesso aos dados publicados no FEBR diretamente do ambiente R. Ele inclui várias rotinas de padronização e harmonização que viabilizam o reúso imediato dos dados. Novas funcionalidades foram adicionadas recentemente ao pacote febr, aumentando seu espectro de aplicação. Esse é o caso da rotina de mapeamento de dados e metadados que apresentamos neste artigo, implementada na forma das funções `febr2smartsolos` e `smartsolos2febr`.
+
+### TABELA DE MAPEAMENTO
+
+O primeiro passo consistiu em construir uma tabela de mapeamento das variáveis (crosswalk).
+
+```{r, results='asis'}
+chave <- "1mc5S-HsoCcxLeue97eMoWLMse4RzFZ1_MCQyQhfzXUg"
+https_request <- paste0(
+  "https://docs.google.com/spreadsheets/d/", chave, "/gviz/tq?tqx=out:csv&sheet=dados")
+tabela <- suppressWarnings(
+  utils::read.table(file = https_request, sep = ",", header = TRUE, stringsAsFactors = FALSE))
+knitr::kable(tabela[, c(1, 2, 6, 7, 8)],
+  caption = "Tabela de mapeamento de metadados entre FEBR e SMARTSolos.", row.names = FALSE)
+```
+
+### CLASSIFICAÇÃO TAXONÔMICA
+
+O mapeamento dos dados taxonômicos exigiu a implementação de uma rotina específica de processamento de dados. Essa rotina decompõe o texto completo da classificação taxonômica de um perfil de solo em suas classes constituíntes. Implementada na forma da função `taxonomy()`, a decomposição da classificação taxonômica opera do primeiro ao quarto nível categórico do SiBCS, conforme mostra o exemplo abaixo:
+
+```{r, echo = TRUE}
+texto <-
+  c("CAMBISSOLO HÁPLICO Ta Eutrófico léptico A proeminente textura média",
+    "PLANOSSOLO HÁPLICO Distrófico solódico êndico plintossólico, textura média, Tb",
+    "CHERNOSSOLO ARGILÚVICO Órtico típico textura média com cascalho/argilosa com cascalho",
+    "ARGISSOLO VERMELHO-AMARELO",
+    "Latossolo"
+  )
+febr::taxonomy(texto)
+```
+
+Uma lista de valores aceitáveis pode ser criada para validar os dados extraídos.
+## CONSIDERAÇÕES FINAIS
+
 
 ## REFERÊNCIAS

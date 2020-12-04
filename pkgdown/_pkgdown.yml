@@ -34,8 +34,8 @@ reference:
       - unit
   - title: "Funções de acesso"
     desc: >
-      As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados publicados no 
-      FEBR. Isso inclui as tabelas `dataset`, `observacao`, `camada`, e `metadado`.
+      As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados
+      publicados no FEBR. Isso inclui as tabelas `dataset`, `observacao`, `camada`, e `metadado`.
     contents:
       - readFEBR
       - identification
@@ -45,11 +45,13 @@ reference:
       - febr
   - title: "Funções auxiliares"
     desc: >
-      As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de acesso, 
-      assim apoiando o processamento e uso dos dados descarregados do FEBR, por exemplo, a criação de objetos
-      de outras classes e a exportação dos dados.
+      As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de
+      acesso, assim apoiando o processamento e uso dos dados descarregados do FEBR, por exemplo, a
+      criação de objetos de outras classes e a exportação dos dados.
     contents:
       - febr2sf
       - goto
       - febr2xlsx
       - febr2smartsolos
+      - morphology
+      - taxonomy

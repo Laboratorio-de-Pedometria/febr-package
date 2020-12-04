@@ -9,8 +9,8 @@ morphology(x, variable = "color")
 \arguments{
 \item{x}{Character string with field soil morphology description (in Portuguese).}
 
-\item{variable}{Character string defining the soil morphological property of interest. Options: \code{color},
-\code{structure}.}
+\item{variable}{Character string defining the soil morphological property of interest. Options:
+\code{color}, \code{structure}.}
 }
 \description{
 Extract and process soil morphological properties from field soil morphology descriptions.
