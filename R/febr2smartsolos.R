@@ -1,29 +1,29 @@
 #' Conversion between FEBR and SMARTSolos soil profile data formats
-#' 
+#'
 #' Export FEBR soil profile data to the JSON file format required by the SMARTSolos API.
-#' 
+#'
 #' @param profiles Data frame with soil profile data, i.e. observation locations.
-#' 
+#'
 #' @param horizons Data frame with soil horizon data, i.e. sampling layers.
-#' 
-#' @param file (optional) Character string naming the JSON file to be read from or written to disk.
-#' 
-#' @param ... (optional) Arguments passed to \code{\link[base]{writeLines}} and 
+#'
+#' @param file (optional) Character string naming the JSON file to be read from
+#' or written to disk.
+#'
+#' @param ... (optional) Arguments passed to \code{\link[base]{writeLines}} and
 #' \code{\link[jsonlite]{fromJSON}}.
-#' 
+#'
 #' @export
-#' 
+#'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' 
-#' @examples 
+#'
+#' @examples
 #' \donttest{
 #' profiles <- observation(
 #'   dataset = "ctb0025", variable = c("taxon_sibcs", "relevo_drenagem"),
 #'   standardization = list(units = TRUE, round = TRUE))
 #' idx <- profiles$observacao_id[18]
 #' profiles <- profiles[profiles$observacao_id %in% idx, ]
-#' str(profiles)
-#' 
+#'
 #' horizons <- layer(
 #'   dataset = "ctb0025", variable = "all",
 #'   standardization =
@@ -47,7 +47,7 @@
 ###############################################################################################################
 febr2smartsolos <-
   function (profiles, horizons, file, ...) {
-    # Tradução das variáveis
+    # Mapeamento de metadados
     gs <- "1mc5S-HsoCcxLeue97eMoWLMse4RzFZ1_MCQyQhfzXUg"
     sheet <- "dados"
     https_request <- paste0(
@@ -59,7 +59,6 @@ febr2smartsolos <-
       "https://docs.google.com/spreadsheets/d/", gs, "/gviz/tq?tqx=out:csv&sheet=", sheet)
     vocabulary <- suppressWarnings(
       utils::read.table(file = https_request, sep = ",", header = TRUE, stringsAsFactors = FALSE))
-    
     # Processar classificação taxonômica
     taxon <- profiles[, startsWith(colnames(profiles), "taxon_sibcs")]
     taxon <- strsplit(taxon, " ")
@@ -87,16 +86,16 @@ febr2smartsolos <-
     # Processar estrutura do solo
     idx <- match(
       horizons$estrutura_tipo,
-      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TIPO", "var_value_ss"])
-    horizons$estrutura_tipo <- vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TIPO", "var_code_ss"][idx]
+      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TIPO", "febr_var_value"])
+    horizons$estrutura_tipo <- vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TIPO", "ss_var_code"][idx]
     idx <- match(
       horizons$estrutura_grau,
-      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_GRAU", "var_value_ss"])
-    horizons$estrutura_grau <- vocabulary[vocabulary$var_name_ss == "ESTRUTURA_GRAU", "var_code_ss"][idx]
+      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_GRAU", "febr_var_value"])
+    horizons$estrutura_grau <- vocabulary[vocabulary$var_name_ss == "ESTRUTURA_GRAU", "ss_var_code"][idx]
     idx <- match(
       horizons$estrutura_cdiam, 
-      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TAMANHO", "var_value_ss"])
-    horizons$estrutura_cdiam <- vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TAMANHO", "var_code_ss"][idx]
+      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TAMANHO", "febr_var_value"])
+    horizons$estrutura_cdiam <- vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TAMANHO", "ss_var_code"][idx]
     # profiles
     idx_old <- which(colnames(profiles) %in% translation$febr_var_name)
     idx_new <- match(colnames(profiles)[idx_old], translation$febr_var_name)
