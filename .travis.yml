@@ -3,13 +3,14 @@
 language: r
 warnings_are_errors: true
 sudo: required
+os: linux
 dist: xenial
 
 before_install:
-  - sudo add-apt-repository ppa:ubuntugis/ppa --yes
-  - sudo apt-get --yes --force-yes update -qq
+  - add-apt-repository ppa:ubuntugis/ppa --yes
+  - apt-get --yes --force-yes update -qq
   # rgdal dependencies:
-  - sudo apt-get install --yes libproj-dev libgdal-dev
+  - apt-get install --yes libproj-dev libgdal-dev
 
 env:
  global:
