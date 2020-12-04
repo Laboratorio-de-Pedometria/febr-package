@@ -1,0 +1,57 @@
+---
+title: "Mapeamento de Dados e Metadados de Perfis do Solo entre FEBR e SMARTSolos"
+author: "Alessandro Samuel-Rosa"
+date: "`r format(Sys.Date(), '%d-%m-%Y')`"
+output:
+  rmarkdown::html_vignette:
+    toc: yes
+bibliography: biblio.bib
+link-citations: yes
+csl: abnt.csl
+vignette: |
+  %\VignetteIndexEntry{Mapeamento de dados e metadados de perfis do solo entre FEBR e SMARTSolos}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+<!-- http://revista.ibict.br/ciinf/ -->
+
+## RESUMO
+
+**Palavras-chave:**
+
+## ABSTRACT
+
+_Abstract_
+
+**Key words:**
+
+## RESUMEN
+
+_Resumen_
+
+**Palabras clave:**
+
+## INTRODUÇÃO
+
+Repositórios de dados da pesquisa. Interoperabilidade. Aliança Global pelo Solo. PronaSolos.
+
+Parágrafo sobre o FEBR.
+
+Parágrafo sobre o SMARTSolos.
+
+O objetivo deste artigo é relatar nossa experiência na implementação de uma rotina de mapeamento de dados de perfis do solo entre o FEBR e o SMARTSolos.
+
+## MODELO DE DADOS E ESQUEMA DE METADADOS
+
+### FEBR
+
+### SMARTSolos
+
+## CONCLUSÕES
+
+## REFERÊNCIAS
