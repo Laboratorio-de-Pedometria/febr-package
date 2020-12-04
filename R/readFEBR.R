@@ -1,7 +1,7 @@
 #' Get soil data
 #'
-#' Download soil data from one or more data sets published in the Free Brazilian Repository for Open Soil Data
-#' -- FEBR, \url{https://www.pedometria.org/projeto/febr/}.
+#' Download soil data from one or more data sets published in the Free Brazilian Repository for
+#' Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}.
 #'
 #' @param data.set Character vector indicating the identification code of one or more data sets. Use 
 #' `data.set = "all"` to download all data sets.

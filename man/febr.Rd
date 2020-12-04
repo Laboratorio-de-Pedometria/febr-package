@@ -27,7 +27,7 @@ A list of data frames with data on the chosen dataset.
 \description{
 Download data from the \emph{identification} ("identificacao"), \emph{observation} ("observacao"), \emph{layer} ("camada"),
 and \emph{metadata} ("metadado") tables of a dataset contained in the Free Brazilian Repository for Open Soil
-Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}.
+Data -- FEBR, \url{https://www.pedometria.org/febr/}.
 }
 \note{
 Check the new core data download function \code{readFEBR()}.

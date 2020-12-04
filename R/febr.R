@@ -2,7 +2,7 @@
 #' 
 #' Download data from the *identification* ("identificacao"), *observation* ("observacao"), *layer* ("camada"),
 #' and *metadata* ("metadado") tables of a dataset contained in the Free Brazilian Repository for Open Soil 
-#' Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}.
+#' Data -- FEBR, \url{https://www.pedometria.org/febr/}.
 #' 
 #' @param dataset Character vector indicating one dataset.
 #' 

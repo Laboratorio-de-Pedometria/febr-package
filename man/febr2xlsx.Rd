@@ -18,7 +18,7 @@ with \code{x} to the file.}
 }
 \description{
 Write data downloaded from the Free Brazilian Repository for Open Soil Data -- FEBR,
-\url{https://www.pedometria.org/projeto/febr/} -- to an Excel workbook.
+\url{https://www.pedometria.org/febr/} -- to an Excel workbook.
 }
 \examples{
 \donttest{

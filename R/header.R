@@ -2,7 +2,7 @@
 #'
 #' Download header data (column names and measurement units) from the *layer* ("camada") or *observation* 
 #' ("observacao") table of one or more datasets contained in the Free Brazilian Repository for Open Soil Data 
-#' -- FEBR, \url{https://www.pedometria.org/projeto/febr/}. This is useful to check what are the variables
+#' -- FEBR, \url{https://www.pedometria.org/febr/}. This is useful to check what are the variables
 #' contained in a dataset before downloading it via \code{\link[febr]{layer}} or 
 #' \code{\link[febr]{observation}}.
 #'

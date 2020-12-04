@@ -28,7 +28,7 @@ A list of data frames or a data frame with data of the chosen dataset(s).
 }
 \description{
 Download data from the \emph{identification} ("identificacao") table of one or more datasets contained in the
-Free Brazilian Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}. This
+Free Brazilian Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}. This
 includes dataset title and description, author and institution identification, dataset license, and much
 more.
 }

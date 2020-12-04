@@ -1,10 +1,8 @@
 #' Go to FEBR
 #' 
-#' Go to one of the web pages of the Free Brazilian Repository for Open Soil Data -- FEBR --, including
-#' project and dataset web pages.
-#' 
+#' Go to one of the web pages of the Free Brazilian Repository for Open Soil Data -- FEBR --,
+#' including project and dataset web pages.
 #' @param dataset (optional) Character vector indicating one dataset.
-#' 
 #' @param page (optional) Character string indicating a web page of the FEBR. Options are: `"febr"`,
 #' `"search"`, `"package"`, `"github"`, `"forum"`, `"units"`, `"standards"`, `"index"`, and `"template"`.
 #' 
@@ -45,10 +43,10 @@ goto <-
     if (missing(dataset) && !missing(page)) { # Ir para alguma página do projeto
       switch (page,
         febr = {
-          url <- "https://www.pedometria.org/projeto/febr/"
+          url <- "https://www.pedometria.org/febr/"
           },
         search = {
-          url <- "https://www.pedometria.org/projeto/febr/"
+          url <- "https://www.pedometria.org/febr/buscar/"
         },
         package = {
           url <- "https://CRAN.R-project.org/package=febr"

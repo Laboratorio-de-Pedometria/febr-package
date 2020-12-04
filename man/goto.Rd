@@ -13,8 +13,8 @@ goto(dataset, page)
 \code{"search"}, \code{"package"}, \code{"github"}, \code{"forum"}, \code{"units"}, \code{"standards"}, \code{"index"}, and \code{"template"}.}
 }
 \description{
-Go to one of the web pages of the Free Brazilian Repository for Open Soil Data -- FEBR --, including
-project and dataset web pages.
+Go to one of the web pages of the Free Brazilian Repository for Open Soil Data -- FEBR --,
+including project and dataset web pages.
 }
 \examples{
 \donttest{

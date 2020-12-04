@@ -1,7 +1,7 @@
 #' Write data to an Excel workbook
 #' 
 #' Write data downloaded from the Free Brazilian Repository for Open Soil Data -- FEBR, 
-#' \url{https://www.pedometria.org/projeto/febr/} -- to an Excel workbook.
+#' \url{https://www.pedometria.org/febr/} -- to an Excel workbook.
 #' 
 #' @param x A `data.frame` or `list` of `data.frame`s to write to the Excel workbook.
 #' 

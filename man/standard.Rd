@@ -27,7 +27,7 @@ A data frame with standards for selected variable(s).
 }
 \description{
 Download data from the \emph{standards} ("padroes") table of the Free Brazilian Repository for Open Soil Data
--- FEBR, \url{https://www.pedometria.org/projeto/febr/}. This includes codes and names of variable,
+-- FEBR, \url{https://www.pedometria.org/febr/}. This includes codes and names of variable,
 measurement units, number of decimal places, type of data, and description of analytical methods. This is
 used to standardize the data contained in a dataset when downloading it via \code{\link[febr]{layer}} or
 \code{\link[febr]{observation}}.

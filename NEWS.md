@@ -4,6 +4,7 @@
   * `taxonomy()`. Extract and process soil taxonomic data from textual soil classification description. A vignette accompanies the new function.
 * Bug fix:
   * `observation()`. Corrects an issue in argument cheking.
+  * Fixes invalid URLs.
 
 # febr 1.4.0
 

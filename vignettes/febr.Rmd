@@ -16,7 +16,7 @@ vignette: >
 
 # Introdução
 
-O pacote febr para [R](https://www.r-project.org/) [@r] foi criado para facilitar o acesso aos conjuntos de dados publicados no Repositório Brasileiro Livre para Dados Abertos do Solo, também conhecido como [FEBR](https://www.pedometria.org/projeto/febr/) (/ˈfɛ.bɾe/). Ele pode ser descarregado do [CRAN](https://CRAN.R-project.org/package=febr) da seguinte maneira:
+O pacote febr para [R](https://www.r-project.org/) [@r] foi criado para facilitar o acesso aos conjuntos de dados publicados no Repositório Brasileiro Livre para Dados Abertos do Solo, também conhecido como [FEBR](https://www.pedometria.org/febr/) (/ˈfɛ.bɾe/). Ele pode ser descarregado do [CRAN](https://CRAN.R-project.org/package=febr) da seguinte maneira:
 
 ```{r, echo=TRUE, eval=FALSE}
 install.packages("febr")

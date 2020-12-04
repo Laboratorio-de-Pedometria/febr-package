@@ -1,7 +1,7 @@
 #' Get soil observations
 #'
 #' Download data from soil observations of one or more datasets contained in the Free Brazilian Repository
-#' for Open Soil Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}. This includes 1D data such
+#' for Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}. This includes 1D data such
 #' as latitude, longitude, date of observation, underlying geology, land use and vegetation, local topography,
 #' soil classification, and so on.
 #' 

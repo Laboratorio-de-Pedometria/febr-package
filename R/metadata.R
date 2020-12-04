@@ -1,7 +1,7 @@
 #' Get *metadata* table
 #' 
 #' Download data from the *metadata* ("metadado") table of one or more datasets contained in the Free Brazilian
-#' Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}. This includes 
+#' Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}. This includes 
 #' variable names, description of analytical methods, and identification of analysis laboratories.
 #'
 #' @template metadata_template

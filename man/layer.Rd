@@ -98,7 +98,7 @@ A list of data frames or a data frame with data on the chosen variable(s) of the
 }
 \description{
 Download data from the \emph{layer} ("camada") table of one or more datasets contained in the Free Brazilian
-Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/projeto/febr/}. This includes
+Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}. This includes
 sampling depth, horizon designation, and variables such as pH, carbon content, clay content, and much more.
 Use \code{\link[febr]{header}} if you want to check what are the variables contained in the \emph{layer} table
 of a dataset before downloading it.

@@ -27,8 +27,8 @@ useful to identify issues—please report to \email{febr-forum@googlegroups.com}
 A list of data frames with data from the chosen data sets.
 }
 \description{
-Download soil data from one or more data sets published in the Free Brazilian Repository for Open Soil Data
--- FEBR, \url{https://www.pedometria.org/projeto/febr/}.
+Download soil data from one or more data sets published in the Free Brazilian Repository for
+Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}.
 }
 \examples{
 \donttest{
