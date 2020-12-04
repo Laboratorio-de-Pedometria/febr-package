@@ -110,136 +110,121 @@ observation <-
             standardization = list(crs = NULL, time.format = NULL, units = FALSE, round = FALSE),
             harmonization = list(harmonize = FALSE, level = 2),
             progress = TRUE, verbose = TRUE, febr.repo = 'remote') {
-    
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$observation$std.cols
-    
     # ARGUMENTOS
     ## dataset
     if (missing(dataset)) {
-      stop ("argument 'dataset' is missing")
+      stop("argument 'dataset' is missing")
     } else if (!is.character(dataset)) {
-      stop (paste("object of class '", class(dataset), "' passed to argument 'dataset'", sep = ''))
+      stop(paste("object of class '", class(dataset), "' passed to argument 'dataset'", sep = ''))
     }
-    
     ## variable
     if (!missing(variable) && !is.character(variable)) {
-      stop (paste("object of class '", class(variable), "' passed to argument 'variable'", sep = ''))
+      stop(paste("object of class '", class(variable), "' passed to argument 'variable'", sep = ''))
     }
-    
     ## stack
     if (!is.logical(stack)) {
-      stop (paste("object of class '", class(stack), "' passed to argument 'stack'", sep = ""))
+      stop(paste("object of class '", class(stack), "' passed to argument 'stack'", sep = ""))
     }
-    
     ## missing
     if (!missing(missing)) {
       if (is.null(missing$coord)) {
         missing$coord <- "keep"
       } else if (!missing$coord %in% c("drop", "keep")) {
-        stop (paste("unknown value '", missing$coord, "' passed to sub-argument 'missing$coord'", sep = ""))
+        stop(paste("unknown value '", missing$coord, "' passed to sub-argument 'missing$coord'", sep = ""))
       }
       if (is.null(missing$time)) {
         missing$time <- "keep"
       } else if (!missing$time %in% c("drop", "keep")) {
-        stop (paste("unknown value '", missing$time,  "' passed to sub-argument 'missing$time'", sep = ""))
+        stop(paste("unknown value '", missing$time,  "' passed to sub-argument 'missing$time'", sep = ""))
       }
       if (is.null(missing$data)) {
         missing$data <- "keep"
       } else if (!missing$data %in% c("drop", "keep")) {
-        stop (paste("unknown value '", missing$data,  "' passed to sub-argument 'missing$data'", sep = ""))
+        stop(paste("unknown value '", missing$data,  "' passed to sub-argument 'missing$data'", sep = ""))
       }
     }
-    
     ## standardization
     if (!missing(standardization)) {
       if (is.null(standardization$crs)) {
         standardization$crs <- NULL
       } else if (!is.character(standardization$crs)) {
         y <- class(standardization$crs)
-        stop (paste("object of class '", y, "' passed to sub-argument 'standardization$crs'", sep = ""))
+        stop(paste("object of class '", y, "' passed to sub-argument 'standardization$crs'", sep = ""))
       } else if (!toupper(standardization$crs) %in% opts$crs) {
         y <- standardization$crs
-        stop (paste("unknown value '", y, "' passed to sub-argument 'standardization$crs'", sep = ""))
+        stop(paste("unknown value '", y, "' passed to sub-argument 'standardization$crs'", sep = ""))
       }
-      
       if (is.null(standardization$time.format)) {
         standardization$time.format <- NULL
       } else if (!is.character(standardization$time.format)) {
         y <- class(standardization$time.format)
-        stop (
+        stop(
           paste("object of class '", y, "' passed to sub-argument 'standardization$time.format'", sep = ""))
       }
-      
       if (is.null(standardization$units)) {
         standardization$units <- FALSE
       } else if (!is.logical(standardization$units)) {
         y <- class(standardization$units)
-        stop (paste("object of class '", y, "' passed to sub-argument 'standardization$units'", sep = ""))
+        stop(paste("object of class '", y, "' passed to sub-argument 'standardization$units'", sep = ""))
       }
       if (is.null(standardization$round)) {
         standardization$round <- FALSE
       } else if (!is.logical(standardization$round)) {
         y <- class(standardization$round)
-        stop (paste("object of class '", y, "' passed to sub-argument 'standardization$round'", sep = ""))
+        stop(paste("object of class '", y, "' passed to sub-argument 'standardization$round'", sep = ""))
       }
-      
       if (is.null(standardization$units)) {
         standardization$units <- FALSE
       } else if (!is.logical(standardization$units)) {
         y <- class(standardization$units)
-        stop (paste("object of class '", y, "' passed to sub-argument 'standardization$units'", sep = ""))
+        stop(paste("object of class '", y, "' passed to sub-argument 'standardization$units'", sep = ""))
       }
       if (is.null(standardization$round)) {
         standardization$round <- FALSE
       } else if (!is.logical(standardization$round)) {
         y <- class(standardization$round)
-        stop (paste("object of class '", y, "' passed to sub-argument 'standardization$round'", sep = ""))
+        stop(paste("object of class '", y, "' passed to sub-argument 'standardization$round'", sep = ""))
       }
     }
-    
     ## harmonization
     if (!missing(harmonization)) {
       if (is.null(harmonization$harmonize)) {
         harmonization$harmonize <- FALSE
       } else if (!is.logical(harmonization$harmonize)) {
         y <- class(harmonization$harmonize)
-        stop (paste("object of class '", y, "' passed to sub-argument 'harmonization$harmonize'", sep = ""))
+        stop(paste("object of class '", y, "' passed to sub-argument 'harmonization$harmonize'", sep = ""))
       }
       if (is.null(harmonization$level)) {
         harmonization$level <- 2
       } else if (!pedometrics::isNumint(harmonization$level)) {
         y <- class(harmonization$level)
-        stop (paste("object of class '", y, "' passed to sub-argument 'harmonization$level'", sep = ""))
+        stop(paste("object of class '", y, "' passed to sub-argument 'harmonization$level'", sep = ""))
       }
     }
-    
     ## progress
     if (!is.logical(progress)) {
-      stop (paste("object of class '", class(progress), "' passed to argument 'progress'", sep = ""))
+      stop(paste("object of class '", class(progress), "' passed to argument 'progress'", sep = ""))
     }
-    
     ## verbose
     if (!is.logical(verbose)) {
-      stop (paste("object of class '", class(verbose), "' passed to argument 'verbose'", sep = ""))
+      stop(paste("object of class '", class(verbose), "' passed to argument 'verbose'", sep = ""))
     }
-    
     ## variable + stack || variable + harmonization
-    if (!missing(variable) & variable == "all") {
+    if (!missing(variable) && all(variable == "all")) {
       if (stack) {
-        stop ("data cannot be stacked when downloading all variables")
+        stop("data cannot be stacked when downloading all variables")
       }
       if (harmonization$harmonize) {
-        stop ("data cannot be harmonized when downloading all variables")
+        stop("data cannot be harmonized when downloading all variables")
       }
     }
-    
     ## dataset + stack
     if (stack && length(dataset) == 1 && dataset != "all") {
-      stop ("data cannot be stacked when downloading a single dataset")
+      stop("data cannot be stacked when downloading a single dataset")
     }
-    
     # PADRÕES
     ## Descarregar tabela com unidades de medida e número de casas decimais quando padronização é solicitada
     ## ou quando empilhamento é solicitado
@@ -260,7 +245,7 @@ observation <-
       idx <- unlist(idx)
       is_all_text <- all(febr_stds$campo_tipo[idx] == "texto")
       if (!is_all_text) {
-        stop ("data cannot be stacked when measurement units are not standardized")
+        stop("data cannot be stacked when measurement units are not standardized")
       }
     }
     
