@@ -134,21 +134,26 @@ knitr::kable(tabela[, c(1, 2, 6, 7, 8)],
 
 ### CLASSIFICAÇÃO TAXONÔMICA
 
-O mapeamento dos dados taxonômicos exigiu a implementação de uma rotina específica de processamento de dados. Essa rotina decompõe o texto completo da classificação taxonômica de um perfil de solo em suas classes constituíntes. Implementada na forma da função `taxonomy()`, a decomposição da classificação taxonômica opera do primeiro ao quarto nível categórico do SiBCS, conforme mostra o exemplo abaixo:
+O mapeamento dos dados taxonômicos exigiu a implementação de uma rotina específica de processamento de dados. Essa rotina decompõe o texto completo da classificação taxonômica de um perfil de solo em suas classes constituíntes. Implementada na forma da função `taxonomy()`, a decomposição da classificação taxonômica recupera dados do primeiro ao quarto nível categórico do SiBCS (ordem, subordem, grande grupo e subgrupo), conforme mostra o exemplo abaixo:
 
 ```{r, echo = TRUE}
 texto <-
-  c("CAMBISSOLO HÁPLICO Ta Eutrófico léptico A proeminente textura média",
-    "PLANOSSOLO HÁPLICO Distrófico solódico êndico plintossólico, textura média, Tb",
+  c("PLANOSSOLO HÁPLICO Distrófico solódico êndico plintossólico, textura média, Tb",
+    "CAMBISSOLO HÁPLICO Ta Eutrófico léptico A proeminente textura média",
     "CHERNOSSOLO ARGILÚVICO Órtico típico textura média com cascalho/argilosa com cascalho",
     "ARGISSOLO VERMELHO-AMARELO",
     "Latossolo"
   )
-febr::taxonomy(texto)
+febr::taxonomy(texto, method = "decompose", sep = " ", pattern = c(", ", " A ", " textura "))
 ```
 
-Uma lista de valores aceitáveis pode ser criada para validar os dados extraídos.
+A principal dificuldade encontrada na decomposição da classificação taxonômica foi a ausência de um padrão de expressão textual da classificação do solo. O primeiro caso mostrado acima exemplifica o cenário ideal, em que os quatro primeiros níveis categóricos (PLANOSSOLO HÁPLICO Distrófico solódico êndico plintossólico) são separados dos dados subsequentes por um vírgula [@OliveiraEtAl2018b]. Este formato é aquele recomendado no SiBCS [@SantosEtAl2018]. Entretanto, é comum encontrar formas não padronizadas como aqueles do segundo e terceiro casos mostrados acima [@FloresEtAl2012]. Nesses casos, é preciso identificar quais são os termos que aparecem imediatamente após o quarto nível categórico, descartando o mesmo e os subsequentes. No exemplo acima, esses termos são "A" e "textura", respectivamente, que são informados ao argumento `pattern`.
+
+A identificação do conjunto de termos que separam os quatro primeiros níveis categóricos dos dados subsequentes não é trivial. Isso acontece porque o terceiro e quarto níveis categóricos podem ser constituídos por duas ou mais palavras. Assim, não é possível utilizar a contagem de palavras como critério de identificação. Por exemplo, no primeiro caso acima, o quarto nível categórico é constituído por três palavras (solódico êndico plintossólico). Já no segundo caso, o terceiro nível categórico é constituído por duas palavras (Ta Eutrófico). O resultado da falta de padronização é a necessidade de realizar o processamento dos dados taxonômicos múltiplas vezes, até que sejam identificados todos os temos que demarcam o final dos quatro primeiros níveis categóricos no texto.
+
 ## CONSIDERAÇÕES FINAIS
 
+* Produtores de dados do solo devem respeitar os padrões de expressão dos dados estabelecidos nos manuais de coleta, descrição e classificação de solos:
+  * Classificação taxonômica: ORDEM SUBORDEM Grande Grupo subgrupo, dados adicionais
 
 ## REFERÊNCIAS
