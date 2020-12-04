@@ -4,8 +4,8 @@
 #' 
 #' @param x Character string with field soil morphology description (in Portuguese).
 #' 
-#' @param variable Character string defining the soil morphological property of interest. Options: `color`, 
-#' `structure`.
+#' @param variable Character string defining the soil morphological property of interest. Options:
+#' `color`, `structure`.
 #' 
 #' @export
 #' 
@@ -19,7 +19,7 @@
 #' }
 #' x <- "cinzento rosado (7.5YR 6/2, seco), bruno escuro (7.5YR 3/2, úmido)"
 #' color <- morphology(x = x, variable = "color")
-###############################################################################################################
+####################################################################################################
 morphology <-
   function (x, variable = "color") {
     switch (
