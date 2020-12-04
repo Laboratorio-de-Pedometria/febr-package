@@ -9,7 +9,7 @@ Authors@R: c(
     person("Universidade Federal de Santa Maria", role = "fnd", email = "ppgcs@ufsm.br"),
     person("Universidade Tecnológica Federal do Paraná", role = "fnd", email = "coagr-sh@utfpr.edu.br"))
 Description: 
-  Access to the Free Brazilian Repository for Open Soil Data (FEBR) <https://www.pedometria.org/projeto/febr/>.
+  Access to the Free Brazilian Repository for Open Soil Data (FEBR) <https://www.pedometria.org/febr/>.
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports:
