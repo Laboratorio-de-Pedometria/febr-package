@@ -114,22 +114,36 @@ Perfil 14     | 2Bt2     | 130          | 200
 
 Table: Tabela `camada` utilizada no FEBR.
 
-## METODOLOGIA
+## PROCEDIMENTOS ADOTADOS
 
 A rotina de mapeamento de dados e metadados entre FEBR e SMARTSolos foi implementada na linguagem R utilizando a infraestrutura do pacote febr [@SamuelRosa2020]. O pacote febr foi originalmente criado para facilitar o acesso aos dados publicados no FEBR diretamente do ambiente R. Ele inclui várias rotinas de padronização e harmonização que viabilizam o reúso imediato dos dados. Novas funcionalidades foram adicionadas recentemente ao pacote febr, aumentando seu espectro de aplicação. Esse é o caso da rotina de mapeamento de dados e metadados que apresentamos neste artigo, implementada na forma das funções `febr2smartsolos` e `smartsolos2febr`.
 
-### TABELA DE MAPEAMENTO
-
-O primeiro passo consistiu em construir uma tabela de mapeamento das variáveis (crosswalk).
-
-```{r, results='asis'}
+```{r}
 chave <- "1mc5S-HsoCcxLeue97eMoWLMse4RzFZ1_MCQyQhfzXUg"
 https_request <- paste0(
   "https://docs.google.com/spreadsheets/d/", chave, "/gviz/tq?tqx=out:csv&sheet=dados")
 tabela <- suppressWarnings(
   utils::read.table(file = https_request, sep = ",", header = TRUE, stringsAsFactors = FALSE))
-knitr::kable(tabela[, c(1, 2, 6, 7, 8)],
+```
+
+## MAPEAMENTO DE METADADOS
+
+O primeiro passo consistiu em construir uma tabela de mapeamento das variáveis (crosswalk).
+
+```{r, results='asis'}
+idx <- tabela[["febr_process"]] == "map"
+knitr::kable(tabela[idx, c(1, 2, 6, 7)],
   caption = "Tabela de mapeamento de metadados entre FEBR e SMARTSolos.", row.names = FALSE)
+```
+
+## MAPEAMENTO DE DADOS VIA RECODIFICAÇÃO
+
+```{r, results='asis'}
+idx <- tabela[["febr_process"]] == "recode"
+knitr::kable(tabela[idx, c(1, 2, 6, 7)],
+  caption =
+    "Tabela de mapeamento de dados entre FEBR e SMARTSolos com recodificação de variáveis.",
+    row.names = FALSE)
 ```
 
 ### CLASSIFICAÇÃO TAXONÔMICA
@@ -150,6 +164,10 @@ febr::taxonomy(texto, method = "decompose", sep = " ", pattern = c(", ", " A ", 
 A principal dificuldade encontrada na decomposição da classificação taxonômica foi a ausência de um padrão de expressão textual da classificação do solo. O primeiro caso mostrado acima exemplifica o cenário ideal, em que os quatro primeiros níveis categóricos (PLANOSSOLO HÁPLICO Distrófico solódico êndico plintossólico) são separados dos dados subsequentes por um vírgula [@OliveiraEtAl2018b]. Este formato é aquele recomendado no SiBCS [@SantosEtAl2018]. Entretanto, é comum encontrar formas não padronizadas como aqueles do segundo e terceiro casos mostrados acima [@FloresEtAl2012]. Nesses casos, é preciso identificar quais são os termos que aparecem imediatamente após o quarto nível categórico, descartando o mesmo e os subsequentes. No exemplo acima, esses termos são "A" e "textura", respectivamente, que são informados ao argumento `pattern`.
 
 A identificação do conjunto de termos que separam os quatro primeiros níveis categóricos dos dados subsequentes não é trivial. Isso acontece porque o terceiro e quarto níveis categóricos podem ser constituídos por duas ou mais palavras. Assim, não é possível utilizar a contagem de palavras como critério de identificação. Por exemplo, no primeiro caso acima, o quarto nível categórico é constituído por três palavras (solódico êndico plintossólico). Já no segundo caso, o terceiro nível categórico é constituído por duas palavras (Ta Eutrófico). O resultado da falta de padronização é a necessidade de realizar o processamento dos dados taxonômicos múltiplas vezes, até que sejam identificados todos os temos que demarcam o final dos quatro primeiros níveis categóricos no texto.
+
+### COR DO SOLO
+
+A cor do solo foi outra propriedade que exigiu a implementação de rotina específica de mapeamento. Essa propriedade morfológica do solo é registrada utilizando a notação de cores de Munsell® (matiz valor/croma). O matiz indica o espectro dominante da cor, enquanto valor e croma quantificam a luminosidade e saturação da cor, respectivamente [@MunsellColor2015]. No FEBR, a cor do solo é armazenada em uma única coluna utilizando a notação completa de Munsell®, por exemplo, "5YR 5/6" (vermelho-amarelado). Entretanto, no SMARTSolos, cada uma dos componentes da notação de Munsell® são armazenados em campos distintos. Para fazer esse mapeamento, basta dividir a cadeia de caracteres que compõe a notação da cor usando o espaço (" ") e barra ("/") como caracteres delimitadores. Essa solução é eficiente porque os produtores de dados do solo respeitam o padrão internacional de registro da cor do solo usando a notação de Munsell® [@SantosEtAl2015].
 
 ## CONSIDERAÇÕES FINAIS
 
