@@ -1,3 +1,6 @@
+# febr 1.5.1
+
+* Improves documentation.
 # febr 1.5.0
 
 * New function:
