@@ -114,9 +114,15 @@ Perfil 14     | 2Bt2     | 130          | 200
 
 Table: Tabela `camada` utilizada no FEBR.
 
-## PROCEDIMENTOS ADOTADOS
+## TABELA DE MAPEAMENTO
 
-A rotina de mapeamento de dados e metadados entre FEBR e SMARTSolos foi implementada na linguagem R utilizando a infraestrutura do pacote febr [@SamuelRosa2020]. O pacote febr foi originalmente criado para facilitar o acesso aos dados publicados no FEBR diretamente do ambiente R. Ele inclui várias rotinas de padronização e harmonização que viabilizam o reúso imediato dos dados. Novas funcionalidades foram adicionadas recentemente ao pacote febr, aumentando seu espectro de aplicação. Esse é o caso da rotina de mapeamento de dados e metadados que apresentamos neste artigo, implementada na forma das funções `febr2smartsolos` e `smartsolos2febr`.
+O primeiro passo do trabalho consistiu na construção de uma tabela de mapeamento entre FEBR e SMARTSolos. Nessa tabela foram incluídos os nomes variáveis utilizadas no SMARTSolos para representar cada uma das propriedades do solo. Para cada variável foram especificados a unidade de medida, o tipo de dado (`string`, `integer`, `double` ou `boolean`), e a condição da variável no SMARTSolos (`optional` ou `required`). Em seguida, as variáveis foram agrupadas em função do objeto/lista do qual fazem parte no arquivo JSON (`perfil` ou `horizontes`). Ao todo foram especificadas 63 variáveis, das quais 57 fazem parte da lista `horizontes`.
+
+Para cada variável definida no SMARTSolos, foram identificadas todas as variáveis correspondentes no FEBR. A identificação de uma ou mais variáveis correspondentes foi necessária devidos às diferenças estruturais entre os dois esquemas. Diferente do FEBR, o SMARTSolos assume que os dados das propriedades do solo foram produzidos utilizando métodos padrão [@TeixeiraEtAl2017, @SantosEtAl2018]. Assim, as propriedades do solo são designadas apenas pelo seu nome teórico, não sendo acompanhadas por metadados de métodos. Por exemplo, o conteúdo total da fração de tamanho silte (0,002–0,05 mm) na fração terra fina seca ao ar (⌀ < 2 mm, TFSA) é designado por `SILTE`.
+
+No FEBR, as propriedades do solo possuem designações operacionais. Por exemplo, o conteúdo total da fração silte na TFSA pode ser designado utilizando, pelo menos, seis códigos identificadores distintos: `silte_sbcs_naoh_calc`, `silte_usda_naoh_calc`, `silte_sbcs_naoh_pipeta`, `silte_usda_naoh_pipeta`, `silte_sbcs_naoh_xxx` e `silte_usda_naoh_xxx`. Cada um desses códigos identifica variações nos métodos de determinação do conteúdo de silte. Contudo, os dados identificados por todos os seis códigos atendem à definição teórica de `SILTE` utilizada no SMARTSolos.
+
+A Tabela 1 apresenta parte da tabela de mapeamento de metadados entre FEBR e SMARTSolos. Nela estão incluídas todas as propriedades do solo cujo mapeamento pode ser realizado por meio da conversão direta de nomenclatura e unidade de medida entre os dois esquemas. A grande maioria delas são propriedades do solo cujos dados são obtidos via análises laboratoriais como a distribuição do tamanho de partículas e o conteúdo de cada um dos cátions básicos. Completam a lista as chaves de identificação de perfis (`ID_PONTO` = `observacao_id`) e horizontes (`SIMB_HORIZ` = `camada_nome`) e os limites superior e inferior de amostragem destes.
 
 ```{r}
 chave <- "1mc5S-HsoCcxLeue97eMoWLMse4RzFZ1_MCQyQhfzXUg"
@@ -124,17 +130,17 @@ https_request <- paste0(
   "https://docs.google.com/spreadsheets/d/", chave, "/gviz/tq?tqx=out:csv&sheet=dados")
 tabela <- suppressWarnings(
   utils::read.table(file = https_request, sep = ",", header = TRUE, stringsAsFactors = FALSE))
-```
-
-## MAPEAMENTO DE METADADOS
-
-O primeiro passo consistiu em construir uma tabela de mapeamento das variáveis (crosswalk).
-
-```{r, results='asis'}
 idx <- tabela[["febr_process"]] == "map"
-knitr::kable(tabela[idx, c(1, 2, 6, 7)],
-  caption = "Tabela de mapeamento de metadados entre FEBR e SMARTSolos.", row.names = FALSE)
+knitr::kable(tabela[idx, c("ss_item_name", "ss_var_name", "febr_table_name", "febr_var_name")],
+  caption = "__Tabela 1.__ Tabela de mapeamento de metadados entre FEBR e SMARTSolos via conversão de nomenclatura e unidade de medida.",
+  row.names = FALSE)
 ```
+
+A rotina de mapeamento de dados e metadados entre FEBR e SMARTSolos foi implementada na linguagem R utilizando a infraestrutura do pacote febr [@SamuelRosa2020]. O pacote febr foi originalmente criado para facilitar o acesso aos dados publicados no FEBR diretamente do ambiente R. Para isso, ele inclui rotinas de padronização que viabilizam o reúso imediato dos dados.
+
+
+
+Novas funcionalidades foram adicionadas recentemente ao pacote febr, aumentando seu espectro de aplicação. Esse é o caso da rotina de mapeamento de dados e metadados que apresentamos neste artigo, implementada na forma das funções `febr2smartsolos` e `smartsolos2febr`.
 
 ## MAPEAMENTO DE DADOS VIA RECODIFICAÇÃO
 
