@@ -16,7 +16,7 @@ rmarkdown::render("README.Rmd")
 # check documentation ----
 roxygen2::roxygenise()
 devtools::check_man()
-devtools::spell_check()
+devtools::spell_check(vignettes = FALSE)
 # spelling::update_wordlist()
 
 # check examples ----
