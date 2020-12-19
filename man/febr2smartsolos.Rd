@@ -24,7 +24,7 @@ Export FEBR soil profile data to the JSON file format required by the SMARTSolos
 profiles <- observation(
   dataset = "ctb0025", variable = c("taxon_sibcs", "relevo_drenagem"),
   standardization = list(units = TRUE, round = TRUE))
-idx <- profiles$observacao_id[18]
+idx <- profiles$observacao_id[1]
 profiles <- profiles[profiles$observacao_id \%in\% idx, ]
 horizons <- layer(
   dataset = "ctb0025", variable = "all",

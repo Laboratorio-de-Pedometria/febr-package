@@ -13,7 +13,7 @@
 #' profiles <- observation(
 #'   dataset = "ctb0025", variable = c("taxon_sibcs", "relevo_drenagem"),
 #'   standardization = list(units = TRUE, round = TRUE))
-#' idx <- profiles$observacao_id[18]
+#' idx <- profiles$observacao_id[1]
 #' profiles <- profiles[profiles$observacao_id %in% idx, ]
 #' horizons <- layer(
 #'   dataset = "ctb0025", variable = "all",
@@ -55,14 +55,14 @@ febr2smartsolos <-
     colnames(taxon) <- c("ORDEM", "SUBORDEM", "GDE_GRUPO", "SUBGRUPO")
     profiles <- cbind(profiles, taxon)
     # Processar cor do solo úmido
-    cor <- strsplit(horizons$cor_matriz_umido_munsell, " ")
+    cor <- strsplit(horizons[["cor_matriz_umido_munsell"]], " ")
     horizons[["COR_UMIDA_MATIZ"]] <- sapply(cor, function(x) x[1])
     cor <- sapply(cor, function(x) x[2])
     cor <- strsplit(cor, "/")
     horizons[["COR_UMIDA_VALOR"]] <- as.integer(sapply(cor, function(x) x[1]))
     horizons[["COR_UMIDA_CROMA"]] <- as.integer(sapply(cor, function(x) x[2]))
     # Processar cor do solo seco
-    cor <- strsplit(horizons$cor_matriz_seco_munsell, " ")
+    cor <- strsplit(horizons[["cor_matriz_seco_munsell"]], " ")
     horizons[["COR_SECA_MATIZ"]] <- sapply(cor, function(x) x[1])
     cor <- sapply(cor, function(x) x[2])
     cor <- strsplit(cor, "/")
@@ -70,33 +70,33 @@ febr2smartsolos <-
     horizons[["COR_SECA_CROMA"]] <- as.integer(sapply(cor, function(x) x[2]))
     # Processar estrutura do solo
     idx <- match(
-      horizons$estrutura_tipo,
-      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TIPO", "febr_var_value"])
-    horizons$estrutura_tipo <-
-      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TIPO", "ss_var_code"][idx]
+      horizons[["estrutura_tipo"]],
+      vocabulary[vocabulary[["ss_var_name"]] == "ESTRUTURA_TIPO", "febr_var_value"])
+    horizons[["estrutura_tipo"]] <-
+      vocabulary[vocabulary[["ss_var_name"]] == "ESTRUTURA_TIPO", "ss_var_code"][idx]
     idx <- match(
-      horizons$estrutura_grau,
-      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_GRAU", "febr_var_value"])
-    horizons$estrutura_grau <-
-      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_GRAU", "ss_var_code"][idx]
+      horizons[["estrutura_grau"]],
+      vocabulary[vocabulary[["ss_var_name"]] == "ESTRUTURA_GRAU", "febr_var_value"])
+    horizons[["estrutura_grau"]] <-
+      vocabulary[vocabulary[["ss_var_name"]] == "ESTRUTURA_GRAU", "ss_var_code"][idx]
     idx <- match(
-      horizons$estrutura_cdiam,
-      vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TAMANHO", "febr_var_value"])
-    horizons$estrutura_cdiam <-
-    vocabulary[vocabulary$var_name_ss == "ESTRUTURA_TAMANHO", "ss_var_code"][idx]
+      horizons[["estrutura_cdiam"]],
+      vocabulary[vocabulary[["ss_var_name"]] == "ESTRUTURA_TAMANHO", "febr_var_value"])
+    horizons[["estrutura_cdiam"]] <-
+    vocabulary[vocabulary[["ss_var_name"]] == "ESTRUTURA_TAMANHO", "ss_var_code"][idx]
     # profiles
-    idx_old <- which(colnames(profiles) %in% translation$febr_var_name)
-    idx_new <- match(colnames(profiles)[idx_old], translation$febr_var_name)
-    colnames(profiles)[idx_old] <- translation$ss_var_name[idx_new]
+    idx_old <- which(colnames(profiles) %in% translation[["febr_var_name"]])
+    idx_new <- match(colnames(profiles)[idx_old], translation[["febr_var_name"]])
+    colnames(profiles)[idx_old] <- translation[["ss_var_name"]][idx_new]
     # horizons
-    idx_old <- which(colnames(horizons) %in% translation$febr_var_name)
-    idx_new <- match(colnames(horizons)[idx_old], translation$febr_var_name)
-    colnames(horizons)[idx_old] <- translation$ss_var_name[idx_new]
+    idx_old <- which(colnames(horizons) %in% translation[["febr_var_name"]])
+    idx_new <- match(colnames(horizons)[idx_old], translation[["febr_var_name"]])
+    colnames(horizons)[idx_old] <- translation[["ss_var_name"]][idx_new]
     # Conversão para JSON
     profiles[["HORIZONTES"]] <- NA
-    horizons <- split(x = horizons, f = horizons$ID_PONTO)
+    horizons <- split(x = horizons, f = horizons[["ID_PONTO"]])
     for (i in seq_along(horizons)) {
-      profiles$HORIZONTES[i] <- list(horizons[[i]])
+      profiles[["HORIZONTES"]][i] <- list(horizons[[i]])
     }
     profiles <- list(items = profiles)
     # Saída: arquivo ou string JSON
