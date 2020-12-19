@@ -1,8 +1,8 @@
-.opt <- 
-  function () {
+.opt <-
+  function() {
     list(
       observation = list(
-        std.cols = 
+        std.cols =
           c("observacao_id", "sisb_id", "ibge_id", "observacao_data",
             "coord_sistema", "coord_x", "coord_y", "coord_precisao", "coord_fonte",
             "pais_id", "estado_id", "municipio_id",
@@ -15,15 +15,15 @@
       gs = list(
         comment = "#metadado>",
         # locale = readr::locale(date_names = "pt", decimal_mark = ","),
-        na = c("NA", "-", "", "na", "tr", "#VALUE!"),
+        na = c("NA", "-", "", "na", "tr", "#VALUE!", "#N/A"),
         verbose = FALSE
       ),
-      crs = 
+      crs =
         paste("EPSG:", c(
           # Córrego Alegre
           4225, 22521, 22522, 22523, 22524, 22525,
           # SAD69
-          4618 , 29168, 29188, 29169, 29189, 29170, 29190, 29191, 29192, 29193, 29194, 29195,
+          4618, 29168, 29188, 29169, 29189, 29170, 29190, 29191, 29192, 29193, 29194, 29195,
           # WGS 84
           4326, 32618, 32718, 32619, 32719, 32620, 32720, 32721, 32722, 32723, 32724, 32725,
           # SIRGAS 2000
@@ -31,7 +31,7 @@
         ), sep = "")
     )
   }
-# Descarregar e ler arquivo do onwCloud #######################################################################
+# Descarregar e ler arquivo do onwCloud ############################################################
 # O repositório de leitura é remoto ou local?
 .readOwnCloud <-
   function (ctb, table, febr.repo, ...) {

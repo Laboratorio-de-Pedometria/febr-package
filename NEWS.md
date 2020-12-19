@@ -2,6 +2,7 @@
 
 * Code formatting and clean up.
 * Improves documentation.
+* Adds NA option (#N/A).
 
 # febr 1.5.1
 
