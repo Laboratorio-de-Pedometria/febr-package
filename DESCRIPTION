@@ -1,8 +1,8 @@
 Package: febr
 Type: Package
 Title: Free Brazilian Repository for Open Soil Data (FEBR)
-Version: 1.5.2
-Date: 2020-12-18
+Version: 1.5.3
+Date: 2020-12-19
 Authors@R: c(
     person("Alessandro", "Samuel-Rosa", role = c("aut", "cre"),
            email = "alessandrosamuelrosa@gmail.com", 

@@ -107,7 +107,7 @@ of a dataset before downloading it.
 \subsection{Standard identification variables}{
 Standard identification variables and their content are as follows:
 \itemize{
-\item \code{dataset_id}. Identification code of the dataset in the FEBR to which an observation belongs.
+\item \code{dataset_id}. Identification of the dataset in FEBR to which an observation belongs.
 \item \code{observacao_id}. Identification code of an observation in a dataset.
 \item \code{camada_id}. Sequential layer number, from top to bottom.
 \item \code{camada_nome}. Layer designation according to some standard description guide.
@@ -118,7 +118,6 @@ Standard identification variables and their content are as follows:
 Further details about the content of the standard identification variables can be found in
 \url{https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM} (in Portuguese).
 }
-
 \subsection{Harmonization}{
 Data harmonization consists of converting the values of a variable determined using some method \emph{B} so
 that they are (approximately) equivalent to the values that would have been obtained if the standard method
