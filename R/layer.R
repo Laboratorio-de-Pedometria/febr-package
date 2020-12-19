@@ -125,7 +125,6 @@ layer <-
               units = FALSE, round = FALSE),
             harmonization = list(harmonize = FALSE, level = 2),
             progress = TRUE, verbose = TRUE, febr.repo = 'remote') {
-    
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$layer$std.cols
@@ -288,9 +287,9 @@ layer <-
     if (standardization$units || stack) {
       febr_stds <- .getStds()
       # febr_unit <- .getUnits()
-      febr_unit <- .readGoogleSheetCSV(sheet.name = 'unidades')
+      febr_unit <- .readGoogleSheetCSV(sheet.name = "unidades")
     }
-    
+    print(str(febr_unit))
     ## stack + stadardization
     ## Padronização não precisa ser feita no caso de descarregamento apenas das variáveis padrão
     ## Também não precisa ser feita no caso de variáveis de tipo 'texto'
@@ -303,12 +302,10 @@ layer <-
         stop ("data cannot be stacked when measurement units are not standardized")
       }
     }
-    
     # CHAVES
     ## Descarregar chaves de identificação das tabelas
     sheets_keys <- .getSheetsKeys(dataset = dataset)
     n <- nrow(sheets_keys)
-    
     # Descarregar tabelas com camadas
     if (progress) {
       pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$camada), style = 3)
@@ -322,23 +319,20 @@ layer <-
         par <- ifelse(progress, "\n", "")
         message(paste(par, "Downloading ", dts, "-camada...", sep = ""))
       }
-      
       # DESCARREGAMENTO
       # unit <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, "camada"], sheet.name = 'camada')
       # tmp <- unit[['table']]
       # unit <- unit[['header']]
       tmp <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = 'camada', febr.repo = febr.repo)
       unit <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = 'metadado', febr.repo = febr.repo)
-      unit$campo_unidade[is.na(unit$campo_unidade)] <- '-'
+      unit$campo_unidade[is.na(unit$campo_unidade)] <- "-"
       unit <- unit[unit$tabela_id == 'camada', c('campo_id', 'campo_nome', 'campo_unidade')]
       rownames(unit) <- unit$campo_id
       unit <- unit[, -1]
       unit <- as.data.frame(t(unit), stringsAsFactors = FALSE)
       n_rows <- nrow(tmp)
-      
       ## Cabeçalho com unidades de medida
       # unit <- .getHeader(x = sheets_keys$camada[i], ws = 'camada') # identifica Sheet com seu nome
-      
       ## Dados
       # tmp <- .getTable(x = sheets_keys$camada[i], ws = 'camada')
       # n_rows <- nrow(tmp)
@@ -347,7 +341,6 @@ layer <-
       ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas profundidades
       na_depth <- max(apply(tmp[c("profund_sup", "profund_inf")], 2, function (x) sum(is.na(x))))
       if (missing$depth == "keep" || missing$depth == "drop" && na_depth < n_rows) {
-        
         # COLUNAS
         ## Definir as colunas a serem mantidas
         ## As colunas padrão são sempre mantidas.
@@ -374,26 +367,22 @@ layer <-
         tmp <- tmp[, cols]
         # unit <- unit[names(unit) %in% cols]
         unit <- unit[, cols]
-        
         # LINHAS I
         ## Avaliar limpeza das linhas
         tmp_clean <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols)
         n_rows <- nrow(tmp_clean)
-        
         # PROCESSAMENTO II
         ## A continuação do processamento dos dados depende das presença de dados após a eliminação de colunas
         ## e linhas com NAs.
         if (n_rows >= 1 && missing(variable) || 
             # length(extra_cols) >= 1 || 
             missing$data == "keep") {
-          
           # LINHAS II
           ## Definir as linhas a serem mantidas
           ## É preciso considerar todas as possibilidades de remoção de dados
           if (missing$data == "drop" || missing$dept == 'drop') {
             tmp <- tmp_clean
           }
-          
           # TIPO DE DADOS
           ## "observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup" e "profund_inf" devem
           ## estar no formato de caracter para evitar erros durante o empilhamento das tabelas devido ao tipo 
@@ -402,10 +391,8 @@ layer <-
           if (stack) {
             tmp[std_cols] <- sapply(tmp[std_cols], as.character)
           }
-          
           # PADRONIZAÇÃO I
           ## Profundidade e transição entre as camadas
-          
           ## Sinal positivo em 'profund_inf' indicando maior profundidade abaixo da última camada
           ## O padrão consiste em manter o sinal positivo. Os dados não são definidos como classe 'numeric' 
           ## porque pode haver transição ondulada ou irregular entre as camadas -- solucionada abaixo. Por 
@@ -414,7 +401,6 @@ layer <-
             tmp <- .setMaximumObservationDepth(
               obj = tmp, plus.sign = standardization$plus.sign, plus.depth = standardization$plus.depth)
           }
-          
           ## Símbolo indicador do limite inferior de detecção do método de determinação (<)
           ## O padrão consiste em manter o símbolo. Do contrário, o resultado é convertido para classe 
           ## 'numeric' a fim de que seja possível, se demandado, padronizar as unidades de medida e o número 
@@ -424,7 +410,6 @@ layer <-
               obj = tmp, lessthan.sign = standardization$lessthan.sign, 
               lessthan.frac = standardization$lessthan.frac)
           }
-          
           ## Repetições de laboratório
           ## O padrão consiste em manter as repetições de laboratório. Do contrário, a coluna 'camada_id' 
           ## é a chave para o processamento dos dados. Note que é necessário que o tipo de dado das variáveis
@@ -433,39 +418,32 @@ layer <-
           if (standardization$repetition != "keep") {
             tmp <- .solveLayerRepetition(obj = tmp, combine.fun = standardization$combine.fun)
           }
-          
           ## Transição ondulada ou irregular
           ## O padrão consiste em manter a transição ondulada ou irregular.
           if (standardization$transition != "keep") {
             tmp <- .solveWavyLayerTransition(obj = tmp, smoothing.fun = standardization$smoothing.fun)
           }
-          
           ## Transição quebrada
           ## O padrão consiste em manter a transição quebrada
           # if (standardization$broken.transition != "keep") {
           #   tmp <- .solveBrokenLayerTransition(obj = tmp, merge.fun = standardization$merge.fun) 
           # }
-          
           ## Se a profundidade foi padronizada e as tabelas serão empilhadas, então os dados de profundidade
           ## devem ser definidos como classe 'numeric'
           if (standardization$plus.sign != "keep" && standardization$transition != "keep") {
             tmp[c("profund_sup", "profund_inf")] <- sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
           }
-          
           # PADRONIZAÇÃO II
           ## Unidade de medida e número de casas decimais de colunas adicionais
           if (standardization$units && length(extra_cols) >= 1) {
-            
             ## Identificar variáveis contínuas (classe 'numeric' e 'integer'), excluíndo variáveis de 
             ## identificação padrão
             id_class <- sapply(tmp, class)
             cont_idx <- which(id_class %in% c("numeric", "integer") & !names(id_class) %in% std_cols)
             if (length(cont_idx) >= 1) {
-              
               # Tabela com padrões das variáveis contínuas identificadas
               tmp_stds <- match(cols[cont_idx], febr_stds$campo_id)
               tmp_stds <- febr_stds[tmp_stds, c("campo_id", "campo_unidade", "campo_precisao")]
-              
               ## 1. Se necessário, padronizar unidades de medida
               # idx_unit <- unit[cols[cont_idx]] != tmp_stds$campo_unidade
               # idx_unit <- unit[, cols[cont_idx]] != tmp_stds$campo_unidade
@@ -477,22 +455,19 @@ layer <-
                 # source <- unit[2, idx_unit]
                 source <- unit[2, need_name]
                 target <- tmp_stds$campo_unidade[match(need_name, tmp_stds$campo_id)]
-                
                 ## Identificar constante
-                k <- lapply(seq_along(source), function (i) {
+                k <- lapply(seq_along(source), function(i) {
                   # i <- 2
                   idx <- febr_unit$unidade_origem %in% source[i] + febr_unit$unidade_destino %in% target[i]
-                  febr_unit[idx == 2, ] 
+                  febr_unit[idx == 2, ]
                 })
                 k <- do.call(rbind, k)
-                
                 ## Processar dados
                 # tmp[idx_unit] <- mapply(`*`, tmp[idx_unit], k$unidade_constante)
                 tmp[need_name] <- mapply(`*`, tmp[need_name], k$unidade_constante)
                 # unit[idx_unit] <- k$unidade_destino
                 unit[2, need_name] <- k$unidade_destino
               }
-              
               ## 2. Se necessário, padronizar número de casas decimais
               if (standardization$round) {
                 tmp[tmp_stds$campo_id] <- 

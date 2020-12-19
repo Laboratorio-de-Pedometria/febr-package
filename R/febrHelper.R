@@ -35,18 +35,19 @@
 # O repositório de leitura é remoto ou local?
 .readOwnCloud <-
   function (ctb, table, febr.repo, ...) {
-    if (febr.repo == 'remote') {
+    if (febr.repo == "remote") {
       url <- paste0(
         'https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F', ctb, '&files=',
         ctb, '-', table, '.txt')
     } else {
       if (!grepl('./$', febr.repo)) {
-        febr.repo <- paste(febr.repo, '/', sep = '')
+        febr.repo <- paste(febr.repo, "/", sep = "")
       }
       url <- paste(path.expand(febr.repo), ctb, '/', ctb, '-', table, '.txt', sep = '')
     }
     res <- utils::read.table(
-      file = url, header = TRUE, dec = ',', na.strings = .opt()$gs$na, stringsAsFactors = FALSE, ...)
+      file = url, header = TRUE, dec = ",", na.strings = .opt()$gs$na, stringsAsFactors = FALSE,
+      ...)
     return(res)
   }
 # Empilhar tabelas ----
@@ -272,35 +273,32 @@
 # Descarregar e ler planilha do Google Sheets #################################################################
 .readGoogleSheetCSV <-
   function (sheet.id, sheet.name) {
-    
     if (sheet.name == 'unidades') {
       sheet.id <- "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo"
     }
-    
     # descarregar planilha ---
-    url <- paste('https://docs.google.com/spreadsheets/d/', sheet.id, '/export?format=csv', sep ='')
-    destfile <- tempfile(pattern = sheet.id, tmpdir = tempdir(), fileext = '.csv')
+    url <- paste0('https://docs.google.com/spreadsheets/d/', sheet.id, '/export?format=csv')
+    destfile <- tempfile(pattern = sheet.id, tmpdir = tempdir(), fileext = ".csv")
     utils::download.file(url = url, destfile = destfile, quiet = TRUE)
-    
     # ler planilha ---
-    if (sheet.name %in% c('observacao', 'camada')) { # observacao e camada ---
+    if (sheet.name %in% c("observacao", "camada")) { # observacao e camada ---
       res <- list(header = NA, table = NA)
-      res[['header']] <- utils::read.table(
-        file = destfile, 
-        header = TRUE, 
-        sep = ',', 
-        dec = ',', 
-        comment.char = '', 
+      res[["header"]] <- utils::read.table(
+        file = destfile,
+        header = TRUE,
+        sep = ",",
+        dec = ",",
+        comment.char = "",
         nrows = 2,
-        na.strings = .opt()$gs$na[.opt()$gs$na != '-'], # não podemos avaliar '-' como NA no cabeçalho
+        na.strings = .opt()$gs$na[.opt()$gs$na != "-"], # cannot evaluate '-' as NA in header
         stringsAsFactors = FALSE
       )
-      res[['table']] <- utils::read.table(
+      res[["table"]] <- utils::read.table(
         file = destfile,
         header = FALSE,
-        sep = ',', 
-        dec = ',', 
-        comment.char = '', 
+        sep = ",",
+        dec = ",",
+        comment.char = "",
         skip = 3,
         na.strings = .opt()$gs$na, 
         stringsAsFactors = FALSE

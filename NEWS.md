@@ -3,6 +3,7 @@
 * Code formatting and clean up.
 * Improves documentation.
 * Adds NA option (#N/A).
+* Corrects bug in unit conversion.
 
 # febr 1.5.1
 
@@ -13,13 +14,13 @@
 * New function:
   * `taxonomy()`. Extract and process soil taxonomic data from textual soil classification description. A vignette accompanies the new function.
 * Bug fix:
-  * `observation()`. Corrects an issue in argument cheking.
+  * `observation()`. Corrects an issue in argument checking.
   * Fixes invalid URLs.
 
 # febr 1.4.0
 
 * New function `morphology` to extract and process soil morphological properties from field soil morphology descriptions.
-* Adds data conversion routines in `febr2smartsolos` for the following soil variables: taxonomic 
+* Adds data conversion routines in `febr2smartsolos` for the following soil variables: taxonomic
   classification, soil matrix color (wet and dry), soil structure.
 
 # febr 1.3.2
