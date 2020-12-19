@@ -34,7 +34,7 @@
 # Descarregar e ler arquivo do onwCloud ############################################################
 # O repositório de leitura é remoto ou local?
 .readOwnCloud <-
-  function (ctb, table, febr.repo, ...) {
+  function(ctb, table, febr.repo, ...) {
     if (febr.repo == "remote") {
       url <- paste0(
         'https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F', ctb, '&files=',
@@ -52,12 +52,12 @@
   }
 # Empilhar tabelas ----
 .stackTables <-
-  function (obj) {
+  function(obj) {
     
     # Organizar unidades de medida
-    # stack_unit <- lapply(obj, function (x) do.call(rbind, attributes(x)[c("names", "units")]))
+    # stack_unit <- lapply(obj, function(x) do.call(rbind, attributes(x)[c("names", "units")]))
     stack_unit <- 
-      lapply(obj, function (x) do.call(rbind, attributes(x)[c("names", "field_name", "field_unit")]))
+      lapply(obj, function(x) do.call(rbind, attributes(x)[c("names", "field_name", "field_unit")]))
     stack_unit <- do.call(cbind, stack_unit)
     stack_unit <- stack_unit[, !duplicated(stack_unit["names", ])]
     
@@ -72,16 +72,16 @@
     attributes(res) <- a
     
     # Resultado
-    return (res)
+    return(res)
   }
 # Transformação do sistema de referência de coordenadas -------------------------------------------------------
 # 2020-03-08: substitui 'sp' por 'sf'; substitui 'dplyr' por 'base'
 .getEPSGcode <- 
-  function (x) {
+  function(x) {
     as.integer(gsub(pattern = 'EPSG:', replacement = '', x = x))
   }
 .crsTransform <- 
-  function (obj, crs, xy = c("coord_x", "coord_y")) {
+  function(obj, crs, xy = c("coord_x", "coord_y")) {
     
     # crs_lower <- tolower(crs)
     crs_upper <- toupper(crs)
@@ -90,7 +90,7 @@
     col_names <- colnames(obj)
     
     ## Identificar as observações com coordenadas
-    id_coords <- which(apply(obj[xy], 1, function (x) sum(is.na(x))) == 0)
+    id_coords <- which(apply(obj[xy], 1, function(x) sum(is.na(x))) == 0)
     tmp_obj <- obj[id_coords, ]
     
     ## Verificar se o SRC está faltando
@@ -130,7 +130,7 @@
       }
       
       ## Transformar os SRC
-      tmp_obj[j] <- lapply(tmp_obj[j], function (x) {
+      tmp_obj[j] <- lapply(tmp_obj[j], function(x) {
         x <- sf::st_as_sf(x = x, coords = xy, crs = .getEPSGcode(x$coord_sistema[1]))
         x <- sf::st_transform(x = x, crs = .getEPSGcode(crs))
         x_coords <- sf::st_coordinates(x = x)
@@ -158,11 +158,11 @@
     res <- res[, col_names]
     res <- res[order(res$observacao_id), ]
     
-    return (res)
+    return(res)
   }
 # Harmonização baseada nos níveis dos códigos de identificação ----
 .harmonizeByName <-
-  function (obj, extra_cols, harmonization) {
+  function(obj, extra_cols, harmonization) {
     
     # Alterar nomes das colunas
     new_colnames <- stringr::str_split_fixed(string = extra_cols, pattern = "_", n = Inf)
@@ -171,7 +171,7 @@
     
     # if (n_new_colnames > 1) {
     new_colnames <- 
-      apply(new_colnames, 1, function (x) paste(x[!x == ""], collapse = "_", sep = ""))
+      apply(new_colnames, 1, function(x) paste(x[!x == ""], collapse = "_", sep = ""))
     # }
     
     # No caso de nomes idênticos, manter o nome original
@@ -182,11 +182,11 @@
     
     # Definir novos nomes das colunas
     colnames(obj)[colnames(obj) %in% extra_cols] <- new_colnames
-    return (obj)
+    return(obj)
   }
 # Formatar data de observação ----
 .formatObservationDate <- 
-  function (obj, time.format) {
+  function(obj, time.format) {
     
     # Identificar formatação da data
     time_sep <- ifelse(all(grepl("/", stats::na.omit(obj$observacao_data))), "/", "-")
@@ -219,11 +219,11 @@
     obj$observacao_data <- as.Date(x = obj$observacao_data, format = time_form0)
     obj$observacao_data <- as.Date(x = obj$observacao_data, format = time.format)
     
-    return (obj)
+    return(obj)
   }
 # Eliminação de linhas sem dados nas tabelas 'camada' e 'observacao' ----
 .cleanRows <-
-  function (obj, missing, extra_cols) {
+  function(obj, missing, extra_cols) {
     
     # Remover linhas sem dados em uma ou mais colunas
     if (length(extra_cols) >= 1 && missing$data == "drop") {
@@ -241,7 +241,7 @@
         
         ## remover linhas sem dados de coordenadas
         if (!is.null(missing$coord) && missing$coord == "drop") {
-          na_coord_id <- apply(obj[c("coord_x", "coord_y")], 1, function (x) sum(is.na(x))) >= 1
+          na_coord_id <- apply(obj[c("coord_x", "coord_y")], 1, function(x) sum(is.na(x))) >= 1
           obj <- obj[!na_coord_id, ]
         }
         
@@ -261,27 +261,27 @@
           
           ## remover linhas sem dados de profundidade
           if (!is.null(missing$depth) && missing$depth == "drop") {
-            na_depth_id <- apply(obj[c("profund_sup", "profund_inf")], 1, function (x) sum(is.na(x))) >= 1
+            na_depth_id <- apply(obj[c("profund_sup", "profund_inf")], 1, function(x) sum(is.na(x))) >= 1
             obj <- obj[!na_depth_id, ]
           }
         } 
       }
     }
     
-    return (obj)
+    return(obj)
   }
-# Descarregar e ler planilha do Google Sheets #################################################################
+# Descarregar e ler planilha do Google Sheets ######################################################
 .readGoogleSheetCSV <-
-  function (sheet.id, sheet.name) {
-    if (sheet.name == 'unidades') {
+  function(sheet.id, sheet.name) {
+    if (sheet.name == "unidades") {
       sheet.id <- "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo"
     }
-    # descarregar planilha ---
-    url <- paste0('https://docs.google.com/spreadsheets/d/', sheet.id, '/export?format=csv')
+    # descarregar planilha
+    url <- paste0("https://docs.google.com/spreadsheets/d/", sheet.id, "/export?format=csv")
     destfile <- tempfile(pattern = sheet.id, tmpdir = tempdir(), fileext = ".csv")
     utils::download.file(url = url, destfile = destfile, quiet = TRUE)
-    # ler planilha ---
-    if (sheet.name %in% c("observacao", "camada")) { # observacao e camada ---
+    # ler planilha
+    if (sheet.name %in% c("observacao", "camada")) { # observacao e camada
       res <- list(header = NA, table = NA)
       res[["header"]] <- utils::read.table(
         file = destfile,
@@ -290,7 +290,7 @@
         dec = ",",
         comment.char = "",
         nrows = 2,
-        na.strings = .opt()$gs$na[.opt()$gs$na != "-"], # cannot evaluate '-' as NA in header
+        na.strings = .opt()$gs$na[.opt()$gs$na != "-"], # cannot evaluate '-' as NA
         stringsAsFactors = FALSE
       )
       res[["table"]] <- utils::read.table(
@@ -300,40 +300,37 @@
         dec = ",",
         comment.char = "",
         skip = 3,
-        na.strings = .opt()$gs$na, 
-        stringsAsFactors = FALSE
-      )
-      colnames(res[['table']]) <- colnames(res[['header']])
-      
-    } else if (sheet.name %in% c('dataset', 'metadado')) { # dataset e metadado ---
-      res <- utils::read.table(
-        file = destfile,
-        header = TRUE,
-        sep = ',',
-        dec = ',',
-        comment.char = '',
         na.strings = .opt()$gs$na,
         stringsAsFactors = FALSE
       )
-    } else if (sheet.name == 'unidades') { # febr-unidades ---
+      colnames(res[["table"]]) <- colnames(res[["header"]])
+    } else if (sheet.name %in% c("dataset", "metadado")) { # dataset e metadado
       res <- utils::read.table(
-        file = destfile, 
-        header = TRUE, 
-        sep = ',', 
-        dec = ',', 
-        comment.char = '', 
-        na.strings = .opt()$gs$na[.opt()$gs$na != '-'], # não podemos avaliar '-' como NA no cabeçalho
+        file = destfile,
+        header = TRUE,
+        sep = ",",
+        dec = ",",
+        comment.char = "",
+        na.strings = .opt()$gs$na,
+        stringsAsFactors = FALSE
+      )
+    } else if (sheet.name == "unidades") { # febr-unidades
+      res <- utils::read.table(
+        file = destfile,
+        header = TRUE,
+        sep = ",",
+        dec = ",",
+        comment.char = "",
+        na.strings = .opt()$gs$na[.opt()$gs$na != "-"], # cannot evaluate '-' as NA
         stringsAsFactors = FALSE
       )
     }
-    
     # saída ---
-    return (res)
+    return(res)
   }
-
-# Descarregar cabeçalho das tabelas 'camada' e observacao' ####################################################
+# Descarregar cabeçalho das tabelas 'camada' e observacao' #########################################
 .getHeader <-
-  function (x, ws) {
+  function(x, ws) {
     url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
     destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
     utils::download.file(url = url, destfile = destfile, quiet = TRUE)
@@ -341,11 +338,11 @@
       file = destfile, header = TRUE, sep = ',', dec = ',', nrows = 2, comment.char = '',
       na.strings = 'NA', stringsAsFactors = FALSE)
     # output ---
-    return (res)
+    return(res)
   }
 # Descarregar tabela 'febr-padroes' ###########################################################################
 .getStds <-
-  function (x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI", ws, engine = 'utils') {
+  function(x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI", ws, engine = 'utils') {
     
     # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não
     # pode ser lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é
@@ -381,11 +378,11 @@
     # saída ---
     res$campo_precisao <- gsub(pattern = "-", NA, res$campo_precisao)
     res$campo_precisao <- suppressWarnings(as.numeric(res$campo_precisao))
-    return (res)
+    return(res)
   }
 # Quais conjuntos de dados devem ser descarregados? ###########################################################
 .getDataset <-
-  function (sheets_keys, dataset) {
+  function(sheets_keys, dataset) {
     
     if ("all" %in% dataset) {
       # Some datasets are not ready for download
@@ -404,11 +401,11 @@
         stop (paste("Cannot download dataset '", dataset[idx_na], "'. See https://goo.gl/tVC8dH", sep = ""))
       }
     }
-    return (sheets_keys)
+    return(sheets_keys)
   }
 # Descarregar tabela 'febr-chaves' ############################################################################
 .getSheetsKeys <- 
-  function (x = "18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", dataset, engine = 'utils') {
+  function(x = "18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", dataset, engine = 'utils') {
     
     # motor de descarregamento e leitura ---
     switch(
@@ -433,5 +430,5 @@
     # saída ---
     res <- .getDataset(sheets_keys = res, dataset = dataset)
     res <- res[order(res$ctb), ]
-    return (res)
+    return(res)
   }

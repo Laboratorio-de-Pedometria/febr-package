@@ -268,7 +268,6 @@ layer <-
     # https://docs.google.com/spreadsheets/d/1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo/
     if (standardization$units || stack) {
       febr_stds <- .getStds()
-      # febr_unit <- .getUnits()
       febr_unit <- .readGoogleSheetCSV(sheet.name = "unidades")
     }
     ## stack and stadardization
@@ -276,9 +275,9 @@ layer <-
     ## Também não precisa ser feita no caso de variáveis de tipo 'texto'
     if (stack && !standardization$units && !missing(variable) && variable != "all") {
       tmp_var <- paste("^{variable}")
-      idx <- lapply(tmp_var, function(pattern) grep(pattern = pattern, x = febr_stds$campo_id))
+      idx <- lapply(tmp_var, function(pattern) grep(pattern = pattern, x = febr_stds[["campo_id"]]))
       idx <- unlist(idx)
-      is_all_text <- all(febr_stds$campo_tipo[idx] == "texto")
+      is_all_text <- all(febr_stds[["campo_tipo"]][idx] == "texto")
       if (!is_all_text) {
         stop("data cannot be stacked when measurement units are not standardized")
       }
@@ -289,7 +288,7 @@ layer <-
     n <- nrow(sheets_keys)
     # Descarregar tabelas com camadas
     if (progress) {
-      pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$camada), style = 3)
+      pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys[["camada"]]), style = 3)
     }
     res <- list()
     for (i in 1:length(sheets_keys$camada)) {
@@ -300,22 +299,14 @@ layer <-
         message(paste0(par, "Downloading ", dts, "-camada..."))
       }
       # DESCARREGAMENTO
-      # unit <- .readGoogleSheetCSV(sheet.id = sheets_keys[i, "camada"], sheet.name = 'camada')
-      # tmp <- unit[['table']]
-      # unit <- unit[['header']]
-      tmp <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = 'camada', febr.repo = febr.repo)
-      unit <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = 'metadado', febr.repo = febr.repo)
-      unit$campo_unidade[is.na(unit$campo_unidade)] <- "-"
-      unit <- unit[unit$tabela_id == 'camada', c('campo_id', 'campo_nome', 'campo_unidade')]
-      rownames(unit) <- unit$campo_id
+      tmp <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = "camada", febr.repo = febr.repo)
+      unit <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = "metadado", febr.repo = febr.repo)
+      unit[["campo_unidade"]][is.na(unit[["campo_unidade"]])] <- "-"
+      unit <- unit[unit$tabela_id == "camada", c("campo_id", "campo_nome", "campo_unidade")]
+      rownames(unit) <- unit[["campo_id"]]
       unit <- unit[, -1]
       unit <- as.data.frame(t(unit), stringsAsFactors = FALSE)
       n_rows <- nrow(tmp)
-      ## Cabeçalho com unidades de medida
-      # unit <- .getHeader(x = sheets_keys$camada[i], ws = 'camada') # identifica Sheet com seu nome
-      ## Dados
-      # tmp <- .getTable(x = sheets_keys$camada[i], ws = 'camada')
-      # n_rows <- nrow(tmp)
       # PROCESSAMENTO I
       # A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas
       # profundidades
@@ -354,8 +345,8 @@ layer <-
         # PROCESSAMENTO II
         # A continuação do processamento dos dados depende das presença de dados após a eliminação
         # de colunas e linhas com NAs.
-        if (n_rows >= 1 && missing(variable) || 
-            # length(extra_cols) >= 1 || 
+        if (n_rows >= 1 && missing(variable) ||
+            # length(extra_cols) >= 1 ||
             missing$data == "keep") {
           # LINHAS II
           ## Definir as linhas a serem mantidas
@@ -465,7 +456,7 @@ layer <-
           # ATTRIBUTOS I
           # Processar unidades de medida
           # 'sem unidade' significa que uma variável não possui unidade de medida (unitless)
-          # '-' significa que a unidade de medida é desconhecida ou não foi informada.
+          # '-' significa que a unidade de medida é desconhecida ou não foi informada (NA).
           unit[2, ] <- as.character(unit[2, names(unit) %in% cols])
           unit[2, ] <- gsub("^sem unidade$", "unitless", unit[2, ])
           # unit[2, ] <- gsub("^-$", "unitless", unit[2, ])

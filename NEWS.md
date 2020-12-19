@@ -1,6 +1,7 @@
 # febr 1.5.3
 
 * Code formatting and clean up.
+* Improvements on how unitless variables are dealt with.
 
 # febr 1.5.2
 
