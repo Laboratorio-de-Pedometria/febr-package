@@ -418,22 +418,22 @@ layer <-
               sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
           }
           # PADRONIZAÇÃO II
-          ## Unidade de medida e número de casas decimais de colunas adicionais
+          # Unidade de medida e número de casas decimais de colunas adicionais
           if (standardization$units && length(extra_cols) >= 1) {
             # Identificar variáveis contínuas (classe 'numeric' e 'integer'), excluíndo variáveis de
             # identificação padrão.
             id_class <- sapply(tmp, class)
-            cont_idx <- 
+            cont_idx <-
               which(id_class %in% c("numeric", "integer") & !names(id_class) %in% std_cols)
             if (length(cont_idx) >= 1) {
               # Tabela com padrões das variáveis contínuas identificadas
-              tmp_stds <- match(cols[cont_idx], febr_stds$campo_id)
+              tmp_stds <- match(cols[cont_idx], febr_stds[["campo_id"]])
               tmp_stds <- febr_stds[tmp_stds, c("campo_id", "campo_unidade", "campo_precisao")]
               ## 1. Se necessário, padronizar unidades de medida
               # idx_unit <- unit[cols[cont_idx]] != tmp_stds$campo_unidade
               # idx_unit <- unit[, cols[cont_idx]] != tmp_stds$campo_unidade
               # verifica 2ª linha de metadados
-              need_idx <- unit[2, cols[cont_idx]] != tmp_stds$campo_unidade
+              need_idx <- unit[2, cols[cont_idx]] != tmp_stds[["campo_unidade"]]
               if (any(need_idx)) {
                 # idx_unit <- colnames(idx_unit)[idx_unit]
                 need_name <- cols[cont_idx][need_idx]
@@ -463,14 +463,19 @@ layer <-
             }
           }
           # ATTRIBUTOS I
-          ## Processar unidades de medida
+          # Processar unidades de medida
+          # 'sem unidade' significa que uma variável não possui unidade de medida (unitless)
+          # '-' significa que a unidade de medida é desconhecida ou não foi informada.
           unit[2, ] <- as.character(unit[2, names(unit) %in% cols])
-          unit[2, ] <- gsub("^-$", "unitless", unit[2, ])
-          # unit["observacao_id"] <- c("Identificação da observação", "unitless")
-          # dataset_id <- c("Identificação do conjunto de dados", "unitless")
+          unit[2, ] <- gsub("^sem unidade$", "unitless", unit[2, ])
+          # unit[2, ] <- gsub("^-$", "unitless", unit[2, ])
           # https://en.wikipedia.org/wiki/List_of_Unicode_characters
-          unit["observacao_id"] <- c("Identifica\u00E7\u00E3o da observa\u00E7\u00E3o", "unitless")
-          dataset_id <- c("Identifica\u00E7\u00E3o do conjunto de dados", "unitless")
+          unit["observacao_id"] <-
+            c("Identifica\u00E7\u00E3o da observa\u00E7\u00E3o", # Identificação da observação
+              "unitless")
+          dataset_id <-
+            c("Identifica\u00E7\u00E3o do conjunto de dados", # Identificação do conjunto de dados
+              "unitless")
           unit <- cbind(dataset_id, unit)
           # HARMONIZAÇÃO I
           ## Harmonização dos dados das colunas adicionais
