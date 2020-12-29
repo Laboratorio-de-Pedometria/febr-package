@@ -72,10 +72,3 @@ if (dir.exists("~/projects/web/pedometria.org/static/software/febr")) {
 
 # upload to CRAN
 devtools::release(check = FALSE)
-
-# source("R/layer.R")
-# dados <- layer(
-#   dataset = "ctb0567",
-#   # variable = c("camada_descricao", "morfologia_descricao", "carbono", "argila", "cor"),
-#   variable = c("camada_descricao", "morfologia_descricao", "carbono", "argila", "cor"),
-#   standardization = list(units = TRUE))
