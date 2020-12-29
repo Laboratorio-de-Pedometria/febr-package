@@ -27,6 +27,8 @@ morphology <-
           # Fonte: https://stackoverflow.com/questions/8020848/
           # ú --> \u00fa
           wet_color <- grep(pattern = "(\u00famido|\U00FAmida)", x = res[!no_color][[i]])
+          # Adicionar regras para demais condições:
+          # - o termo 'úmido' é omitido da descrição porque a cor do solo seco não foi determinada
           dry_color <- grep(pattern = "(seco|seca)", x = res[!no_color][[i]])
           res[!no_color][[i]] <-
             suppressWarnings(res[!no_color][[i]][c(min(wet_color), min(dry_color))])
