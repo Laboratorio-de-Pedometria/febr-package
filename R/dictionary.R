@@ -6,8 +6,9 @@
 #' used to standardize the data contained in a dataset when downloading it via \code{\link[febr]{layer}} or 
 #' \code{\link[febr]{observation}}.
 #' 
-#' @param table (optional) Character string indicating a table, i.e. the *layer* table, `"camada"`, or the 
-#' *observation* table, `"observacao"`.
+#' @param table (optional) Character string indicating one or more table IDs that should be used for
+#' filtering the dictionary. Accepted values: `"camada"`, `"observacao"`, `"metadado"`, and
+#' `"versionamento"`.
 #' 
 #' @param variable (optional) Character vector indicating one or more variables. Accepts both specific 
 #' identification codes, e.g. `"ferro_oxalato_icpoes"` and `"carbono_cromo_30min150_mohr"`, as well as 
@@ -36,19 +37,15 @@
 #' #res <- standard(variable = "ferro")
 #' #head(res)
 # }
-###############################################################################################################
-standard <-
+####################################################################################################
+dictionary <-
   function (table, variable, unit, precision, expr) {
-    
-    # ARGUMENTOS
-    ## table
-    if (missing(table)) {
-      # stop ("argument 'table' is missing")
-    } else if (!table %in% c("observacao", "camada")) {
-      stop (paste("unknown value '", table, "' passed to argument 'table'", sep = ""))
+    # CHECK ARGUMENTS
+    # table
+    if (!table %in% c("observacao", "camada", "metadado", "versionamento")) {
+      stop (paste0("unknown value '", table, "' passed to argument 'table'"))
     }
-    
-    ## variable
+    # variable
     if (!missing(variable) && !is.character(variable)) {
       stop (paste("object of class '", class(variable), "' passed to argument 'variable'", sep = ''))
     }
@@ -118,3 +115,7 @@ standard <-
     rownames(std) <- NULL
     return (std)
   }
+####################################################################################################
+#' @rdname dictionary
+#' @export
+standard <- dictionary
