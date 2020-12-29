@@ -1,3 +1,9 @@
+# febr 1.5.4
+
+* New function `dictionary()`
+  * Renames `standard()`
+  * Argument `table` has two new valid values: `metadado` and `versionamento`.
+
 # febr 1.5.3
 
 * Code formatting and clean up.
