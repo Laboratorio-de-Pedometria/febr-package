@@ -431,10 +431,9 @@ layer <-
                 # source <- unit[idx_unit]
                 # source <- unit[2, idx_unit]
                 source <- unit[2, need_name]
-                target <- tmp_stds$campo_unidade[match(need_name, tmp_stds$campo_id)]
+                target <- tmp_stds[["campo_unidade"]][match(need_name, tmp_stds[["campo_id"]])]
                 ## Identificar constante
                 k <- lapply(seq_along(source), function(i) {
-                  # i <- 2
                   idx <- febr_unit$unidade_origem %in% source[i] + febr_unit$unidade_destino %in% target[i]
                   febr_unit[idx == 2, ]
                 })
