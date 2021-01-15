@@ -1,3 +1,7 @@
+# febr 1.5.5
+
+* Sets a new file to store the ID of the datasets downloaded using the core function `readFEBR()`.
+
 # febr 1.5.4
 
 * New function `dictionary()`

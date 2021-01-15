@@ -3,14 +3,15 @@
 #' Download soil data from one or more data sets published in the Free Brazilian Repository for
 #' Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}.
 #'
-#' @param data.set Character vector indicating the identification code of one or more data sets. Use 
-#' `data.set = "all"` to download all data sets.
+#' @param data.set Character vector indicating the identification code of one or more data sets.
+#' Use `data.set = "all"` to download all data sets.
 #'
-#' @param data.table Character vector indicating one or more data tables, with supported values 
+#' @param data.table Character vector indicating one or more data tables, with supported values
 #' `"identificacao"`, `"versionamento"`, `"metadado"`, `"observacao"`, and `"camada"`.
 #'
-#' @param verbose (optional) Logical value indicating if informative messages should be displayed. Generally
-#' useful to identify issues—please report to \email{febr-forum@@googlegroups.com} if you find any.
+#' @param verbose (optional) Logical value indicating if informative messages should be displayed.
+#' Generally useful to identify issues—please report to \email{febr-forum@@googlegroups.com} if
+#' you find any.
 #'
 #' @param ... (optional) Arguments passed to \code{\link[utils]{read.table}}.
 #'
@@ -23,7 +24,7 @@
 #' \donttest{
 #' res <- readFEBR(data.set = "ctb0003")
 #' }
-###############################################################################################################
+####################################################################################################
 readFEBR <-
   function(
     data.set,
@@ -39,7 +40,8 @@ readFEBR <-
     ## data.table
     if (!is.character(data.table)) {
       stop(paste0("object of class '", class(data.table), "' passed to argument 'data.table'"))
-    } else if (!all(data.table %in% c("identificacao", "versionamento", "metadado", "observacao", "camada"))) {
+    } else if (!all(data.table %in%
+      c("identificacao", "versionamento", "metadado", "observacao", "camada"))) {
       stop("unsupported value passed to argument 'data.table'")
     }
     ## verbose
@@ -48,11 +50,9 @@ readFEBR <-
     }
     # DOWNLOAD DATA ----
     if ("all" %in% data.set) {
-      keys <- "18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q"
-      keys <- paste0('https://docs.google.com/spreadsheets/d/', keys, '/export?format=csv')
       data.set <- utils::read.table(
-        file = keys, header = TRUE, sep = ',', dec = ',', comment.char = '', stringsAsFactors = FALSE)[, "ctb"]
-      data.set <- sort(data.set)
+        file = "https://cloud.utfpr.edu.br/index.php/s/ha1oinvrrqItWx4/download",
+        header = TRUE, dec = ",", comment.char = "", stringsAsFactors = FALSE)[["dados_id"]]
     }
     server <- "https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso"
     url <- lapply(data.set, function(x) {
