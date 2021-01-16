@@ -62,7 +62,7 @@ readFEBR <-
       if (verbose) {
         message(paste0("Downloading...\n", paste0(x, collapse = "\n")))
       }
-      out <- lapply(x, utils::read.table, header = TRUE, dec = ',', stringsAsFactors = FALSE, ...)
+      out <- lapply(x, utils::read.table, header = TRUE, dec = ",", stringsAsFactors = FALSE, ...)
       names(out) <- data.table
       out
     })

@@ -340,44 +340,26 @@
     # output ---
     return(res)
   }
-# Descarregar tabela 'febr-padroes' ###########################################################################
+# Download FEBR dictionary #########################################################################
 .getStds <-
-  function(x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI", ws, engine = 'utils') {
-    
+  function(x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI", ws) {
     # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não
     # pode ser lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é
     # possível realizar a padronização das unidades de medida quando descarregamos variáveis sem
     # unidades de medida. Contudo, no campo 'campo_precisao', '-' significa NA.
     na <- .opt()$gs$na
     na <- na[-which(na == "-")]
-    
-    # motor de descarregamento e leitura ---
-    switch (
-      engine,
-      gs = { # googlesheets ---
-        # res <- googlesheets::gs_key(x = x, verbose = .opt()$gs$verbose)
-        # res <- suppressMessages(
-        # googlesheets::gs_read_csv(
-        # ss = res, ws = 'padroes', # Identifica Sheet por seu nome
-        # na = na, locale = .opt()$gs$locale, verbose = .opt()$gs$verbose, comment = .opt()$gs$comment))
-      },
-      gs4 = { # googlesheets4 ---
-        # res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'padroes', na = na))
-        # res <- as.data.frame(res)
-      },
-      utils = { # utils ---
-        url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
-        destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
-        utils::download.file(url = url, destfile = destfile, quiet = TRUE)
-        res <- utils::read.table(
-          file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '', na.strings = na,
-          stringsAsFactors = FALSE)
-      }
-    )
-    
+    url <- paste0("https://docs.google.com/spreadsheets/d/", x, "/export?format=csv")
+    # destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = ".csv")
+    # utils::download.file(url = url, destfile = destfile, quiet = TRUE)
+    res <- utils::read.table(
+      # file = destfile,
+      file = url,
+      header = TRUE, sep = ",", dec = ",", comment.char = "", na.strings = na,
+      stringsAsFactors = FALSE)
     # saída ---
-    res$campo_precisao <- gsub(pattern = "-", NA, res$campo_precisao)
-    res$campo_precisao <- suppressWarnings(as.numeric(res$campo_precisao))
+    res[["campo_precisao"]] <- gsub(pattern = "-", NA, res[["campo_precisao"]])
+    res[["campo_precisao"]] <- suppressWarnings(as.numeric(res[["campo_precisao"]]))
     return(res)
   }
 # Quais conjuntos de dados devem ser descarregados? ###########################################################

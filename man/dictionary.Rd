@@ -3,49 +3,47 @@
 \name{dictionary}
 \alias{dictionary}
 \alias{standard}
-\title{Get \emph{standards} table}
+\title{Access the FEBR dictionary}
 \usage{
-dictionary(table, variable, unit, precision, expr)
+dictionary(table, variable, unit, precision)
 
-standard(table, variable, unit, precision, expr)
+standard(table, variable, unit, precision)
 }
 \arguments{
-\item{table}{(optional) Character string indicating one or more table IDs that should be used for
-filtering the dictionary. Accepted values: \code{"camada"}, \code{"observacao"}, \code{"metadado"}, and
-\code{"versionamento"}.}
+\item{table}{(optional) Character vector indicating one or more table IDs that should be used to
+filter the dictionary. Accepted values: \code{"metadado"}, \code{"versionamento"}, \code{"observacao"}, and
+\code{"camada"}.}
 
-\item{variable}{(optional) Character vector indicating one or more variables. Accepts both specific
-identification codes, e.g. \code{"ferro_oxalato_icpoes"} and \code{"carbono_cromo_30min150_mohr"}, as well as
-general identification codes, e.g. \code{"ferro"} and \code{"carbono"}.}
+\item{variable}{(optional) Character vector indicating one or more variables that should be used
+to filter the dictionary. Accepts both specific identification codes, e.g.
+\code{"ferro_oxalato_icpoes"}, as well as general identification codes, e.g. \code{"ferro"}.}
 
-\item{unit}{(optional) Character vector indicating one or more measurement units. For example, \code{"g/kg"},
-\code{"g/cm^3"}, and \code{"cmolc/kg"}.}
+\item{unit}{(optional) Character vector indicating one or more measurement units that should be
+used to filter the dictionary. For example, ' \code{"g/kg"}, \code{"g/cm^3"}, and \code{"cmolc/kg"}.}
 
-\item{precision}{(optional) Integer vector indicating one or more number of decimal places.}
-
-\item{expr}{(optional) Character string to be parsed and evaluated as a regular expression. For example,
-\code{"campo_precisao > 0"}. Usage requires some knowledge of the structure of the \emph{standards} table.}
+\item{precision}{(optional) Integer vector indicating one or more number of decimal places that
+should be used to filter the dictionary.}
 }
 \value{
-A data frame with standards for selected variable(s).
+A data frame with definitions for the selected fields.
 }
 \description{
-Download data from the \emph{standards} ("padroes") table of the Free Brazilian Repository for Open Soil Data
--- FEBR, \url{https://www.pedometria.org/febr/}. This includes codes and names of variable,
-measurement units, number of decimal places, type of data, and description of analytical methods. This is
-used to standardize the data contained in a dataset when downloading it via \code{\link[febr]{layer}} or
-\code{\link[febr]{observation}}.
+Download definitions from the dictionary of the Free Brazilian Repository for Open Soil Data
+(FEBR). For each field, the dictionary includes an identification code and name, the standard
+measurement unit, recommended number of decimal places, type of data, and description of the
+respective analytical method. The dictionary is used to standardize the data contained in a
+dataset.
 }
 \examples{
-#res <- standard(variable = "ferro")
-#head(res)
+res <- dictionary(variable = "ferro")
+head(res)
 }
 \references{
 Teixeira, P. C., Donagemma, G. K., Fontana, A., Teixeira, W. G. (2017)
 \emph{Manual de Métodos de Análise de Solo}. Brasília: Embrapa.
 }
 \seealso{
-The \emph{standards} table at
+The FEBR dictionary at
 \url{https://docs.google.com/spreadsheets/d/1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI}
 }
 \author{

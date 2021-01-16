@@ -12,14 +12,15 @@ readFEBR(
 )
 }
 \arguments{
-\item{data.set}{Character vector indicating the identification code of one or more data sets. Use
-\code{data.set = "all"} to download all data sets.}
+\item{data.set}{Character vector indicating the identification code of one or more data sets.
+Use \code{data.set = "all"} to download all data sets.}
 
 \item{data.table}{Character vector indicating one or more data tables, with supported values
 \code{"identificacao"}, \code{"versionamento"}, \code{"metadado"}, \code{"observacao"}, and \code{"camada"}.}
 
-\item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally
-useful to identify issues—please report to \email{febr-forum@googlegroups.com} if you find any.}
+\item{verbose}{(optional) Logical value indicating if informative messages should be displayed.
+Generally useful to identify issues—please report to \email{febr-forum@googlegroups.com} if
+you find any.}
 
 \item{...}{(optional) Arguments passed to \code{\link[utils]{read.table}}.}
 }
