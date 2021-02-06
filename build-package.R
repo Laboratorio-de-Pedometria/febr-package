@@ -3,6 +3,7 @@
 # Dependencies
 update(remotes::package_deps(packages = "febr"))
 update(remotes::package_deps(packages = "devtools"))
+install.packages("rmarkdown")
 
 # Reverse dependency tools
 devtools::revdep()
@@ -72,3 +73,7 @@ if (dir.exists("~/projects/web/pedometria.org/static/software/febr")) {
 
 # upload to CRAN
 devtools::release(check = FALSE)
+
+dados <- jsonlite::fromJSON("/home/alessandrorosa/Downloads/SmartSolos-Teste-01-ARGI-VERMELHO-Eutrofico-abruptico.json")
+dados <- write.table(dados$items$HORIZONTES, "/home/alessandrorosa/Downloads/SmartSolos-Teste-01-ARGI-VERMELHO-Eutrofico-abruptico.txt", row.names = FALSE)
+str(dados)

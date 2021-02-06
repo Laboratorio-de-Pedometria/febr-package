@@ -155,14 +155,19 @@ knitr::kable(tabela[idx, c("ss_item_name", "ss_var_name", "febr_table_name", "fe
 O mapeamento dos dados taxonômicos exigiu a implementação de uma rotina específica de processamento de dados. Essa rotina decompõe o texto completo da classificação taxonômica de um perfil de solo em suas classes constituíntes. Implementada na forma da função `taxonomy()`, a decomposição da classificação taxonômica recupera dados do primeiro ao quarto nível categórico do SiBCS (ordem, subordem, grande grupo e subgrupo), conforme mostra o exemplo abaixo:
 
 ```{r, echo = TRUE}
-texto <-
-  c("PLANOSSOLO HÁPLICO Distrófico solódico êndico plintossólico, textura média, Tb",
-    "CAMBISSOLO HÁPLICO Ta Eutrófico léptico A proeminente textura média",
-    "CHERNOSSOLO ARGILÚVICO Órtico típico textura média com cascalho/argilosa com cascalho",
-    "ARGISSOLO VERMELHO-AMARELO",
-    "Latossolo"
-  )
-febr::taxonomy(texto, method = "decompose", sep = " ", pattern = c(", ", " A ", " textura "))
+texto <- c(
+  "PLANOSSOLO HÁPLICO Distrófico solódico êndico plintossólico, textura média",
+  "CAMBISSOLO HÁPLICO Ta Eutrófico léptico A proeminente textura média",
+  "CHERNOSSOLO ARGILÚVICO Órtico típico textura média com cascalho/argilosa",
+  "ARGISSOLO VERMELHO-AMARELO",
+  "Latossolo"
+)
+febr::taxonomy(
+  texto,
+  method = "decompose",
+  sep = " ",
+  pattern = c(", ", " A ", " textura ")
+)
 ```
 
 A principal dificuldade encontrada na decomposição da classificação taxonômica foi a ausência de um padrão de expressão textual da classificação do solo. O primeiro caso mostrado acima exemplifica o cenário ideal, em que os quatro primeiros níveis categóricos (PLANOSSOLO HÁPLICO Distrófico solódico êndico plintossólico) são separados dos dados subsequentes por um vírgula [@OliveiraEtAl2018b]. Este formato é aquele recomendado no SiBCS [@SantosEtAl2018]. Entretanto, é comum encontrar formas não padronizadas como aqueles do segundo e terceiro casos mostrados acima [@FloresEtAl2012]. Nesses casos, é preciso identificar quais são os termos que aparecem imediatamente após o quarto nível categórico, descartando o mesmo e os subsequentes. No exemplo acima, esses termos são "A" e "textura", respectivamente, que são informados ao argumento `pattern`.

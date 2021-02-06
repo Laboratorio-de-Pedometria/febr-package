@@ -1,3 +1,7 @@
+# febr 1.5.7
+
+* Patch: guarantee that `rmarkdown` is up to date to build vignettes.
+
 # febr 1.5.6
 
 * Cleans code and documentation.
