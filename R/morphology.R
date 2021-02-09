@@ -2,7 +2,7 @@
 #' Extract and process soil morphological properties from field soil morphology descriptions.
 #' @param x Character string with field soil morphology description (in Portuguese).
 #' @param variable Character string defining the soil morphological property of interest. Options:
-#' `color`, `structure`.
+#' `color`, `structure`, `consistency`.
 #' @export
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @examples
@@ -10,6 +10,7 @@
 #' horizons <- layer(dataset = "ctb0025", variable = "morfologia_descricao")
 #' color <- morphology(x = horizons$morfologia_descricao, variable = "color")
 #' structure <- morphology(x = horizons$morfologia_descricao, variable = "structure")
+#' consistency <- morphology(x = horizons$morfologia_descricao, variable = "consistency")
 #' }
 #' x <- "cinzento rosado (7.5YR 6/2, seco), bruno escuro (7.5YR 3/2, úmido)"
 #' color <- morphology(x = x, variable = "color")
@@ -46,6 +47,7 @@ morphology <-
       },
       structure = {
         res <- strsplit(x, ";")
+        # Dados sobre estrutura geralmente são o terceiro item da lista
         res <- sapply(res, function(x) x[3])
         res <- trimws(res)
         # Grau da estrutura
@@ -81,6 +83,67 @@ morphology <-
         estrutura_cdiam[!no_str] <- apply(idx, 1, function(x) str_size[!no_str][x][1])
         # Resultado
         res <- data.frame(estrutura_tipo, estrutura_grau, estrutura_cdiam, stringsAsFactors = FALSE)
+      },
+      consistency = {
+        res0 <- strsplit(x, ";")
+        # Dados sobre estrutura geralmente são o quarto item da lista
+        # Contudo, se houver cerosidade, costumam se o quinto item da lista
+        res <- sapply(res0, function(x) x[4])
+        idx <- grepl("cerosidade", res)
+        res[idx] <- sapply(res0[idx], function(x) x[5])
+        res <- trimws(res)
+        # Consistência do solo úmido (friabilidade)
+        friabi <- 
+          c("solt(o|a)", "muito fri\u00e1vel", "fri\u00e1vel", "firme", "muito firme",
+            "extremamente firme")
+        idx <- list()
+        for (i in seq_along(friabi)) {
+          idx[[i]] <- grepl(friabi[i], res)
+        }
+        idx <- do.call(cbind, idx)
+        consistencia_friabi <- rep(NA, length(res))
+        consistencia_friabi <- apply(idx, 1, function(x) friabi[x][1])
+        consistencia_friabi <- gsub("(o|a)", "o", consistencia_friabi, fixed = TRUE)
+        # Consistência do solo seco (dureza)
+        dureza <-
+          c("solt(o|a)", "maci(o|a)", "ligeiramente dur(o|a)", "dur(o|a)", "muito dur(o|a)",
+            "extremamente dur(o|a)")
+        idx <- list()
+        for (i in seq_along(dureza)) {
+          idx[[i]] <- grepl(dureza[i], res)
+        }
+        idx <- do.call(cbind, idx)
+        consistencia_dureza <- rep(NA, length(res))
+        consistencia_dureza <- apply(idx, 1, function(x) dureza[x][1])
+        consistencia_dureza <- gsub("(o|a)", "o", consistencia_dureza, fixed = TRUE)
+        # Consistência do solo molhado (plasticidade)
+        plasticidade <- 
+          c("n\u00e3o-pl\u00e1stic(o|a)", "ligeiramente pl\u00e1stic(o|a)", "pl\u00e1stic(o|a)",
+            "muito pl\u00e1stic(o|a)")
+        idx <- list()
+        for (i in seq_along(plasticidade)) {
+          idx[[i]] <- grepl(plasticidade[i], res)
+        }
+        idx <- do.call(cbind, idx)
+        consistencia_plasti <- rep(NA, length(res))
+        consistencia_plasti <- apply(idx, 1, function(x) plasticidade[x][1])
+        consistencia_plasti <- gsub("(o|a)", "o", consistencia_plasti, fixed = TRUE)
+        # Consistência do solo molhado (pegajosidade)
+        pegajo <- 
+          c("n\u00e3o pegajos(o|a)", "ligeiramente pegajos(o|a)", "pegajos(o|a)",
+            "muito pegajos(o|a)")
+        idx <- list()
+        for (i in seq_along(pegajo)) {
+          idx[[i]] <- grepl(pegajo[i], res)
+        }
+        idx <- do.call(cbind, idx)
+        consistencia_pegajo <- rep(NA, length(res))
+        consistencia_pegajo <- apply(idx, 1, function(x) pegajo[x][1])
+        consistencia_pegajo <- gsub("(o|a)", "o", consistencia_pegajo, fixed = TRUE)
+        # Resultado
+        res <- data.frame(
+          consistencia_friabi, consistencia_dureza, consistencia_plasti, consistencia_pegajo,
+          stringsAsFactors = FALSE)
       }
     )
     return(res)

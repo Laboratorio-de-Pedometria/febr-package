@@ -11,7 +11,7 @@ morphology(x, variable = "color")
 \item{x}{Character string with field soil morphology description (in Portuguese).}
 
 \item{variable}{Character string defining the soil morphological property of interest. Options:
-\code{color}, \code{structure}.}
+\code{color}, \code{structure}, \code{consistency}.}
 }
 \description{
 Soil morphology
@@ -22,6 +22,7 @@ Extract and process soil morphological properties from field soil morphology des
 horizons <- layer(dataset = "ctb0025", variable = "morfologia_descricao")
 color <- morphology(x = horizons$morfologia_descricao, variable = "color")
 structure <- morphology(x = horizons$morfologia_descricao, variable = "structure")
+consistency <- morphology(x = horizons$morfologia_descricao, variable = "consistency")
 }
 x <- "cinzento rosado (7.5YR 6/2, seco), bruno escuro (7.5YR 3/2, úmido)"
 color <- morphology(x = x, variable = "color")
