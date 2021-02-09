@@ -1,3 +1,7 @@
+# febr 1.5.8
+
+* `febr2sse`: updates nomenclature (SmartSolos Expert and sse)
+
 # febr 1.5.7
 
 * Patch: guarantee that `rmarkdown` is up to date to build vignettes.

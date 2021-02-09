@@ -1,6 +1,6 @@
-#' Conversion between FEBR and SMARTSolos soil profile data formats
+#' Conversion between FEBR and SmartSolos Expert (SSE) soil profile data formats
 #'
-#' Export FEBR soil profile data to the JSON file format required by the SMARTSolos API.
+#' Export FEBR soil profile data to the JSON file format required by the SmartSolos Expert API.
 #' @param profiles Data frame with soil profile data, i.e. observation locations.
 #' @param horizons Data frame with soil horizon data, i.e. sampling layers.
 #' @param file (optional) Character string naming the JSON file to be read from or written to disk.
@@ -31,10 +31,10 @@
 #'   dir.exists("tmp"),
 #'   paste0("tmp/febr2smartsolos-", idx, ".json"),
 #'   paste0("febr2smartsolos-", idx, ".json"))
-#' febr2smartsolos(profiles, horizons, file)
+#' febr2sse(profiles, horizons, file)
 #' }
 ####################################################################################################
-febr2smartsolos <-
+febr2sse <-
   function(profiles, horizons, file, ...) {
     # Mapeamento de metadados
     gs <- "1mc5S-HsoCcxLeue97eMoWLMse4RzFZ1_MCQyQhfzXUg"
@@ -71,27 +71,27 @@ febr2smartsolos <-
     # Processar estrutura do solo
     idx <- match(
       horizons[["estrutura_tipo"]],
-      vocabulary[vocabulary[["ss_var_name"]] == "ESTRUTURA_TIPO", "febr_var_value"])
+      vocabulary[vocabulary[["sse_var_name"]] == "ESTRUTURA_TIPO", "febr_var_value"])
     horizons[["estrutura_tipo"]] <-
-      vocabulary[vocabulary[["ss_var_name"]] == "ESTRUTURA_TIPO", "ss_var_code"][idx]
+      vocabulary[vocabulary[["sse_var_name"]] == "ESTRUTURA_TIPO", "sse_var_code"][idx]
     idx <- match(
       horizons[["estrutura_grau"]],
-      vocabulary[vocabulary[["ss_var_name"]] == "ESTRUTURA_GRAU", "febr_var_value"])
+      vocabulary[vocabulary[["sse_var_name"]] == "ESTRUTURA_GRAU", "febr_var_value"])
     horizons[["estrutura_grau"]] <-
-      vocabulary[vocabulary[["ss_var_name"]] == "ESTRUTURA_GRAU", "ss_var_code"][idx]
+      vocabulary[vocabulary[["sse_var_name"]] == "ESTRUTURA_GRAU", "sse_var_code"][idx]
     idx <- match(
       horizons[["estrutura_cdiam"]],
-      vocabulary[vocabulary[["ss_var_name"]] == "ESTRUTURA_TAMANHO", "febr_var_value"])
+      vocabulary[vocabulary[["sse_var_name"]] == "ESTRUTURA_TAMANHO", "febr_var_value"])
     horizons[["estrutura_cdiam"]] <-
-    vocabulary[vocabulary[["ss_var_name"]] == "ESTRUTURA_TAMANHO", "ss_var_code"][idx]
+    vocabulary[vocabulary[["sse_var_name"]] == "ESTRUTURA_TAMANHO", "sse_var_code"][idx]
     # profiles
     idx_old <- which(colnames(profiles) %in% translation[["febr_var_name"]])
     idx_new <- match(colnames(profiles)[idx_old], translation[["febr_var_name"]])
-    colnames(profiles)[idx_old] <- translation[["ss_var_name"]][idx_new]
+    colnames(profiles)[idx_old] <- translation[["sse_var_name"]][idx_new]
     # horizons
     idx_old <- which(colnames(horizons) %in% translation[["febr_var_name"]])
     idx_new <- match(colnames(horizons)[idx_old], translation[["febr_var_name"]])
-    colnames(horizons)[idx_old] <- translation[["ss_var_name"]][idx_new]
+    colnames(horizons)[idx_old] <- translation[["sse_var_name"]][idx_new]
     # Conversão para JSON
     profiles[["HORIZONTES"]] <- NA
     horizons <- split(x = horizons, f = horizons[["ID_PONTO"]])
