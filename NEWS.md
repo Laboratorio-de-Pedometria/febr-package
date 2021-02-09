@@ -1,6 +1,6 @@
 # febr 1.5.8
 
-* `febr2sse`: updates nomenclature (SmartSolos Expert and sse)
+* `febr2sse`: updates nomenclature (SmartSolos Expert and sse); process soil consistency data
 * `morphology`: retrieve soil consistency data
 
 # febr 1.5.7
