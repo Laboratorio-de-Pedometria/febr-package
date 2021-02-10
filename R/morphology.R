@@ -101,9 +101,9 @@ morphology <-
           idx[[i]] <- grepl(friabi[i], res)
         }
         idx <- do.call(cbind, idx)
-        consistencia_friabi <- rep(NA, length(res))
-        consistencia_friabi <- apply(idx, 1, function(x) friabi[x][1])
-        consistencia_friabi <- gsub("(o|a)", "o", consistencia_friabi, fixed = TRUE)
+        consistencia_umido <- rep(NA, length(res))
+        consistencia_umido <- apply(idx, 1, function(x) friabi[x][1])
+        consistencia_umido <- gsub("(o|a)", "o", consistencia_umido, fixed = TRUE)
         # Consistência do solo seco (dureza)
         dureza <-
           c("solt(o|a)", "maci(o|a)", "ligeiramente dur(o|a)", "dur(o|a)", "muito dur(o|a)",
@@ -113,9 +113,9 @@ morphology <-
           idx[[i]] <- grepl(dureza[i], res)
         }
         idx <- do.call(cbind, idx)
-        consistencia_dureza <- rep(NA, length(res))
-        consistencia_dureza <- apply(idx, 1, function(x) dureza[x][1])
-        consistencia_dureza <- gsub("(o|a)", "o", consistencia_dureza, fixed = TRUE)
+        consistencia_seco <- rep(NA, length(res))
+        consistencia_seco <- apply(idx, 1, function(x) dureza[x][1])
+        consistencia_seco <- gsub("(o|a)", "o", consistencia_seco, fixed = TRUE)
         # Consistência do solo molhado (plasticidade)
         plasticidade <- 
           c("n\u00e3o-pl\u00e1stic(o|a)", "ligeiramente pl\u00e1stic(o|a)", "pl\u00e1stic(o|a)",

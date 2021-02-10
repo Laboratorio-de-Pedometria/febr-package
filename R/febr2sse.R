@@ -86,14 +86,14 @@ febr2sse <-
     vocabulary[vocabulary[["sse_var_name"]] == "ESTRUTURA_TAMANHO", "sse_var_code"][idx]
     # Processar consistência do solo
     idx <- match(
-      horizons[["consistencia_friabi"]],
+      horizons[["consistencia_umido"]],
       vocabulary[vocabulary[["sse_var_name"]] == "CONSISTENCIA_UMIDO", "febr_var_value"])
-    horizons[["consistencia_friabi"]] <-
+    horizons[["consistencia_umido"]] <-
       vocabulary[vocabulary[["sse_var_name"]] == "CONSISTENCIA_UMIDO", "sse_var_code"][idx]
     idx <- match(
-      horizons[["consistencia_dureza"]],
+      horizons[["consistencia_seco"]],
       vocabulary[vocabulary[["sse_var_name"]] == "CONSISTENCIA_SECO", "febr_var_value"])
-    horizons[["consistencia_dureza"]] <-
+    horizons[["consistencia_seco"]] <-
       vocabulary[vocabulary[["sse_var_name"]] == "CONSISTENCIA_SECO", "sse_var_code"][idx]
     idx <- match(
       horizons[["consistencia_plasti"]],
