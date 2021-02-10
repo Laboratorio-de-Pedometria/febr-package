@@ -96,15 +96,15 @@ febr2sse <-
     horizons[["consistencia_seco"]] <-
       vocabulary[vocabulary[["sse_var_name"]] == "CONSISTENCIA_SECO", "sse_var_code"][idx]
     idx <- match(
-      horizons[["consistencia_plasti"]],
-      vocabulary[vocabulary[["sse_var_name"]] == "CONSISTENCIA_PLASTI", "febr_var_value"])
-    horizons[["consistencia_plasti"]] <-
-      vocabulary[vocabulary[["sse_var_name"]] == "CONSISTENCIA_PLASTI", "sse_var_code"][idx]
+      horizons[["plasticidade"]],
+      vocabulary[vocabulary[["sse_var_name"]] == "PLASTICIDADE", "febr_var_value"])
+    horizons[["plasticidade"]] <-
+      vocabulary[vocabulary[["sse_var_name"]] == "PLASTICIDADE", "sse_var_code"][idx]
     idx <- match(
-      horizons[["consistencia_pegajo"]],
-      vocabulary[vocabulary[["sse_var_name"]] == "CONSISTENCIA_PEGAJO", "febr_var_value"])
-    horizons[["consistencia_pegajo"]] <-
-      vocabulary[vocabulary[["sse_var_name"]] == "CONSISTENCIA_PEGAJO", "sse_var_code"][idx]
+      horizons[["pegajosidade"]],
+      vocabulary[vocabulary[["sse_var_name"]] == "PEGAJOSIDADE", "febr_var_value"])
+    horizons[["pegajosidade"]] <-
+      vocabulary[vocabulary[["sse_var_name"]] == "PEGAJOSIDADE", "sse_var_code"][idx]
     # profiles
     idx_old <- which(colnames(profiles) %in% translation[["febr_var_name"]])
     idx_new <- match(colnames(profiles)[idx_old], translation[["febr_var_name"]])
