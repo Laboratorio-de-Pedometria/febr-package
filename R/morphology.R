@@ -117,32 +117,32 @@ morphology <-
         consistencia_seco <- apply(idx, 1, function(x) dureza[x][1])
         consistencia_seco <- gsub("(o|a)", "o", consistencia_seco, fixed = TRUE)
         # Consistência do solo molhado (plasticidade)
-        plasticidade <- 
+        plasti_class <- 
           c("n\u00e3o-pl\u00e1stic(o|a)", "ligeiramente pl\u00e1stic(o|a)", "pl\u00e1stic(o|a)",
             "muito pl\u00e1stic(o|a)")
         idx <- list()
-        for (i in seq_along(plasticidade)) {
-          idx[[i]] <- grepl(plasticidade[i], res)
+        for (i in seq_along(plasti_class)) {
+          idx[[i]] <- grepl(plasti_class[i], res)
         }
         idx <- do.call(cbind, idx)
-        consistencia_plasti <- rep(NA, length(res))
-        consistencia_plasti <- apply(idx, 1, function(x) plasticidade[x][1])
-        consistencia_plasti <- gsub("(o|a)", "o", consistencia_plasti, fixed = TRUE)
+        plasticidade <- rep(NA, length(res))
+        plasticidade <- apply(idx, 1, function(x) plasti_class[x][1])
+        plasticidade <- gsub("(o|a)", "o", plasticidade, fixed = TRUE)
         # Consistência do solo molhado (pegajosidade)
-        pegajo <- 
+        pegajo_class <- 
           c("n\u00e3o pegajos(o|a)", "ligeiramente pegajos(o|a)", "pegajos(o|a)",
             "muito pegajos(o|a)")
         idx <- list()
-        for (i in seq_along(pegajo)) {
-          idx[[i]] <- grepl(pegajo[i], res)
+        for (i in seq_along(pegajo_class)) {
+          idx[[i]] <- grepl(pegajo_class[i], res)
         }
         idx <- do.call(cbind, idx)
-        consistencia_pegajo <- rep(NA, length(res))
-        consistencia_pegajo <- apply(idx, 1, function(x) pegajo[x][1])
-        consistencia_pegajo <- gsub("(o|a)", "o", consistencia_pegajo, fixed = TRUE)
+        pegajosidade <- rep(NA, length(res))
+        pegajosidade <- apply(idx, 1, function(x) pegajo_class[x][1])
+        pegajosidade <- gsub("(o|a)", "o", pegajosidade, fixed = TRUE)
         # Resultado
         res <- data.frame(
-          consistencia_umido, consistencia_seco, consistencia_plasti, consistencia_pegajo,
+          consistencia_umido, consistencia_seco, plasticidade, pegajosidade,
           stringsAsFactors = FALSE)
       }
     )
