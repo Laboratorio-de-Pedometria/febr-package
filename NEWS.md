@@ -1,3 +1,7 @@
+# febr 1.6.1
+
+* `morphology`: retrieve soil color data when accents are missing ("umido" or "umida")
+
 # febr 1.6.0
 
 * `febr2sse`: updates nomenclature (SmartSolos Expert and sse); process soil consistency data

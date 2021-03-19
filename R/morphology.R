@@ -25,9 +25,12 @@ morphology <-
         res <- regmatches(x = x, m = res)
         no_color <- sapply(res, length) == 0
         for (i in seq_along(res[!no_color])) {
+          # Identificar cor do solo úmido
           # Fonte: https://stackoverflow.com/questions/8020848/
           # ú --> \u00fa
-          wet_color <- grep(pattern = "(\u00famido|\U00FAmida)", x = res[!no_color][[i]])
+          wet_color <- grep(
+            pattern = "(\u00famido|\U00FAmida|umido|umida)", 
+            x = res[!no_color][[i]])
           # Adicionar regras para demais condições:
           # - o termo 'úmido' é omitido da descrição porque a cor do solo seco não foi determinada
           dry_color <- grep(pattern = "(seco|seca)", x = res[!no_color][[i]])
@@ -38,7 +41,9 @@ morphology <-
         res <- do.call(rbind, res)
         colnames(res) <- c("cor_matriz_umido_munsell", "cor_matriz_seco_munsell")
         # Limpeza dos dados
-        res[, 1] <- sub("(\u00famido|\U00FAmida)", "", res[, 1]) # ú --> \u00fa
+        res[, 1] <- sub(
+          pattern = "(\u00famido|\U00FAmida|umido|umida)", 
+          replacement = "", x = res[, 1]) # ú --> \u00fa
         res[, 2] <- sub("(seco|seca)", "", res[, 2])
         res <- sub(", ", "", res)
         res <- trimws(res)
