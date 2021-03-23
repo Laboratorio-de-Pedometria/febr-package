@@ -20,20 +20,26 @@ morphology <-
     switch(
       variable,
       color = {
+        # Extrair dados do interior de parênteses
         # Fonte: https://stackoverflow.com/questions/8613237/
         res <- gregexpr(pattern = "(?<=\\().*?(?=\\))", text = x, perl = TRUE)
         res <- regmatches(x = x, m = res)
         no_color <- sapply(res, length) == 0
         for (i in seq_along(res[!no_color])) {
           # Identificar cor do solo úmido
-          # Fonte: https://stackoverflow.com/questions/8020848/
-          # ú --> \u00fa
-          wet_color <- grep(
-            pattern = "(\u00famido|\U00FAmida|umido|umida)", 
-            x = res[!no_color][[i]])
-          # Adicionar regras para demais condições:
-          # - o termo 'úmido' é omitido da descrição porque a cor do solo seco não foi determinada
-          dry_color <- grep(pattern = "(seco|seca)", x = res[!no_color][[i]])
+          # Quantas cores foram registradas? Se apenas uma, assume-se que seja a cor do solo
+          # úmido.
+          if (length(res[!no_color][[i]]) == 1) {
+            wet_color <- 1
+            dry_color <- 2
+          } else {
+            # Fonte: https://stackoverflow.com/questions/8020848/
+            # ú --> \u00fa
+            wet_color <- grep(
+              pattern = "(\u00famido|\U00FAmida|umido|umida)", 
+              x = res[!no_color][[i]])
+            dry_color <- grep(pattern = "(seco|seca)", x = res[!no_color][[i]])
+          }
           res[!no_color][[i]] <-
             suppressWarnings(res[!no_color][[i]][c(min(wet_color), min(dry_color))])
         }
