@@ -1,3 +1,8 @@
+# febr 1.6.2
+
+* `morphology`: deal with varying number of soil color records (1 or 2)
+* Documentation updates.
+
 # febr 1.6.1
 
 * `morphology`: retrieve soil color data when accents are missing ("umido" or "umida")

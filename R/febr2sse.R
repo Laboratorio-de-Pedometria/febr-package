@@ -26,6 +26,7 @@
 #'   horizons,
 #'   morphology(x = horizons$morfologia_descricao, variable = "color"),
 #'   morphology(x = horizons$morfologia_descricao, variable = "structure"),
+#'   morphology(x = horizons$morfologia_descricao, variable = "consistence"),
 #'   stringsAsFactors = FALSE)
 #' file <- ifelse(
 #'   dir.exists("tmp"),

@@ -133,7 +133,7 @@ https_request <- paste0(
 tabela <- suppressWarnings(
   utils::read.table(file = https_request, sep = ",", header = TRUE, stringsAsFactors = FALSE))
 idx <- tabela[["febr_process"]] == "map"
-knitr::kable(tabela[idx, c("ss_item_name", "ss_var_name", "febr_table_name", "febr_var_name")],
+knitr::kable(tabela[idx, c("sse_item_name", "sse_var_name", "febr_table_name", "febr_var_name")],
   caption = "__Tabela 1.__ Tabela de mapeamento de metadados entre FEBR e SMARTSolos via conversão de nomenclatura e unidade de medida.",
   row.names = FALSE)
 ```
@@ -144,7 +144,7 @@ A rotina de mapeamento de dados e metadados entre FEBR e SMARTSolos foi implemen
 
 ```{r, results='asis'}
 idx <- tabela[["febr_process"]] == "recode"
-knitr::kable(tabela[idx, c("ss_item_name", "ss_var_name", "febr_table_name", "febr_var_name")],
+knitr::kable(tabela[idx, c("sse_item_name", "sse_var_name", "febr_table_name", "febr_var_name")],
   caption =
     "Tabela de mapeamento de dados entre FEBR e SMARTSolos com recodificação de variáveis.",
     row.names = FALSE)
