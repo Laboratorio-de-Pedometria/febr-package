@@ -26,6 +26,9 @@ morphology <-
         res <- regmatches(x = x, m = res)
         no_color <- sapply(res, length) == 0
         for (i in seq_along(res[!no_color])) {
+          # Excluir possíveis dados de profundidade
+          is_cm <- grepl(pattern = "(cm|CM)", x = res[!no_color][[i]])
+          res[!no_color][[i]] <- res[!no_color][[i]][!is_cm]
           # Identificar cor do solo úmido
           # Quantas cores foram registradas? Se apenas uma, assume-se que seja a cor do solo
           # úmido.
