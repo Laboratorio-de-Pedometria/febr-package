@@ -16,3 +16,5 @@ test.R
 .lintr
 febr-package.code-workspace
 ^.*\.json$
+app-env
+tmp
