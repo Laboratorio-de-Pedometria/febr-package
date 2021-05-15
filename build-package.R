@@ -1,19 +1,14 @@
-# Build package
+# Free Brazilian Repository for Open Soil Data (FEBR)
+# Alessandro Samuel-Rosa
 
+# Test package #####################################################################################
 # Dependencies
 update(remotes::package_deps(packages = "febr"))
 update(remotes::package_deps(packages = "devtools"))
-install.packages("rmarkdown")
-
 # Reverse dependency tools
 devtools::revdep()
-
-# turn on/off development mode
-devtools::dev_mode()
-
 # Render README
 rmarkdown::render("README.Rmd")
-
 # check documentation ----
 roxygen2::roxygenise()
 devtools::check_man()
@@ -32,7 +27,7 @@ devtools::check_win_release()
 devtools::check_win_oldrelease()
 
 # check in R-hub ----
-rhub::validate_email(email = 'alessandrosamuelrosa@gmail.com')
+rhub::validate_email(email = "alessandrosamuelrosa@gmail.com")
 devtools::check_rhub()
 # devtools::check_rhub(env_vars = c("_R_CHECK_FORCE_SUGGESTS_" = "false")) # scape missing suggested packages
 

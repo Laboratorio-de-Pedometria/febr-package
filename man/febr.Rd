@@ -7,8 +7,8 @@
 febr(dataset, merge = FALSE, progress = TRUE, verbose = TRUE, ...)
 }
 \arguments{
-\item{dataset}{Character vector indicating one or more datasets. Use \code{dataset = "all"} to download all
-datasets.}
+\item{dataset}{Character vector indicating the identification code of one or more data sets.
+Use \code{dataset = "all"} to download all data sets.}
 
 \item{merge}{(optional) Logical value indicating if the \emph{observation} ("observacao") and \emph{layer} ("camada")
 tables should be merged. Defaults to \code{merge = FALSE}. See \code{\link[base]{merge}} for more details.}
@@ -20,6 +20,9 @@ useful to identify datasets with inconsistent data. Please report to \email{febr
 if you find any issue.}
 
 \item{...}{(optional) Arguments passed to \code{\link[febr]{observation}} and \code{\link[febr]{layer}}.}
+
+\item{data.set}{Character vector indicating the identification code of one or more data sets.
+Use \code{data.set = "all"} to download all data sets.}
 }
 \value{
 A list of data frames with data on the chosen dataset.

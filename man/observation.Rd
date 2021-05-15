@@ -13,12 +13,12 @@ observation(
   harmonization = list(harmonize = FALSE, level = 2),
   progress = TRUE,
   verbose = TRUE,
-  febr.repo = "remote"
+  febr.repo = NULL
 )
 }
 \arguments{
-\item{dataset}{Character vector indicating one or more datasets. Use \code{dataset = "all"} to download all
-datasets.}
+\item{dataset}{Character vector indicating the identification code of one or more data sets.
+Use \code{dataset = "all"} to download all data sets.}
 
 \item{variable}{(optional) Character vector indicating one or more variables. Accepts only general
 identification codes, e.g. \code{"ferro"} and \code{"carbono"}. If missing, then a set of standard identification
@@ -78,6 +78,9 @@ if you find any issue.}
 Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
 Alternatively, a local directory path can be informed if the user has a local copy of the data
 repository.}
+
+\item{data.set}{Character vector indicating the identification code of one or more data sets.
+Use \code{data.set = "all"} to download all data sets.}
 }
 \value{
 A list of data frames or a data frame with data on the chosen variable(s) of the chosen
@@ -142,8 +145,9 @@ res <- observation(dataset = "ctb0013", variable = "taxon")
 str(res)
 \donttest{
 # Download various datasets and standardize CRS
-res1 <- observation(
-  dataset = paste("ctb000", 4:5, sep = ""), variable = "taxon",
+res <- observation(
+  dataset = paste("ctb000", 4:5, sep = ""),
+  variable = "taxon",
   standardization = list(crs = "EPSG:4674"))
 }
 }

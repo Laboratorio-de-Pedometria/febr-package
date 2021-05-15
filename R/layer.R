@@ -1,6 +1,6 @@
 #' Get 'layer' table
 #'
-#' Download data from the 'layer' ("camada") table of one or more datasets publiched in the Free
+#' Download data from the 'layer' ("camada") table of one or more datasets published in the Free
 #' Brazilian Repository for Open Soil Data (FEBR), \url{https://www.pedometria.org/febr/}. This
 #' table includes data such as sampling depth, horizon designation, and variables such as pH, carbon
 #' and clay content, and much more.
@@ -318,8 +318,10 @@ layer <-
         message(paste0(par, "Downloading ", dts, "-camada..."))
       }
       # DESCARREGAMENTO
-      tmp <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = "camada", febr.repo = febr.repo)
-      unit <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = "metadado", febr.repo = febr.repo)
+      tmp <- .readFEBR(
+        data.set = sheets_keys[i, "ctb"], data.table = "camada", febr.repo = febr.repo)
+      unit <- .readFEBR(
+        data.set = sheets_keys[i, "ctb"], data.table = "metadado", febr.repo = febr.repo)
       unit[["campo_unidade"]][is.na(unit[["campo_unidade"]])] <- "-"
       unit <- unit[unit$tabela_id == "camada", c("campo_id", "campo_nome", "campo_unidade")]
       rownames(unit) <- unit[["campo_id"]]

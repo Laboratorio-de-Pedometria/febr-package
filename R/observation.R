@@ -110,8 +110,9 @@
 #' str(res)
 #' \donttest{
 #' # Download various datasets and standardize CRS
-#' res1 <- observation(
-#'   dataset = paste("ctb000", 4:5, sep = ""), variable = "taxon",
+#' res <- observation(
+#'   dataset = paste("ctb000", 4:5, sep = ""),
+#'   variable = "taxon",
 #'   standardization = list(crs = "EPSG:4674"))
 #' }
 ####################################################################################################
@@ -269,16 +270,18 @@ observation <-
       dts <- sheets_keys$ctb[i]
       if (verbose) {
         par <- ifelse(progress, "\n", "")
-        message(paste(par, "Downloading ", dts, "-observacao...", sep = ""))
+        message(paste(par, "Reading ", dts, "-observacao...", sep = ""))
       }
       # DESCARREGAMENTO
-      tmp <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = 'observacao', febr.repo = febr.repo)
-      unit <- .readOwnCloud(ctb = sheets_keys[i, "ctb"], table = 'metadado', febr.repo = febr.repo)
+      tmp <- .readFEBR(
+        data.set = sheets_keys[i, "ctb"], data.table = 'observacao', febr.repo = febr.repo)
+      unit <- .readFEBR(
+        data.set = sheets_keys[i, "ctb"], data.table = 'metadado', febr.repo = febr.repo)
       unit$campo_unidade[is.na(unit$campo_unidade)] <- '-'
       unit <- unit[unit$tabela_id == 'observacao', c('campo_id', 'campo_nome', 'campo_unidade')]
-      rownames(unit) <- unit$campo_id
-      unit <- unit[, -1]
       unit <- as.data.frame(t(unit), stringsAsFactors = FALSE)
+      colnames(unit) <- unlist(unit[1, ])
+      unit <- unit[-1, ]
       n_rows <- nrow(tmp)
       # PROCESSAMENTO I
       ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas
@@ -286,7 +289,6 @@ observation <-
       na_coord <- max(apply(tmp[, c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
       na_time <- is.na(tmp$observacao_data)
       n_na_time <- sum(na_time)
-      # if (missing$coord == "keep" || missing$coord == "drop" && na_coord < n_rows) {
       if (missing$coord == "keep" && missing$time == "keep" ||
           missing$coord == "drop" && na_coord < n_rows && missing$time == "keep" |
           missing$time == "drop" ||
@@ -303,7 +305,6 @@ observation <-
         extra_cols <- vector()
         if (!missing(variable)) {
           if (length(variable) == 1 && variable == "all") {
-          # if (variable == "all") {
             extra_cols <- in_cols[!in_cols %in% std_cols]
             idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
             extra_cols <- extra_cols[!idx_na]
@@ -318,8 +319,8 @@ observation <-
           }
         }
         cols <- c(cols, extra_cols)
-        tmp <- tmp[, cols]
-        unit <- unit[, cols]
+        tmp <- tmp[cols]
+        unit <- unit[cols]
         
         # LINHAS I
         ## Avaliar limpeza das linhas

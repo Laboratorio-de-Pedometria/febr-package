@@ -20,17 +20,17 @@
 #' @export
 #' @examples
 #' \donttest{
-#' res <- identification(dataset = "ctb0003")
+#' res <- identification(data.set = "ctb0003")
 #' }
 ####################################################################################################
 identification <-
-  function (dataset, progress = TRUE, verbose = TRUE, febr.repo = NULL) {
-    # ARGUMENTOS
-    ## dataset
-    if (missing(dataset)) {
-      stop ("argument 'dataset' is missing")
-    } else if (!is.character(dataset)) {
-      stop (paste("object of class", class(dataset), "passed to argument 'dataset'"))
+  function (data.set, progress = TRUE, verbose = TRUE, febr.repo = NULL) {
+    # ARGUMENTS
+    ## data.set
+    if (missing(data.set)) {
+      stop ("argument 'data.set' is missing")
+    } else if (!is.character(data.set)) {
+      stop (paste("object of class", class(data.set), "passed to argument 'data.set'"))
     }
     ## progress
     if (!is.logical(progress)) {
@@ -41,25 +41,24 @@ identification <-
       stop (paste("object of class", class(verbose), "passed to argument 'verbose'"))
     }
     # Descarregar chaves de identificação das planilhas do repositório
-    sheets_keys <- .getSheetsKeys(dataset = dataset)
-    n <- nrow(sheets_keys)
+    sheets_keys <- readIndex()[["dados_id"]]
+    sheets_keys <- sheets_keys[sheets_keys %in% data.set]
+    n_datasets <- length(sheets_keys)
     # Opções
     opts <- .opt()
     # Descarregar planilhas
     if (progress) {
-      pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$dataset), style = 3)
+      pb <- utils::txtProgressBar(min = 0, max = n_datasets, style = 3)
     }
-    obs <- list()
-    for (i in 1:length(sheets_keys$dataset)) {
+    res <- list()
+    for (i in seq_along(sheets_keys)) {
       # Mensagens informativas
-      dts <- sheets_keys$ctb[i]
       if (verbose) {
-        par <- ifelse(progress, "\n", "")
-        message(paste(par, "Reading ", dts, "-identificacao...", sep = ""))
+        message(paste0(ifelse(progress, "\n", ""), "Reading ", sheets_keys[i], "-identificacao..."))
       }
       # Dados processados
-      obs[[i]] <- .readOwnCloud(
-        ctb = sheets_keys[i, 'ctb'], table = 'identificacao', febr.repo = febr.repo)
+      res[[i]] <- .readFEBR(
+        data.set = sheets_keys[i], data.table = 'identificacao', febr.repo = febr.repo)
       if (progress) {
         utils::setTxtProgressBar(pb, i)
       }
@@ -67,10 +66,10 @@ identification <-
     if (progress) {
       close(pb)
     }
-    if (n == 1) {
-      obs <- obs[[1]]
+    if (n_datasets == 1) {
+      res <- res[[1]]
     }
-    return (obs)
+    return(res)
   }
 #' @rdname identification
 #' @export

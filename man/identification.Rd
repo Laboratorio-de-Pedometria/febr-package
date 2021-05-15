@@ -5,13 +5,13 @@
 \alias{dataset}
 \title{Get 'identification' table}
 \usage{
-identification(dataset, progress = TRUE, verbose = TRUE, febr.repo = "remote")
+identification(data.set, progress = TRUE, verbose = TRUE, febr.repo = NULL)
 
-dataset(dataset, progress = TRUE, verbose = TRUE, febr.repo = "remote")
+dataset(data.set, progress = TRUE, verbose = TRUE, febr.repo = NULL)
 }
 \arguments{
-\item{dataset}{Character vector indicating one or more datasets. Use \code{dataset = "all"} to download all
-datasets.}
+\item{data.set}{Character vector indicating the identification code of one or more data sets.
+Use \code{data.set = "all"} to download all data sets.}
 
 \item{progress}{(optional) Logical value indicating if a download progress bar should be displayed.}
 
@@ -23,6 +23,9 @@ if you find any issue.}
 Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
 Alternatively, a local directory path can be informed if the user has a local copy of the data
 repository.}
+
+\item{dataset}{Character vector indicating the identification code of one or more data sets.
+Use \code{dataset = "all"} to download all data sets.}
 }
 \value{
 A list of data frames or a data frame with data of the chosen dataset(s).
@@ -38,7 +41,7 @@ Check the new core data download function \code{readFEBR()}.
 }
 \examples{
 \donttest{
-res <- identification(dataset = "ctb0003")
+res <- identification(data.set = "ctb0003")
 }
 }
 \author{

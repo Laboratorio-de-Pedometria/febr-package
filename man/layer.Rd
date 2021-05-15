@@ -15,12 +15,12 @@ layer(
   harmonization = list(harmonize = FALSE, level = 2),
   progress = TRUE,
   verbose = TRUE,
-  febr.repo = "remote"
+  febr.repo = NULL
 )
 }
 \arguments{
-\item{dataset}{Character vector indicating one or more datasets. Use \code{dataset = "all"} to download all
-datasets.}
+\item{dataset}{Character vector indicating the identification code of one or more data sets.
+Use \code{dataset = "all"} to download all data sets.}
 
 \item{variable}{(optional) Character vector indicating one or more variables. Accepts only general
 identification codes, e.g. \code{"ferro"} and \code{"carbono"}. If missing, then a set of standard identification
@@ -101,13 +101,16 @@ if you find any issue.}
 Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
 Alternatively, a local directory path can be informed if the user has a local copy of the data
 repository.}
+
+\item{data.set}{Character vector indicating the identification code of one or more data sets.
+Use \code{data.set = "all"} to download all data sets.}
 }
 \value{
 A list of data frames or a data frame with data on the chosen variable(s) of the chosen
 dataset(s).
 }
 \description{
-Download data from the 'layer' ("camada") table of one or more datasets publiched in the Free
+Download data from the 'layer' ("camada") table of one or more datasets published in the Free
 Brazilian Repository for Open Soil Data (FEBR), \url{https://www.pedometria.org/febr/}. This
 table includes data such as sampling depth, horizon designation, and variables such as pH, carbon
 and clay content, and much more.

@@ -49,13 +49,6 @@ readFEBR <-
       c("identificacao", "versionamento", "metadado", "observacao", "camada"))) {
       stop("unsupported value passed to argument 'data.table'")
     }
-    ## febr.repo
-    if (is.null(febr.repo)) {
-      owncloud <- "https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F"
-      febr_index <- paste0(owncloud, "&files=febr-indice.txt")
-    } else {
-      febr_index <- normalizePath(file.path(febr.repo, "febr-indice.txt"), mustWork = TRUE)
-    }
     ## verbose
     if (!is.logical(verbose)) {
       stop(paste0("object of class '", class(verbose), "' passed to argument 'verbose'"))
@@ -63,19 +56,20 @@ readFEBR <-
     # READ DATA ----
     if ("all" %in% data.set) {
       # if all datasets are required, then start by reading the index file to get the dataset IDs.
-      data.set <- data.table::fread(
-        input = febr_index, header = TRUE, dec = ",", stringsAsFactors = FALSE)[["dados_id"]]
+      data.set <- readIndex()[["dados_id"]]
     }
     # build file names
-    url <- lapply(data.set, function(x) {
+    path <- lapply(data.set, function(x) {
       if (is.null(febr.repo)) {
-        paste0(owncloud, x, "&files=", x, "-", data.table, ".txt")
+        owncloud <- "https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F"
+        path <- paste0(owncloud, x, "&files=", x, "-", data.table, ".txt")
       } else {
         path <- file.path(febr.repo, data.set, paste0(data.set, '-', data.table, ".txt"))
-        normalizePath(path = path, mustWork = TRUE)
+        path <- normalizePath(path = path, mustWork = TRUE)
       }
+      return(path)
     })
-    res <- lapply(url, function(x){
+    res <- lapply(path, function(x){
       if (verbose) {
         message(paste0("Reading...\n", paste0(x, collapse = "\n")))
       }

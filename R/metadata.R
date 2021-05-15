@@ -58,7 +58,8 @@ metadata <-
         par <- ifelse(progress, "\n", "")
         message(paste(par, "Reading ", dts, "-metadado...", sep = ""))
       }
-      tmp <- .readOwnCloud(ctb = sheets_keys[i, 'ctb'], table = 'metadado', febr.repo = febr.repo)
+      tmp <- .readFEBR(
+        data.set = sheets_keys[i, 'ctb'], data.table = 'metadado', febr.repo = febr.repo)
       # Dados processadas
       obs[[i]] <- cbind(dataset_id = sheets_keys$ctb[i], tmp, stringsAsFactors = FALSE)
       if (progress) {

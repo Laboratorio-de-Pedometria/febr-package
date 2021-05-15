@@ -14,8 +14,8 @@ header(
 )
 }
 \arguments{
-\item{dataset}{Character vector indicating one or more datasets. Use \code{dataset = "all"} to download all
-datasets.}
+\item{dataset}{Character vector indicating the identification code of one or more data sets.
+Use \code{dataset = "all"} to download all data sets.}
 
 \item{table}{Character string indicating a table, i.e. the \emph{layer} table, \code{"camada"}, or the \emph{observation}
 table, \code{"observacao"}.}
@@ -34,6 +34,9 @@ single table for output. Requires \code{standardization = list(units = TRUE)} --
 \item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally
 useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com}
 if you find any issue.}
+
+\item{data.set}{Character vector indicating the identification code of one or more data sets.
+Use \code{data.set = "all"} to download all data sets.}
 }
 \value{
 A list of data frames or a data frame with table header data (column names and measurement units) on

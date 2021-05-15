@@ -31,25 +31,23 @@
         ), sep = "")
     )
   }
-# Descarregar e ler arquivo do onwCloud ############################################################
-# O repositório de leitura é remoto ou local?
-.readOwnCloud <-
-  function(ctb, table, febr.repo, ...) {
-    if (i.null(febr.repo)) {
-      url <- paste0(
-        'https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F', ctb, '&files=',
-        ctb, '-', table, '.txt')
+####################################################################################################
+# Descarregar ou ler arquivo de dados (TXT)
+# O repositório de descarregamento ou leitura é remoto (onwCloud) ou local?
+.readFEBR <-
+  function(data.set, data.table, febr.repo, ...) {
+    if (is.null(febr.repo)) {
+      owncloud <- "https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F"
+      path <- paste0(owncloud, data.set, '&files=', data.set, '-', data.table, '.txt')
     } else {
-      if (!grepl('./$', febr.repo)) {
-        febr.repo <- paste(febr.repo, "/", sep = "")
-      }
-      url <- paste(path.expand(febr.repo), ctb, '/', ctb, '-', table, '.txt', sep = '')
+      path <- file.path(path.expand(febr.repo), data.set, paste0(data.set, '-', data.table, ".txt"))
+      path <- normalizePath(path = path, mustWork = TRUE)
     }
-    res <- utils::read.table(
-      file = url, header = TRUE, dec = ",", na.strings = .opt()$gs$na, stringsAsFactors = FALSE,
-      ...)
+    res <- utils::read.table(path, dec = ",", header = TRUE, na.strings = .opt()$gs$na, ...)
+    # res <- data.table::fread(path, dec = ",", header = TRUE, na.strings = .opt()$gs$na, ...)
     return(res)
   }
+####################################################################################################
 # Empilhar tabelas ----
 .stackTables <-
   function(obj) {
@@ -385,30 +383,16 @@
     }
     return(sheets_keys)
   }
-# Descarregar tabela 'febr-chaves' ############################################################################
+# Descarregar tabela 'febr-chaves' #################################################################
 .getSheetsKeys <- 
-  function(x = "18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", dataset, engine = 'utils') {
-    
+  function(x = "18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", dataset) {
     # motor de descarregamento e leitura ---
-    switch(
-      engine,
-      gs = { # googlesheets ---
-        # res <- googlesheets::gs_key(x = x, verbose = FALSE)
-        # res <- suppressMessages(googlesheets::gs_read(res, na = '', verbose = FALSE))
-      },
-      gs4 = { # googlesheets4 ---
-        # res <- suppressMessages(googlesheets4::read_sheet(ss = x, sheet = 'chaves'))
-      },
-      utils = { # utils ---
-        url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
-        destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
-        utils::download.file(url = url, destfile = destfile, quiet = TRUE)
-        res <- utils::read.table(
-          file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '', 
-          # na.strings = '',
-          stringsAsFactors = FALSE)
-      }
-    )
+    url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
+    destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
+    utils::download.file(url = url, destfile = destfile, quiet = TRUE)
+    res <- utils::read.table(
+      file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '',
+      stringsAsFactors = FALSE)
     # saída ---
     res <- .getDataset(sheets_keys = res, dataset = dataset)
     res <- res[order(res$ctb), ]
