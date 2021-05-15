@@ -1,3 +1,10 @@
+# febr 1.6.4
+
+* Start using the __data.table__ package for faster data processing.
+* Code and documentation cleanup.
+* New utility function `readIndex()` for reading the TXT file listing all data sets published in
+  the FEBR.
+
 # febr 1.6.3
 
 * `morphology`: deals with depth data between parentesis when retrieving soil color data.
