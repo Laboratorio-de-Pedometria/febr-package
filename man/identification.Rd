@@ -3,7 +3,7 @@
 \name{identification}
 \alias{identification}
 \alias{dataset}
-\title{Get \emph{identification} table}
+\title{Get 'identification' table}
 \usage{
 identification(dataset, progress = TRUE, verbose = TRUE, febr.repo = "remote")
 
@@ -19,18 +19,19 @@ datasets.}
 useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com}
 if you find any issue.}
 
-\item{febr.repo}{(optional) Character vector indicating where the data should be read. Defaults to
-\code{febr.repo = "remote"}, i.e. the remote web server. Alternatively, a local directory path can be passed to
-\code{febr.repo} if the user has a local copy of the data repository.}
+\item{febr.repo}{(optional) Defaults to the remote file directory of the Federal University of
+Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
+Alternatively, a local directory path can be informed if the user has a local copy of the data
+repository.}
 }
 \value{
 A list of data frames or a data frame with data of the chosen dataset(s).
 }
 \description{
-Download data from the \emph{identification} ("identificacao") table of one or more datasets contained in the
-Free Brazilian Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}. This
-includes dataset title and description, author and institution identification, dataset license, and much
-more.
+Download data from the 'identification' ("identificacao") table of one or more soil datasets
+published in the Free Brazilian Repository for Open Soil Data (FEBR),
+\url{https://www.pedometria.org/febr/}. This table includes data such as dataset title and
+description, author and institution, data license, and much more.
 }
 \note{
 Check the new core data download function \code{readFEBR()}.

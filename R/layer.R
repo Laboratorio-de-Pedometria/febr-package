@@ -1,71 +1,86 @@
-#' Get *layer* table
+#' Get 'layer' table
 #'
-#' Download data from the *layer* ("camada") table of one or more datasets contained in the Free Brazilian
-#' Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}. This includes 
-#' sampling depth, horizon designation, and variables such as pH, carbon content, clay content, and much more.
-#' Use \code{\link[febr]{header}} if you want to check what are the variables contained in the *layer* table 
-#' of a dataset before downloading it.
+#' Download data from the 'layer' ("camada") table of one or more datasets publiched in the Free
+#' Brazilian Repository for Open Soil Data (FEBR), \url{https://www.pedometria.org/febr/}. This
+#' table includes data such as sampling depth, horizon designation, and variables such as pH, carbon
+#' and clay content, and much more.
+#' 
 #' @template data_template
 #' @template metadata_template
-#' @param febr.repo (optional) Character vector indicating where the data should be read. Defaults to
-#' `febr.repo = "remote"`, i.e. the remote web server. Alternatively, a local directory path can be passed to
-#' `febr.repo` if the user has a local copy of the data repository.
-#' @param missing (optional) List with named sub-arguments indicating what should be done with a layer missing
-#' data on sampling depth, `depth`, or data on variable(s), `data`. Options are `"keep"` (default) and 
-#' `"drop"`.
-#' @param standardization (optional) List with named sub-arguments indicating how to perform data 
-#' standardization.
+#' 
+#' @param febr.repo (optional) Defaults to the remote file directory of the Federal University of
+#' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}. 
+#' Alternatively, a local directory path can be informed if the user has a local copy of the data
+#' repository.
+#' 
+#' @param missing (optional) List with named sub-arguments indicating what should be done with a
+#' layer missing data on sampling depth, `depth`, or data on variable(s), `data`. Options are
+#' `"keep"` (default) and `"drop"`.
+#' 
+#' @param standardization (optional) List with named sub-arguments indicating how to perform data
+#' #' standardization.
 #' \itemize{
-#' \item `plus.sign` Character string indicating what should be done with the plus sign (`+`) commonly used
-#'       along with the inferior limit of the bottom layer of an observation. Options are `"keep"` (default),
-#'       `"add"`, and `"remove"`.
-#' \item `plus.depth` Numeric value indicating the depth increment (in centimeters) when processing the plus
-#'       sign (`+`) with `plus.sign = "add"`. Defaults to `plus.depth = 2.5`.
-#'       
-#' \item `lessthan.sign` Character string indicating what should be done with the less-than sign (`<`) used
-#'       to indicate that the value of a variable is below the lower limit of detection. Options are `"keep"`
-#'       (default), `"subtract"`, and `"remove"`.
-#' \item `lessthan.frac` Numeric value between 0 and 1 (a fraction) by which the lower limit of detection 
-#'       should be subtracted when `lessthan.sign = "subtract"`. Defaults to `lessthan.frac = 0.5`, i.e. 
-#'       subtract 50\% from the lower limit of detection.
-#'       
-#' \item `repetition` Character string indicating what should be done with repetitions, i.e. repeated
-#'       measurements of layers in an observation. Options are `"keep"` (default) and `"combine"`. In the 
-#'       latter case, it is recommended to set `lessthan.sign = "subtract"` or `lessthan.sign = "remove"`.
-#' \item `combine.fun` Character string indicating the function that should be used to combine repeated 
-#'       measurements of layers in an observation when `repetition = "combine"`. Options are `"mean"` 
-#'       (default), `"min"`, `"max"`, and `"median"`.
-#'       
-#' \item `transition` Character string indicating what should be done about the wavy and irregular 
-#'       transition between subsequent layers in an observation. Options are `"keep"` (default) and 
-#'       `"smooth"`.
-#' \item `smoothing.fun` Character string indicating the function that should be used to smooth wavy and
-#'       irregular transitions between subsequent layers in an observation when `transition = "smooth"`.
-#'       Options are `"mean"` (default), `"min"`, `"max"`, and `"median"`.
-#'       
-# \item `broken.transition` Character string indicating what should be done about the broken transition
-#       between intermingled, disrupted layers in an observation. Options are `"keep"` (default) and
-#       `"merge"`.
-# \item `merge.fun` Character string indicating the function that should be used to merge intermingled,
-#       disrupted layers (also called broken transition) in an observation when `broken.transition = "merge"`.
-#       Options are `"weighted.mean"` (default), `"mean"`, `"min"`, `"max"`, and `"median"`.
-#'       
-#' \item `units` Logical value indicating if the measurement unit(s) of the continuous variable(s) should
-#'       be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no conversion is
-#'       performed. See \code{\link[febr]{standard}} for more information.
-#' \item `round` Logical value indicating if the values of the continuous variable(s) should be rounded  
-#'       to the standard number of decimal places. Requires `units = TRUE`. Defaults to `round = FALSE`, i.e. 
-#'       no rounding is performed. See \code{\link[febr]{standard}} for more information.
+#' \item `plus.sign` Character string indicating what should be done with the plus sign (`+`)
+#' commonly used along with the inferior limit of the bottom layer of an observation. Options are
+#' `"keep"` (default), `"add"`, and `"remove"`.
+#' 
+#' \item `plus.depth` Numeric value indicating the depth increment (in centimeters) when processing
+#' the plus sign (`+`) with `plus.sign = "add"`. Defaults to `plus.depth = 2.5`.
+#' 
+#' \item `lessthan.sign` Character string indicating what should be done with the less-than sign
+#' (`<`) used to indicate that the value of a variable is below the lower limit of detection.
+#' Options are `"keep"` (default), `"subtract"`, and `"remove"`.
+#' 
+#' \item `lessthan.frac` Numeric value between 0 and 1 (a fraction) by which the lower limit of
+#' detection should be subtracted when `lessthan.sign = "subtract"`. Defaults to
+#' `lessthan.frac = 0.5`, i.e. subtract 50\% from the lower limit of detection.
+#' 
+#' \item `repetition` Character string indicating what should be done with repetitions, i.e.
+#' repeated measurements of layers in an observation. Options are `"keep"` (default) and
+#' `"combine"`. In the latter case, it is recommended to set `lessthan.sign = "subtract"` or
+#' `lessthan.sign = "remove"`.
+#' 
+#' \item `combine.fun` Character string indicating the function that should be used to combine
+#' repeated measurements of layers in an observation when `repetition = "combine"`. Options are
+#' `"mean"` (default), `"min"`, `"max"`, and `"median"`.
+#' 
+#' \item `transition` Character string indicating what should be done about the wavy and irregular
+#' transition between subsequent layers in an observation. Options are `"keep"` (default) and
+#' `"smooth"`.
+#' 
+#' \item `smoothing.fun` Character string indicating the function that should be used to smooth wavy
+#' and irregular transitions between subsequent layers in an observation when
+#' `transition = "smooth"`. Options are `"mean"` (default), `"min"`, `"max"`, and `"median"`.
+#' 
+# \item `broken.transition` Character string indicating what should be done about the broken
+# transition between intermingled, disrupted layers in an observation. Options are `"keep"`
+# (default) and `"merge"`.
+# \item `merge.fun` Character string indicating the function that should be used to merge
+# intermingled, disrupted layers (also called broken transition) in an observation when
+# `broken.transition = "merge"`. Options are `"weighted.mean"` (default), `"mean"`, `"min"`,
+# `"max"`, and `"median"`.
+# 
+#' \item `units` Logical value indicating if the measurement unit(s) of the continuous variable(s)
+#' should be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no
+#' conversion is performed. See \code{\link[febr]{standard}} for more information.
+#' 
+#' \item `round` Logical value indicating if the values of the continuous variable(s) should be
+#' rounded to the standard number of decimal places. Requires `units = TRUE`. Defaults to
+#' `round = FALSE`, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more
+#' information.
 #' }
-#' @param harmonization (optional) List with named sub-arguments indicating if and how to perform data 
-#' harmonization.
+#' 
+#' @param harmonization (optional) List with named sub-arguments indicating if and how to perform
+#' data harmonization.
 #' \itemize{
-#' \item `harmonize` Logical value indicating if data should be harmonized. Defaults to `harmonize = FALSE`, 
-#'       i.e. no harmonization is performed.
-#' \item `level` Integer value indicating the number of levels of the identification code of the variable(s) 
-#'       that should be considered for harmonization. Defaults to `level = 2`. See \sQuote{Details} for more
-#'       information.
+#' \item `harmonize` Logical value indicating if data should be harmonized. Defaults to
+#' `harmonize = FALSE`, i.e. no harmonization is performed.
+#' 
+#' \item `level` Integer value indicating the number of levels of the identification code of the
+#' variable(s) that should be considered for harmonization. Defaults to `level = 2`. See
+#' \sQuote{Details} for more information.
 #' }
+#' 
 #' @details
 #' \subsection{Standard identification variables}{
 #' Standard identification variables and their content are as follows:
@@ -79,23 +94,27 @@
 #' \item \code{profund_inf}. Lower boundary of a layer (cm).
 #' }
 #' Further details about the content of the standard identification variables can be found in
-#' \url{https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM} (in Portuguese).
+#' \url{https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM}
+#' (in Portuguese).
 #' }
 #' \subsection{Harmonization}{
-#' Data harmonization consists of converting the values of a variable determined using some method *B* so 
-#' that they are (approximately) equivalent to the values that would have been obtained if the standard method
-#' *A* had been used instead. For example, converting carbon content values obtained using a wet digestion
-#' method to the standard dry combustion method is data harmonization.
+#' Data harmonization consists of converting the values of a variable determined using some method
+#' *B* so that they are (approximately) equivalent to the values that would have been obtained if
+#' the standard method *A* had been used instead. For example, converting carbon content values
+#' obtained using a wet digestion method to the standard dry combustion method is data
+#' harmonization.
 #'
-#' A heuristic data harmonization procedure is implemented in the __febr__ package. It consists of grouping
-#' variables based on a chosen number of levels of their identification code. For example, consider a variable
-#' with an identification code composed of four levels, `aaa_bbb_ccc_ddd`, where `aaa` is the first level and
-#' `ddd` is the fourth level. Now consider a related variable, `aaa_bbb_eee_fff`. If the harmonization
-#' is to consider all four coding levels (`level = 4`), then these two variables will remain coded as
-#' separate variables. But if `level = 2`, then both variables will be re-coded as `aaa_bbb`, thus becoming the
-#' same variable.
+#' A heuristic data harmonization procedure is implemented in the __febr__ package. It consists of
+#' grouping variables based on a chosen number of levels of their identification code. For example,
+#' consider a variable with an identification code composed of four levels, `aaa_bbb_ccc_ddd`, where
+#' `aaa` is the first level and `ddd` is the fourth level. Now consider a related variable,
+#' `aaa_bbb_eee_fff`. If the harmonization is to consider all four coding levels (`level = 4`),
+#' then these two variables will remain coded as separate variables. But if `level = 2`, then both
+#' variables will be re-coded as `aaa_bbb`, thus becoming the same variable.
 #' }
-#' @return A list of data frames or a data frame with data on the chosen variable(s) of the chosen dataset(s).
+#' @return A list of data frames or a data frame with data on the chosen variable(s) of the chosen
+#' dataset(s).
+#' 
 #' @note Check the new core data download function `readFEBR()`.
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \code{\link[febr]{observation}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
@@ -115,7 +134,7 @@ layer <-
               # broken.transition = "keep", merge.fun = "weighted.mean",
               units = FALSE, round = FALSE),
             harmonization = list(harmonize = FALSE, level = 2),
-            progress = TRUE, verbose = TRUE, febr.repo = "remote") {
+            progress = TRUE, verbose = TRUE, febr.repo = NULL) {
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$layer$std.cols
@@ -434,7 +453,8 @@ layer <-
                 target <- tmp_stds[["campo_unidade"]][match(need_name, tmp_stds[["campo_id"]])]
                 ## Identificar constante
                 k <- lapply(seq_along(source), function(i) {
-                  idx <- febr_unit$unidade_origem %in% source[i] + febr_unit$unidade_destino %in% target[i]
+                  idx <- febr_unit$unidade_origem %in% source[i] + 
+                    febr_unit$unidade_destino %in% target[i]
                   febr_unit[idx == 2, ]
                 })
                 k <- do.call(rbind, k)

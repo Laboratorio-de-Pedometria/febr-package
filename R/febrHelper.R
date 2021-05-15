@@ -35,7 +35,7 @@
 # O repositório de leitura é remoto ou local?
 .readOwnCloud <-
   function(ctb, table, febr.repo, ...) {
-    if (febr.repo == "remote") {
+    if (i.null(febr.repo)) {
       url <- paste0(
         'https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F', ctb, '&files=',
         ctb, '-', table, '.txt')
@@ -362,7 +362,7 @@
     res[["campo_precisao"]] <- suppressWarnings(as.numeric(res[["campo_precisao"]]))
     return(res)
   }
-# Quais conjuntos de dados devem ser descarregados? ###########################################################
+# Quais conjuntos de dados devem ser descarregados? ################################################
 .getDataset <-
   function(sheets_keys, dataset) {
     

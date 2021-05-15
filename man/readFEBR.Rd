@@ -7,6 +7,7 @@
 readFEBR(
   data.set,
   data.table = c("identificacao", "versionamento", "metadado", "observacao", "camada"),
+  febr.repo = NULL,
   verbose = TRUE,
   ...
 )
@@ -18,14 +19,19 @@ Use \code{data.set = "all"} to download all data sets.}
 \item{data.table}{Character vector indicating one or more data tables, with supported values
 \code{"identificacao"}, \code{"versionamento"}, \code{"metadado"}, \code{"observacao"}, and \code{"camada"}.}
 
+\item{febr.repo}{(optional) Defaults to the remote file directory of the Federal University of
+Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
+Alternatively, a local directory path can be informed if the user has a local copy of the data
+repository.}
+
 \item{verbose}{(optional) Logical value indicating if informative messages should be displayed.
 Generally useful to identify issues—please report to \email{febr-forum@googlegroups.com} if
 you find any.}
 
-\item{...}{(optional) Arguments passed to \code{\link[utils]{read.table}}.}
+\item{...}{(optional) Arguments passed to \code{\link[data.table]{fread}}.}
 }
 \value{
-A list of data frames with data from the chosen data sets.
+A list of data tables (data frames) with data from the chosen data sets.
 }
 \description{
 Download soil data from one or more data sets published in the Free Brazilian Repository for

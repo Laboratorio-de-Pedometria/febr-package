@@ -2,7 +2,7 @@
 % Please edit documentation in R/metadata.R
 \name{metadata}
 \alias{metadata}
-\title{Get \emph{metadata} table}
+\title{Get 'metadata' table}
 \usage{
 metadata(dataset, progress = TRUE, verbose = TRUE, febr.repo = "remote")
 }
@@ -16,17 +16,19 @@ datasets.}
 useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com}
 if you find any issue.}
 
-\item{febr.repo}{(optional) Character vector indicating where the data should be read. Defaults to
-\code{febr.repo = "remote"}, i.e. the remote web server. Alternatively, a local directory path can be passed to
-\code{febr.repo} if the user has a local copy of the data repository.}
+\item{febr.repo}{(optional) Defaults to the remote file directory of the Federal University of
+Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
+Alternatively, a local directory path can be informed if the user has a local copy of the data
+repository.}
 }
 \value{
 A list of data frames or a data frame with metadata of the chosen dataset(s).
 }
 \description{
-Download data from the \emph{metadata} ("metadado") table of one or more datasets contained in the Free Brazilian
-Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}. This includes
-variable names, description of analytical methods, and identification of analysis laboratories.
+Download data from the 'metadata' ("metadado") table of one or more datasets published in the
+Free Brazilian Repository for Open Soil Data (FEBR), \url{https://www.pedometria.org/febr/}.
+This table includes data such as variable names, description of analytical methods, and
+identification of analysis laboratories.
 }
 \note{
 Check the new core data download function \code{readFEBR()}.

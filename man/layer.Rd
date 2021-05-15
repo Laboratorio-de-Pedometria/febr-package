@@ -2,7 +2,7 @@
 % Please edit documentation in R/layer.R
 \name{layer}
 \alias{layer}
-\title{Get \emph{layer} table}
+\title{Get 'layer' table}
 \usage{
 layer(
   dataset,
@@ -31,56 +31,64 @@ more information.}
 single table for output. Requires \code{standardization = list(units = TRUE)} -- see below. Defaults to
 \code{stack = FALSE}, the output being a list of tables.}
 
-\item{missing}{(optional) List with named sub-arguments indicating what should be done with a layer missing
-data on sampling depth, \code{depth}, or data on variable(s), \code{data}. Options are \code{"keep"} (default) and
-\code{"drop"}.}
+\item{missing}{(optional) List with named sub-arguments indicating what should be done with a
+layer missing data on sampling depth, \code{depth}, or data on variable(s), \code{data}. Options are
+\code{"keep"} (default) and \code{"drop"}.}
 
 \item{standardization}{(optional) List with named sub-arguments indicating how to perform data
-standardization.
+#' standardization.
 \itemize{
-\item \code{plus.sign} Character string indicating what should be done with the plus sign (\code{+}) commonly used
-along with the inferior limit of the bottom layer of an observation. Options are \code{"keep"} (default),
-\code{"add"}, and \code{"remove"}.
-\item \code{plus.depth} Numeric value indicating the depth increment (in centimeters) when processing the plus
-sign (\code{+}) with \code{plus.sign = "add"}. Defaults to \code{plus.depth = 2.5}.
+\item \code{plus.sign} Character string indicating what should be done with the plus sign (\code{+})
+commonly used along with the inferior limit of the bottom layer of an observation. Options are
+\code{"keep"} (default), \code{"add"}, and \code{"remove"}.
 
-\item \code{lessthan.sign} Character string indicating what should be done with the less-than sign (\code{<}) used
-to indicate that the value of a variable is below the lower limit of detection. Options are \code{"keep"}
-(default), \code{"subtract"}, and \code{"remove"}.
-\item \code{lessthan.frac} Numeric value between 0 and 1 (a fraction) by which the lower limit of detection
-should be subtracted when \code{lessthan.sign = "subtract"}. Defaults to \code{lessthan.frac = 0.5}, i.e.
-subtract 50\\% from the lower limit of detection.
+\item \code{plus.depth} Numeric value indicating the depth increment (in centimeters) when processing
+the plus sign (\code{+}) with \code{plus.sign = "add"}. Defaults to \code{plus.depth = 2.5}.
 
-\item \code{repetition} Character string indicating what should be done with repetitions, i.e. repeated
-measurements of layers in an observation. Options are \code{"keep"} (default) and \code{"combine"}. In the
-latter case, it is recommended to set \code{lessthan.sign = "subtract"} or \code{lessthan.sign = "remove"}.
-\item \code{combine.fun} Character string indicating the function that should be used to combine repeated
-measurements of layers in an observation when \code{repetition = "combine"}. Options are \code{"mean"}
-(default), \code{"min"}, \code{"max"}, and \code{"median"}.
+\item \code{lessthan.sign} Character string indicating what should be done with the less-than sign
+(\code{<}) used to indicate that the value of a variable is below the lower limit of detection.
+Options are \code{"keep"} (default), \code{"subtract"}, and \code{"remove"}.
+
+\item \code{lessthan.frac} Numeric value between 0 and 1 (a fraction) by which the lower limit of
+detection should be subtracted when \code{lessthan.sign = "subtract"}. Defaults to
+\code{lessthan.frac = 0.5}, i.e. subtract 50\\% from the lower limit of detection.
+
+\item \code{repetition} Character string indicating what should be done with repetitions, i.e.
+repeated measurements of layers in an observation. Options are \code{"keep"} (default) and
+\code{"combine"}. In the latter case, it is recommended to set \code{lessthan.sign = "subtract"} or
+\code{lessthan.sign = "remove"}.
+
+\item \code{combine.fun} Character string indicating the function that should be used to combine
+repeated measurements of layers in an observation when \code{repetition = "combine"}. Options are
+\code{"mean"} (default), \code{"min"}, \code{"max"}, and \code{"median"}.
 
 \item \code{transition} Character string indicating what should be done about the wavy and irregular
 transition between subsequent layers in an observation. Options are \code{"keep"} (default) and
 \code{"smooth"}.
-\item \code{smoothing.fun} Character string indicating the function that should be used to smooth wavy and
-irregular transitions between subsequent layers in an observation when \code{transition = "smooth"}.
-Options are \code{"mean"} (default), \code{"min"}, \code{"max"}, and \code{"median"}.
 
-\item \code{units} Logical value indicating if the measurement unit(s) of the continuous variable(s) should
-be converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no conversion is
-performed. See \code{\link[febr]{standard}} for more information.
-\item \code{round} Logical value indicating if the values of the continuous variable(s) should be rounded
-to the standard number of decimal places. Requires \code{units = TRUE}. Defaults to \code{round = FALSE}, i.e.
-no rounding is performed. See \code{\link[febr]{standard}} for more information.
+\item \code{smoothing.fun} Character string indicating the function that should be used to smooth wavy
+and irregular transitions between subsequent layers in an observation when
+\code{transition = "smooth"}. Options are \code{"mean"} (default), \code{"min"}, \code{"max"}, and \code{"median"}.
+
+\item \code{units} Logical value indicating if the measurement unit(s) of the continuous variable(s)
+should be converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no
+conversion is performed. See \code{\link[febr]{standard}} for more information.
+
+\item \code{round} Logical value indicating if the values of the continuous variable(s) should be
+rounded to the standard number of decimal places. Requires \code{units = TRUE}. Defaults to
+\code{round = FALSE}, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more
+information.
 }}
 
-\item{harmonization}{(optional) List with named sub-arguments indicating if and how to perform data
-harmonization.
+\item{harmonization}{(optional) List with named sub-arguments indicating if and how to perform
+data harmonization.
 \itemize{
-\item \code{harmonize} Logical value indicating if data should be harmonized. Defaults to \code{harmonize = FALSE},
-i.e. no harmonization is performed.
-\item \code{level} Integer value indicating the number of levels of the identification code of the variable(s)
-that should be considered for harmonization. Defaults to \code{level = 2}. See \sQuote{Details} for more
-information.
+\item \code{harmonize} Logical value indicating if data should be harmonized. Defaults to
+\code{harmonize = FALSE}, i.e. no harmonization is performed.
+
+\item \code{level} Integer value indicating the number of levels of the identification code of the
+variable(s) that should be considered for harmonization. Defaults to \code{level = 2}. See
+\sQuote{Details} for more information.
 }}
 
 \item{progress}{(optional) Logical value indicating if a download progress bar should be displayed.}
@@ -89,19 +97,20 @@ information.
 useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com}
 if you find any issue.}
 
-\item{febr.repo}{(optional) Character vector indicating where the data should be read. Defaults to
-\code{febr.repo = "remote"}, i.e. the remote web server. Alternatively, a local directory path can be passed to
-\code{febr.repo} if the user has a local copy of the data repository.}
+\item{febr.repo}{(optional) Defaults to the remote file directory of the Federal University of
+Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
+Alternatively, a local directory path can be informed if the user has a local copy of the data
+repository.}
 }
 \value{
-A list of data frames or a data frame with data on the chosen variable(s) of the chosen dataset(s).
+A list of data frames or a data frame with data on the chosen variable(s) of the chosen
+dataset(s).
 }
 \description{
-Download data from the \emph{layer} ("camada") table of one or more datasets contained in the Free Brazilian
-Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}. This includes
-sampling depth, horizon designation, and variables such as pH, carbon content, clay content, and much more.
-Use \code{\link[febr]{header}} if you want to check what are the variables contained in the \emph{layer} table
-of a dataset before downloading it.
+Download data from the 'layer' ("camada") table of one or more datasets publiched in the Free
+Brazilian Repository for Open Soil Data (FEBR), \url{https://www.pedometria.org/febr/}. This
+table includes data such as sampling depth, horizon designation, and variables such as pH, carbon
+and clay content, and much more.
 }
 \details{
 \subsection{Standard identification variables}{
@@ -116,21 +125,23 @@ Standard identification variables and their content are as follows:
 \item \code{profund_inf}. Lower boundary of a layer (cm).
 }
 Further details about the content of the standard identification variables can be found in
-\url{https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM} (in Portuguese).
+\url{https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM}
+(in Portuguese).
 }
 \subsection{Harmonization}{
-Data harmonization consists of converting the values of a variable determined using some method \emph{B} so
-that they are (approximately) equivalent to the values that would have been obtained if the standard method
-\emph{A} had been used instead. For example, converting carbon content values obtained using a wet digestion
-method to the standard dry combustion method is data harmonization.
+Data harmonization consists of converting the values of a variable determined using some method
+\emph{B} so that they are (approximately) equivalent to the values that would have been obtained if
+the standard method \emph{A} had been used instead. For example, converting carbon content values
+obtained using a wet digestion method to the standard dry combustion method is data
+harmonization.
 
-A heuristic data harmonization procedure is implemented in the \strong{febr} package. It consists of grouping
-variables based on a chosen number of levels of their identification code. For example, consider a variable
-with an identification code composed of four levels, \code{aaa_bbb_ccc_ddd}, where \code{aaa} is the first level and
-\code{ddd} is the fourth level. Now consider a related variable, \code{aaa_bbb_eee_fff}. If the harmonization
-is to consider all four coding levels (\code{level = 4}), then these two variables will remain coded as
-separate variables. But if \code{level = 2}, then both variables will be re-coded as \code{aaa_bbb}, thus becoming the
-same variable.
+A heuristic data harmonization procedure is implemented in the \strong{febr} package. It consists of
+grouping variables based on a chosen number of levels of their identification code. For example,
+consider a variable with an identification code composed of four levels, \code{aaa_bbb_ccc_ddd}, where
+\code{aaa} is the first level and \code{ddd} is the fourth level. Now consider a related variable,
+\code{aaa_bbb_eee_fff}. If the harmonization is to consider all four coding levels (\code{level = 4}),
+then these two variables will remain coded as separate variables. But if \code{level = 2}, then both
+variables will be re-coded as \code{aaa_bbb}, thus becoming the same variable.
 }
 }
 \note{
