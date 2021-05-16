@@ -43,7 +43,14 @@
       path <- file.path(path.expand(febr.repo), data.set, paste0(data.set, '-', data.table, ".txt"))
       path <- normalizePath(path = path, mustWork = TRUE)
     }
-    res <- utils::read.table(path, dec = ",", header = TRUE, na.strings = .opt()$gs$na, ...)
+    res <- tryCatch(
+      utils::read.table(path, dec = ",", header = TRUE, na.strings = .opt()$gs$na, ...),
+      error = function(error) {
+        print(paste0("File ", path, " is not available for reuse yet"))
+      },
+      warning = function(warning) {
+        print(paste0("File ", path, " is not available for reuse yet"))
+      })
     # res <- data.table::fread(path, dec = ",", header = TRUE, na.strings = .opt()$gs$na, ...)
     return(res)
   }
@@ -371,14 +378,14 @@
     } else {
       idx_out <- which(!dataset %in% sheets_keys$ctb)
       if (length(idx_out) >= 1) {
-        stop (paste("Unknown value '", dataset[idx_out], "' passed to parameter dataset", sep = ""))
+        stop(paste0("Unknown value '", dataset[idx_out], "' passed to parameter dataset"))
       }
       sheets_keys <- sheets_keys[sheets_keys$ctb %in% dataset, ]
       
       # Some datasets might not be ready for download
       idx_na <- which(is.na(sheets_keys$camada))
       if (length(idx_na) >= 1) {
-        stop (paste("Cannot download dataset '", dataset[idx_na], "'. See https://goo.gl/tVC8dH", sep = ""))
+        stop(paste0("Cannot download dataset '", dataset[idx_na], "'. See https://goo.gl/tVC8dH"))
       }
     }
     return(sheets_keys)
