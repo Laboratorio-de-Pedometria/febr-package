@@ -40,7 +40,7 @@ readFEBR <-
     if (missing(data.set)) {
       stop("argument 'data.set' is missing")
     } else if (!is.character(data.set)) {
-      stop(paste0("object of class '", class(data.set), "' passed to argument 'data.set'"))
+      stop(paste0("object of class ", class(data.set), " passed to 'data.set'"))
     }
     ## data.table
     if (!is.character(data.table)) {
