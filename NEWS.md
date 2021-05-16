@@ -1,3 +1,8 @@
+# febr 1.7.0
+
+* Code and documentation clean up.
+* Defuncts obsolete function: `dataset`, `febr`, `febr2spdf`, `febr2xlsx`, `standard`, `header`.
+
 # febr 1.6.4
 
 * Start using the __data.table__ package for faster data processing.
