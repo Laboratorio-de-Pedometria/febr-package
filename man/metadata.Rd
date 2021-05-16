@@ -4,11 +4,11 @@
 \alias{metadata}
 \title{Get 'metadata' table}
 \usage{
-metadata(dataset, progress = TRUE, verbose = TRUE, febr.repo = NULL)
+metadata(data.set, progress = TRUE, verbose = TRUE, febr.repo = NULL)
 }
 \arguments{
-\item{dataset}{Character vector indicating the identification code of one or more data sets.
-Use \code{dataset = "all"} to download all data sets.}
+\item{data.set}{Character vector indicating the identification code of one or more data sets.
+Use \code{data.set = "all"} to download all data sets.}
 
 \item{progress}{(optional) Logical value indicating if a download progress bar should be displayed.}
 
@@ -20,9 +20,6 @@ if you find any issue.}
 Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
 Alternatively, a local directory path can be informed if the user has a local copy of the data
 repository.}
-
-\item{data.set}{Character vector indicating the identification code of one or more data sets.
-Use \code{data.set = "all"} to download all data sets.}
 }
 \value{
 A list of data frames or a data frame with metadata of the chosen dataset(s).
@@ -37,7 +34,10 @@ identification of analysis laboratories.
 Check the new core data download function \code{readFEBR()}.
 }
 \examples{
-res <- metadata(dataset = "ctb0003")
+\donttest{
+# res <- metadata(data.set = c("ctb0003", "ctb0020"))
+res <- metadata(data.set = c("ctb0003", "ctb0002"))
+}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

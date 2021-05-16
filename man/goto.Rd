@@ -4,22 +4,37 @@
 \alias{goto}
 \title{Go to FEBR}
 \usage{
-goto(dataset, page)
+goto(data.set, page)
 }
 \arguments{
-\item{dataset}{(optional) Character vector indicating one dataset.}
+\item{data.set}{(optional) Character vector indicating a single data set.}
 
-\item{page}{(optional) Character string indicating a web page of the FEBR. Options are: \code{"febr"},
-\code{"search"}, \code{"package"}, \code{"github"}, \code{"forum"}, \code{"units"}, \code{"standards"}, \code{"index"}, and \code{"template"}.}
+\item{page}{(optional) Character string indicating a web page of the FEBR. Options are:
+\code{"febr"} (FEBR web page),
+\code{"search"} (data set search web page),
+\code{"package"} (\strong{febr} package on CRAN),
+\code{"github"} (\strong{febr} package source code repository on GitHub),
+\code{"gitlab"} (FEBR source code repository on GitLab),
+\code{"forum"} (FEBR public forum at Google Groups),
+\code{"units"} (units and conversion factors used in FEBR),
+\code{"standards"} (standards used in FEBR),
+\code{"index"} (data set index), and
+\code{"template"} (spreadsheet data template).}
 }
 \description{
-Go to one of the web pages of the Free Brazilian Repository for Open Soil Data -- FEBR --,
+Go to one of the web pages of the Free Brazilian Repository for Open Soil Data (FEBR),
 including project and dataset web pages.
 }
 \examples{
-\donttest{
-# Go to the main project page
+if (interactive()) {
+# Go to the FEBR web page
 goto(page = "febr")
+
+# Go to the data set index
+goto(page = "index")
+
+# Go to the GitHub repository
+goto(page = "github")
 }
 }
 \author{

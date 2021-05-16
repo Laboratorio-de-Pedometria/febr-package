@@ -5,7 +5,7 @@
 \title{Get 'observation' table}
 \usage{
 observation(
-  dataset,
+  data.set,
   variable,
   stack = FALSE,
   missing = list(coord = "keep", time = "keep", data = "keep"),
@@ -17,8 +17,8 @@ observation(
 )
 }
 \arguments{
-\item{dataset}{Character vector indicating the identification code of one or more data sets.
-Use \code{dataset = "all"} to download all data sets.}
+\item{data.set}{Character vector indicating the identification code of one or more data sets.
+Use \code{data.set = "all"} to download all data sets.}
 
 \item{variable}{(optional) Character vector indicating one or more variables. Accepts only general
 identification codes, e.g. \code{"ferro"} and \code{"carbono"}. If missing, then a set of standard identification
@@ -38,8 +38,7 @@ standardization.
 \itemize{
 \item \code{crs} Character string indicating the EPSG code of the coordinate reference system (CRS)
 to which spatial coordinates should be transformed. For example, \code{crs = "EPSG:4674"}, i.e.
-SIRGAS 2000, the standard CRS for Brazil -- see more at
-\url{https://spatialreference.org/ref/epsg/}. Defaults to \code{crs = NULL}, i.e. no transformation
+SIRGAS 2000, the standard CRS for Brazil. Defaults to \code{crs = NULL}, i.e. no transformation
 is performed.
 
 \item \code{time.format} Character string indicating how to format dates. For example,
@@ -78,9 +77,6 @@ if you find any issue.}
 Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
 Alternatively, a local directory path can be informed if the user has a local copy of the data
 repository.}
-
-\item{data.set}{Character vector indicating the identification code of one or more data sets.
-Use \code{data.set = "all"} to download all data sets.}
 }
 \value{
 A list of data frames or a data frame with data on the chosen variable(s) of the chosen
@@ -141,14 +137,25 @@ variables will be re-coded as \code{aaa_bbb}, thus becoming the same variable.
 Check the new core data download function \code{readFEBR()}.
 }
 \examples{
-res <- observation(dataset = "ctb0013", variable = "taxon")
-str(res)
-\donttest{
-# Download various datasets and standardize CRS
+res <- observation(data.set = "ctb0013")
+
+if (interactive()) {
+# Download two data sets and standardize CRS
 res <- observation(
-  dataset = paste("ctb000", 4:5, sep = ""),
+  data.set = paste("ctb000", 4:5, sep = ""),
   variable = "taxon",
   standardization = list(crs = "EPSG:4674"))
+
+# Try to download a data set that is not available yet
+res <- observation(data.set = "ctb0020")
+
+# Try to download a non existing data set
+res <- observation(data.set = "ctb0000")
+
+# Try to read all files from local directory
+febr.repo <- "~/ownCloud/febr-repo/publico"
+febr.repo <- ifelse(dir.exists(febr.repo), febr.repo, NULL)
+res <- observation(data.set = "all", febr.repo = febr.repo)
 }
 }
 \seealso{

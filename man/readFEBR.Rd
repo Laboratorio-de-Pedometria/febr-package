@@ -38,9 +38,7 @@ Download soil data from one or more data sets published in the Free Brazilian Re
 Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}.
 }
 \examples{
-\donttest{
 res <- readFEBR(data.set = "ctb0003")
-}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

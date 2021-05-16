@@ -23,9 +23,6 @@ if you find any issue.}
 Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
 Alternatively, a local directory path can be informed if the user has a local copy of the data
 repository.}
-
-\item{dataset}{Character vector indicating the identification code of one or more data sets.
-Use \code{dataset = "all"} to download all data sets.}
 }
 \value{
 A list of data frames or a data frame with data of the chosen dataset(s).
@@ -41,7 +38,8 @@ Check the new core data download function \code{readFEBR()}.
 }
 \examples{
 \donttest{
-res <- identification(data.set = "ctb0003")
+# res <- identification(data.set = c("ctb0003", "ctb0000"))
+res <- metadata(data.set = c("ctb0003", "ctb0002"))
 }
 }
 \author{

@@ -12,7 +12,7 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
-#' res <- observation(dataset = "ctb0003", variable = "taxon",
+#' res <- observation(data.set = "ctb0003", variable = "taxon",
 #'                    progress = FALSE, verbose = FALSE)
 #' res <- febr2sf(obj = res)
 #' plot(res["taxon_sibcs_2009"], axes = TRUE, graticule = TRUE)

@@ -4,7 +4,7 @@
 #' and *metadata* ("metadado") tables of a dataset contained in the Free Brazilian Repository for Open Soil 
 #' Data -- FEBR, \url{https://www.pedometria.org/febr/}.
 #' 
-#' @param dataset Character vector indicating one dataset.
+#' @param data.set Character vector indicating one dataset.
 #' 
 #' @template metadata_template
 #' 
@@ -23,19 +23,19 @@
 #' @export
 #' @examples
 #' \donttest{ 
-#' # res <- febr(dataset = "ctb0013")
+#' # res <- febr(data.set = "ctb0013")
 #' }
-###############################################################################################################
+####################################################################################################
 febr <- 
-  function (dataset, merge = FALSE, progress = TRUE, verbose = TRUE, ...) {
+  function (data.set, merge = FALSE, progress = TRUE, verbose = TRUE, ...) {
     
     # ARGUMENTOS
-    ## dataset
-    if (missing(dataset)) {
-      stop ("argument 'dataset' is missing")
-    } else if (!is.character(dataset)) {
-      stop (paste("object of class", class(dataset), "passed to argument 'dataset'"))
-    } else if (length(dataset) > 1 || dataset == "all") {
+    ## data.set
+    if (missing(data.set)) {
+      stop ("argument 'data.set' is missing")
+    } else if (!is.character(data.set)) {
+      stop (paste("object of class", class(data.set), "passed to argument 'data.set'"))
+    } else if (length(data.set) > 1 || data.set == "all") {
       stop ("cannot donwload data from more than on dataset")
     }
     
@@ -47,27 +47,27 @@ febr <-
     # DESCARREGAMENTO
     ## 'identificacao'
     if (verbose) {
-      message(paste("Downloading ", dataset, "-identificacao...", sep = ""))
+      message(paste("Downloading ", data.set, "-identificacao...", sep = ""))
     }
-    dts <- dataset(dataset = dataset, progress = progress, verbose = FALSE)
+    dts <- dataset(data.set = data.set, progress = progress, verbose = FALSE)
     
     ## 'metadado'
     if (verbose) {
-      message(paste("Downloading ", dataset, "-metadado...", sep = ""))
+      message(paste("Downloading ", data.set, "-metadado...", sep = ""))
     }
-    mtd <- try(metadata(dataset = dataset, progress = progress, verbose = FALSE))
+    mtd <- try(metadata(data.set = data.set, progress = progress, verbose = FALSE))
     
     ## 'observacao'
     if (verbose) {
-      message(paste("Downloading ", dataset, "-observacao...", sep = ""))
+      message(paste("Downloading ", data.set, "-observacao...", sep = ""))
     }
-    obs <- observation(dataset = dataset, progress = progress, verbose = FALSE, ...)
+    obs <- observation(data.set = data.set, progress = progress, verbose = FALSE, ...)
     
     ## 'camada'
     if (verbose) {
-      message(paste("Downloading ", dataset, "-camada...", sep = ""))
+      message(paste("Downloading ", data.set, "-camada...", sep = ""))
     }
-    lyr <- layer(dataset = dataset, progress = progress, verbose = FALSE, ...)
+    lyr <- layer(data.set = data.set, progress = progress, verbose = FALSE, ...)
     
     # PROCESSAMENTO
     ## Fundir tabelas se necessário

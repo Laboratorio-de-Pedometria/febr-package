@@ -22,7 +22,7 @@
 #' \donttest{
 #' # res <- metadata(data.set = c("ctb0003", "ctb0020"))
 #' res <- metadata(data.set = c("ctb0003", "ctb0002"))
-# }
+#' }
 ####################################################################################################
 metadata <-
   function(data.set, progress = TRUE, verbose = TRUE, febr.repo = NULL) {

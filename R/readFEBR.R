@@ -26,9 +26,7 @@
 #'
 #' @export
 #' @examples
-#' \donttest{
 #' res <- readFEBR(data.set = "ctb0003")
-#' }
 ####################################################################################################
 readFEBR <-
   function(
@@ -38,10 +36,21 @@ readFEBR <-
     # ARGUMENT CHECK ----
     ## data.set
     if (missing(data.set)) {
-      stop("argument 'data.set' is missing")
+      stop("Argument 'data.set' is missing")
     } else if (!is.character(data.set)) {
-      stop(paste0("object of class ", class(data.set), " passed to 'data.set'"))
+      stop(paste0("Object of class ", class(data.set), " passed to 'data.set'"))
+    } else {
+      dataset_ids <- readIndex()[["dados_id"]]
+      if (data.set[1] != "all") {
+        idx_out <- data.set %in% dataset_ids
+        if (sum(idx_out) != length(data.set)) {
+          stop(paste0("Unknown value '", data.set[!idx_out], "' passed to 'data.set'"))
+        } else {
+          dataset_ids <- data.set
+        }
+      }
     }
+    n_datasets <- length(dataset_ids)
     ## data.table
     if (!is.character(data.table)) {
       stop(paste0("object of class '", class(data.table), "' passed to argument 'data.table'"))
@@ -54,17 +63,13 @@ readFEBR <-
       stop(paste0("object of class '", class(verbose), "' passed to argument 'verbose'"))
     }
     # READ DATA ----
-    if ("all" %in% data.set) {
-      # if all datasets are required, then start by reading the index file to get the dataset IDs.
-      data.set <- readIndex()[["dados_id"]]
-    }
     # build file names
-    path <- lapply(data.set, function(x) {
+    path <- lapply(dataset_ids, function(x) {
       if (is.null(febr.repo)) {
         owncloud <- "https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F"
         path <- paste0(owncloud, x, "&files=", x, "-", data.table, ".txt")
       } else {
-        path <- file.path(febr.repo, data.set, paste0(data.set, '-', data.table, ".txt"))
+        path <- file.path(febr.repo, dataset_ids, paste0(data.set, '-', data.table, ".txt"))
         path <- normalizePath(path = path, mustWork = TRUE)
       }
       return(path)
@@ -78,16 +83,16 @@ readFEBR <-
       out
     })
     # PREPARE OUTPUT ----
-    if(length(data.set) == 1) {
+    if(n_datasets == 1) {
       res <- res[[1]]
       if (length(data.table) == 1) {
         res <- res[[1]]
       }
-    } else if (length(data.set) > 1) {
+    } else if (n_datasets > 1) {
       if (length(data.table) == 1) {
         res <- lapply(res, function(x) x[[1]])
       }
-      names(res) <- data.set
+      names(res) <- n_datasets
     }
     return(res)
   }

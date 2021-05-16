@@ -5,7 +5,7 @@
 \title{Get 'layer' table}
 \usage{
 layer(
-  dataset,
+  data.set,
   variable,
   stack = FALSE,
   missing = list(depth = "keep", data = "keep"),
@@ -19,8 +19,8 @@ layer(
 )
 }
 \arguments{
-\item{dataset}{Character vector indicating the identification code of one or more data sets.
-Use \code{dataset = "all"} to download all data sets.}
+\item{data.set}{Character vector indicating the identification code of one or more data sets.
+Use \code{data.set = "all"} to download all data sets.}
 
 \item{variable}{(optional) Character vector indicating one or more variables. Accepts only general
 identification codes, e.g. \code{"ferro"} and \code{"carbono"}. If missing, then a set of standard identification
@@ -101,9 +101,6 @@ if you find any issue.}
 Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
 Alternatively, a local directory path can be informed if the user has a local copy of the data
 repository.}
-
-\item{data.set}{Character vector indicating the identification code of one or more data sets.
-Use \code{data.set = "all"} to download all data sets.}
 }
 \value{
 A list of data frames or a data frame with data on the chosen variable(s) of the chosen
@@ -151,7 +148,26 @@ variables will be re-coded as \code{aaa_bbb}, thus becoming the same variable.
 Check the new core data download function \code{readFEBR()}.
 }
 \examples{
-res <- layer(dataset = "ctb0003")
+res <- layer(data.set = "ctb0003")
+
+if (interactive()) {
+# Download two data sets and standardize units
+res <- layer(
+  data.set = paste("ctb000", 4:5, sep = ""),
+  variable = "carbono",
+  standardization = list(units = TRUE))
+  
+# Try to download a data set that is not available yet
+res <- layer(data.set = "ctb0020")
+
+# Try to download a non existing data set
+res <- observation(data.set = "ctb0000")
+
+# Try to read all files from local directory
+febr.repo <- "~/ownCloud/febr-repo/publico"
+febr.repo <- ifelse(dir.exists(febr.repo), febr.repo, NULL)
+res <- layer(data.set = "all", febr.repo = febr.repo)
+}
 }
 \seealso{
 \code{\link[febr]{observation}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}

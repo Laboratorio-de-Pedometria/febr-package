@@ -1,41 +1,42 @@
 #' Get table header
 #'
-#' Download header data (column names and measurement units) from the *layer* ("camada") or *observation* 
-#' ("observacao") table of one or more datasets contained in the Free Brazilian Repository for Open Soil Data 
-#' -- FEBR, \url{https://www.pedometria.org/febr/}. This is useful to check what are the variables
-#' contained in a dataset before downloading it via \code{\link[febr]{layer}} or 
-#' \code{\link[febr]{observation}}.
+#' Download header data (column names and measurement units) from the *layer* ("camada") or
+#' *observation*  ("observacao") table of one or more datasets contained in the Free Brazilian
+#' Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}. This is useful to
+#' check what are the variables contained in a dataset before downloading it via
+#' \code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
 #'
 #' @template data_template
 #' @template metadata_template
 #' 
-#' @param table Character string indicating a table, i.e. the *layer* table, `"camada"`, or the *observation*
-#' table, `"observacao"`.
+#' @param table Character string indicating a table, i.e. the *layer* table, `"camada"`, or the
+#' *observation* table, `"observacao"`.
 #' 
 #' @details 
 #' \subsection{Standard identification variables}{
-#' Standard identification variables and their content depend on the chosen `table`. See documentation of 
-#' \code{\link[febr]{layer}} and \code{\link[febr]{observation}}.
+#' Standard identification variables and their content depend on the chosen `table`. See
+#' documentation of \code{\link[febr]{layer}} and \code{\link[febr]{observation}}.
 #' }
 #' 
-#' @return A list of data frames or a data frame with table header data (column names and measurement units) on
-#' the chosen variable(s) of the chosen dataset(s).
+#' @return A list of data frames or a data frame with table header data (column names and
+#' measurement units) on the chosen variable(s) of the chosen dataset(s).
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso \code{\link[febr]{layer}}, \code{\link[febr]{observation}}
 #' @export
-###############################################################################################################
+####################################################################################################
 header <-
-  function (dataset, table, variable, stack = FALSE, progress = TRUE, verbose = TRUE) {
+  function (data.set, table, variable, stack = FALSE, progress = TRUE, verbose = TRUE) {
     
-    .Deprecated(new = 'metadata', package = 'febr')
+    # .Deprecated(new = 'metadata', package = 'febr')
+    .Defunct(new = 'metadata', package = 'febr')
     
     # ARGUMENTOS
-    ## dataset
-    if (missing(dataset)) {
-      stop ("argument 'dataset' is missing")
-    } else if (!is.character(dataset)) {
-      stop (paste("object of class", class(dataset), "passed to argument 'dataset'"))
+    ## data.set
+    if (missing(data.set)) {
+      stop ("argument 'data.set' is missing")
+    } else if (!is.character(data.set)) {
+      stop (paste("object of class", class(data.set), "passed to argument 'data.set'"))
     }
     
     ## table
@@ -47,7 +48,7 @@ header <-
     
     ## variable
     if (!missing(variable) && !is.character(variable)) {
-      stop (paste("object of class '", class(variable), "' passed to argument 'variable'", sep = ''))
+      stop(paste("object of class '", class(variable), "' passed to argument 'variable'", sep = ''))
     }
     
     ## stack
@@ -80,7 +81,7 @@ header <-
     }
     
     # Descarregar chaves de identificação das tabelas
-    sheets_keys <- .getSheetsKeys(dataset = dataset)
+    sheets_keys <- .getSheetsKeys(dataset = data.set)
     n <- nrow(sheets_keys)
     
     # Descarregar tabelas
@@ -111,7 +112,8 @@ header <-
         if (length(variable) == 1 && variable == "all") {
           extra_cols <- in_cols[!in_cols %in% std_cols]
         } else {
-          extra_cols <- lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)])
+          extra_cols <-
+            lapply(variable, function (x) in_cols[grep(paste("^", x, sep = ""), in_cols)])
           extra_cols <- unlist(extra_cols)
           extra_cols <- extra_cols[!extra_cols %in% std_cols]
         }
@@ -121,31 +123,34 @@ header <-
       
       # TIPO DE DADOS
       # if (table == "observacao") {
-        ## 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar erros
-        ## durante o empilhamento das tabelas devido ao tipo de dado.
-        ## Nota: esse processamento deve ser feito via Google Sheets.
-        # tmp$observacao_id <- as.character(tmp$observacao_id)
-        # if ("sisb_id" %in% cols) {
-        #   tmp$sisb_id <- as.character(tmp$sisb_id)
-        # }
-        # if ("ibge_id" %in% cols) {
-        #   tmp$ibge_id <- as.character(tmp$ibge_id)
-        # }
-        # 'coord_precisao' precisa estar no formato numérico ao invés de inteiro
-        # if ("coord_precisao" %in% colnames(tmp)) {
-          # tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
-        # }
+      ## 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para evitar
+      ## erros
+      ## durante o empilhamento das tabelas devido ao tipo de dado.
+      ## Nota: esse processamento deve ser feito via Google Sheets.
+      # tmp$observacao_id <- as.character(tmp$observacao_id)
+      # if ("sisb_id" %in% cols) {
+      #   tmp$sisb_id <- as.character(tmp$sisb_id)
+      # }
+      # if ("ibge_id" %in% cols) {
+      #   tmp$ibge_id <- as.character(tmp$ibge_id)
+      # }
+      # 'coord_precisao' precisa estar no formato numérico ao invés de inteiro
+      # if ("coord_precisao" %in% colnames(tmp)) {
+      # tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
+      # }
       # } else if (table == "camada") {
-        ## "observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup" e "profund_inf"
-        ## precisam estar no formato de carácter para evitar erros durante o empilhamento das tabelas
-        ## devido ao tipo de dado.
-        ## Nota: esse processamento deve ser feito via Google Sheets.
-        # tmp[std_cols] <- sapply(tmp[std_cols], as.character)
+      ## "observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup" e "profund_inf"
+      ## precisam estar no formato de carácter para evitar erros durante o empilhamento das
+      ## tabelas
+      ## devido ao tipo de dado.
+      ## Nota: esse processamento deve ser feito via Google Sheets.
+      # tmp[std_cols] <- sapply(tmp[std_cols], as.character)
       # }
       
       # IDENTIFICAÇÃO
       ## Código de identificação do conjunto de dados
-      res[[i]] <- cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
+      res[[i]] <- 
+        cbind(dataset_id = as.character(sheets_keys$ctb[i]), tmp, stringsAsFactors = FALSE)
       
       if (progress) {
         utils::setTxtProgressBar(pb, i)

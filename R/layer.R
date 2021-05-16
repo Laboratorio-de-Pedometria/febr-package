@@ -4,33 +4,33 @@
 #' Brazilian Repository for Open Soil Data (FEBR), \url{https://www.pedometria.org/febr/}. This
 #' table includes data such as sampling depth, horizon designation, and variables such as pH, carbon
 #' and clay content, and much more.
-#' 
+#'
 #' @template data_template
 #' @template metadata_template
-#' 
+#'
 #' @param febr.repo (optional) Defaults to the remote file directory of the Federal University of
 #' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}. 
 #' Alternatively, a local directory path can be informed if the user has a local copy of the data
 #' repository.
-#' 
+#'
 #' @param missing (optional) List with named sub-arguments indicating what should be done with a
 #' layer missing data on sampling depth, `depth`, or data on variable(s), `data`. Options are
 #' `"keep"` (default) and `"drop"`.
-#' 
+#'
 #' @param standardization (optional) List with named sub-arguments indicating how to perform data
 #' #' standardization.
 #' \itemize{
 #' \item `plus.sign` Character string indicating what should be done with the plus sign (`+`)
 #' commonly used along with the inferior limit of the bottom layer of an observation. Options are
 #' `"keep"` (default), `"add"`, and `"remove"`.
-#' 
+#'
 #' \item `plus.depth` Numeric value indicating the depth increment (in centimeters) when processing
 #' the plus sign (`+`) with `plus.sign = "add"`. Defaults to `plus.depth = 2.5`.
-#' 
+#'
 #' \item `lessthan.sign` Character string indicating what should be done with the less-than sign
 #' (`<`) used to indicate that the value of a variable is below the lower limit of detection.
 #' Options are `"keep"` (default), `"subtract"`, and `"remove"`.
-#' 
+#'
 #' \item `lessthan.frac` Numeric value between 0 and 1 (a fraction) by which the lower limit of
 #' detection should be subtracted when `lessthan.sign = "subtract"`. Defaults to
 #' `lessthan.frac = 0.5`, i.e. subtract 50\% from the lower limit of detection.
@@ -120,45 +120,75 @@
 #' @seealso \code{\link[febr]{observation}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
 #' @export
 #' @examples
-#' res <- layer(dataset = "ctb0003")
+#' res <- layer(data.set = "ctb0003")
+#' 
+#' if (interactive()) {
+#' # Download two data sets and standardize units
+#' res <- layer(
+#'   data.set = paste("ctb000", 4:5, sep = ""),
+#'   variable = "carbono",
+#'   standardization = list(units = TRUE))
+#'   
+#' # Try to download a data set that is not available yet
+#' res <- layer(data.set = "ctb0020")
+#' 
+#' # Try to download a non existing data set
+#' res <- observation(data.set = "ctb0000")
+#' 
+#' # Try to read all files from local directory
+#' febr.repo <- "~/ownCloud/febr-repo/publico"
+#' febr.repo <- ifelse(dir.exists(febr.repo), febr.repo, NULL)
+#' res <- layer(data.set = "all", febr.repo = febr.repo)
+#' }
 ####################################################################################################
 layer <-
-  function(dataset, variable,
-            stack = FALSE,
-            missing = list(depth = "keep", data = "keep"),
-            standardization = list(
-              plus.sign = "keep", plus.depth = 2.5,
-              lessthan.sign = "keep", lessthan.frac = 0.5,
-              repetition = "keep", combine.fun = "mean",
-              transition = "keep", smoothing.fun = "mean",
-              # broken.transition = "keep", merge.fun = "weighted.mean",
-              units = FALSE, round = FALSE),
-            harmonization = list(harmonize = FALSE, level = 2),
-            progress = TRUE, verbose = TRUE, febr.repo = NULL) {
+  function(data.set, variable,
+           stack = FALSE,
+           missing = list(depth = "keep", data = "keep"),
+           standardization = list(
+             plus.sign = "keep", plus.depth = 2.5,
+             lessthan.sign = "keep", lessthan.frac = 0.5,
+             repetition = "keep", combine.fun = "mean",
+             transition = "keep", smoothing.fun = "mean",
+             # broken.transition = "keep", merge.fun = "weighted.mean",
+             units = FALSE, round = FALSE),
+           harmonization = list(harmonize = FALSE, level = 2),
+           progress = TRUE, verbose = TRUE, febr.repo = NULL) {
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$layer$std.cols
-    # ARGUMENTOS
-    ## dataset
-    if (missing(dataset)) {
-      stop("argument 'dataset' is missing")
-    } else if (!is.character(dataset)) {
-      stop(paste0("object of class ", class(dataset), " passed to argument 'dataset'"))
+    # ARGUMENT CHECK ----
+    ## data.set
+    if (missing(data.set)) {
+      stop("Argument 'data.set' is missing")
+    } else if (!is.character(data.set)) {
+      stop(paste0("Object of class ", class(data.set), " passed to 'data.set'"))
+    } else {
+      dataset_ids <- readIndex()[["dados_id"]]
+      if (data.set[1] != "all") {
+        idx_out <- data.set %in% dataset_ids
+        if (sum(idx_out) != length(data.set)) {
+          stop(paste0("Unknown value '", data.set[!idx_out], "' passed to 'data.set'"))
+        } else {
+          dataset_ids <- data.set
+        }
+      }
     }
+    n_datasets <- length(dataset_ids)
     ## variable
     if (!missing(variable) && !is.character(variable)) {
-      stop(paste0("object of class '", class(variable), "' passed to argument 'variable'"))
+      stop(paste0("Object of class '", class(variable), "' passed to 'variable'"))
     }
     ## stack
     if (!is.logical(stack)) {
-      stop(paste0("object of class '", class(stack), "' passed to argument 'stack'"))
+      stop(paste0("Object of class '", class(stack), "' passed to 'stack'"))
     }
     ## missing
     if (!missing(missing)) {
       if (is.null(missing$depth)) {
         missing$depth <- "keep"
       } else if (!missing$depth %in% c("drop", "keep")) {
-        stop(paste0("unknown value '", missing$depth, "' passed to argument 'missing$depth'"))
+        stop(paste0("Unknown value '", missing$depth, "' passed to 'missing$depth'"))
       }
       if (is.null(missing$data)) {
         missing$data <- "keep"
@@ -273,12 +303,12 @@ layer <-
         stop("data cannot be harmonized when downloading all variables")
       }
     }
-    ## dataset and stack
-    if (stack && length(dataset) == 1 && dataset != "all") {
+    ## data.set and stack
+    if (stack && length(data.set) == 1) {
       # Por razões óbvias, não há como empilhar conjuntos de dados quando apenas um conjunto de
       # dados está sendo descarregado. Assim, se o usuário especificar stack = TRUE, o argumento é
       # reconfigurado para stack = FALSE.
-      message("a single dataset is being downloaded... setting stack = FALSE")
+      message("A single dataset is being downloaded... setting stack = FALSE")
       stack <- FALSE
     }
     # PADRÕES
@@ -301,223 +331,223 @@ layer <-
         stop("data cannot be stacked when measurement units are not standardized")
       }
     }
-    # CHAVES
-    ## Descarregar chaves de identificação das tabelas
-    sheets_keys <- .getSheetsKeys(dataset = dataset)
-    n <- nrow(sheets_keys)
     # Descarregar tabelas com camadas
     if (progress) {
-      pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys[["camada"]]), style = 3)
+      pb <- utils::txtProgressBar(min = 0, max = n_datasets, style = 3)
     }
     res <- list()
-    for (i in 1:length(sheets_keys$camada)) {
+    for (i in seq_along(dataset_ids)) {
       # Informative messages
-      dts <- sheets_keys$ctb[i]
+      dts <- dataset_ids[i]
       if (verbose) {
         par <- ifelse(progress, "\n", "")
         message(paste0(par, "Downloading ", dts, "-camada..."))
       }
       # DESCARREGAMENTO
       tmp <- .readFEBR(
-        data.set = sheets_keys[i, "ctb"], data.table = "camada", febr.repo = febr.repo)
-      unit <- .readFEBR(
-        data.set = sheets_keys[i, "ctb"], data.table = "metadado", febr.repo = febr.repo)
-      unit[["campo_unidade"]][is.na(unit[["campo_unidade"]])] <- "-"
-      unit <- unit[unit$tabela_id == "camada", c("campo_id", "campo_nome", "campo_unidade")]
-      rownames(unit) <- unit[["campo_id"]]
-      unit <- unit[, -1]
-      unit <- as.data.frame(t(unit), stringsAsFactors = FALSE)
-      n_rows <- nrow(tmp)
-      # PROCESSAMENTO I
-      # A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas
-      # profundidades
-      na_depth <- max(apply(tmp[c("profund_sup", "profund_inf")], 2, function(x) sum(is.na(x))))
-      if (missing$depth == "keep" || missing$depth == "drop" && na_depth < n_rows) {
-        # COLUNAS
-        # Definir as colunas a serem mantidas
-        # As colunas padrão são sempre mantidas.
-        # No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados,
-        # assim sendo ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.
-        in_cols <- colnames(tmp)
-        cols <- in_cols[in_cols %in% std_cols]
-        extra_cols <- vector()
-        if (!missing(variable)) {
-          if (length(variable) == 1 && variable == "all") {
-          # if (variable == "all") {
-            extra_cols <- in_cols[!in_cols %in% std_cols]
-            idx_na <- apply(tmp[extra_cols], 2, function(x) all(is.na(x)))
-            extra_cols <- extra_cols[!idx_na]
-          } else {
-            extra_cols <- lapply(variable, function(x) in_cols[grep(paste0("^", x), in_cols)])
-            extra_cols <- unlist(extra_cols)
-            extra_cols <- extra_cols[!extra_cols %in% std_cols]
-            idx_na <- apply(tmp[extra_cols], 2, function(x) all(is.na(x)))
-            extra_cols <- extra_cols[!idx_na]
-          }
-        }
-        cols <- c(cols, extra_cols)
-        tmp <- tmp[, cols]
-        # unit <- unit[names(unit) %in% cols]
-        unit <- unit[, cols]
-        # LINHAS I
-        ## Avaliar limpeza das linhas
-        tmp_clean <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols)
-        n_rows <- nrow(tmp_clean)
-        # PROCESSAMENTO II
-        # A continuação do processamento dos dados depende das presença de dados após a eliminação
-        # de colunas e linhas com NAs.
-        if (n_rows >= 1 && missing(variable) ||
-            # length(extra_cols) >= 1 ||
-            missing$data == "keep") {
-          # LINHAS II
-          ## Definir as linhas a serem mantidas
-          ## É preciso considerar todas as possibilidades de remoção de dados
-          if (missing$data == "drop" || missing$dept == 'drop') {
-            tmp <- tmp_clean
-          }
-          # TIPO DE DADOS
-          # "observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup" e "profund_inf"
-          # devem estar no formato de caracter para evitar erros durante o empilhamento das tabelas
-          # devido ao tipo de dado.
-          if (stack) {
-            tmp[std_cols] <- sapply(tmp[std_cols], as.character)
-          }
-          # PADRONIZAÇÃO I
-          # Profundidade e transição entre as camadas
-          # Sinal positivo em 'profund_inf' indicando maior profundidade abaixo da última camada
-          # O padrão consiste em manter o sinal positivo. Os dados não são definidos como classe
-          # 'numeric' porque pode haver transição ondulada ou irregular entre as camadas --
-          # solucionada abaixo. Por enquanto se assume que a profundidade está em centímetros a
-          # partir da superfície.
-          if (standardization$plus.sign != "keep") {
-            tmp <- .setMaximumObservationDepth(
-              obj = tmp, plus.sign = standardization$plus.sign,
-              plus.depth = standardization$plus.depth)
-          }
-          # Símbolo indicador do limite inferior de detecção do método de determinação (<)
-          # O padrão consiste em manter o símbolo. Do contrário, o resultado é convertido para
-          # classe 'numeric' a fim de que seja possível, se demandado, padronizar as unidades de
-          # medida e o número de casas decimais.
-          if (standardization$lessthan.sign != "keep") {
-            tmp <- .setLowestMeasuredValue(
-              obj = tmp, lessthan.sign = standardization$lessthan.sign,
-              lessthan.frac = standardization$lessthan.frac)
-          }
-          # Repetições de laboratório
-          # O padrão consiste em manter as repetições de laboratório. Do contrário, a coluna
-          # 'camada_id' é a chave para o processamento dos dados. Note que é necessário que o tipo
-          # de dado das variáveis esteja corretamente definido, sobretudo no caso de variáveis
-          # contínuas. A solução prévia do símbolo indicador do limite inferior de detecção
-          # geralmente é necessária.
-          if (standardization$repetition != "keep") {
-            tmp <- .solveLayerRepetition(obj = tmp, combine.fun = standardization$combine.fun)
-          }
-          ## Transição ondulada ou irregular
-          ## O padrão consiste em manter a transição ondulada ou irregular.
-          if (standardization$transition != "keep") {
-            tmp <- .solveWavyLayerTransition(obj = tmp,
-            smoothing.fun = standardization$smoothing.fun)
-          }
-          ## Transição quebrada
-          ## O padrão consiste em manter a transição quebrada
-          # if (standardization$broken.transition != "keep") {
-          #   tmp <- .solveBrokenLayerTransition(obj = tmp, merge.fun = standardization$merge.fun) 
-          # }
-          # Se a profundidade foi padronizada e as tabelas serão empilhadas, então os dados de
-          # profundidade devem ser definidos como classe 'numeric'
-          if (standardization$plus.sign != "keep" && standardization$transition != "keep") {
-            tmp[c("profund_sup", "profund_inf")] <-
-              sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
-          }
-          # PADRONIZAÇÃO II
-          # Unidade de medida e número de casas decimais de colunas adicionais
-          if (standardization$units && length(extra_cols) >= 1) {
-            # Identificar variáveis contínuas (classe 'numeric' e 'integer'), excluíndo variáveis de
-            # identificação padrão.
-            id_class <- sapply(tmp, class)
-            cont_idx <-
-              which(id_class %in% c("numeric", "integer") & !names(id_class) %in% std_cols)
-            if (length(cont_idx) >= 1) {
-              # Tabela com padrões das variáveis contínuas identificadas
-              tmp_stds <- match(cols[cont_idx], febr_stds[["campo_id"]])
-              tmp_stds <- febr_stds[tmp_stds, c("campo_id", "campo_unidade", "campo_precisao")]
-              ## 1. Se necessário, padronizar unidades de medida
-              # idx_unit <- unit[cols[cont_idx]] != tmp_stds$campo_unidade
-              # idx_unit <- unit[, cols[cont_idx]] != tmp_stds$campo_unidade
-              # verifica 2ª linha de metadados
-              need_idx <- unit[2, cols[cont_idx]] != tmp_stds[["campo_unidade"]]
-              if (any(need_idx)) {
-                # idx_unit <- colnames(idx_unit)[idx_unit]
-                need_name <- cols[cont_idx][need_idx]
-                # source <- unit[idx_unit]
-                # source <- unit[2, idx_unit]
-                source <- unit[2, need_name]
-                target <- tmp_stds[["campo_unidade"]][match(need_name, tmp_stds[["campo_id"]])]
-                ## Identificar constante
-                k <- lapply(seq_along(source), function(i) {
-                  idx <- febr_unit$unidade_origem %in% source[i] + 
-                    febr_unit$unidade_destino %in% target[i]
-                  febr_unit[idx == 2, ]
-                })
-                k <- do.call(rbind, k)
-                ## Processar dados
-                # tmp[idx_unit] <- mapply(`*`, tmp[idx_unit], k$unidade_constante)
-                tmp[need_name] <- mapply(`*`, tmp[need_name], k$unidade_constante)
-                # unit[idx_unit] <- k$unidade_destino
-                unit[2, need_name] <- k$unidade_destino
-              }
-              ## 2. Se necessário, padronizar número de casas decimais
-              if (standardization$round) {
-                tmp[tmp_stds$campo_id] <-
-                  sapply(seq(nrow(tmp_stds)), function(i)
-                    round(x = tmp[tmp_stds$campo_id[i]], digits = tmp_stds$campo_precisao[i]))
-              }
+        data.set = dataset_ids[i], data.table = "camada", febr.repo = febr.repo)
+      if (inherits(tmp, "data.frame")) {
+        unit <- .readFEBR(
+          data.set = dataset_ids[i], data.table = "metadado", febr.repo = febr.repo)
+        unit[["campo_unidade"]][is.na(unit[["campo_unidade"]])] <- "-"
+        unit <- unit[unit$tabela_id == "camada", c("campo_id", "campo_nome", "campo_unidade")]
+        rownames(unit) <- unit[["campo_id"]]
+        unit <- unit[, -1]
+        unit <- as.data.frame(t(unit), stringsAsFactors = FALSE)
+        n_rows <- nrow(tmp)
+        # PROCESSAMENTO I
+        # A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas
+        # profundidades
+        na_depth <- max(apply(tmp[c("profund_sup", "profund_inf")], 2, function(x) sum(is.na(x))))
+        if (missing$depth == "keep" || missing$depth == "drop" && na_depth < n_rows) {
+          # COLUNAS
+          # Definir as colunas a serem mantidas
+          # As colunas padrão são sempre mantidas.
+          # No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados,
+          # assim sendo ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.
+          in_cols <- colnames(tmp)
+          cols <- in_cols[in_cols %in% std_cols]
+          extra_cols <- vector()
+          if (!missing(variable)) {
+            if (length(variable) == 1 && variable == "all") {
+              # if (variable == "all") {
+              extra_cols <- in_cols[!in_cols %in% std_cols]
+              idx_na <- apply(tmp[extra_cols], 2, function(x) all(is.na(x)))
+              extra_cols <- extra_cols[!idx_na]
+            } else {
+              extra_cols <- lapply(variable, function(x) in_cols[grep(paste0("^", x), in_cols)])
+              extra_cols <- unlist(extra_cols)
+              extra_cols <- extra_cols[!extra_cols %in% std_cols]
+              idx_na <- apply(tmp[extra_cols], 2, function(x) all(is.na(x)))
+              extra_cols <- extra_cols[!idx_na]
             }
           }
-          # ATTRIBUTOS I
-          # Processar unidades de medida
-          # 'sem unidade' significa que uma variável não possui unidade de medida (unitless)
-          # '-' significa que a unidade de medida é desconhecida ou não foi informada (NA).
-          unit[2, ] <- as.character(unit[2, names(unit) %in% cols])
-          unit[2, ] <- gsub("^sem unidade$", "unitless", unit[2, ])
-          # unit[2, ] <- gsub("^-$", "unitless", unit[2, ])
-          # https://en.wikipedia.org/wiki/List_of_Unicode_characters
-          unit["observacao_id"] <-
-            c("Identifica\u00E7\u00E3o da observa\u00E7\u00E3o", # Identificação da observação
-              "unitless")
-          dataset_id <-
-            c("Identifica\u00E7\u00E3o do conjunto de dados", # Identificação do conjunto de dados
-              "unitless")
-          unit <- cbind(dataset_id, unit)
-          # HARMONIZAÇÃO I
-          ## Harmonização dos dados das colunas adicionais
-          if (harmonization$harmonize && length(extra_cols) >= 1) {
-            ## Harmonização baseada nos níveis dos códigos de identificação
-            tmp <- .harmonizeByName(obj = tmp, extra_cols = extra_cols,
-              harmonization = harmonization)
-          }
-          # IDENTIFICAÇÃO
-          ## Código de identificação do conjunto de dados
-          res[[i]] <- cbind(dataset_id = sheets_keys$ctb[i], tmp, stringsAsFactors = FALSE)
-          # ATTRIBUTOS II
-          a <- attributes(res[[i]])
-          ## Adicionar nomes reais
-          a$field_name <- as.vector(t(unit)[, 1])
-          ## Adicionar unidades de medida
-          a$field_unit <- as.vector(t(unit)[, 2])
-          attributes(res[[i]]) <- a
-          if (progress) {
-            utils::setTxtProgressBar(pb, i)
+          cols <- c(cols, extra_cols)
+          tmp <- tmp[, cols]
+          # unit <- unit[names(unit) %in% cols]
+          unit <- unit[, cols]
+          # LINHAS I
+          ## Avaliar limpeza das linhas
+          tmp_clean <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols)
+          n_rows <- nrow(tmp_clean)
+          # PROCESSAMENTO II
+          # A continuação do processamento dos dados depende das presença de dados após a eliminação
+          # de colunas e linhas com NAs.
+          if (n_rows >= 1 && missing(variable) ||
+              # length(extra_cols) >= 1 ||
+              missing$data == "keep") {
+            # LINHAS II
+            ## Definir as linhas a serem mantidas
+            ## É preciso considerar todas as possibilidades de remoção de dados
+            if (missing$data == "drop" || missing$dept == 'drop') {
+              tmp <- tmp_clean
+            }
+            # TIPO DE DADOS
+            # "observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup" e "profund_inf"
+            # devem estar no formato de caracter para evitar erros durante o empilhamento das tabelas
+            # devido ao tipo de dado.
+            if (stack) {
+              tmp[std_cols] <- sapply(tmp[std_cols], as.character)
+            }
+            # PADRONIZAÇÃO I
+            # Profundidade e transição entre as camadas
+            # Sinal positivo em 'profund_inf' indicando maior profundidade abaixo da última camada
+            # O padrão consiste em manter o sinal positivo. Os dados não são definidos como classe
+            # 'numeric' porque pode haver transição ondulada ou irregular entre as camadas --
+            # solucionada abaixo. Por enquanto se assume que a profundidade está em centímetros a
+            # partir da superfície.
+            if (standardization$plus.sign != "keep") {
+              tmp <- .setMaximumObservationDepth(
+                obj = tmp, plus.sign = standardization$plus.sign,
+                plus.depth = standardization$plus.depth)
+            }
+            # Símbolo indicador do limite inferior de detecção do método de determinação (<)
+            # O padrão consiste em manter o símbolo. Do contrário, o resultado é convertido para
+            # classe 'numeric' a fim de que seja possível, se demandado, padronizar as unidades de
+            # medida e o número de casas decimais.
+            if (standardization$lessthan.sign != "keep") {
+              tmp <- .setLowestMeasuredValue(
+                obj = tmp, lessthan.sign = standardization$lessthan.sign,
+                lessthan.frac = standardization$lessthan.frac)
+            }
+            # Repetições de laboratório
+            # O padrão consiste em manter as repetições de laboratório. Do contrário, a coluna
+            # 'camada_id' é a chave para o processamento dos dados. Note que é necessário que o tipo
+            # de dado das variáveis esteja corretamente definido, sobretudo no caso de variáveis
+            # contínuas. A solução prévia do símbolo indicador do limite inferior de detecção
+            # geralmente é necessária.
+            if (standardization$repetition != "keep") {
+              tmp <- .solveLayerRepetition(obj = tmp, combine.fun = standardization$combine.fun)
+            }
+            ## Transição ondulada ou irregular
+            ## O padrão consiste em manter a transição ondulada ou irregular.
+            if (standardization$transition != "keep") {
+              tmp <- .solveWavyLayerTransition(obj = tmp,
+                                               smoothing.fun = standardization$smoothing.fun)
+            }
+            ## Transição quebrada
+            ## O padrão consiste em manter a transição quebrada
+            # if (standardization$broken.transition != "keep") {
+            #   tmp <- .solveBrokenLayerTransition(obj = tmp, merge.fun = standardization$merge.fun) 
+            # }
+            # Se a profundidade foi padronizada e as tabelas serão empilhadas, então os dados de
+            # profundidade devem ser definidos como classe 'numeric'
+            if (standardization$plus.sign != "keep" && standardization$transition != "keep") {
+              tmp[c("profund_sup", "profund_inf")] <-
+                sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
+            }
+            # PADRONIZAÇÃO II
+            # Unidade de medida e número de casas decimais de colunas adicionais
+            if (standardization$units && length(extra_cols) >= 1) {
+              # Identificar variáveis contínuas (classe 'numeric' e 'integer'), excluíndo variáveis de
+              # identificação padrão.
+              id_class <- sapply(tmp, class)
+              cont_idx <-
+                which(id_class %in% c("numeric", "integer") & !names(id_class) %in% std_cols)
+              if (length(cont_idx) >= 1) {
+                # Tabela com padrões das variáveis contínuas identificadas
+                tmp_stds <- match(cols[cont_idx], febr_stds[["campo_id"]])
+                tmp_stds <- febr_stds[tmp_stds, c("campo_id", "campo_unidade", "campo_precisao")]
+                ## 1. Se necessário, padronizar unidades de medida
+                # idx_unit <- unit[cols[cont_idx]] != tmp_stds$campo_unidade
+                # idx_unit <- unit[, cols[cont_idx]] != tmp_stds$campo_unidade
+                # verifica 2ª linha de metadados
+                need_idx <- unit[2, cols[cont_idx]] != tmp_stds[["campo_unidade"]]
+                if (any(need_idx)) {
+                  # idx_unit <- colnames(idx_unit)[idx_unit]
+                  need_name <- cols[cont_idx][need_idx]
+                  # source <- unit[idx_unit]
+                  # source <- unit[2, idx_unit]
+                  source <- unit[2, need_name]
+                  target <- tmp_stds[["campo_unidade"]][match(need_name, tmp_stds[["campo_id"]])]
+                  ## Identificar constante
+                  k <- lapply(seq_along(source), function(i) {
+                    idx <- febr_unit$unidade_origem %in% source[i] + 
+                      febr_unit$unidade_destino %in% target[i]
+                    febr_unit[idx == 2, ]
+                  })
+                  k <- do.call(rbind, k)
+                  ## Processar dados
+                  # tmp[idx_unit] <- mapply(`*`, tmp[idx_unit], k$unidade_constante)
+                  tmp[need_name] <- mapply(`*`, tmp[need_name], k$unidade_constante)
+                  # unit[idx_unit] <- k$unidade_destino
+                  unit[2, need_name] <- k$unidade_destino
+                }
+                ## 2. Se necessário, padronizar número de casas decimais
+                if (standardization$round) {
+                  tmp[tmp_stds$campo_id] <-
+                    sapply(seq(nrow(tmp_stds)), function(i)
+                      round(x = tmp[tmp_stds$campo_id[i]], digits = tmp_stds$campo_precisao[i]))
+                }
+              }
+            }
+            # ATTRIBUTOS I
+            # Processar unidades de medida
+            # 'sem unidade' significa que uma variável não possui unidade de medida (unitless)
+            # '-' significa que a unidade de medida é desconhecida ou não foi informada (NA).
+            unit[2, ] <- as.character(unit[2, names(unit) %in% cols])
+            unit[2, ] <- gsub("^sem unidade$", "unitless", unit[2, ])
+            # unit[2, ] <- gsub("^-$", "unitless", unit[2, ])
+            # https://en.wikipedia.org/wiki/List_of_Unicode_characters
+            unit["observacao_id"] <-
+              c("Identifica\u00E7\u00E3o da observa\u00E7\u00E3o", # Identificação da observação
+                "unitless")
+            dataset_id <-
+              c("Identifica\u00E7\u00E3o do conjunto de dados", # Identificação do conjunto de dados
+                "unitless")
+            unit <- cbind(dataset_id, unit)
+            # HARMONIZAÇÃO I
+            ## Harmonização dos dados das colunas adicionais
+            if (harmonization$harmonize && length(extra_cols) >= 1) {
+              ## Harmonização baseada nos níveis dos códigos de identificação
+              tmp <- .harmonizeByName(obj = tmp, extra_cols = extra_cols,
+                                      harmonization = harmonization)
+            }
+            # IDENTIFICAÇÃO
+            ## Código de identificação do conjunto de dados
+            res[[i]] <- cbind(dataset_id = dataset_ids[i], tmp, stringsAsFactors = FALSE)
+            # ATTRIBUTOS II
+            a <- attributes(res[[i]])
+            ## Adicionar nomes reais
+            a$field_name <- as.vector(t(unit)[, 1])
+            ## Adicionar unidades de medida
+            a$field_unit <- as.vector(t(unit)[, 2])
+            attributes(res[[i]]) <- a
+            if (progress) {
+              utils::setTxtProgressBar(pb, i)
+            }
+          } else {
+            res[[i]] <- data.frame()
+            m <- paste0("All layers in ", dts, " are missing data. None will be returned.")
+            message(m)
           }
         } else {
           res[[i]] <- data.frame()
-          m <- paste0("All layers in ", dts, " are missing data. None will be returned.")
+          m <- paste0("All layers in ", dts, " are missing depth. None will be returned.")
           message(m)
         }
       } else {
-        res[[i]] <- data.frame()
-        m <- paste0("All layers in ", dts, " are missing depth. None will be returned.")
-        message(m)
+        res[[i]] <- tmp
       }
     }
     if (progress) {
@@ -528,8 +558,10 @@ layer <-
     ## Adicionar unidades de medida
     if (stack) {
       res <- .stackTables(obj = res)
-    } else if (n == 1) {
+    } else if (n_datasets == 1 & inherits(res, "list")) {
       res <- res[[1]]
+    } else {
+      names(res) <- data.set
     }
     return(res)
   }

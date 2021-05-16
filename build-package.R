@@ -22,6 +22,7 @@ devtools::run_examples()
 devtools::check(document = TRUE, manual = TRUE, force_suggests = TRUE, run_dont_test = TRUE)
 
 # check for Windows (remote) ----
+# devtools::check_man()
 devtools::check_win_devel()
 devtools::check_win_release()
 devtools::check_win_oldrelease()

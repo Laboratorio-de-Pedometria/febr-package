@@ -9,14 +9,37 @@
 #' @export
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @examples
-#' \donttest{
+#' pro <- data.frame(
+#'   observacao_id = "Perfil-1",
+#'   taxon_sibcs_1999 = "Argissolo",
+#'   stringsAsFactors = FALSE
+#' )
+#' hor <- data.frame(
+#'   observacao_id = rep("Perfil-1", 3),
+#'   camada_id = c("Ap", "B1", "B2"),
+#'   profund_sup = c(0, 16, 32),
+#'   profund_inf = c(16, 32, 50),
+#'   cor_matriz_umido_munsell = rep("5YR 3/3", 3),
+#'   cor_matriz_seco_munsell = rep("5YR 3/3", 3),
+#'   estrutura_tipo = rep("blocos subangulares", 3),
+#'   estrutura_grau = rep("moderada", 3),
+#'   estrutura_cdiam = rep("média", 3),
+#'   consistencia_umido = rep("friável", 3),
+#'   consistencia_seco = rep("duro", 3),
+#'   plasticidade = rep("plástico", 3),
+#'   pegajosidade = rep("pegajoso", 3),
+#'   stringsAsFactors = FALSE
+#' )
+#' febr2sse(pro, hor, tempfile(fileext = ".json"))
+#' 
+#' if (interactive()) {
 #' profiles <- observation(
-#'   dataset = "ctb0025", variable = c("taxon_sibcs", "relevo_drenagem"),
+#'   data.set = "ctb0025", variable = c("taxon_sibcs", "relevo_drenagem"),
 #'   standardization = list(units = TRUE, round = TRUE))
 #' idx <- profiles$observacao_id[1]
 #' profiles <- profiles[profiles$observacao_id %in% idx, ]
 #' horizons <- layer(
-#'   dataset = "ctb0025", variable = "all",
+#'   data.set = "ctb0025", variable = "all",
 #'   standardization =
 #'     list(plus.sign = "remove", lessthan.sign = "remove",
 #'          transition = "smooth", units = TRUE, round = TRUE))
@@ -31,7 +54,7 @@
 #' file <- ifelse(
 #'   dir.exists("tmp"),
 #'   paste0("tmp/febr2smartsolos-", idx, ".json"),
-#'   paste0("febr2smartsolos-", idx, ".json"))
+#'   paste0(tempdir(), "/febr2smartsolos-", idx, ".json"))
 #' febr2sse(profiles, horizons, file)
 #' }
 ####################################################################################################

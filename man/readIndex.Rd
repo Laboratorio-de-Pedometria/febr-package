@@ -4,7 +4,10 @@
 \alias{readIndex}
 \title{Utilities}
 \usage{
-readIndex()
+readIndex(...)
+}
+\arguments{
+\item{...}{(optional) Arguments passed to \code{\link[data.table]{fread}}.}
 }
 \description{
 Utilities

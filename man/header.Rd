@@ -5,7 +5,7 @@
 \title{Get table header}
 \usage{
 header(
-  dataset,
+  data.set,
   table,
   variable,
   stack = FALSE,
@@ -14,11 +14,11 @@ header(
 )
 }
 \arguments{
-\item{dataset}{Character vector indicating the identification code of one or more data sets.
-Use \code{dataset = "all"} to download all data sets.}
+\item{data.set}{Character vector indicating the identification code of one or more data sets.
+Use \code{data.set = "all"} to download all data sets.}
 
-\item{table}{Character string indicating a table, i.e. the \emph{layer} table, \code{"camada"}, or the \emph{observation}
-table, \code{"observacao"}.}
+\item{table}{Character string indicating a table, i.e. the \emph{layer} table, \code{"camada"}, or the
+\emph{observation} table, \code{"observacao"}.}
 
 \item{variable}{(optional) Character vector indicating one or more variables. Accepts only general
 identification codes, e.g. \code{"ferro"} and \code{"carbono"}. If missing, then a set of standard identification
@@ -34,25 +34,22 @@ single table for output. Requires \code{standardization = list(units = TRUE)} --
 \item{verbose}{(optional) Logical value indicating if informative messages should be displayed. Generally
 useful to identify datasets with inconsistent data. Please report to \email{febr-forum@googlegroups.com}
 if you find any issue.}
-
-\item{data.set}{Character vector indicating the identification code of one or more data sets.
-Use \code{data.set = "all"} to download all data sets.}
 }
 \value{
-A list of data frames or a data frame with table header data (column names and measurement units) on
-the chosen variable(s) of the chosen dataset(s).
+A list of data frames or a data frame with table header data (column names and
+measurement units) on the chosen variable(s) of the chosen dataset(s).
 }
 \description{
-Download header data (column names and measurement units) from the \emph{layer} ("camada") or \emph{observation}
-("observacao") table of one or more datasets contained in the Free Brazilian Repository for Open Soil Data
--- FEBR, \url{https://www.pedometria.org/febr/}. This is useful to check what are the variables
-contained in a dataset before downloading it via \code{\link[febr]{layer}} or
-\code{\link[febr]{observation}}.
+Download header data (column names and measurement units) from the \emph{layer} ("camada") or
+\emph{observation}  ("observacao") table of one or more datasets contained in the Free Brazilian
+Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}. This is useful to
+check what are the variables contained in a dataset before downloading it via
+\code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
 }
 \details{
 \subsection{Standard identification variables}{
-Standard identification variables and their content depend on the chosen \code{table}. See documentation of
-\code{\link[febr]{layer}} and \code{\link[febr]{observation}}.
+Standard identification variables and their content depend on the chosen \code{table}. See
+documentation of \code{\link[febr]{layer}} and \code{\link[febr]{observation}}.
 }
 }
 \seealso{

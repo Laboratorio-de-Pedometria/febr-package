@@ -22,7 +22,7 @@ Set spatial coordinates and projection attributes to create an sf object from th
 Repository for Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}.
 }
 \examples{
-res <- observation(dataset = "ctb0003", variable = "taxon",
+res <- observation(data.set = "ctb0003", variable = "taxon",
                    progress = FALSE, verbose = FALSE)
 res <- febr2sf(obj = res)
 plot(res["taxon_sibcs_2009"], axes = TRUE, graticule = TRUE)

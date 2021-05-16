@@ -41,10 +41,11 @@
       path <- paste0(owncloud, data.set, '&files=', data.set, '-', data.table, '.txt')
     } else {
       path <- file.path(path.expand(febr.repo), data.set, paste0(data.set, '-', data.table, ".txt"))
-      path <- normalizePath(path = path, mustWork = TRUE)
+      path <- normalizePath(path = path, mustWork = FALSE)
     }
     res <- tryCatch(
-      utils::read.table(path, dec = ",", header = TRUE, na.strings = .opt()$gs$na, ...),
+      utils::read.table(
+        path, dec = ",", header = TRUE, stringsAsFactors = FALSE, na.strings = .opt()$gs$na, ...),
       error = function(error) {
         print(paste0("File ", path, " is not available for reuse yet"))
       },

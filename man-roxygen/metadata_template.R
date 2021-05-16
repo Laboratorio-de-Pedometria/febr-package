@@ -1,5 +1,3 @@
-#' @param dataset Character vector indicating the identification code of one or more data sets. 
-#' Use `dataset = "all"` to download all data sets.
 #' @param data.set Character vector indicating the identification code of one or more data sets.
 #' Use `data.set = "all"` to download all data sets.
 #' 

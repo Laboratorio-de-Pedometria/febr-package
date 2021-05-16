@@ -22,8 +22,7 @@
 #' \itemize{
 #' \item `crs` Character string indicating the EPSG code of the coordinate reference system (CRS)
 #' to which spatial coordinates should be transformed. For example, `crs = "EPSG:4674"`, i.e.
-#' SIRGAS 2000, the standard CRS for Brazil -- see more at
-#' \url{https://spatialreference.org/ref/epsg/}. Defaults to `crs = NULL`, i.e. no transformation 
+#' SIRGAS 2000, the standard CRS for Brazil. Defaults to `crs = NULL`, i.e. no transformation 
 #' is performed.
 #' 
 #' \item `time.format` Character string indicating how to format dates. For example, 
@@ -106,32 +105,54 @@
 #' @export
 #' 
 #' @examples
-#' res <- observation(dataset = "ctb0013", variable = "taxon")
-#' str(res)
-#' \donttest{
-#' # Download various datasets and standardize CRS
+#' res <- observation(data.set = "ctb0013")
+#' 
+#' if (interactive()) {
+#' # Download two data sets and standardize CRS
 #' res <- observation(
-#'   dataset = paste("ctb000", 4:5, sep = ""),
+#'   data.set = paste("ctb000", 4:5, sep = ""),
 #'   variable = "taxon",
 #'   standardization = list(crs = "EPSG:4674"))
+#'
+#' # Try to download a data set that is not available yet
+#' res <- observation(data.set = "ctb0020")
+#' 
+#' # Try to download a non existing data set
+#' res <- observation(data.set = "ctb0000")
+#' 
+#' # Try to read all files from local directory
+#' febr.repo <- "~/ownCloud/febr-repo/publico"
+#' febr.repo <- ifelse(dir.exists(febr.repo), febr.repo, NULL)
+#' res <- observation(data.set = "all", febr.repo = febr.repo)
 #' }
 ####################################################################################################
 observation <-
-  function (dataset, variable, stack = FALSE,
-            missing = list(coord = "keep", time = "keep", data = "keep"),
-            standardization = list(crs = NULL, time.format = NULL, units = FALSE, round = FALSE),
-            harmonization = list(harmonize = FALSE, level = 2),
-            progress = TRUE, verbose = TRUE, febr.repo = NULL) {
+  function(data.set, variable, stack = FALSE,
+           missing = list(coord = "keep", time = "keep", data = "keep"),
+           standardization = list(crs = NULL, time.format = NULL, units = FALSE, round = FALSE),
+           harmonization = list(harmonize = FALSE, level = 2),
+           progress = TRUE, verbose = TRUE, febr.repo = NULL) {
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$observation$std.cols
-    # ARGUMENTOS
-    ## dataset
-    if (missing(dataset)) {
-      stop("argument 'dataset' is missing")
-    } else if (!is.character(dataset)) {
-      stop(paste0("object of class '", class(dataset), "' passed to 'dataset'"))
+    # ARGUMENT CHECK ----
+    ## data.set
+    if (missing(data.set)) {
+      stop("Argument 'data.set' is missing")
+    } else if (!is.character(data.set)) {
+      stop(paste0("Object of class ", class(data.set), " passed to 'data.set'"))
+    } else {
+      dataset_ids <- readIndex()[["dados_id"]]
+      if (data.set[1] != "all") {
+        idx_out <- data.set %in% dataset_ids
+        if (sum(idx_out) != length(data.set)) {
+          stop(paste0("Unknown value '", data.set[!idx_out], "' passed to 'data.set'"))
+        } else {
+          dataset_ids <- data.set
+        }
+      }
     }
+    n_datasets <- length(dataset_ids)
     ## variable
     if (!missing(variable) && !is.character(variable)) {
       stop(paste0("object of class '", class(variable), "' passed to 'variable'"))
@@ -232,9 +253,10 @@ observation <-
         stop("data cannot be harmonized when downloading all variables")
       }
     }
-    ## dataset + stack
-    if (stack && length(dataset) == 1 && dataset != "all") {
-      stop("data cannot be stacked when downloading a single dataset")
+    ## data.set + stack
+    if (stack && length(data.set) == 1) {
+      message("A single dataset is being downloaded... setting stack = FALSE")
+      stack <- FALSE
     }
     # PADRÕES
     ## Descarregar tabela com unidades de medida e número de casas decimais quando padronização é
@@ -252,221 +274,220 @@ observation <-
       idx <- unlist(idx)
       is_all_text <- all(febr_stds$campo_tipo[idx] == "texto")
       if (!is_all_text) {
-        stop("data cannot be stacked when measurement units are not standardized")
+        stop("Data cannot be stacked when measurement units are not standardized")
       }
     }
-    # CHAVES
-    ## Descarregar chaves de identificação das tabelas
-    sheets_keys <- .getSheetsKeys(dataset = dataset)
-    n <- nrow(sheets_keys)
     # Descarregar planilhas com observações
     if (progress) {
-      pb <- utils::txtProgressBar(min = 0, max = length(sheets_keys$observacao), style = 3)
+      pb <- utils::txtProgressBar(min = 0, max = n_datasets, style = 3)
     }
     res <- list()
-    for (i in 1:length(sheets_keys$observacao)) {
+    for (i in seq_along(dataset_ids)) {
       
       # Informative messages
-      dts <- sheets_keys$ctb[i]
+      dts <- dataset_ids[i]
       if (verbose) {
         par <- ifelse(progress, "\n", "")
         message(paste(par, "Reading ", dts, "-observacao...", sep = ""))
       }
       # DESCARREGAMENTO
       tmp <- .readFEBR(
-        data.set = sheets_keys[i, "ctb"], data.table = 'observacao', febr.repo = febr.repo)
-      unit <- .readFEBR(
-        data.set = sheets_keys[i, "ctb"], data.table = 'metadado', febr.repo = febr.repo)
-      unit$campo_unidade[is.na(unit$campo_unidade)] <- '-'
-      unit <- unit[unit$tabela_id == 'observacao', c('campo_id', 'campo_nome', 'campo_unidade')]
-      unit <- as.data.frame(t(unit), stringsAsFactors = FALSE)
-      colnames(unit) <- unlist(unit[1, ])
-      unit <- unit[-1, ]
-      n_rows <- nrow(tmp)
-      # PROCESSAMENTO I
-      ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas
-      ## coordenadas e na data.
-      na_coord <- max(apply(tmp[, c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
-      na_time <- is.na(tmp$observacao_data)
-      n_na_time <- sum(na_time)
-      if (missing$coord == "keep" && missing$time == "keep" ||
-          missing$coord == "drop" && na_coord < n_rows && missing$time == "keep" |
-          missing$time == "drop" ||
-          missing$coord == "keep" | missing$coord == "drop" && missing$time == "drop" &&
-          n_na_time < n_rows) {
-        
-        # COLUNAS
-        ## Definir as colunas a serem mantidas
-        ## As colunas padrão são sempre mantidas.
-        ## No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados,
-        ## assim sendo ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.
-        in_cols <- colnames(tmp)
-        cols <- in_cols[in_cols %in% std_cols]
-        extra_cols <- vector()
-        if (!missing(variable)) {
-          if (length(variable) == 1 && variable == "all") {
-            extra_cols <- in_cols[!in_cols %in% std_cols]
-            idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
-            extra_cols <- extra_cols[!idx_na]
-          } else {
-            extra_cols <- lapply(variable, function (x) {
-              in_cols[grep(paste("^", x, sep = ""), in_cols)]
-            })
-            extra_cols <- unlist(extra_cols)
-            extra_cols <- extra_cols[!extra_cols %in% std_cols]
-            idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
-            extra_cols <- extra_cols[!idx_na]
-          }
-        }
-        cols <- c(cols, extra_cols)
-        tmp <- tmp[cols]
-        unit <- unit[cols]
-        
-        # LINHAS I
-        ## Avaliar limpeza das linhas
-        tmp_clean <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols)
-        n_rows <- nrow(tmp_clean)
-        
-        # PROCESSAMENTO II
-        ## A continuação do processamento dos dados depende das presença de dados após a eliminação
-        ## de colunas e linhas com NAs.
-        if (n_rows >= 1 && missing(variable) || missing$data == "keep") {
-          # LINHAS II
-          ## Definir as linhas a serem mantidas
-          ## É preciso considerar todas as possibilidades de remoção de dados
-          if (missing$data == "drop" || missing$coord == 'drop' || missing$time == 'drop') {
-            tmp <- tmp_clean
-          }
+        data.set = dataset_ids[i], data.table = 'observacao', febr.repo = febr.repo)
+      if (inherits(tmp, "data.frame")) {
+        unit <- .readFEBR(
+          data.set = dataset_ids[i], data.table = 'metadado', febr.repo = febr.repo)
+        unit$campo_unidade[is.na(unit$campo_unidade)] <- '-'
+        unit <- unit[unit$tabela_id == 'observacao', c('campo_id', 'campo_nome', 'campo_unidade')]
+        unit <- as.data.frame(t(unit), stringsAsFactors = FALSE)
+        colnames(unit) <- unlist(unit[1, ])
+        unit <- unit[-1, ]
+        n_rows <- nrow(tmp)
+        # PROCESSAMENTO I
+        ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas
+        ## coordenadas e na data.
+        na_coord <- max(apply(tmp[, c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
+        na_time <- is.na(tmp$observacao_data)
+        n_na_time <- sum(na_time)
+        if (missing$coord == "keep" && missing$time == "keep" ||
+            missing$coord == "drop" && na_coord < n_rows && missing$time == "keep" |
+            missing$time == "drop" ||
+            missing$coord == "keep" | missing$coord == "drop" && missing$time == "drop" &&
+            n_na_time < n_rows) {
           
-          # TIPO DE DADOS
-          ## 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para
-          ## evitar erros durante o empilhamento das tabelas devido ao tipo de dado.
-          ## Nota: esse processamento deve ser feito via Google Sheets.
-          tmp$observacao_id <- as.character(tmp$observacao_id)
-          if ("sisb_id" %in% colnames(tmp)) {
-            tmp$sisb_id <- as.character(tmp$sisb_id)
-          }
-          if ("ibge_id" %in% colnames(tmp)) {
-            tmp$ibge_id <- as.character(tmp$ibge_id)
-          }
-          # 'coord_precisao' precisa estar no formato numérico ao invés de inteiro
-          if ("coord_precisao" %in% colnames(tmp)) {
-            tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
-          }
-          
-          # PADRONIZAÇÃO I
-          ## Sistema de referência de coordenadas
-          ## Primeiro verificar se existem observações com coordenadas e se o SRC deve ser
-          ## transformado
-          na_coord <- max(apply(tmp[, c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
-          if (n_rows > na_coord && !is.null(standardization$crs)) {
-            tmp <- .crsTransform(obj = tmp, crs = standardization$crs)
-          }
-          
-          # PADRONIZAÇÃO II
-          ## Data de observação
-          if (n_rows > n_na_time && !is.null(standardization$time.format)) {
-          # if (n_rows > na_time && !is.null(standardization$time.format)) {
-            tmp <- .formatObservationDate(obj = tmp, time.format = standardization$time.format)
-          }
-          
-          # PADRONIZAÇÃO III
-          ## Unidade de medida e número de casas decimais das colunas adicionais
-          if (standardization$units && length(extra_cols) >= 1) {
-            
-            ## Identificar variáveis contínuas (classe 'numeric' e 'integer'), excluíndo variáveis
-            ## de  identificação padrão
-            ## TODO: EXCETO 'coord_precisao'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            id_class <- sapply(tmp, class)
-            cont_idx <- which(id_class %in% c("numeric", "integer") &
-                                !names(id_class) %in% std_cols)
-            if (length(cont_idx) >= 1) {
-              
-              # Tabela com padrões das variáveis contínuas identificadas
-              tmp_stds <- match(cols[cont_idx], febr_stds$campo_id)
-              tmp_stds <- febr_stds[tmp_stds, c("campo_id", "campo_unidade", "campo_precisao")]
-              
-              ## 1. Se necessário, padronizar unidades de medida
-              ## # verifica a 2ª linha de metadados
-              need_idx <- unit[2, cols[cont_idx]] != tmp_stds$campo_unidade
-              if (any(need_idx)) {
-                need_name <- cols[cont_idx][need_idx]
-                source <- unit[2, need_name]
-                target <- tmp_stds$campo_unidade[match(need_name, tmp_stds$campo_id)]
-                
-                ## Identificar constante
-                k <- lapply(seq_along(source), function (i) {
-                  # i <- 2
-                  idx <- febr_unit$unidade_origem %in% source[i] +
-                    febr_unit$unidade_destino %in% target[i]
-                  febr_unit[idx == 2, ] 
-                })
-                k <- do.call(rbind, k)
-                
-                ## Processar dados
-                tmp[need_name] <- mapply(`*`, tmp[need_name], k$unidade_constante)
-                unit[2, need_name] <- k$unidade_destino
-              }
-              
-              ## 2. Se necessário, padronizar número de casas decimais
-              if (standardization$round) {
-                tmp[tmp_stds$campo_id] <- 
-                  sapply(seq(nrow(tmp_stds)), function (i) 
-                    round(x = tmp[tmp_stds$campo_id[i]], digits = tmp_stds$campo_precisao[i]))
-              }
+          # COLUNAS
+          ## Definir as colunas a serem mantidas
+          ## As colunas padrão são sempre mantidas.
+          ## No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados,
+          ## assim sendo ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.
+          in_cols <- colnames(tmp)
+          cols <- in_cols[in_cols %in% std_cols]
+          extra_cols <- vector()
+          if (!missing(variable)) {
+            if (length(variable) == 1 && variable == "all") {
+              extra_cols <- in_cols[!in_cols %in% std_cols]
+              idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
+              extra_cols <- extra_cols[!idx_na]
+            } else {
+              extra_cols <- lapply(variable, function (x) {
+                in_cols[grep(paste("^", x, sep = ""), in_cols)]
+              })
+              extra_cols <- unlist(extra_cols)
+              extra_cols <- extra_cols[!extra_cols %in% std_cols]
+              idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
+              extra_cols <- extra_cols[!idx_na]
             }
           }
+          cols <- c(cols, extra_cols)
+          tmp <- tmp[cols]
+          unit <- unit[cols]
           
-          # ATTRIBUTOS I
-          ## Processar unidades de medida
-          unit[2, ] <- as.character(unit[2, names(unit) %in% cols])
-          unit[2, ] <- gsub("^-$", "unitless", unit[2, ])
-          # https://en.wikipedia.org/wiki/List_of_Unicode_characters
-          unit["observacao_id"] <- c("Identifica\u00E7\u00E3o da observa\u00E7\u00E3o", "unitless")
-          dataset_id <- c("Identifica\u00E7\u00E3o do conjunto de dados", "unitless")
-          unit <- cbind(dataset_id, unit)
+          # LINHAS I
+          ## Avaliar limpeza das linhas
+          tmp_clean <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols)
+          n_rows <- nrow(tmp_clean)
           
-          # HARMONIZAÇÃO I
-          ## Harmonização dos dados das colunas adicionais
-          if (harmonization$harmonize && length(extra_cols) >= 1) {
+          # PROCESSAMENTO II
+          ## A continuação do processamento dos dados depende das presença de dados após a eliminação
+          ## de colunas e linhas com NAs.
+          if (n_rows >= 1 && missing(variable) || missing$data == "keep") {
+            # LINHAS II
+            ## Definir as linhas a serem mantidas
+            ## É preciso considerar todas as possibilidades de remoção de dados
+            if (missing$data == "drop" || missing$coord == 'drop' || missing$time == 'drop') {
+              tmp <- tmp_clean
+            }
             
-            ## Harmonização baseada nos níveis dos códigos de identificação
-            tmp <- .harmonizeByName(obj = tmp, extra_cols = extra_cols,
-                                    harmonization = harmonization)
+            # TIPO DE DADOS
+            ## 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para
+            ## evitar erros durante o empilhamento das tabelas devido ao tipo de dado.
+            ## Nota: esse processamento deve ser feito via Google Sheets.
+            tmp$observacao_id <- as.character(tmp$observacao_id)
+            if ("sisb_id" %in% colnames(tmp)) {
+              tmp$sisb_id <- as.character(tmp$sisb_id)
+            }
+            if ("ibge_id" %in% colnames(tmp)) {
+              tmp$ibge_id <- as.character(tmp$ibge_id)
+            }
+            # 'coord_precisao' precisa estar no formato numérico ao invés de inteiro
+            if ("coord_precisao" %in% colnames(tmp)) {
+              tmp$coord_precisao <- as.numeric(tmp$coord_precisao)
+            }
             
+            # PADRONIZAÇÃO I
+            ## Sistema de referência de coordenadas
+            ## Primeiro verificar se existem observações com coordenadas e se o SRC deve ser
+            ## transformado
+            na_coord <- max(apply(tmp[, c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
+            if (n_rows > na_coord && !is.null(standardization$crs)) {
+              tmp <- .crsTransform(obj = tmp, crs = standardization$crs)
+            }
+            
+            # PADRONIZAÇÃO II
+            ## Data de observação
+            if (n_rows > n_na_time && !is.null(standardization$time.format)) {
+              # if (n_rows > na_time && !is.null(standardization$time.format)) {
+              tmp <- .formatObservationDate(obj = tmp, time.format = standardization$time.format)
+            }
+            
+            # PADRONIZAÇÃO III
+            ## Unidade de medida e número de casas decimais das colunas adicionais
+            if (standardization$units && length(extra_cols) >= 1) {
+              
+              ## Identificar variáveis contínuas (classe 'numeric' e 'integer'), excluíndo variáveis
+              ## de  identificação padrão
+              ## TODO: EXCETO 'coord_precisao'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+              id_class <- sapply(tmp, class)
+              cont_idx <- which(id_class %in% c("numeric", "integer") &
+                                  !names(id_class) %in% std_cols)
+              if (length(cont_idx) >= 1) {
+                
+                # Tabela com padrões das variáveis contínuas identificadas
+                tmp_stds <- match(cols[cont_idx], febr_stds$campo_id)
+                tmp_stds <- febr_stds[tmp_stds, c("campo_id", "campo_unidade", "campo_precisao")]
+                
+                ## 1. Se necessário, padronizar unidades de medida
+                ## # verifica a 2ª linha de metadados
+                need_idx <- unit[2, cols[cont_idx]] != tmp_stds$campo_unidade
+                if (any(need_idx)) {
+                  need_name <- cols[cont_idx][need_idx]
+                  source <- unit[2, need_name]
+                  target <- tmp_stds$campo_unidade[match(need_name, tmp_stds$campo_id)]
+                  
+                  ## Identificar constante
+                  k <- lapply(seq_along(source), function (i) {
+                    # i <- 2
+                    idx <- febr_unit$unidade_origem %in% source[i] +
+                      febr_unit$unidade_destino %in% target[i]
+                    febr_unit[idx == 2, ] 
+                  })
+                  k <- do.call(rbind, k)
+                  
+                  ## Processar dados
+                  tmp[need_name] <- mapply(`*`, tmp[need_name], k$unidade_constante)
+                  unit[2, need_name] <- k$unidade_destino
+                }
+                
+                ## 2. Se necessário, padronizar número de casas decimais
+                if (standardization$round) {
+                  tmp[tmp_stds$campo_id] <- 
+                    sapply(seq(nrow(tmp_stds)), function (i) 
+                      round(x = tmp[tmp_stds$campo_id[i]], digits = tmp_stds$campo_precisao[i]))
+                }
+              }
+            }
+            
+            # ATTRIBUTOS I
+            ## Processar unidades de medida
+            unit[2, ] <- as.character(unit[2, names(unit) %in% cols])
+            unit[2, ] <- gsub("^-$", "unitless", unit[2, ])
+            # https://en.wikipedia.org/wiki/List_of_Unicode_characters
+            unit["observacao_id"] <- c("Identifica\u00E7\u00E3o da observa\u00E7\u00E3o", "unitless")
+            dataset_id <- c("Identifica\u00E7\u00E3o do conjunto de dados", "unitless")
+            unit <- cbind(dataset_id, unit)
+            
+            # HARMONIZAÇÃO I
+            ## Harmonização dos dados das colunas adicionais
+            if (harmonization$harmonize && length(extra_cols) >= 1) {
+              
+              ## Harmonização baseada nos níveis dos códigos de identificação
+              tmp <- .harmonizeByName(obj = tmp, extra_cols = extra_cols,
+                                      harmonization = harmonization)
+              
+            }
+            
+            # IDENTIFICAÇÃO
+            ## Código de identificação do conjunto de dados
+            res[[i]] <- cbind(dataset_id = dataset_ids[i], tmp, stringsAsFactors = FALSE)
+            
+            # ATTRIBUTOS II
+            a <- attributes(res[[i]])
+            
+            ## Adicionar nomes reais
+            a$field_name <- as.vector(t(unit)[, 1])
+            
+            ## Adicionar unidades de medida
+            a$field_unit <- as.vector(t(unit)[, 2])
+            attributes(res[[i]]) <- a
+            if (progress) {
+              utils::setTxtProgressBar(pb, i)
+            }
+            
+          } else {
+            res[[i]] <- data.frame()
+            m <- paste("All observations in {dts} are missing data. None will be returned.")
+            message(m)
           }
-          
-          # IDENTIFICAÇÃO
-          ## Código de identificação do conjunto de dados
-          res[[i]] <- cbind(dataset_id = sheets_keys$ctb[i], tmp, stringsAsFactors = FALSE)
-          
-          # ATTRIBUTOS II
-          a <- attributes(res[[i]])
-          
-          ## Adicionar nomes reais
-          a$field_name <- as.vector(t(unit)[, 1])
-          
-          ## Adicionar unidades de medida
-          a$field_unit <- as.vector(t(unit)[, 2])
-          attributes(res[[i]]) <- a
-          
-          if (progress) {
-            utils::setTxtProgressBar(pb, i)
-          }
-          
         } else {
           res[[i]] <- data.frame()
-          m <- paste("All observations in {dts} are missing data. None will be returned.")
+          if (na_coord == n_rows) {
+            m <- paste("All observations in", dts, "are missing coordinates. None will be returned.") 
+          } else if (n_na_time == n_rows) {
+            m <- paste("All observations in", dts, "are missing date. None will be returned.")  
+          }
           message(m)
         }
       } else {
-        res[[i]] <- data.frame()
-        if (na_coord == n_rows) {
-          m <- paste("All observations in", dts, "are missing coordinates. None will be returned.") 
-        } else if (n_na_time == n_rows) {
-          m <- paste("All observations in", dts, "are missing date. None will be returned.")  
-        }
-        message(m)
+        res[[i]] <- tmp
       }
     }
     if (progress) {
@@ -477,8 +498,10 @@ observation <-
     ## Adicionar unidades de medida
     if (stack) {
       res <- .stackTables(obj = res)
-    } else if (n == 1) {
+    } else if (n_datasets == 1 & inherits(res, "list")) {
       res <- res[[1]]
+    } else {
+      names(res) <- data.set
     }
-    return (res)
+    return(res)
   }

@@ -7,7 +7,7 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @examples
 #' \donttest{
-#' horizons <- layer(dataset = "ctb0025", variable = "morfologia_descricao")
+#' horizons <- layer(data.set = "ctb0025", variable = "morfologia_descricao")
 #' color <- morphology(x = horizons$morfologia_descricao, variable = "color")
 #' structure <- morphology(x = horizons$morfologia_descricao, variable = "structure")
 #' consistence <- morphology(x = horizons$morfologia_descricao, variable = "consistence")
