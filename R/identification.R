@@ -82,6 +82,3 @@ identification <-
     }
     return(res)
   }
-#' @rdname identification
-#' @export
-dataset <- identification

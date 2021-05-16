@@ -17,13 +17,6 @@
 #' res <- febr2sf(obj = res)
 #' plot(res["taxon_sibcs_2009"], axes = TRUE, graticule = TRUE)
 ####################################################################################################
-# 2020-03-08: substitui 'sp' por 'sf'
-febr2spdf <- 
-  function (obj) {
-    .Defunct(new = 'febr2sf')
-  }
-#' @rdname febr2spdf
-#' @export
 febr2sf <-
   function (obj) {
     # Verificar sistema de referência de coordenadas

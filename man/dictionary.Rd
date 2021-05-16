@@ -2,12 +2,9 @@
 % Please edit documentation in R/dictionary.R
 \name{dictionary}
 \alias{dictionary}
-\alias{standard}
 \title{Access the FEBR dictionary}
 \usage{
 dictionary(table, variable, unit, precision)
-
-standard(table, variable, unit, precision)
 }
 \arguments{
 \item{table}{(optional) Character vector indicating one or more table IDs that should be used to

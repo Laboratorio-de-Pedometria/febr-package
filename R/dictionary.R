@@ -101,7 +101,3 @@ dictionary <-
     rownames(std) <- NULL
     return(std)
   }
-####################################################################################################
-#' @rdname dictionary
-#' @export
-standard <- dictionary

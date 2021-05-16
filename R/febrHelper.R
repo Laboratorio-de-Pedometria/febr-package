@@ -334,18 +334,6 @@
     # saída ---
     return(res)
   }
-# Descarregar cabeçalho das tabelas 'camada' e observacao' #########################################
-.getHeader <-
-  function(x, ws) {
-    url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
-    destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
-    utils::download.file(url = url, destfile = destfile, quiet = TRUE)
-    res <- utils::read.table(
-      file = destfile, header = TRUE, sep = ',', dec = ',', nrows = 2, comment.char = '',
-      na.strings = 'NA', stringsAsFactors = FALSE)
-    # output ---
-    return(res)
-  }
 # Download FEBR dictionary #########################################################################
 .getStds <-
   function(x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI", ws) {
@@ -366,43 +354,5 @@
     # saída ---
     res[["campo_precisao"]] <- gsub(pattern = "-", NA, res[["campo_precisao"]])
     res[["campo_precisao"]] <- suppressWarnings(as.numeric(res[["campo_precisao"]]))
-    return(res)
-  }
-# Quais conjuntos de dados devem ser descarregados? ################################################
-.getDataset <-
-  function(sheets_keys, dataset) {
-    
-    if ("all" %in% dataset) {
-      # Some datasets are not ready for download
-      sheets_keys <- sheets_keys[!is.na(sheets_keys$camada), ]
-      
-    } else {
-      idx_out <- which(!dataset %in% sheets_keys$ctb)
-      if (length(idx_out) >= 1) {
-        stop(paste0("Unknown value '", dataset[idx_out], "' passed to parameter dataset"))
-      }
-      sheets_keys <- sheets_keys[sheets_keys$ctb %in% dataset, ]
-      
-      # Some datasets might not be ready for download
-      idx_na <- which(is.na(sheets_keys$camada))
-      if (length(idx_na) >= 1) {
-        stop(paste0("Cannot download dataset '", dataset[idx_na], "'. See https://goo.gl/tVC8dH"))
-      }
-    }
-    return(sheets_keys)
-  }
-# Descarregar tabela 'febr-chaves' #################################################################
-.getSheetsKeys <- 
-  function(x = "18yP9Hpp8oMdbGsf6cVu4vkDv-Dj-j5gjEFgEXN-5H-Q", dataset) {
-    # motor de descarregamento e leitura ---
-    url <- paste('https://docs.google.com/spreadsheets/d/', x, '/export?format=csv', sep ='')
-    destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = '.csv')
-    utils::download.file(url = url, destfile = destfile, quiet = TRUE)
-    res <- utils::read.table(
-      file = destfile, header = TRUE, sep = ',', dec = ',', comment.char = '',
-      stringsAsFactors = FALSE)
-    # saída ---
-    res <- .getDataset(sheets_keys = res, dataset = dataset)
-    res <- res[order(res$ctb), ]
     return(res)
   }
