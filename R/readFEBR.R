@@ -69,7 +69,7 @@ readFEBR <-
       }
       return(path)
     })
-    res <- lapply(path, function(x){
+    res <- lapply(path, function(x) {
       if (verbose) {
         message(paste0("Reading...\n", paste0(x, collapse = "\n")))
       }
