@@ -12,7 +12,7 @@
 
 # febr 1.6.3
 
-* `morphology`: deals with depth data between parentesis when retrieving soil color data.
+* `morphology`: deals with depth data between parenthesis when retrieving soil color data.
 
 # febr 1.6.2
 

@@ -12,22 +12,32 @@ dataset <-
   function(...) {
     .Defunct(new = "identification", package = "febr")
   }
+#' @export
+#' @rdname febr-defunct
 febr <- 
   function(...) {
     .Defunct(new = "readFEBR", package = "febr")
   }
+#' @export
+#' @rdname febr-defunct
 febr2spdf <- 
   function(...) {
     .Defunct(new = "febr2sf", package = "febr")
   }
+#' @export
+#' @rdname febr-defunct
 febr2xlsx <-
   function (...) {
     .Defunct(msg = "'febr2xlsx' is defunct.\nUse 'openxlsx::write.xlsx' instead.")
   }
+#' @export
+#' @rdname febr-defunct
 header <- 
   function(...) { 
     .Defunct(new = "metadata", package = "febr")
   }
+#' @export
+#' @rdname febr-defunct
 standard <- 
   function(...) {
     .Defunct(new = "dictionary", package = "febr")

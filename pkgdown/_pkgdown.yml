@@ -29,8 +29,7 @@ reference:
       no FEBR. Elas também servem para conhecer os padrões de codificação, nomenclatura, unidades de medida, 
       número de casas decimais, entre outros, usados no FEBR.
     contents: 
-      - header
-      - standard
+      - dictionary
       - unit
   - title: "Funções de acesso"
     desc: >
@@ -42,7 +41,6 @@ reference:
       - metadata
       - observation
       - layer
-      - febr
   - title: "Funções auxiliares"
     desc: >
       As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de
@@ -51,7 +49,7 @@ reference:
     contents:
       - febr2sf
       - goto
-      - febr2xlsx
-      - febr2smartsolos
+      - febr2sse
       - morphology
+      - readIndex
       - taxonomy

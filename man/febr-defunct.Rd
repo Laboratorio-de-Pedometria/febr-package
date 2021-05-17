@@ -10,6 +10,16 @@
 \title{Defunct functions in the \strong{febr} package}
 \usage{
 dataset(...)
+
+febr(...)
+
+febr2spdf(...)
+
+febr2xlsx(...)
+
+header(...)
+
+standard(...)
 }
 \arguments{
 \item{...}{Not used.}
