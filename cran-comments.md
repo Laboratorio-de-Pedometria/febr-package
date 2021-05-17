@@ -13,7 +13,7 @@ documentation improvements. Finally, it defuncts a few obsolete functions.
 * OK: rhub, Windows Server 2008 R2 SP1, R-devel, 32/64 bit
 * OK: rhub, Ubuntu Linux 20.04.1 LTS, R-release, GCC
 * OK: rhub, Fedora Linux, R-devel, clang, gfortran
-* OK: travis-ci, x86_64-pc-linux-gnu (64-bit), Ubuntu 16.04.6 LTS, R 4.0.2
+* OK: travis-ci, x86_64-pc-linux-gnu (64-bit), Ubuntu 16.04.6 LTS, R version 4.0.2 (2020-06-22)
 
 # R CMD check results
 
