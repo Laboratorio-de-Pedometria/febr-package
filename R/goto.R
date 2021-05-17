@@ -49,7 +49,8 @@ goto <-
         stop(paste0("object of class '", class(page), "}' passed to argument 'page'"))
       }
       ops <- 
-        c("febr", "search", "package", "github", "forum", "units", "dictionary", "index", "template")
+        c("febr", "search", "package", "github", "gitlab", "forum", "units", "dictionary", "index",
+          "template")
       if (!page %in% ops) {
         stop (paste0("unknown value '", page, "' passed to argument 'page'"))
       }

@@ -33,6 +33,8 @@ readFEBR <-
     data.set,
     data.table = c("identificacao", "versionamento", "metadado", "observacao", "camada"),
     febr.repo = NULL, verbose = TRUE, ...) {
+    if (!requireNamespace("data.table", quietly = TRUE)) stop("data.table package is missing")
+    if (!requireNamespace("curl", quietly = TRUE)) stop("curl package is missing")
     # ARGUMENT CHECK ----
     ## data.set
     if (missing(data.set)) {

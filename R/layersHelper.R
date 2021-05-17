@@ -23,7 +23,7 @@
 .setMaximumObservationDepth <-
   function (obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
             plus.sign = "add", plus.depth = 2.5) {
-    
+    if (!requireNamespace("stringr")) stop("stringr package is missing")
     plus.depth <- paste("+", plus.depth)
     
     # Process data
@@ -76,7 +76,7 @@
   }
 .setLowestMeasuredValue <-
   function (obj, lessthan.sign = "subtract", lessthan.frac = 0.5) {
-    
+    if (!requireNamespace("glue")) stop("glue package is missing")
     # Variáveis contínuas interpretadas como corrente de caracteres
     id_class <- sapply(obj, class)
     id_class <- id_class[!names(id_class) %in% c("dataset_id", .opt()$layer$std.cols)]
@@ -85,8 +85,11 @@
     # A corrente de caracteres começa com o símbolo '<', seguido de um ou mais dígitos, não podendo
     # haver qualquer caracter alfabético
     if (length(id_cha) >= 1) {
-      idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(.hasLessThanSign(stats::na.omit(x))))))
-      # idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(startsWith(x = x, prefix = "<")))))
+      idx_lessthan <- names(which(sapply(obj[id_cha], function (x) {
+        any(.hasLessThanSign(stats::na.omit(x)))
+      })))
+      # idx_lessthan <-
+      #   names(which(sapply(obj[id_cha], function (x) any(startsWith(x = x, prefix = "<")))))
       
       # Processar dados
       if (length(idx_lessthan) >= 1) {
@@ -98,7 +101,8 @@
           remove = {
             obj[idx_lessthan] <- 
               lapply(obj[idx_lessthan], function (x) {
-                out <- gsub(pattern = "^< ", replacement = "", x = x) # alguns casos incluem espaço após '<'
+                # alguns casos incluem espaço após '<'
+                out <- gsub(pattern = "^< ", replacement = "", x = x)
                 out <- gsub(pattern = "^<", replacement = "", x = x)
                 out <- gsub(pattern = "(.),(.)", replacement = "\\1.\\2", x = out)
                 as.numeric(out)
@@ -161,7 +165,7 @@
 .solveWavyLayerTransition <-
   function (obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
             smoothing.fun = "mean") {
-    
+    if (!requireNamespace("stringr")) stop("stringr package is missing")
     # Note that a wavy/irregular transition at 'profund_inf' does not necessarily mean a
     # wavy/irregular transition at the next 'profund_sup' because the consistency of the order of
     # the layers is not guaranteed -- we are dealing with character data.
@@ -173,10 +177,10 @@
     # if (nrow(idx_wavy) >= 1) {
       
       # Prepare data
-      # i <- data.frame(row = c(idx_wavy[, 1], idx_wavy[, 2]), col = rep(1:2, each = nrow(idx_wavy)))
+      # i <- data.frame(row = c(idx_wavy[, 1], idx_wavy[, 2]),
+      #   col = rep(1:2, each = nrow(idx_wavy)))
       i <- rbind(data.frame(row = idx_wavy[[1]], col = 1), data.frame(row = idx_wavy[[2]], col = 2))
       new_depth <- stringr::str_split_fixed(obj[depth.cols][as.matrix(i)], "/", Inf)
-      
       # Apply smoothing function
       switch(
         smoothing.fun,

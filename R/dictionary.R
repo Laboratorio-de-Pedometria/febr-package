@@ -34,7 +34,7 @@
 ####################################################################################################
 dictionary <-
   function(table, variable, unit, precision) {
-  # function(table, variable, unit, precision, expr) {
+    if (!requireNamespace("pedometrics")) stop("pedometrics package is missing")
     # CHECK ARGUMENTS
     # table
     if (!missing(table)) {
@@ -89,10 +89,6 @@ dictionary <-
       idx <- which(std[["campo_precisao"]] %in% precision)
       std <- std[idx, ]
     }
-    ## Selecionar usando expressão
-    # if (!missing(expr)) {
-    #   std <- dplyr::filter(std, eval(parse(text = expr)))
-    # }
     # ERRO
     if (nrow(std) == 0) {
       stop("function call did not return any results", call. = TRUE)

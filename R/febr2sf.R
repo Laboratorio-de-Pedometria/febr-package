@@ -19,6 +19,7 @@
 ####################################################################################################
 febr2sf <-
   function (obj) {
+    if (!requireNamespace("sf")) stop("sf package is missing")
     # Verificar sistema de referência de coordenadas
     crs <- unique(obj[["coord_sistema"]])
     if (length(crs) == 1) {

@@ -17,16 +17,17 @@ Description:
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports:
-  curl,
   data.table,
   dplyr,
   glue,
   jsonlite,
-  knitr,
   pedometrics,
-  rmarkdown,
   sf,
   stringr
+Suggests:
+  curl,
+  knitr,
+  rmarkdown
 VignetteBuilder: knitr
 SystemRequirements: pandoc
 RoxygenNote: 7.1.1

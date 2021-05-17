@@ -58,24 +58,21 @@
 # Empilhar tabelas ----
 .stackTables <-
   function(obj) {
-    
+    if (!requireNamespace("dplyr")) stop("dplyr package is missing")
     # Organizar unidades de medida
     # stack_unit <- lapply(obj, function(x) do.call(rbind, attributes(x)[c("names", "units")]))
     stack_unit <- 
       lapply(obj, function(x) do.call(rbind, attributes(x)[c("names", "field_name", "field_unit")]))
     stack_unit <- do.call(cbind, stack_unit)
     stack_unit <- stack_unit[, !duplicated(stack_unit["names", ])]
-    
     # Empilhar tabelas
     res <- suppressWarnings(dplyr::bind_rows(obj))
-    
     # Definir novos atributos
     a <- attributes(res)
     # a$units <- stack_unit["units", ][match(stack_unit["names", ], colnames(res))]
     a$field_unit <- stack_unit["field_unit", ][match(stack_unit["names", ], colnames(res))]
     a$field_name <- stack_unit["field_name", ][match(stack_unit["names", ], colnames(res))]
     attributes(res) <- a
-    
     # Resultado
     return(res)
   }
@@ -87,7 +84,7 @@
   }
 .crsTransform <- 
   function(obj, crs, xy = c("coord_x", "coord_y")) {
-    
+    if (!requireNamespace("sf")) stop("sf package is missing")
     # crs_lower <- tolower(crs)
     crs_upper <- toupper(crs)
     
@@ -170,7 +167,7 @@
 # Harmonização baseada nos níveis dos códigos de identificação ----
 .harmonizeByName <-
   function(obj, extra_cols, harmonization) {
-    
+    if (!requireNamespace("stringr")) stop("stringr package is missing")
     # Alterar nomes das colunas
     new_colnames <- stringr::str_split_fixed(string = extra_cols, pattern = "_", n = Inf)
     n_new_colnames <- seq(min(harmonization$level, ncol(new_colnames)))
@@ -194,7 +191,7 @@
 # Formatar data de observação ----
 .formatObservationDate <- 
   function(obj, time.format) {
-    
+    if (!requireNamespace("glue")) stop("glue package is missing")
     # Identificar formatação da data
     time_sep <- ifelse(all(grepl("/", stats::na.omit(obj$observacao_data))), "/", "-")
     time_form0 <- glue::glue("%d{time_sep}%m{time_sep}%Y")
@@ -268,7 +265,9 @@
           
           ## remover linhas sem dados de profundidade
           if (!is.null(missing$depth) && missing$depth == "drop") {
-            na_depth_id <- apply(obj[c("profund_sup", "profund_inf")], 1, function(x) sum(is.na(x))) >= 1
+            na_depth_id <- apply(obj[c("profund_sup", "profund_inf")], 1, function(x) {
+              sum(is.na(x))}
+            ) >= 1
             obj <- obj[!na_depth_id, ]
           }
         } 

@@ -154,6 +154,7 @@ layer <-
              units = FALSE, round = FALSE),
            harmonization = list(harmonize = FALSE, level = 2),
            progress = TRUE, verbose = TRUE, febr.repo = NULL) {
+    if (!requireNamespace("pedometrics")) stop("pedometrics package is missing")
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$layer$std.cols

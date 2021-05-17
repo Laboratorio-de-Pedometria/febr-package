@@ -29,14 +29,9 @@ New submission
 
 Package was archived on CRAN
 
-Possibly mis-spelled words in DESCRIPTION:
-  FEBR (3:54, 15:63)
-
 CRAN repository db overrides:
   X-CRAN-Comment: Archived on 2020-10-24 as problems were not corrected
     in time.
-
-  Including not using Suggests conditionally.
 ```
 
 This NOTE can be ignored.

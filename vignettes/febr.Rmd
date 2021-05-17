@@ -20,7 +20,6 @@ O pacote febr para [R](https://www.r-project.org/) [@r] foi criado para facilita
 
 ```{r, echo=TRUE, eval=FALSE}
 install.packages("febr")
-library(febr)
 ```
 
 Já a versão de desenvolvimento, disponível no [GitHub](https://github.com/samuel-rosa/febr-package), pode ser instalada usando o pacote `remotes` [@remotes].

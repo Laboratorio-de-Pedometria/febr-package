@@ -32,7 +32,6 @@ unit <-
     
     # DESCARREGAMENTO
     ## Descarregar tabela com unidades de medida
-    # res <- .getUnits()
     res <- .readGoogleSheetCSV(sheet.name = 'unidades')
     
     # ARGUMENTOS
