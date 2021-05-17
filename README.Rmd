@@ -41,17 +41,17 @@ A principal função de descarregamento de dados do pacote febr chama-se `readFE
 
 ```R
 # Descarregar todas as tabelas de dados do conjunto de dados ctb0003
-dados <- febr::readFEBR(data.set = "ctb0003")
+dados <- readFEBR(data.set = "ctb0003")
 ```
 
 ```R
 # Descarregar todas as tabelas de dados dos conjuntos de dados ctb0001, ctb0002 e ctb0003
-dados <- febr::readFEBR(data.set = c("ctb0001", "ctb0002", "ctb0003"))
+dados <- readFEBR(data.set = c("ctb0001", "ctb0002", "ctb0003"))
 ```
 
 ```R
 # Descarregar apenas a tabela de dados de identificação dos conjuntos de dados ctb0001, ctb0002 e ctb0003
-dados <- febr::readFEBR(data.set = c("ctb0001", "ctb0002", "ctb0003"), data.table = "identificacao")
+dados <- readFEBR(data.set = c("ctb0001", "ctb0002", "ctb0003"), data.table = "identificacao")
 ```
 
 O objeto retornado é uma lista de conjuntos de dados, os quais são listas com suas próprias tabelas de dados. Para processar esses dados, você pode usar funções como `lapply`.

@@ -17,7 +17,7 @@ goto(data.set, page)
 \code{"gitlab"} (FEBR source code repository on GitLab),
 \code{"forum"} (FEBR public forum at Google Groups),
 \code{"units"} (units and conversion factors used in FEBR),
-\code{"standards"} (standards used in FEBR),
+\code{"dictionary"} (dictionary used in FEBR),
 \code{"index"} (data set index), and
 \code{"template"} (spreadsheet data template).}
 }

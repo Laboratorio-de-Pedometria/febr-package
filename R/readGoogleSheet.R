@@ -41,7 +41,7 @@
 # Google Charts. Query Language Reference (Version 0.7). https://developers.google.com/chart/interactive/docs/querylanguage
 # Google Charts. Implementing the Chart Tools Datasource Protocol (V0.6). https://developers.google.com/chart/interactive/docs/dev/implementing_data_source
 # 
-# @export
+# export
 # @examples
 # # Read entire spreadsheet
 # # First row contains header

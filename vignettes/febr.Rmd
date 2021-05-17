@@ -20,16 +20,10 @@ O pacote febr para [R](https://www.r-project.org/) [@r] foi criado para facilita
 
 ```{r, echo=TRUE, eval=FALSE}
 install.packages("febr")
+library(febr)
 ```
 
-Já a versão de desenvolvimento, disponível no [GitHub](https://github.com/samuel-rosa/febr-package), pode ser instalada, usando o pacote `remotes` [@remotes], da seguinte maneira:
-
-```{r, echo=TRUE, eval=FALSE}
-if (!require(remotes)) {
-  install.packages(pkgs = "remotes")
-}
-remotes::install_github("samuel-rosa/febr-package")
-```
+Já a versão de desenvolvimento, disponível no [GitHub](https://github.com/samuel-rosa/febr-package), pode ser instalada usando o pacote `remotes` [@remotes].
 
 O pacote febr possui três grupos de funções: estruturais, acesso e auxiliares—veja tabela abaixo. Uma demonstração básica da forma de uso e aplicações dessas funções é apresentada nas próximas seções.
 
@@ -58,13 +52,13 @@ As funções estruturais servem para conhecer a estrutura das tabelas dos conjun
 A função `dictionary` (do inglês, *dictionary*, para dicionário) fornece uma interface para descarregar informações sobre os padrões usados para as variáveis incluídas nas tabelas `observacao` e `camada` de todos os conjuntos de dados. Isso inclui a codificação e nomenclatura, a descrição de cada variável, a unidade de medida e o número de casas decimais, o tipo de dado e a categoria da variável. Tais informações estão organizadas numa planilha disponível em https://goo.gl/hi77sB. Por exemplo, caso tenhamos interesse em conhecer os padrões usados no FEBR para as variáveis `argila`, `densidade`, `carbono` e `ph`, basta usar o seguinte código:
 
 ```{r, echo = TRUE, eval = FALSE}
-pad <- febr::dictionary(variable = c("argila", "densidade", "carbono", "ph"))
+pad <- dictionary(variable = c("argila", "densidade", "carbono", "ph"))
 ```
 
 A função `unit` (do inglês, *unit*, para unidade) serve de interface para uma planilha (disponível em https://goo.gl/Vvvsf2) contendo diversas unidades de medida e as constantes utilizadas para a conversão dos dados entre elas. Essas informações são úteis durante o descarregamento dos dados usando as funções `observation` e `layer` (veja mais abaixo). Por exemplo, a densidade do solo é comumente expressa em `Mg/m^3` e `kg/dm^3`. Para descarregar as constantes de transformação entre essas duas unidades de medida, basta usar o seguinte código:
 
 ```{r, echo = TRUE, eval = FALSE}
-uni <- febr::unit(source = "Mg/m^3", target = "kg/dm^3")
+uni <- unit(source = "Mg/m^3", target = "kg/dm^3")
 ```
 
 # Funções de acesso
@@ -74,25 +68,25 @@ As funções de acesso servem para descarregar os dados e metadados dos conjunto
 Os dados de identificação de um ou mais conjuntos de dados, contidos na tabela `identificacao`, podem ser descarregados usando a função `identification`. Para isso, basta informar o código de identificação do(s) conjunto(s) de dados que se deseja descarregar, por exemplo:
 
 ```{r, echo = TRUE, eval = FALSE}
-conj <- febr::identification(data.set = c("ctb0003", "ctb0036"))
+conj <- identification(data.set = c("ctb0003", "ctb0036"))
 ```
 
 Já os dados sobre os métodos usados para produzir os dados contidos em um ou mais conjuntos de dados, armazenados na tabela `metadado`, podem ser descarregados usando a função `metadata` (do inglês, *metadata*, para metadados), por exemplo:
 
 ```{r, echo = TRUE, eval = FALSE}
-meta <- febr::metadata(data.set = c("ctb0003", "ctb0036"))
+meta <- metadata(data.set = c("ctb0003", "ctb0036"))
 ```
 
 Os dados das observações do solo, contidos na tabela `observacao`, podem ser descarregados usando a função `observation` (do inglês, *observation*, para observação). Assim como a função `standard` vista acima, a função `observation` também possui o argumento `variable`, que permite selecionar as variáveis que devem ser retornadas. Por exemplo, para retornar apenas a variável `taxon` do conjunto de dados `ctb0003`, usamos o seguinte código:
 
 ```{r, echo = TRUE, eval = FALSE}
-obs <- febr::observation(data.set = "ctb0003", variable = "taxon")
+obs <- observation(data.set = "ctb0003", variable = "taxon")
 ```
 
 A função `layer` (do inglês, *layer*, para camada) serve para descarregar os dados contidos na tabela `camada` dos conjunto de dados. Por exemplo, para descarregar os dados da tabela `camada` dos conjuntos de dados `ctb0003` e `ctb0036`, retornando apenas as variáveis `argila`, `carbono` e `densidade`, usamos o seguinte código:
 
 ```{r, echo = TRUE, eval = FALSE}
-cam <- febr::layer(data.set = c("ctb0003", "ctb0036"), variable = c("argila", "carbono", "densidade"))
+cam <- layer(data.set = c("ctb0003", "ctb0036"), variable = c("argila", "carbono", "densidade"))
 ```
 
 # Funções auxiliares
@@ -102,14 +96,14 @@ As funções auxiliares servem para realizar tarefas complementares às funçõe
 A função `febr2sf` serve para criar um objeto do tipo _simple feature_  [@sf] a partir da tabela `observacao` descarregada usando a função `observation`. O código a seguir demonstra como fazer isso.
 
 ```{r, echo = TRUE, eval = FALSE}
-obs <- febr::observation(data.set = "ctb0003", variable = "taxon")
-obs <- febr::febr2sf(obs)
+obs <- observation(data.set = "ctb0003", variable = "taxon")
+obs <- febr2sf(obs)
 ```
 
 A segunda função auxiliar do pacote febr é `goto`. A função `goto` serve de interface para navegação nas diversas páginas na Internet do FEBR: página principal, visualização geográfica, catálogo de conjuntos de dados, página de busca, manual do mantenedor, pacote para R, GitHub, fórum de discussão, e tabelas com padrões de unidades de medida e de codificação e nomenclatura. Além disso, a função `goto` serve para visitar as tabelas dos conjuntos de dados. Por exemplo, para visitar as tabelas do conjunto de dados `ctb0003`, usamos o seguinte código: 
 
 ```{r, echo = TRUE, eval = FALSE}
-febr::goto(data.set = "ctb0003")
+goto(data.set = "ctb0003")
 ```
 
 Novas funções auxiliares podem ser criadas à medida que as usuárias do pacote febr apontarem a sua necessidade. Alternativamente, as usuárias são encorajadas a submeter funções auxiliares para inclusão no pacote febr seguindo o modelo de desenvolvimento colaborativo *fork & pull*.

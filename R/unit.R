@@ -1,6 +1,7 @@
 #' Get *units* table
 #' 
-#' Download data from the *units* ("unidades") table of the Free Brazilian Repository for Open Soil Data --
+#' Download data from the *units* ("unidades") table of the Free Brazilian Repository for Open Soil
+#' Data --
 #' FEBR, \url{https://www.pedometria.org/febr/}. This includes measurement units and conversion 
 #' factors. This is used to standardize the data contained in a dataset when downloading it via
 #' \code{\link[febr]{layer}} or \code{\link[febr]{observation}}.

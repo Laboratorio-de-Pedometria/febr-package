@@ -13,7 +13,7 @@
 #' `"gitlab"` (FEBR source code repository on GitLab),
 #' `"forum"` (FEBR public forum at Google Groups),
 #' `"units"` (units and conversion factors used in FEBR),
-#' `"standards"` (standards used in FEBR),
+#' `"dictionary"` (dictionary used in FEBR),
 #' `"index"` (data set index), and
 #' `"template"` (spreadsheet data template).
 #' 
@@ -49,7 +49,7 @@ goto <-
         stop(paste0("object of class '", class(page), "}' passed to argument 'page'"))
       }
       ops <- 
-        c("febr", "search", "package", "github", "forum", "units", "standards", "index", "template")
+        c("febr", "search", "package", "github", "forum", "units", "dictionary", "index", "template")
       if (!page %in% ops) {
         stop (paste0("unknown value '", page, "' passed to argument 'page'"))
       }
@@ -79,7 +79,7 @@ goto <-
         units = {
           url <- paste0(gs, "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo")
         },
-        standards = {
+        dictionary = {
           url <- paste0(gs, "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI")
         },
         index = {

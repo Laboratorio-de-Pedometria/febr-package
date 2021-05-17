@@ -2,8 +2,7 @@
 % Please edit documentation in R/taxonomy.R
 \name{taxonomy}
 \alias{taxonomy}
-\title{Soil taxonomy
-Extract and process soil taxonomic data from textual soil classification description.}
+\title{Soil taxonomy}
 \usage{
 taxonomy(
   text,
@@ -15,7 +14,8 @@ taxonomy(
 \arguments{
 \item{text}{Character string with soil classification description (in Portuguese).}
 
-\item{method}{Character string defining the string processing method. Options: \code{decompose}.}
+\item{method}{Character string defining the string processing method.
+Options: \code{decompose}.}
 
 \item{sep}{Character string.
 Defaults to \code{sep = " "}.}
@@ -24,7 +24,6 @@ Defaults to \code{sep = " "}.}
 Defaults to \code{pattern = c(", ", " A ", " textura ")}.}
 }
 \description{
-Soil taxonomy
 Extract and process soil taxonomic data from textual soil classification description.
 }
 \examples{

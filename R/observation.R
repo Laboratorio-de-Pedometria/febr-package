@@ -32,7 +32,7 @@
 #' 
 #' \item `units` Logical value indicating if the measurement unit(s) of the continuous variable(s)
 #' should be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no
-#' conversion is performed. See \code{\link[febr]{standard}} for more information.
+#' conversion is performed. See \code{\link[febr]{dictionary}} for more information.
 #' 
 #' \item `round` Logical value indicating if the values of the continuous variable(s) should be
 #' rounded to the standard number of decimal places. Requires `units = TRUE`. Defaults to
@@ -101,7 +101,7 @@
 #'
 #' @note Check the new core data download function `readFEBR()`.
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso \code{\link[febr]{layer}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
+#' @seealso \code{\link[febr]{layer}}, \code{\link[febr]{dictionary}}, \code{\link[febr]{unit}}
 #' @export
 #' 
 #' @examples
@@ -480,7 +480,8 @@ observation <-
         } else {
           res[[i]] <- data.frame()
           if (na_coord == n_rows) {
-            m <- paste("All observations in", dts, "are missing coordinates. None will be returned.") 
+            m <-
+              paste0("All observations in", dts, "are missing coordinates. None will be returned.") 
           } else if (n_na_time == n_rows) {
             m <- paste("All observations in", dts, "are missing date. None will be returned.")  
           }

@@ -1,11 +1,18 @@
 #' Soil taxonomy
+#' 
 #' Extract and process soil taxonomic data from textual soil classification description.
+#' 
 #' @param text Character string with soil classification description (in Portuguese).
-#' @param method Character string defining the string processing method. Options: `decompose`.
+#' 
+#' @param method Character string defining the string processing method.
+#' Options: `decompose`.
+#' 
 #' @param sep Character string.
 #' Defaults to `sep = " "`.
+#' 
 #' @param pattern Character string (in Portuguese).
 #' Defaults to `pattern = c(", ", " A ", " textura ")`.
+#' 
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples

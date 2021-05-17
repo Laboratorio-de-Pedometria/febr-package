@@ -3,8 +3,8 @@
 # 1. Remove plus sign, using the already existing value as the maximum observation depth.
 # 2. Add a given quantity thus increasing the maximum observation depth.
 # 
-# We recommend adding some amount because many authors describe the depth of the last layer using a single 
-# number and a plus sign. See for example ctb0014.
+# We recommend adding some amount because many authors describe the depth of the last layer using a
+# single number and a plus sign. See for example ctb0014.
 # 
 # obj is a data.frame with the layers of one or many soil observations
 # 
@@ -21,8 +21,8 @@
 # (res <- res[res$observacao_id == "E85", c("profund_sup", "profund_inf")])
 # .setMaximumObservationDepth(res)
 .setMaximumObservationDepth <-
-  function (obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"), plus.sign = "add",
-            plus.depth = 2.5) {
+  function (obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
+            plus.sign = "add", plus.depth = 2.5) {
     
     plus.depth <- paste("+", plus.depth)
     
@@ -38,11 +38,12 @@
         },
         
         # Adicionar uma dada quantidade definida pelo usuário.
-        # É preciso atentar para o fato de que a última profundidade, por mais incrível que pareça, também pode
-        # ser irregular, ou seja, identificada por uma barra (/). Nesse caso, a simples avaliação da expressão
-        # usando eval() e parse() resultaria numa operação de divisão.
+        # É preciso atentar para o fato de que a última profundidade, por mais incrível que pareça,
+        # também pode ser irregular, ou seja, identificada por uma barra (/). Nesse caso, a simples
+        # avaliação da expressão usando eval() e parse() resultaria numa operação de divisão.
         add = {
-          obj[idx_plus, depth.cols[2]] <- gsub("+", plus.depth, obj[idx_plus, depth.cols[2]], fixed = TRUE)
+          obj[idx_plus, depth.cols[2]] <-
+            gsub("+", plus.depth, obj[idx_plus, depth.cols[2]], fixed = TRUE)
           # obj[idx_plus, depth.cols[2]] <-
           # sapply(obj[idx_plus, depth.cols[2]], function (x) eval(parse(text = x)))
           obj[idx_plus, depth.cols[2]] <-
@@ -62,8 +63,8 @@
     return (obj)
   }
 
-# Símbolo indicador do limite inferior de detecção do método de determinação (<) ##############################
-# obj <- febr::layer(dataset = "ctb0018", variable = "prata")
+# Símbolo indicador do limite inferior de detecção do método de determinação (<) ###################
+# obj <- febrlayer(dataset = "ctb0018", variable = "prata")
 # obj <- data.frame(a = c("<50a", "5,0"), stringsAsFactors = FALSE)
 # .setLowestMeasuredValue(obj = obj, lessthan.frac = 0.5)
 # x <- tmp$zinco_aquaregia_icpms
@@ -81,8 +82,8 @@
     id_class <- id_class[!names(id_class) %in% c("dataset_id", .opt()$layer$std.cols)]
     id_cha <- names(id_class[id_class %in% "character"])
     
-    # A corrente de caracteres começa com o símbolo '<', seguido de um ou mais dígitos, não podendo haver
-    # qualquer caracter alfabético
+    # A corrente de caracteres começa com o símbolo '<', seguido de um ou mais dígitos, não podendo
+    # haver qualquer caracter alfabético
     if (length(id_cha) >= 1) {
       idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(.hasLessThanSign(stats::na.omit(x))))))
       # idx_lessthan <- names(which(sapply(obj[id_cha], function (x) any(startsWith(x = x, prefix = "<")))))
@@ -161,9 +162,9 @@
   function (obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
             smoothing.fun = "mean") {
     
-    # Note that a wavy/irregular transition at 'profund_inf' does not necessarily mean a wavy/irregular
-    # transition at the next 'profund_sup' because the consistency of the order of the layers is not
-    # guaranteed -- we are dealing with character data.
+    # Note that a wavy/irregular transition at 'profund_inf' does not necessarily mean a
+    # wavy/irregular transition at the next 'profund_sup' because the consistency of the order of
+    # the layers is not guaranteed -- we are dealing with character data.
     idx_wavy <- lapply(obj[depth.cols], function (x) grep(pattern = "/", x = x, fixed = TRUE))
     # idx_wavy <- as.data.frame(idx_wavy)
     
@@ -207,7 +208,7 @@
 # rm(list = ls())
 # source("R/layers.R")
 # source("R/standards.R")
-# res <- febr::layer("ctb0643", variable = "all")
+# res <- febrlayer("ctb0643", variable = "all")
 # obj <- res[res$observacao_id == "Perfil-01", 1:10]
 # .solveBrokenLayerTransition(obj[c(1:7, 52)])
 # res <- .solveBrokenLayerTransition(res)
@@ -232,14 +233,14 @@
 #     # Dividir camadas por 'observacao_id' 
 #     split_obj <- split(x = obj, f = obj[[id.cols[1]]])
 #     
-#     # Tipo 1: Uma ou mais camadas possuem valores idênticos de 'profund_sup' (mas não necessariamente de 
-#     # 'profund_inf'), indicando que elas começam na mesma profundidade (mas não necessariamente terminam na
-#     # mesma profundidade).
+#     # Tipo 1: Uma ou mais camadas possuem valores idênticos de 'profund_sup' (mas não
+#     necessariamente de 'profund_inf'), indicando que elas começam na mesma profundidade (mas não
+#     necessariamente terminam na mesma profundidade).
 #     has_broken1 <- sapply(split_obj, function (x) any(duplicated(x[depth.cols[1]])))
 #     
-#     # Tipo 2: Uma ou mais camadas possuem valores idênticos de 'profund_inf' (mas não necessariamente de 
-#     # 'profund_sup'), indicando que elas terminam na mesma profundidade (mas não necessariamente começam na
-#     # mesma profundidade).
+#     # Tipo 2: Uma ou mais camadas possuem valores idênticos de 'profund_inf' (mas não
+#     necessariamente de 'profund_sup'), indicando que elas terminam na mesma profundidade (mas não
+#     necessariamente começam na mesma profundidade).
 #     has_broken2 <- sapply(split_obj, function (x) any(duplicated(x[depth.cols[2]])))
 #     
 #     if (length(has_broken1) >= 1) {
@@ -330,8 +331,8 @@
     # Dividir camadas por 'observacao_id'
     split_obj <- split(x = obj, f = obj[[observation.id]])
     
-    # Duas ou mais camadas possuem valor idêntico de 'camada_id' -- exceto NA, ou seja, quando as camadas
-    # não possuem código de identificação (caso de conjuntos de dados ainda não revisados).
+    # Duas ou mais camadas possuem valor idêntico de 'camada_id' -- exceto NA, ou seja, quando as
+    # camadas não possuem código de identificação (caso de conjuntos de dados ainda não revisados).
     # has_rep <- sapply(split_obj, function (x) any(duplicated(x[[layer.id]])))
     has_rep <- sapply(split_obj, function (x) any(duplicated(x[[layer.id]], incomparables = NA)))
     if (length(has_rep) >= 1) {

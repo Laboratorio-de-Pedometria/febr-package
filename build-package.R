@@ -30,7 +30,8 @@ devtools::check_win_oldrelease()
 # check in R-hub ----
 # rhub::validate_email(email = "alessandrosamuelrosa@gmail.com")
 devtools::check_rhub()
-# devtools::check_rhub(env_vars = c("_R_CHECK_FORCE_SUGGESTS_" = "false")) # scape missing suggested packages
+# To scape missing suggested packages:
+# devtools::check_rhub(env_vars = c("_R_CHECK_FORCE_SUGGESTS_" = "false"))
 
 devtools::build()
 

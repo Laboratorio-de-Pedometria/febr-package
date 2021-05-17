@@ -48,7 +48,7 @@ details.
 
 \item \code{units} Logical value indicating if the measurement unit(s) of the continuous variable(s)
 should be converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no
-conversion is performed. See \code{\link[febr]{standard}} for more information.
+conversion is performed. See \code{\link[febr]{dictionary}} for more information.
 
 \item \code{round} Logical value indicating if the values of the continuous variable(s) should be
 rounded to the standard number of decimal places. Requires \code{units = TRUE}. Defaults to
@@ -159,7 +159,7 @@ res <- observation(data.set = "all", febr.repo = febr.repo)
 }
 }
 \seealso{
-\code{\link[febr]{layer}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
+\code{\link[febr]{layer}}, \code{\link[febr]{dictionary}}, \code{\link[febr]{unit}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

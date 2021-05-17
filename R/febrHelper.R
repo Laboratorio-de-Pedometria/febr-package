@@ -14,7 +14,6 @@
       ),
       gs = list(
         comment = "#metadado>",
-        # locale = readr::locale(date_names = "pt", decimal_mark = ","),
         na = c("NA", "-", "", "na", "tr", "#VALUE!", "#N/A"),
         verbose = FALSE
       ),
@@ -100,7 +99,8 @@
     tmp_obj <- obj[id_coords, ]
     
     ## Verificar se o SRC está faltando
-    ## Caso esteja faltando, e as coordendas forem geográficas, então atribui-se o SRC usado como padrão
+    ## Caso esteja faltando, e as coordendas forem geográficas, então atribui-se o SRC usado como
+    ## padrão
     is_na_crs <- is.na(tmp_obj$coord_sistema)
     if (any(is_na_crs)) {
       is_degree <- nchar(round(abs(tmp_obj$coord_x))) <= 2
@@ -149,7 +149,8 @@
     } else if (tmp_obj$coord_sistema[1] != crs_upper) {
       
       ## Transformar o SRC
-      tmp_obj <- sf::st_as_sf(x = tmp_obj, coords = xy, crs = .getEPSGcode(tmp_obj$coord_sistema[1]))
+      tmp_obj <- sf::st_as_sf(
+        x = tmp_obj, coords = xy, crs = .getEPSGcode(tmp_obj$coord_sistema[1]))
       tmp_obj <- sf::st_transform(crs = .getEPSGcode(crs), x = tmp_obj)
       tmp_obj_coords <- sf::st_coordinates(x = tmp_obj)
       colnames(tmp_obj_coords) <- xy
