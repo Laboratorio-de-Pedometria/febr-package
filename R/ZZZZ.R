@@ -15,7 +15,8 @@
           sep = "")
   )
   # Verificar se os pacotes importados estão instalados
-  pkg <- c("data.table", "dplyr", "glue", "jsonlite", "pedometrics", "sf", "stringr")
+  pkg <- c("curl", "data.table", "dplyr", "glue", "jsonlite", "knitr", "pedometrics", "rmarkdown",
+           "sf", "stringr")
   id <- !sapply(pkg, requireNamespace, quietly = TRUE)
   if (any(id)) {
     pkg <- paste(pkg[which(id)], collapse = " ")
