@@ -16,23 +16,20 @@ Description:
   <https://www.pedometria.org/febr/>.
 License: GPL (>= 2)
 Encoding: UTF-8
-Depends: R (>= 3.3.0)
 Imports:
+  curl,
+  jsonlite,
+  sf,
+  stringr,
+  knitr,
   data.table,
   stats,
   utils
 Suggests:
-  curl,
-  glue,
-  jsonlite,
-  knitr,
-  rmarkdown,
-  sf,
-  stringr
-VignetteBuilder: knitr, rmarkdown
+  rmarkdown
+VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/samuel-rosa/febr-package/
 BugReports: https://github.com/samuel-rosa/febr-package/issues/
 Language: en-US
-Repository: CRAN

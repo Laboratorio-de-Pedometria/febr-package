@@ -1,6 +1,7 @@
 .opt <-
   function() {
     list(
+      owncloud = "https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F",
       observation = list(
         std.cols =
           c("observacao_id", "sisb_id", "ibge_id", "observacao_data",
@@ -41,8 +42,7 @@
 .readFEBR <-
   function(data.set, data.table, febr.repo, ...) {
     if (is.null(febr.repo)) {
-      owncloud <- "https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F"
-      path <- paste0(owncloud, data.set, '&files=', data.set, '-', data.table, '.txt')
+      path <- paste0(.opt()$owncloud, data.set, '&files=', data.set, '-', data.table, '.txt')
     } else {
       path <- file.path(path.expand(febr.repo), data.set, paste0(data.set, '-', data.table, ".txt"))
       path <- normalizePath(path = path, mustWork = FALSE)
@@ -50,9 +50,6 @@
     res <- tryCatch(
       utils::read.table(
         path, dec = ",", header = TRUE, stringsAsFactors = FALSE, na.strings = .opt()$gs$na, ...),
-      error = function(error) {
-        print(paste0("File ", path, " is not available for reuse yet"))
-      },
       warning = function(warning) {
         print(paste0("File ", path, " is not available for reuse yet"))
       })
@@ -64,6 +61,7 @@
   function(obj) {
     
     if (!requireNamespace("data.table")) stop("data.table package is missing")
+    
     # Organizar unidades de medida
     stack_unit <- 
       lapply(obj, function(x) {
@@ -80,6 +78,7 @@
     a$field_unit <- stack_unit["field_unit", ][match(stack_unit["names", ], colnames(res))]
     a$field_name <- stack_unit["field_name", ][match(stack_unit["names", ], colnames(res))]
     attributes(res) <- a
+    
     # Resultado
     return(res)
   }
@@ -172,16 +171,15 @@
 # Harmonização baseada nos níveis dos códigos de identificação ----
 .harmonizeByName <-
   function(obj, extra_cols, harmonization) {
+    
     if (!requireNamespace("stringr")) stop("stringr package is missing")
+    
     # Alterar nomes das colunas
     new_colnames <- stringr::str_split_fixed(string = extra_cols, pattern = "_", n = Inf)
     n_new_colnames <- seq(min(harmonization$level, ncol(new_colnames)))
     new_colnames <- matrix(new_colnames[, n_new_colnames], nrow = nrow(new_colnames))
-    
-    # if (n_new_colnames > 1) {
     new_colnames <- 
       apply(new_colnames, 1, function(x) paste(x[!x == ""], collapse = "_", sep = ""))
-    # }
     
     # No caso de nomes idênticos, manter o nome original
     if (any(duplicated(new_colnames))) {
@@ -196,30 +194,40 @@
 # Formatar data de observação ----
 .formatObservationDate <- 
   function(obj, time.format) {
-    if (!requireNamespace("glue")) stop("glue package is missing")
+    
+    # if (!requireNamespace("glue")) stop("glue package is missing")
+    
     # Identificar formatação da data
     time_sep <- ifelse(all(grepl("/", stats::na.omit(obj$observacao_data))), "/", "-")
-    time_form0 <- glue::glue("%d{time_sep}%m{time_sep}%Y")
+    # time_form0 <- glue::glue("%d{time_sep}%m{time_sep}%Y")
+    time_form0 <- paste0("%d", time_sep, "%m", time_sep, "%Y")
     
     # Verificar se falta data para alguma observação
     time_miss <- grepl("xx", obj$observacao_data)
     if (any(time_miss)) {
       
       ## Falta dia
-      miss_day <- grepl(glue::glue("^xx{time_sep}"), obj$observacao_data)
+      # miss_day <- grepl(glue::glue("^xx{time_sep}"), obj$observacao_data)
+      miss_day <- grepl(paste0("^xx", time_sep), obj$observacao_data)
+      
       if (any(miss_day)) {
         obj$observacao_data[miss_day] <-
-          gsub(pattern = glue::glue("^xx{time_sep}"),
-               replacement = glue::glue("{format(Sys.Date(), '%d')}{time_sep}"),
+          # gsub(pattern = glue::glue("^xx{time_sep}"),
+          gsub(pattern = paste0("^xx", time_sep),
+               # replacement = glue::glue("{format(Sys.Date(), '%d')}{time_sep}"),
+               replacement = paste0(format(Sys.Date(), '%d'), time_sep),
                x = obj$observacao_data[miss_day])
       }
       
       # Falta mês
-      miss_month <- grepl(glue::glue("{time_sep}xx{time_sep}"), obj$observacao_data)
+      # miss_month <- grepl(glue::glue("{time_sep}xx{time_sep}"), obj$observacao_data)
+      miss_month <- grepl(paste0(time_sep, "xx", time_sep), obj$observacao_data)
       if (any(miss_month)) {
         obj$observacao_data[miss_month] <-
-          gsub(pattern = glue::glue("{time_sep}xx{time_sep}"),
-               replacement = glue::glue("{time_sep}{format(Sys.Date(), '%m')}{time_sep}"),
+          # gsub(pattern = glue::glue("{time_sep}xx{time_sep}"),
+          gsub(pattern = paste0(time_sep, "xx", time_sep),
+               # replacement = glue::glue("{time_sep}{format(Sys.Date(), '%m')}{time_sep}"),
+               replacement = paste0(time_sep, format(Sys.Date(), '%m'), time_sep),
                x = obj$observacao_data[miss_month])
       }
     }

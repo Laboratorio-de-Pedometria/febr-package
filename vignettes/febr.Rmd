@@ -3,7 +3,7 @@ title: "Repositório Brasileiro Livre para Dados Abertos do Solo -- Guia Básico
 author: "Alessandro Samuel-Rosa"
 date: "`r format(Sys.Date(), '%Y-%m-%d')`"
 output: 
-  rmarkdown::html_vignette:
+  knitr:::html_vignette:
     toc: true
 bibliography: biblio.bib
 link-citations: true
@@ -38,9 +38,14 @@ t <- rbind(
   c("`febr2sf`", "Auxiliar", "Criar objeto de classe `sf`"),
   c("`goto`", "Auxiliar", "Visitar páginas do FEBR na Internet")
   )
-knitr::kable(
-  x = t, caption = paste0("Funções disponíveis no pacote febr ", pkg.info["Version"], "."), 
-  col.names = c("Função", "Grupo", "Descrição"))
+if (!requireNamespace("knitr", quietly = TRUE)) {
+  # stop("knitr package is missing")
+  print(t)
+} else {
+  knitr::kable(
+    x = t, caption = paste0("Funções disponíveis no pacote febr ", pkg.info["Version"], "."),
+    col.names = c("Função", "Grupo", "Descrição"))
+}
 ```
 
 # Funções estruturais

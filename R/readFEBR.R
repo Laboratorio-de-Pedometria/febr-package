@@ -18,7 +18,7 @@
 #' Generally useful to identify issues—please report to \email{febr-forum@@googlegroups.com} if
 #' you find any.
 #' 
-#' @param ... (optional) Arguments passed to [utils::read.table()].
+#' @param ... (optional) Arguments passed to [data.table::fread()].
 #'
 #' @return A list of data tables (data frames) with data from the chosen data sets.
 #'
@@ -67,8 +67,7 @@ readFEBR <-
     # build file names
     path <- lapply(dataset_ids, function(x) {
       if (is.null(febr.repo)) {
-        owncloud <- "https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F"
-        path <- paste0(owncloud, x, "&files=", x, "-", data.table, ".txt")
+        path <- paste0(.opt()$owncloud, x, "&files=", x, "-", data.table, ".txt")
       } else {
         path <- file.path(febr.repo, dataset_ids, paste0(data.set, '-', data.table, ".txt"))
         path <- normalizePath(path = path, mustWork = TRUE)
@@ -79,7 +78,8 @@ readFEBR <-
       if (verbose) {
         message(paste0("Reading...\n", paste0(x, collapse = "\n")))
       }
-      out <- lapply(x, utils::read.table, header = TRUE, dec = ",", stringsAsFactors = FALSE, ...)
+      # out <- lapply(x, utils::read.table, header = TRUE, dec = ",", stringsAsFactors = FALSE, ...)
+      out <- lapply(x, data.table::fread, dec = ",", ...)
       names(out) <- data.table
       out
     })

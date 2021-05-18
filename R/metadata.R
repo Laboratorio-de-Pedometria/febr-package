@@ -26,6 +26,7 @@
 ####################################################################################################
 metadata <-
   function(data.set, progress = TRUE, verbose = TRUE, febr.repo = NULL) {
+    
     # ARGUMENT CHECK ----
     ## data.set
     if (missing(data.set)) {
