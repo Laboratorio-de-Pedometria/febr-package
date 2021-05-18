@@ -160,7 +160,7 @@ res <- layer(
 res <- layer(data.set = "ctb0020")
 
 # Try to download a non existing data set
-res <- observation(data.set = "ctb0000")
+# res <- observation(data.set = "ctb0000")
 
 # Try to read all files from local directory
 febr.repo <- "~/ownCloud/febr-repo/publico"

@@ -19,7 +19,7 @@ devtools::spell_check(vignettes = FALSE)
 devtools::run_examples()
 
 # check for Linux (local) ----
-devtools::check(document = TRUE, manual = TRUE, run_dont_test = TRUE)
+devtools::check(manual = TRUE, run_dont_test = TRUE)
 
 # check for Windows (remote) ----
 devtools::check_win_oldrelease()

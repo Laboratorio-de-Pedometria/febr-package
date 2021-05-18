@@ -74,7 +74,9 @@
   }
 .setLowestMeasuredValue <-
   function (obj, lessthan.sign = "subtract", lessthan.frac = 0.5) {
-    if (!requireNamespace("glue")) stop("glue package is missing")
+    
+    # if (!requireNamespace("glue")) stop("glue package is missing")
+    
     # Variáveis contínuas interpretadas como corrente de caracteres
     id_class <- sapply(obj, class)
     id_class <- id_class[!names(id_class) %in% c("dataset_id", .opt()$layer$std.cols)]
@@ -109,7 +111,9 @@
           subtract = {
             obj[idx_lessthan] <-
               lapply(obj[idx_lessthan], function (x) {
-                out <- gsub(pattern = "^<", replacement = glue::glue("{1 - lessthan.frac}*"), x = x)
+                out <- gsub(
+                  # pattern = "^<", replacement = glue::glue("{1 - lessthan.frac}*"), x = x)
+                  pattern = "^<", replacement = paste0(1 - lessthan.frac, "*"), x = x)
                 out <- gsub(pattern = "(.),(.)", replacement = "\\1.\\2", x = out)
                 sapply(out, function (out) eval(parse(text = out)), USE.NAMES = FALSE)
               })

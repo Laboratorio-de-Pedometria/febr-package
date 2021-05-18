@@ -28,7 +28,7 @@ repository.}
 Generally useful to identify issues—please report to \email{febr-forum@googlegroups.com} if
 you find any.}
 
-\item{...}{(optional) Arguments passed to \code{\link[utils:read.table]{utils::read.table()}}.}
+\item{...}{(optional) Arguments passed to \code{\link[data.table:fread]{data.table::fread()}}.}
 }
 \value{
 A list of data tables (data frames) with data from the chosen data sets.

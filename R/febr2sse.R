@@ -64,7 +64,9 @@
 ####################################################################################################
 febr2sse <-
   function(profiles, horizons, file, ...) {
+    
     if (!requireNamespace("jsonlite")) stop("jsonlite package is missing")
+    
     # Mapeamento de metadados
     gs <- "1mc5S-HsoCcxLeue97eMoWLMse4RzFZ1_MCQyQhfzXUg"
     sheet <- "dados"

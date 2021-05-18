@@ -1,7 +1,7 @@
 # febr 1.7.1
 
 * Code and documentation clean up.
-* Package __dplyr__ is not a dependency anymore.
+* Packages __dplyr__ and __glue__ are not dependencies anymore.
 
 # febr 1.7.0
 
