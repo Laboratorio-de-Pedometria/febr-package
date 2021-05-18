@@ -19,21 +19,17 @@ devtools::spell_check(vignettes = FALSE)
 devtools::run_examples()
 
 # check for Linux (local) ----
-devtools::check(document = TRUE, manual = TRUE, force_suggests = TRUE, run_dont_test = TRUE)
+devtools::check(document = TRUE, manual = TRUE, run_dont_test = TRUE)
 
 # check for Windows (remote) ----
-devtools::check_man()
 devtools::check_win_oldrelease()
 devtools::check_win_release()
 devtools::check_win_devel()
 
 # check in R-hub ----
 # rhub::validate_email(email = "alessandrosamuelrosa@gmail.com")
-devtools::check_man()
 # rhub::check_on_windows()
 devtools::check_rhub()
-# To scape missing suggested packages:
-# devtools::check_rhub(env_vars = c("_R_CHECK_FORCE_SUGGESTS_" = "false"))
 
 devtools::build()
 

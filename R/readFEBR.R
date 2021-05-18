@@ -18,7 +18,7 @@
 #' Generally useful to identify issues—please report to \email{febr-forum@@googlegroups.com} if
 #' you find any.
 #' 
-#' @param ... (optional) Arguments passed to \code{\link[data.table]{fread}}.
+#' @param ... (optional) Arguments passed to [utils::read.table()].
 #'
 #' @return A list of data tables (data frames) with data from the chosen data sets.
 #'
@@ -33,8 +33,7 @@ readFEBR <-
     data.set,
     data.table = c("identificacao", "versionamento", "metadado", "observacao", "camada"),
     febr.repo = NULL, verbose = TRUE, ...) {
-    if (!requireNamespace("data.table", quietly = TRUE)) stop("data.table package is missing")
-    if (!requireNamespace("curl", quietly = TRUE)) stop("curl package is missing")
+    
     # ARGUMENT CHECK ----
     ## data.set
     if (missing(data.set)) {
@@ -80,7 +79,7 @@ readFEBR <-
       if (verbose) {
         message(paste0("Reading...\n", paste0(x, collapse = "\n")))
       }
-      out <- lapply(x, data.table::fread, header = TRUE, dec = ",", stringsAsFactors = FALSE, ...)
+      out <- lapply(x, utils::read.table, header = TRUE, dec = ",", stringsAsFactors = FALSE, ...)
       names(out) <- data.table
       out
     })

@@ -1,16 +1,16 @@
 #' Get *units* table
 #' 
 #' Download data from the *units* ("unidades") table of the Free Brazilian Repository for Open Soil
-#' Data --
-#' FEBR, \url{https://www.pedometria.org/febr/}. This includes measurement units and conversion 
-#' factors. This is used to standardize the data contained in a dataset when downloading it via
-#' \code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
+#' Data (FEBR), \url{https://www.pedometria.org/febr/}. This includes measurement units and
+#' conversion factors. This is used to standardize the data contained in a dataset when downloading
+#' it via [febr::layer()] or [febr::observation()].
 #' 
 #' @param source (optional) Character vector indicating one or more source measurement units.
 #' 
 #' @param target (optional) Character vector indicating one or more target measurement units.
 #' 
-#' @return A data.frame with source and target measurement units and their corresponding conversion factors.
+#' @return A data.frame with source and target measurement units and their corresponding conversion
+#' factors.
 #' 
 #' @references
 #' Teixeira, P. C., Donagemma, G. K., Fontana, A., Teixeira, W. G. (2017)

@@ -12,14 +12,14 @@ unit(source, target)
 \item{target}{(optional) Character vector indicating one or more target measurement units.}
 }
 \value{
-A data.frame with source and target measurement units and their corresponding conversion factors.
+A data.frame with source and target measurement units and their corresponding conversion
+factors.
 }
 \description{
 Download data from the \emph{units} ("unidades") table of the Free Brazilian Repository for Open Soil
-Data --
-FEBR, \url{https://www.pedometria.org/febr/}. This includes measurement units and conversion
-factors. This is used to standardize the data contained in a dataset when downloading it via
-\code{\link[febr]{layer}} or \code{\link[febr]{observation}}.
+Data (FEBR), \url{https://www.pedometria.org/febr/}. This includes measurement units and
+conversion factors. This is used to standardize the data contained in a dataset when downloading
+it via \code{\link[=layer]{layer()}} or \code{\link[=observation]{observation()}}.
 }
 \examples{
 #res <- unit(source = c("\%", "dag/kg"), target = "g/kg")

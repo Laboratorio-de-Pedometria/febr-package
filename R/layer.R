@@ -62,12 +62,11 @@
 # 
 #' \item `units` Logical value indicating if the measurement unit(s) of the continuous variable(s)
 #' should be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no
-#' conversion is performed. See \code{\link[febr]{standard}} for more information.
+#' conversion is performed. See [febr::dictionary()] for more information.
 #' 
 #' \item `round` Logical value indicating if the values of the continuous variable(s) should be
 #' rounded to the standard number of decimal places. Requires `units = TRUE`. Defaults to
-#' `round = FALSE`, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more
-#' information.
+#' `round = FALSE`, i.e. no rounding is performed. See [febr::dictionary()] for more information.
 #' }
 #' 
 #' @param harmonization (optional) List with named sub-arguments indicating if and how to perform
@@ -115,9 +114,9 @@
 #' @return A list of data frames or a data frame with data on the chosen variable(s) of the chosen
 #' dataset(s).
 #' 
-#' @note Check the new core data download function `readFEBR()`.
+#' @note Check the new core data download function [febr::readFEBR()].
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso \code{\link[febr]{observation}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
+#' @seealso [febr::observation()], [febr::dictionary()], [febr::unit()]
 #' @export
 #' @examples
 #' res <- layer(data.set = "ctb0003")
@@ -126,7 +125,7 @@
 #' # Download two data sets and standardize units
 #' res <- layer(
 #'   data.set = paste("ctb000", 4:5, sep = ""),
-#'   variable = "carbono",
+#'   variable = "carbono", stack = TRUE,
 #'   standardization = list(units = TRUE))
 #'   
 #' # Try to download a data set that is not available yet
@@ -154,7 +153,7 @@ layer <-
              units = FALSE, round = FALSE),
            harmonization = list(harmonize = FALSE, level = 2),
            progress = TRUE, verbose = TRUE, febr.repo = NULL) {
-    if (!requireNamespace("pedometrics")) stop("pedometrics package is missing")
+    
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$layer$std.cols
@@ -282,7 +281,7 @@ layer <-
       }
       if (is.null(harmonization$level)) {
         harmonization$level <- 2
-      } else if (!pedometrics::isNumint(harmonization$level)) {
+      } else if (!.isNumint(harmonization$level)) {
         y <- class(harmonization$level)
         stop(paste0("object of class '", y, "' passed to argument 'harmonization$level'"))
       }

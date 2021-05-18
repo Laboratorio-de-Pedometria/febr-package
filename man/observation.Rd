@@ -43,16 +43,16 @@ is performed.
 
 \item \code{time.format} Character string indicating how to format dates. For example,
 \code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to
-\code{time.format = NULL}, i.e. no formatting is performed. See \code{\link[base]{as.Date}} for more
+\code{time.format = NULL}, i.e. no formatting is performed. See \code{\link[base:as.Date]{base::as.Date()}} for more
 details.
 
 \item \code{units} Logical value indicating if the measurement unit(s) of the continuous variable(s)
 should be converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no
-conversion is performed. See \code{\link[febr]{dictionary}} for more information.
+conversion is performed. See \code{\link[=dictionary]{dictionary()}} for more information.
 
 \item \code{round} Logical value indicating if the values of the continuous variable(s) should be
 rounded to the standard number of decimal places. Requires \code{units = TRUE}. Defaults to
-\code{round = FALSE}, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more
+\code{round = FALSE}, i.e. no rounding is performed. See \code{\link[=dictionary]{dictionary()}} for more
 information.
 }}
 
@@ -134,7 +134,7 @@ variables will be re-coded as \code{aaa_bbb}, thus becoming the same variable.
 }
 }
 \note{
-Check the new core data download function \code{readFEBR()}.
+Check the new core data download function \code{\link[=readFEBR]{readFEBR()}}.
 }
 \examples{
 res <- observation(data.set = "ctb0013")
@@ -159,7 +159,7 @@ res <- observation(data.set = "all", febr.repo = febr.repo)
 }
 }
 \seealso{
-\code{\link[febr]{layer}}, \code{\link[febr]{dictionary}}, \code{\link[febr]{unit}}
+\code{\link[=layer]{layer()}}, \code{\link[=dictionary]{dictionary()}}, \code{\link[=unit]{unit()}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

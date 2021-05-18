@@ -31,7 +31,7 @@ published in the Free Brazilian Repository for Open Soil Data (FEBR),
 description, author and institution, data license, and much more.
 }
 \note{
-Check the new core data download function \code{readFEBR()}.
+Check the new core data download function \code{\link[=readFEBR]{readFEBR()}}.
 }
 \examples{
 \donttest{

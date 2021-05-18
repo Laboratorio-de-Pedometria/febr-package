@@ -14,7 +14,7 @@
 #'
 #' @return A list of data frames or a data frame with metadata of the chosen dataset(s).
 #'
-#' @note Check the new core data download function `readFEBR()`.
+#' @note Check the new core data download function [febr::readFEBR()].
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export

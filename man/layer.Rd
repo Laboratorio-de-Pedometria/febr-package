@@ -72,12 +72,11 @@ and irregular transitions between subsequent layers in an observation when
 
 \item \code{units} Logical value indicating if the measurement unit(s) of the continuous variable(s)
 should be converted to the standard measurement unit(s). Defaults to \code{units = FALSE}, i.e. no
-conversion is performed. See \code{\link[febr]{standard}} for more information.
+conversion is performed. See \code{\link[=dictionary]{dictionary()}} for more information.
 
 \item \code{round} Logical value indicating if the values of the continuous variable(s) should be
 rounded to the standard number of decimal places. Requires \code{units = TRUE}. Defaults to
-\code{round = FALSE}, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more
-information.
+\code{round = FALSE}, i.e. no rounding is performed. See \code{\link[=dictionary]{dictionary()}} for more information.
 }}
 
 \item{harmonization}{(optional) List with named sub-arguments indicating if and how to perform
@@ -145,7 +144,7 @@ variables will be re-coded as \code{aaa_bbb}, thus becoming the same variable.
 }
 }
 \note{
-Check the new core data download function \code{readFEBR()}.
+Check the new core data download function \code{\link[=readFEBR]{readFEBR()}}.
 }
 \examples{
 res <- layer(data.set = "ctb0003")
@@ -154,7 +153,7 @@ if (interactive()) {
 # Download two data sets and standardize units
 res <- layer(
   data.set = paste("ctb000", 4:5, sep = ""),
-  variable = "carbono",
+  variable = "carbono", stack = TRUE,
   standardization = list(units = TRUE))
   
 # Try to download a data set that is not available yet
@@ -170,7 +169,7 @@ res <- layer(data.set = "all", febr.repo = febr.repo)
 }
 }
 \seealso{
-\code{\link[febr]{observation}}, \code{\link[febr]{standard}}, \code{\link[febr]{unit}}
+\code{\link[=observation]{observation()}}, \code{\link[=dictionary]{dictionary()}}, \code{\link[=unit]{unit()}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

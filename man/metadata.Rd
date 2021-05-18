@@ -31,7 +31,7 @@ This table includes data such as variable names, description of analytical metho
 identification of analysis laboratories.
 }
 \note{
-Check the new core data download function \code{readFEBR()}.
+Check the new core data download function \code{\link[=readFEBR]{readFEBR()}}.
 }
 \examples{
 \donttest{

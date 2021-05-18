@@ -1,8 +1,8 @@
 Package: febr
 Type: Package
 Title: Free Brazilian Repository for Open Soil Data
-Version: 1.7.0
-Date: 2021-05-17
+Version: 1.7.1
+Date: 2021-05-18
 Authors@R: c(
     person("Alessandro", "Samuel-Rosa", role = c("aut", "cre"),
            email = "alessandrosamuelrosa@gmail.com", 
@@ -16,22 +16,23 @@ Description:
   <https://www.pedometria.org/febr/>.
 License: GPL (>= 2)
 Encoding: UTF-8
+Depends: R (>= 3.3.0)
 Imports:
   data.table,
-  dplyr,
+  stats,
+  utils
+Suggests:
+  curl,
   glue,
   jsonlite,
   knitr,
-  pedometrics,
   rmarkdown,
   sf,
   stringr
-Suggests:
-  curl
-VignetteBuilder: knitr
-SystemRequirements: pandoc
+VignetteBuilder: knitr, rmarkdown
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/samuel-rosa/febr-package/
 BugReports: https://github.com/samuel-rosa/febr-package/issues/
 Language: en-US
+Repository: CRAN

@@ -13,8 +13,7 @@ febr2sse(profiles, horizons, file, ...)
 
 \item{file}{(optional) Character string naming the JSON file to be read from or written to disk.}
 
-\item{...}{(optional) Arguments passed to \code{\link[base]{writeLines}} and
-\code{\link[jsonlite]{fromJSON}}.}
+\item{...}{(optional) Arguments passed to \code{\link[base:writeLines]{base::writeLines()}} and \code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}}.}
 }
 \description{
 Export FEBR soil profile data to the JSON file format required by the SmartSolos Expert API.

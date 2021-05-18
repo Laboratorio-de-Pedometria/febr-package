@@ -1,3 +1,8 @@
+# febr 1.7.1
+
+* Code and documentation clean up.
+* Package __dplyr__ is not a dependency anymore.
+
 # febr 1.7.0
 
 * Code and documentation clean up.

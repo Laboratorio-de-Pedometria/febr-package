@@ -1,11 +1,15 @@
 #' Conversion between FEBR and SmartSolos Expert (SSE) soil profile data formats
 #'
 #' Export FEBR soil profile data to the JSON file format required by the SmartSolos Expert API.
+#' 
 #' @param profiles Data frame with soil profile data, i.e. observation locations.
+#' 
 #' @param horizons Data frame with soil horizon data, i.e. sampling layers.
+#' 
 #' @param file (optional) Character string naming the JSON file to be read from or written to disk.
-#' @param ... (optional) Arguments passed to \code{\link[base]{writeLines}} and
-#' \code{\link[jsonlite]{fromJSON}}.
+#' 
+#' @param ... (optional) Arguments passed to [base::writeLines()] and [jsonlite::fromJSON()].
+#' 
 #' @export
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @examples

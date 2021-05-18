@@ -44,8 +44,6 @@
         add = {
           obj[idx_plus, depth.cols[2]] <-
             gsub("+", plus.depth, obj[idx_plus, depth.cols[2]], fixed = TRUE)
-          # obj[idx_plus, depth.cols[2]] <-
-          # sapply(obj[idx_plus, depth.cols[2]], function (x) eval(parse(text = x)))
           obj[idx_plus, depth.cols[2]] <-
             sapply(obj[idx_plus, depth.cols[2]], function (x) {
               is_broken <- grepl(pattern = "/", x = x, fixed = TRUE)
@@ -88,9 +86,6 @@
       idx_lessthan <- names(which(sapply(obj[id_cha], function (x) {
         any(.hasLessThanSign(stats::na.omit(x)))
       })))
-      # idx_lessthan <-
-      #   names(which(sapply(obj[id_cha], function (x) any(startsWith(x = x, prefix = "<")))))
-      
       # Processar dados
       if (length(idx_lessthan) >= 1) {
         switch(
@@ -170,15 +165,13 @@
     # wavy/irregular transition at the next 'profund_sup' because the consistency of the order of
     # the layers is not guaranteed -- we are dealing with character data.
     idx_wavy <- lapply(obj[depth.cols], function (x) grep(pattern = "/", x = x, fixed = TRUE))
-    # idx_wavy <- as.data.frame(idx_wavy)
+    
     
     wavy <- sum(sapply(idx_wavy, length))
     if (wavy >= 1) {
-    # if (nrow(idx_wavy) >= 1) {
+      
       
       # Prepare data
-      # i <- data.frame(row = c(idx_wavy[, 1], idx_wavy[, 2]),
-      #   col = rep(1:2, each = nrow(idx_wavy)))
       i <- rbind(data.frame(row = idx_wavy[[1]], col = 1), data.frame(row = idx_wavy[[2]], col = 2))
       new_depth <- stringr::str_split_fixed(obj[depth.cols][as.matrix(i)], "/", Inf)
       # Apply smoothing function
@@ -352,7 +345,7 @@
         # Dividir camadas por 'camada_id'
         new_obj <- split(x = obj, f = idx)
         idx2 <- sapply(new_obj, function (x) nrow(x) > 1)
-          
+        
         # Processar os dados
         # Usar a primeira camada para armazenar os dados
         new_obj[idx2] <- lapply(new_obj[idx2], function (x) {
@@ -383,7 +376,6 @@
           id_cat <- which(id_class %in% c("logical", "factor", "character"))
           if (length(id_cat) >= 1) {
             if (n >= 3) { # Se houver três ou mais, seleciona-se a mais comum (maior frequência)
-              # x[1, id_cat] <- apply(x[id_cat], 2, function (y) names(sort(table(y), decreasing = TRUE))[1])
               x[1, id_cat] <- 
                 as.character(
                   apply(x[id_cat], 2, function (y) names(sort(table(y), decreasing = TRUE))[1]))

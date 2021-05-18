@@ -31,6 +31,11 @@
     )
   }
 ####################################################################################################
+.isNumint <-
+  function (x) {
+    all(is.numeric(x), x == round(x))
+  }
+####################################################################################################
 # Descarregar ou ler arquivo de dados (TXT)
 # O repositório de descarregamento ou leitura é remoto (onwCloud) ou local?
 .readFEBR <-
@@ -51,25 +56,27 @@
       warning = function(warning) {
         print(paste0("File ", path, " is not available for reuse yet"))
       })
-    # res <- data.table::fread(path, dec = ",", header = TRUE, na.strings = .opt()$gs$na, ...)
     return(res)
   }
 ####################################################################################################
 # Empilhar tabelas ----
 .stackTables <-
   function(obj) {
-    if (!requireNamespace("dplyr")) stop("dplyr package is missing")
+    
+    if (!requireNamespace("data.table")) stop("data.table package is missing")
     # Organizar unidades de medida
-    # stack_unit <- lapply(obj, function(x) do.call(rbind, attributes(x)[c("names", "units")]))
     stack_unit <- 
-      lapply(obj, function(x) do.call(rbind, attributes(x)[c("names", "field_name", "field_unit")]))
+      lapply(obj, function(x) {
+        do.call(rbind, attributes(x)[c("names", "field_name", "field_unit")])
+      })
     stack_unit <- do.call(cbind, stack_unit)
     stack_unit <- stack_unit[, !duplicated(stack_unit["names", ])]
+    
     # Empilhar tabelas
-    res <- suppressWarnings(dplyr::bind_rows(obj))
+    res <- as.data.frame(data.table::rbindlist(obj, fill = TRUE))
+    
     # Definir novos atributos
     a <- attributes(res)
-    # a$units <- stack_unit["units", ][match(stack_unit["names", ], colnames(res))]
     a$field_unit <- stack_unit["field_unit", ][match(stack_unit["names", ], colnames(res))]
     a$field_name <- stack_unit["field_name", ][match(stack_unit["names", ], colnames(res))]
     attributes(res) <- a
@@ -77,7 +84,6 @@
     return(res)
   }
 # Transformação do sistema de referência de coordenadas -------------------------------------------------------
-# 2020-03-08: substitui 'sp' por 'sf'; substitui 'dplyr' por 'base'
 .getEPSGcode <- 
   function(x) {
     as.integer(gsub(pattern = 'EPSG:', replacement = '', x = x))
@@ -85,7 +91,6 @@
 .crsTransform <- 
   function(obj, crs, xy = c("coord_x", "coord_y")) {
     if (!requireNamespace("sf")) stop("sf package is missing")
-    # crs_lower <- tolower(crs)
     crs_upper <- toupper(crs)
     
     # Registrar ordem das colunas
@@ -278,59 +283,17 @@
   }
 # Descarregar e ler planilha do Google Sheets ######################################################
 .readGoogleSheetCSV <-
-  function(sheet.id, sheet.name) {
-    if (sheet.name == "unidades") {
-      sheet.id <- "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo"
-    }
+  function(sheet.id, sheet.name) { "unidades"
+    sheet.id <- "1tU4Me3NJqk4NH2z0jvMryGObSSQLCvGqdLEL5bvOflo"
     # descarregar planilha
     url <- paste0("https://docs.google.com/spreadsheets/d/", sheet.id, "/export?format=csv")
     destfile <- tempfile(pattern = sheet.id, tmpdir = tempdir(), fileext = ".csv")
     utils::download.file(url = url, destfile = destfile, quiet = TRUE)
     # ler planilha
-    if (sheet.name %in% c("observacao", "camada")) { # observacao e camada
-      res <- list(header = NA, table = NA)
-      res[["header"]] <- utils::read.table(
-        file = destfile,
-        header = TRUE,
-        sep = ",",
-        dec = ",",
-        comment.char = "",
-        nrows = 2,
-        na.strings = .opt()$gs$na[.opt()$gs$na != "-"], # cannot evaluate '-' as NA
-        stringsAsFactors = FALSE
-      )
-      res[["table"]] <- utils::read.table(
-        file = destfile,
-        header = FALSE,
-        sep = ",",
-        dec = ",",
-        comment.char = "",
-        skip = 3,
-        na.strings = .opt()$gs$na,
-        stringsAsFactors = FALSE
-      )
-      colnames(res[["table"]]) <- colnames(res[["header"]])
-    } else if (sheet.name %in% c("dataset", "metadado")) { # dataset e metadado
-      res <- utils::read.table(
-        file = destfile,
-        header = TRUE,
-        sep = ",",
-        dec = ",",
-        comment.char = "",
-        na.strings = .opt()$gs$na,
-        stringsAsFactors = FALSE
-      )
-    } else if (sheet.name == "unidades") { # febr-unidades
-      res <- utils::read.table(
-        file = destfile,
-        header = TRUE,
-        sep = ",",
-        dec = ",",
-        comment.char = "",
-        na.strings = .opt()$gs$na[.opt()$gs$na != "-"], # cannot evaluate '-' as NA
-        stringsAsFactors = FALSE
-      )
-    }
+    res <- utils::read.table(
+      file = destfile, header = TRUE, sep = ",", dec = ",", comment.char = "",
+      na.strings = .opt()$gs$na[.opt()$gs$na != "-"], # cannot evaluate '-' as NA
+      stringsAsFactors = FALSE)
     # saída ---
     return(res)
   }
@@ -344,12 +307,8 @@
     na <- .opt()$gs$na
     na <- na[-which(na == "-")]
     url <- paste0("https://docs.google.com/spreadsheets/d/", x, "/export?format=csv")
-    # destfile <- tempfile(pattern = x, tmpdir = tempdir(), fileext = ".csv")
-    # utils::download.file(url = url, destfile = destfile, quiet = TRUE)
     res <- utils::read.table(
-      # file = destfile,
-      file = url,
-      header = TRUE, sep = ",", dec = ",", comment.char = "", na.strings = na,
+      file = url, header = TRUE, sep = ",", dec = ",", comment.char = "", na.strings = na,
       stringsAsFactors = FALSE)
     # saída ---
     res[["campo_precisao"]] <- gsub(pattern = "-", NA, res[["campo_precisao"]])

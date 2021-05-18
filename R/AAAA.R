@@ -9,6 +9,5 @@ if (getRversion() >= "2.15.1") {
 # Import functions from default packages other than `base` #########################################
 # Source: http://stackoverflow.com/a/31314870/3365410
 #' @importFrom utils setTxtProgressBar txtProgressBar browseURL download.file read.table
-#' @importFrom stats na.omit weighted.mean median
-#' @importFrom knitr rmarkdown
-#' @importFrom rmarkdown html_vignette
+#' @importFrom stats na.omit median
+#' @importFrom data.table fread

@@ -7,7 +7,7 @@
 readIndex(...)
 }
 \arguments{
-\item{...}{(optional) Arguments passed to \code{\link[data.table]{fread}}.}
+\item{...}{(optional) Arguments passed to \code{\link[utils:read.table]{utils::read.table()}}.}
 }
 \description{
 Utilities

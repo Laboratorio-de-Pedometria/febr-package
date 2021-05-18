@@ -2,8 +2,7 @@
 % Please edit documentation in R/morphology.R
 \name{morphology}
 \alias{morphology}
-\title{Soil morphology
-Extract and process soil morphological properties from field soil morphology descriptions.}
+\title{Soil morphology}
 \usage{
 morphology(x, variable = "color")
 }
@@ -14,7 +13,6 @@ morphology(x, variable = "color")
 \code{color}, \code{structure}, \code{consistence}.}
 }
 \description{
-Soil morphology
 Extract and process soil morphological properties from field soil morphology descriptions.
 }
 \examples{

@@ -1,13 +1,12 @@
 ---
 title: "Repositório Brasileiro Livre para Dados Abertos do Solo -- Guia Básico"
 author: "Alessandro Samuel-Rosa"
-date: "`r format(Sys.Date(), '%d-%m-%Y')`"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
 output: 
   rmarkdown::html_vignette:
     toc: true
 bibliography: biblio.bib
 link-citations: true
-csl: abnt.csl
 vignette: >
   %\VignetteIndexEntry{Repositório Brasileiro Livre para Dados Abertos do Solo -- Guia Básico}
   %\VignetteEngine{knitr::rmarkdown}

@@ -27,16 +27,16 @@
 #' 
 #' \item `time.format` Character string indicating how to format dates. For example, 
 #' \code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to 
-#' `time.format = NULL`, i.e. no formatting is performed. See \code{\link[base]{as.Date}} for more 
+#' `time.format = NULL`, i.e. no formatting is performed. See [base::as.Date()] for more 
 #' details.
 #' 
 #' \item `units` Logical value indicating if the measurement unit(s) of the continuous variable(s)
 #' should be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no
-#' conversion is performed. See \code{\link[febr]{dictionary}} for more information.
+#' conversion is performed. See [febr::dictionary()] for more information.
 #' 
 #' \item `round` Logical value indicating if the values of the continuous variable(s) should be
 #' rounded to the standard number of decimal places. Requires `units = TRUE`. Defaults to
-#' `round = FALSE`, i.e. no rounding is performed. See \code{\link[febr]{standard}} for more
+#' `round = FALSE`, i.e. no rounding is performed. See [febr::dictionary()] for more
 #' information.
 #' }
 #' 
@@ -99,9 +99,9 @@
 #' @return A list of data frames or a data frame with data on the chosen variable(s) of the chosen
 #' dataset(s).
 #'
-#' @note Check the new core data download function `readFEBR()`.
+#' @note Check the new core data download function [febr::readFEBR()].
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso \code{\link[febr]{layer}}, \code{\link[febr]{dictionary}}, \code{\link[febr]{unit}}
+#' @seealso [febr::layer()], [febr::dictionary()], [febr::unit()]
 #' @export
 #' 
 #' @examples
@@ -132,7 +132,7 @@ observation <-
            standardization = list(crs = NULL, time.format = NULL, units = FALSE, round = FALSE),
            harmonization = list(harmonize = FALSE, level = 2),
            progress = TRUE, verbose = TRUE, febr.repo = NULL) {
-    if (!requireNamespace("pedometrics")) stop("pedometrics package is missing")
+    
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$observation$std.cols
@@ -232,11 +232,12 @@ observation <-
       }
       if (is.null(harmonization$level)) {
         harmonization$level <- 2
-      } else if (!pedometrics::isNumint(harmonization$level)) {
-        y <- class(harmonization$level)
+      } else if (!.isNumint(harmonization$level)) {
+        y <- 
         stop(paste0("object of class '", y, "' passed to 'harmonization$level'"))
       }
     }
+    
     ## progress
     if (!is.logical(progress)) {
       stop(paste0("object of class '", class(progress), "' passed to 'progress'"))
