@@ -23,9 +23,9 @@ devtools::check(document = TRUE, manual = TRUE, force_suggests = TRUE, run_dont_
 
 # check for Windows (remote) ----
 devtools::check_man()
-devtools::check_win_devel()
-devtools::check_win_release()
 devtools::check_win_oldrelease()
+devtools::check_win_release()
+devtools::check_win_devel()
 
 # check in R-hub ----
 # rhub::validate_email(email = "alessandrosamuelrosa@gmail.com")

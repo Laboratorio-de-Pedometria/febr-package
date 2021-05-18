@@ -21,13 +21,13 @@ Imports:
   dplyr,
   glue,
   jsonlite,
+  knitr,
   pedometrics,
+  rmarkdown,
   sf,
   stringr
 Suggests:
-  curl,
-  knitr,
-  rmarkdown
+  curl
 VignetteBuilder: knitr
 SystemRequirements: pandoc
 RoxygenNote: 7.1.1
