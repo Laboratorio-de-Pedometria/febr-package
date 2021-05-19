@@ -1,3 +1,7 @@
+# febr 1.7.2
+
+* Shortens examples to avoid CRAN notifications.
+
 # febr 1.7.1
 
 * Code and documentation clean up.

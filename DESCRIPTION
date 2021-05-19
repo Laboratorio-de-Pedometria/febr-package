@@ -1,8 +1,8 @@
 Package: febr
 Type: Package
 Title: Free Brazilian Repository for Open Soil Data
-Version: 1.7.1
-Date: 2021-05-18
+Version: 1.7.2
+Date: 2021-05-19
 Authors@R: c(
     person("Alessandro", "Samuel-Rosa", role = c("aut", "cre"),
            email = "alessandrosamuelrosa@gmail.com", 
@@ -18,15 +18,15 @@ License: GPL (>= 2)
 Encoding: UTF-8
 Imports:
   curl,
-  jsonlite,
-  sf,
-  stringr,
-  knitr,
   data.table,
   stats,
   utils
 Suggests:
-  rmarkdown
+  rmarkdown,
+  jsonlite,
+  sf,
+  stringr,
+  knitr
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
