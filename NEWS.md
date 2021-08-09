@@ -1,3 +1,8 @@
+# febr 1.7.3
+
+* Bug fix: correct the contruction of data set file paths when all data sets are to be read using
+  `readFEBR()`.
+
 # febr 1.7.2
 
 * Shortens examples to avoid CRAN notifications.
