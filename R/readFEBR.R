@@ -69,7 +69,7 @@ readFEBR <-
       if (is.null(febr.repo)) {
         path <- paste0(.opt()$owncloud, x, "&files=", x, "-", data.table, ".txt")
       } else {
-        path <- file.path(febr.repo, dataset_ids, paste0(data.set, '-', data.table, ".txt"))
+        path <- file.path(febr.repo, dataset_ids, paste0(dataset_ids, '-', data.table, ".txt"))
         path <- normalizePath(path = path, mustWork = TRUE)
       }
       return(path)
