@@ -5,23 +5,23 @@
 #' measurement unit, recommended number of decimal places, type of data, and description of the
 #' respective analytical method. The dictionary is used to standardize the data contained in a
 #' dataset.
-#' 
+#'
 #' @param table (optional) Character vector indicating one or more table IDs that should be used to
 #' filter the dictionary. Accepted values: `"metadado"`, `"versionamento"`, `"observacao"`, and
 #' `"camada"`.
-#' 
+#'
 #' @param variable (optional) Character vector indicating one or more variables that should be used
 #' to filter the dictionary. Accepts both specific identification codes, e.g.
 #' `"ferro_oxalato_icpoes"`, as well as general identification codes, e.g. `"ferro"`.
-#' 
+#'
 #' @param unit (optional) Character vector indicating one or more measurement units that should be
 #' used to filter the dictionary. For example, ' `"g/kg"`, `"g/cm^3"`, and `"cmolc/kg"`.
-#' 
+#'
 #' @param precision (optional) Integer vector indicating one or more number of decimal places that
 #' should be used to filter the dictionary.
-#' 
-#' @return A data frame with definitions for the selected fields.
-#' 
+#'
+#' @return An object of class `data.frame` with definitions for the selected fields.
+#'
 #' @references
 #' Teixeira, P. C., Donagemma, G. K., Fontana, A., Teixeira, W. G. (2017)
 #' _Manual de Métodos de Análise de Solo_. Brasília: Embrapa.
@@ -37,7 +37,7 @@
 ####################################################################################################
 dictionary <-
   function(table, variable, unit, precision) {
-    
+    #
     # CHECK ARGUMENTS
     # table
     if (!missing(table)) {
@@ -57,10 +57,6 @@ dictionary <-
     if (!missing(precision) && !.isNumint(precision)) {
       stop(paste0("object of class '", class(precision), "' passed to argument 'precision'"))
     }
-    ## expr
-    # if (!missing(expr) && !is.character(expr)) {
-    #   stop(paste0("object of class '", class(expr), "' passed to argument 'expr'"))
-    # }
     # DESCARREGAMENTO
     ## Descarregar tabela
     std <- .getStds()
@@ -74,7 +70,7 @@ dictionary <-
     if (!missing(variable)) {
       is_start <- all(grepl(pattern = "_", x = variable))
       if (!is_start) {
-        variable <- paste("^", variable, "_", sep = "")
+        variable <- paste0("^", variable, "_")
         idx <- lapply(variable, function(pattern) grep(pattern = pattern, x = std[["campo_id"]]))
         idx <- unlist(idx)
       } else {

@@ -1,32 +1,36 @@
 #' Go to FEBR
-#' 
-#' Go to one of the web pages of the Free Brazilian Repository for Open Soil Data (FEBR),
-#' including project and dataset web pages.
-#' 
-#' @param data.set (optional) Character vector indicating a single data set.
-#' 
-#' @param page (optional) Character string indicating a web page of the FEBR. Options are:
-#' `"febr"` (FEBR web page),
-#' `"search"` (data set search web page),
-#' `"package"` (**febr** package on CRAN),
-#' `"github"` (**febr** package source code repository on GitHub),
-#' `"gitlab"` (FEBR source code repository on GitLab),
-#' `"forum"` (FEBR public forum at Google Groups),
-#' `"units"` (units and conversion factors used in FEBR),
-#' `"dictionary"` (dictionary used in FEBR),
-#' `"index"` (data set index), and
-#' `"template"` (spreadsheet data template).
-#' 
+#'
+#' Visit FEBR assets on the web.
+#'
+#' @param data.set (optional) Character vector indicating a (unique) dataset whose
+#' metadata web page you wish to visit.
+#'
+#' @param page (optional) Character string indicating a web page of the FEBR, with
+#' options:
+#' * `"febr"`: FEBR main web page,
+#' * `"dictionary"`: FEBR data dictionary and vocabulary,
+#' * `"forum"`: FEBR public forum at Google Groups,
+#' * `"github"`: **febr** package source code repository on GitHub,
+#' * `"index"`: FEBR data set index,
+#' * `"search"`: data set search web page,
+#' * `"package"`: **febr** package on CRAN,
+#' * `"template"`: FEBR spreadsheet template on Google Sheets,
+#' * `"units"`: units and conversion factors used in FEBR.
+#'
+#' @return Load a given URL into an HTML browser via [utils::browseURL()].
+#'
+#' @seealso [utils::browseURL()]
+#'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
 #' if (interactive()) {
 #' # Go to the FEBR web page
 #' goto(page = "febr")
-#' 
+#'
 #' # Go to the data set index
 #' goto(page = "index")
-#' 
+#'
 #' # Go to the GitHub repository
 #' goto(page = "github")
 #' }
@@ -48,9 +52,9 @@ goto <-
       if (!is.character(page)) {
         stop(paste0("object of class '", class(page), "}' passed to argument 'page'"))
       }
-      ops <- 
-        c("febr", "search", "package", "github", "gitlab", "forum", "units", "dictionary", "index",
-          "template")
+      ops <-
+        c("febr", "search", "package", "github", "forum", "units", "dictionary", "index",
+        "template")
       if (!page %in% ops) {
         stop (paste0("unknown value '", page, "' passed to argument 'page'"))
       }
@@ -71,9 +75,6 @@ goto <-
         github = {
           url <- "https://github.com/samuel-rosa/febr-package"
         },
-        gitlab = {
-          url <- "https://gitlab.com/laboratorio-de-pedometria/febr"
-        },
         forum = {
           url <- "https://groups.google.com/forum/#!forum/febr-forum"
         },
@@ -91,7 +92,8 @@ goto <-
         }
       )
     } else if (missing(page) && !missing(data.set)) { # Ir para diretório do conjunto de dados
-      url <- paste0("https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso?path=%2F", data.set)
+      # url <- paste0("https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso?path=%2F", data.set)
+      url <- paste0(.opt()$owncloud, data.set)
     }
     ## Lançar navegador
     if (!is.null(url)) {

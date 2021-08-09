@@ -1,18 +1,26 @@
 #' Conversion between FEBR and SmartSolos Expert (SSE) soil profile data formats
 #'
 #' Export FEBR soil profile data to the JSON file format required by the SmartSolos Expert API.
-#' 
+#'
 #' @param profiles Data frame with soil profile data, i.e. observation locations.
-#' 
+#'
 #' @param horizons Data frame with soil horizon data, i.e. sampling layers.
-#' 
-#' @param file (optional) Character string naming the JSON file to be read from or written to disk.
-#' 
-#' @param ... (optional) Arguments passed to [base::writeLines()] and [jsonlite::fromJSON()].
-#' 
-#' @export
+#'
+#' @param file (optional) Character string naming the JSON file to be written to disk.
+#'
+#' @param ... (optional) Arguments passed to [base::writeLines()].
+#'
+#' @return An object of class `character` containing a unicode JSON string.
+#'
+#' @references
+#' Jeroen Ooms (2014). The jsonlite Package: A Practical and Consistent
+#' Mapping Between JSON Data and R Objects. arXiv:1403.2805 \[stat.CO\]
+#' URL [https://arxiv.org/abs/1403.2805].
+#'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
+#' @export
 #' @examples
+#' # Toy example
 #' pro <- data.frame(
 #'   observacao_id = "Perfil-1",
 #'   taxon_sibcs_1999 = "Argissolo",
@@ -35,7 +43,8 @@
 #'   stringsAsFactors = FALSE
 #' )
 #' febr2sse(pro, hor, tempfile(fileext = ".json"))
-#' 
+#'
+#' # Real example
 #' if (interactive()) {
 #' profiles <- observation(
 #'   data.set = "ctb0025", variable = c("taxon_sibcs", "relevo_drenagem"),
@@ -64,9 +73,9 @@
 ####################################################################################################
 febr2sse <-
   function(profiles, horizons, file, ...) {
-    
+    #
     if (!requireNamespace("jsonlite")) stop("jsonlite package is missing")
-    
+    #
     # Mapeamento de metadados
     gs <- "1mc5S-HsoCcxLeue97eMoWLMse4RzFZ1_MCQyQhfzXUg"
     sheet <- "dados"
@@ -79,12 +88,14 @@ febr2sse <-
       "https://docs.google.com/spreadsheets/d/", gs, "/gviz/tq?tqx=out:csv&sheet=", sheet)
     vocabulary <- suppressWarnings(
       utils::read.table(file = https_request, sep = ",", header = TRUE, stringsAsFactors = FALSE))
+    #
     # Processar classificação taxonômica
     taxon <- profiles[, startsWith(colnames(profiles), "taxon_sibcs")]
     taxon <- taxonomy(text = taxon, method = "decompose",
       sep = " ", pattern = c(", ", " A ", " textura "))
     colnames(taxon) <- c("ORDEM", "SUBORDEM", "GDE_GRUPO", "SUBGRUPO")
     profiles <- cbind(profiles, taxon)
+    #
     # Processar cor do solo úmido
     cor <- strsplit(horizons[["cor_matriz_umido_munsell"]], " ")
     horizons[["COR_UMIDA_MATIZ"]] <- sapply(cor, function(x) x[1])
@@ -92,6 +103,7 @@ febr2sse <-
     cor <- strsplit(cor, "/")
     horizons[["COR_UMIDA_VALOR"]] <- as.integer(sapply(cor, function(x) x[1]))
     horizons[["COR_UMIDA_CROMA"]] <- as.integer(sapply(cor, function(x) x[2]))
+    #
     # Processar cor do solo seco
     cor <- strsplit(horizons[["cor_matriz_seco_munsell"]], " ")
     horizons[["COR_SECA_MATIZ"]] <- sapply(cor, function(x) x[1])
@@ -99,6 +111,7 @@ febr2sse <-
     cor <- strsplit(cor, "/")
     horizons[["COR_SECA_VALOR"]] <- as.integer(sapply(cor, function(x) x[1]))
     horizons[["COR_SECA_CROMA"]] <- as.integer(sapply(cor, function(x) x[2]))
+    #
     # Processar estrutura do solo
     idx <- match(
       horizons[["estrutura_tipo"]],
@@ -115,6 +128,7 @@ febr2sse <-
       vocabulary[vocabulary[["sse_var_name"]] == "ESTRUTURA_TAMANHO", "febr_var_value"])
     horizons[["estrutura_cdiam"]] <-
     vocabulary[vocabulary[["sse_var_name"]] == "ESTRUTURA_TAMANHO", "sse_var_code"][idx]
+    #
     # Processar consistência do solo
     idx <- match(
       horizons[["consistencia_umido"]],
@@ -151,6 +165,7 @@ febr2sse <-
       profiles[["HORIZONTES"]][i] <- list(horizons[[i]])
     }
     profiles <- list(items = profiles)
+    #
     # Saída: arquivo ou string JSON
     ss <- jsonlite::toJSON(profiles, pretty = TRUE)
     if (!missing(file)) {
