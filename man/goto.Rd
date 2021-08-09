@@ -9,21 +9,25 @@ goto(data.set, page)
 \arguments{
 \item{data.set}{(optional) Character vector indicating a single data set.}
 
-\item{page}{(optional) Character string indicating a web page of the FEBR. Options are:
-\code{"febr"} (FEBR web page),
-\code{"search"} (data set search web page),
-\code{"package"} (\strong{febr} package on CRAN),
-\code{"github"} (\strong{febr} package source code repository on GitHub),
-\code{"gitlab"} (FEBR source code repository on GitLab),
-\code{"forum"} (FEBR public forum at Google Groups),
-\code{"units"} (units and conversion factors used in FEBR),
-\code{"dictionary"} (dictionary used in FEBR),
-\code{"index"} (data set index), and
-\code{"template"} (spreadsheet data template).}
+\item{page}{(optional) Character string indicating a web page of the FEBR, with options:
+\itemize{
+\item \code{"febr"}: FEBR main web page,
+\item \code{"dictionary"}: FEBR data dictionary and vocabulary,
+\item \code{"forum"}: FEBR public forum at Google Groups,
+\item \code{"github"}: \strong{febr} package source code repository on GitHub,
+\item \code{"index"}: FEBR data set index, and
+\item \code{"search"}: data set search web page,
+\item \code{"package"}: \strong{febr} package on CRAN,
+\item \code{"template"}: FEBR spreadsheet data template.
+\item \code{"units"}: units and conversion factors used in FEBR.
+}}
+}
+\value{
+Load a given URL into an HTML browser via \code{\link[utils:browseURL]{utils::browseURL()}}.
 }
 \description{
 Go to one of the web pages of the Free Brazilian Repository for Open Soil Data (FEBR),
-including project and dataset web pages.
+including data set web pages.
 }
 \examples{
 if (interactive()) {
@@ -36,6 +40,9 @@ goto(page = "index")
 # Go to the GitHub repository
 goto(page = "github")
 }
+}
+\seealso{
+\code{\link[utils:browseURL]{utils::browseURL()}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

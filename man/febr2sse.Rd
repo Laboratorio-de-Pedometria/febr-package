@@ -11,14 +11,18 @@ febr2sse(profiles, horizons, file, ...)
 
 \item{horizons}{Data frame with soil horizon data, i.e. sampling layers.}
 
-\item{file}{(optional) Character string naming the JSON file to be read from or written to disk.}
+\item{file}{(optional) Character string naming the JSON file to be written to disk.}
 
-\item{...}{(optional) Arguments passed to \code{\link[base:writeLines]{base::writeLines()}} and \code{\link[jsonlite:fromJSON]{jsonlite::fromJSON()}}.}
+\item{...}{(optional) Arguments passed to \code{\link[base:writeLines]{base::writeLines()}}.}
+}
+\value{
+An object of class \code{character} containing a unicode JSON string.
 }
 \description{
 Export FEBR soil profile data to the JSON file format required by the SmartSolos Expert API.
 }
 \examples{
+# Toy example
 pro <- data.frame(
   observacao_id = "Perfil-1",
   taxon_sibcs_1999 = "Argissolo",
@@ -42,6 +46,7 @@ hor <- data.frame(
 )
 febr2sse(pro, hor, tempfile(fileext = ".json"))
 
+# Real example
 if (interactive()) {
 profiles <- observation(
   data.set = "ctb0025", variable = c("taxon_sibcs", "relevo_drenagem"),
@@ -67,6 +72,11 @@ file <- ifelse(
   paste0(tempdir(), "/febr2smartsolos-", idx, ".json"))
 febr2sse(profiles, horizons, file)
 }
+}
+\references{
+Jeroen Ooms (2014). The jsonlite Package: A Practical and Consistent
+Mapping Between JSON Data and R Objects. arXiv:1403.2805 [stat.CO]
+URL \link{https://arxiv.org/abs/1403.2805}.
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

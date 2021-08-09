@@ -22,7 +22,7 @@ used to filter the dictionary. For example, ' \code{"g/kg"}, \code{"g/cm^3"}, an
 should be used to filter the dictionary.}
 }
 \value{
-A data frame with definitions for the selected fields.
+An object of class \code{data.frame} with definitions for the selected fields.
 }
 \description{
 Download definitions from the dictionary of the Free Brazilian Repository for Open Soil Data

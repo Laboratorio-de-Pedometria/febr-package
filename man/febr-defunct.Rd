@@ -24,6 +24,9 @@ standard(...)
 \arguments{
 \item{...}{Not used.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 The functions listed here are no longer part of the \strong{febr} package as they are not needed (any
 more).
