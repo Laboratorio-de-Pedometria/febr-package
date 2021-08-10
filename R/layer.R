@@ -304,7 +304,7 @@ layer <-
       }
     }
     ## data.set and stack
-    if (stack && length(data.set) == 1) {
+    if (stack && length(data.set) == 1 && data.set != "all") {
       # Por razões óbvias, não há como empilhar conjuntos de dados quando apenas um conjunto de
       # dados está sendo descarregado. Assim, se o usuário especificar stack = TRUE, o argumento é
       # reconfigurado para stack = FALSE.

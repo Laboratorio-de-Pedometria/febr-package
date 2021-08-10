@@ -256,7 +256,7 @@ observation <-
       }
     }
     ## data.set + stack
-    if (stack && length(data.set) == 1) {
+    if (stack && length(data.set) == 1 && data.set != "all") {
       message("A single dataset is being downloaded... setting stack = FALSE")
       stack <- FALSE
     }
