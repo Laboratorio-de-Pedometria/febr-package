@@ -62,6 +62,10 @@
     
     if (!requireNamespace("data.table")) stop("data.table package is missing")
     
+    # Filtrar conjuntos de dados embargados
+    id <- which(sapply(obj, function (x) inherits(x, "character")))
+    obj <- obj[-id]
+    
     # Organizar unidades de medida
     stack_unit <- 
       lapply(obj, function(x) {

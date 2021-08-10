@@ -1,12 +1,20 @@
+# febr 1.7.5
+
+* Bug fix. Corrects data table stacking when embargoed datasets are present. The previous version
+  ignored that embargoed datasets return a string when called using `observation()` or `layer()`.
+  The presence of strings broke the data table stacking procedure.
+
+# febr 1.7.4
+
+* Bug fix. Corrects the evaluation of `stack = TRUE` when all datasets `data.set = "all"` are read
+  using `observation()` and `layer()`. The previous version ignored that `data.set = "all"` returns
+  a vector with hundreds of datasets, and thus `stack` was automaticaly set to `stack = FALSE`.
+
 # febr 1.7.3
 
-* Bug fixes:
-  * Corrects the contruction of file paths when all datasets `data.set = "all"` are read using
-    `readFEBR()`. The previous version constructed the file paths using the string passed to
+* Bug fix. Corrects the construction of file paths when all datasets `data.set = "all"` are read
+  using `readFEBR()`. The previous version constructed the file paths using the string passed to
     `data.set` in the function call i.e. `"all"` instead of the vector of dataset IDs.
-  * Corrects the evaluation of `stack = TRUE` when all datasets `data.set = "all"` are read using
-    `observation()` and `layer()`. The previous version ignored that `data.set = "all"` returns a
-    vector with hundreds of datasets, and thus `stack` was automaticaly set to `stack = FALSE`.
 
 # febr 1.7.2
 
