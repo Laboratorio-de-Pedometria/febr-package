@@ -233,11 +233,10 @@ observation <-
       if (is.null(harmonization$level)) {
         harmonization$level <- 2
       } else if (!.isNumint(harmonization$level)) {
-        y <- 
+        y <- class(harmonization$level)
         stop(paste0("object of class '", y, "' passed to 'harmonization$level'"))
       }
     }
-    
     ## progress
     if (!is.logical(progress)) {
       stop(paste0("object of class '", class(progress), "' passed to 'progress'"))
@@ -272,7 +271,7 @@ observation <-
     ## Também não precisa ser feita no caso de variáveis de tipo 'texto'
     if (stack && !standardization$units && !missing(variable) && variable != "all") {
       tmp_var <- paste("^", variable, sep = "")
-      idx <- lapply(tmp_var, function (pattern) grep(pattern = pattern, x = febr_stds$campo_id))
+      idx <- lapply(tmp_var, function(pattern) grep(pattern = pattern, x = febr_stds$campo_id))
       idx <- unlist(idx)
       is_all_text <- all(febr_stds$campo_tipo[idx] == "texto")
       if (!is_all_text) {
@@ -285,7 +284,6 @@ observation <-
     }
     res <- list()
     for (i in seq_along(dataset_ids)) {
-      
       # Informative messages
       dts <- dataset_ids[i]
       if (verbose) {
@@ -294,12 +292,12 @@ observation <-
       }
       # DESCARREGAMENTO
       tmp <- .readFEBR(
-        data.set = dataset_ids[i], data.table = 'observacao', febr.repo = febr.repo)
+        data.set = dataset_ids[i], data.table = "observacao", febr.repo = febr.repo)
       if (inherits(tmp, "data.frame")) {
         unit <- .readFEBR(
-          data.set = dataset_ids[i], data.table = 'metadado', febr.repo = febr.repo)
-        unit$campo_unidade[is.na(unit$campo_unidade)] <- '-'
-        unit <- unit[unit$tabela_id == 'observacao', c('campo_id', 'campo_nome', 'campo_unidade')]
+          data.set = dataset_ids[i], data.table = "metadado", febr.repo = febr.repo)
+        unit$campo_unidade[is.na(unit$campo_unidade)] <- "-"
+        unit <- unit[unit$tabela_id == "observacao", c("campo_id", "campo_nome", "campo_unidade")]
         unit <- as.data.frame(t(unit), stringsAsFactors = FALSE)
         colnames(unit) <- unlist(unit[1, ])
         unit <- unit[-1, ]
@@ -307,7 +305,7 @@ observation <-
         # PROCESSAMENTO I
         ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas
         ## coordenadas e na data.
-        na_coord <- max(apply(tmp[, c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
+        na_coord <- max(apply(tmp[, c("coord_x", "coord_y")], 2, function(x) sum(is.na(x))))
         na_time <- is.na(tmp$observacao_data)
         n_na_time <- sum(na_time)
         if (missing$coord == "keep" && missing$time == "keep" ||
@@ -315,7 +313,6 @@ observation <-
             missing$time == "drop" ||
             missing$coord == "keep" | missing$coord == "drop" && missing$time == "drop" &&
             n_na_time < n_rows) {
-          
           # COLUNAS
           ## Definir as colunas a serem mantidas
           ## As colunas padrão são sempre mantidas.
@@ -327,15 +324,15 @@ observation <-
           if (!missing(variable)) {
             if (length(variable) == 1 && variable == "all") {
               extra_cols <- in_cols[!in_cols %in% std_cols]
-              idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
+              idx_na <- apply(tmp[extra_cols], 2, function(x) all(is.na(x)))
               extra_cols <- extra_cols[!idx_na]
             } else {
-              extra_cols <- lapply(variable, function (x) {
+              extra_cols <- lapply(variable, function(x) {
                 in_cols[grep(paste("^", x, sep = ""), in_cols)]
               })
               extra_cols <- unlist(extra_cols)
               extra_cols <- extra_cols[!extra_cols %in% std_cols]
-              idx_na <- apply(tmp[extra_cols], 2, function (x) all(is.na(x)))
+              idx_na <- apply(tmp[extra_cols], 2, function(x) all(is.na(x)))
               extra_cols <- extra_cols[!idx_na]
             }
           }
@@ -379,7 +376,7 @@ observation <-
             ## Sistema de referência de coordenadas
             ## Primeiro verificar se existem observações com coordenadas e se o SRC deve ser
             ## transformado
-            na_coord <- max(apply(tmp[, c("coord_x", "coord_y")], 2, function (x) sum(is.na(x))))
+            na_coord <- max(apply(tmp[, c("coord_x", "coord_y")], 2, function(x) sum(is.na(x))))
             if (n_rows > na_coord && !is.null(standardization$crs)) {
               tmp <- .crsTransform(obj = tmp, crs = standardization$crs)
             }
@@ -416,7 +413,7 @@ observation <-
                   target <- tmp_stds$campo_unidade[match(need_name, tmp_stds$campo_id)]
                   
                   ## Identificar constante
-                  k <- lapply(seq_along(source), function (i) {
+                  k <- lapply(seq_along(source), function(i) {
                     # i <- 2
                     idx <- febr_unit$unidade_origem %in% source[i] +
                       febr_unit$unidade_destino %in% target[i]
@@ -432,7 +429,7 @@ observation <-
                 ## 2. Se necessário, padronizar número de casas decimais
                 if (standardization$round) {
                   tmp[tmp_stds$campo_id] <- 
-                    sapply(seq(nrow(tmp_stds)), function (i) 
+                    sapply(seq(nrow(tmp_stds)), function(i) 
                       round(x = tmp[tmp_stds$campo_id[i]], digits = tmp_stds$campo_precisao[i]))
                 }
               }
