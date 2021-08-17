@@ -89,7 +89,6 @@
 #' then these two variables will remain coded as separate variables. But if `level = 2`, then both
 #' variables will be re-coded as `aaa_bbb`, thus becoming the same variable.
 #' }
-#'
 #' @return A `list` of `data.frame`s or a `data.frame` with, possibly standardize or harmonized,
 #' data of the chosen variable(s) of the chosen dataset(s).
 #'
@@ -342,12 +341,11 @@ observation <-
           cols <- c(cols, extra_cols)
           tmp <- tmp[cols]
           unit <- unit[cols]
-          
           # LINHAS I
           ## Avaliar limpeza das linhas
-          tmp_clean <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols)
+          tmp_clean <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols,
+            coord.names = coord_names)
           n_rows <- nrow(tmp_clean)
-          
           # PROCESSAMENTO II
           ## A continuação do processamento dos dados depende das presença de dados após a eliminação
           ## de colunas e linhas com NAs.

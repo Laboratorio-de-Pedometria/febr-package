@@ -154,7 +154,7 @@ layer <-
            progress = TRUE, verbose = TRUE, febr.repo = NULL) {
     # OPÇÕES E PADRÕES
     opts <- .opt()
-    std_cols <- opts$layer$std.cols
+    std_cols <- opts$layer$std.cols()
     # ARGUMENT CHECK ----
     ## data.set
     if (missing(data.set)) {
@@ -353,10 +353,23 @@ layer <-
         unit <- unit[, -1]
         unit <- as.data.frame(t(unit), stringsAsFactors = FALSE)
         n_rows <- nrow(tmp)
+        # PADRONIZAÇÀO/ATUALIZAÇÃO DOS NOMES DAS COLUNAS
+        in_cols <- colnames(tmp)
+        test_oldid_colnames <- std_cols[["campo_oldid"]] %in% in_cols
+        if (any(test_oldid_colnames)) {
+          cross_colnames <- std_cols[which(test_oldid_colnames), ]
+          # Atualização dos nomes das colunas da tabela de dados
+          data.table::setnames(tmp, cross_colnames[["campo_oldid"]], cross_colnames[["campo_id"]])
+          in_cols <- colnames(tmp)
+          # Atualização dos nomes das colunas da tabela de unidades de medida
+          data.table::setnames(unit, cross_colnames[["campo_oldid"]], cross_colnames[["campo_id"]])
+        }
+        # Nomes das colunas usadas para armazenar coordenadas verticais (profundidade)
+        depth_names <- c("profund_sup", "profund_inf")
         # PROCESSAMENTO I
         # A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas
         # profundidades
-        na_depth <- max(apply(tmp[c("profund_sup", "profund_inf")], 2, function(x) sum(is.na(x))))
+        na_depth <- max(apply(tmp[depth_names], 2, function(x) sum(is.na(x))))
         if (missing$depth == "keep" || missing$depth == "drop" && na_depth < n_rows) {
           # COLUNAS
           # Definir as colunas a serem mantidas
@@ -386,7 +399,8 @@ layer <-
           unit <- unit[, cols]
           # LINHAS I
           ## Avaliar limpeza das linhas
-          tmp_clean <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols)
+          tmp_clean <- .cleanRows(obj = tmp, missing = missing, extra_cols = extra_cols,
+            depth.names = depth_names)
           n_rows <- nrow(tmp_clean)
           # PROCESSAMENTO II
           # A continuação do processamento dos dados depende das presença de dados após a eliminação
@@ -417,7 +431,7 @@ layer <-
             if (standardization$plus.sign != "keep") {
               tmp <- .setMaximumObservationDepth(
                 obj = tmp, plus.sign = standardization$plus.sign,
-                plus.depth = standardization$plus.depth)
+                plus.depth = standardization$plus.depth, depth.cols = depth_names)
             }
             # Símbolo indicador do limite inferior de detecção do método de determinação (<)
             # O padrão consiste em manter o símbolo. Do contrário, o resultado é convertido para
@@ -440,8 +454,8 @@ layer <-
             ## Transição ondulada ou irregular
             ## O padrão consiste em manter a transição ondulada ou irregular.
             if (standardization$transition != "keep") {
-              tmp <- .solveWavyLayerTransition(obj = tmp,
-                                               smoothing.fun = standardization$smoothing.fun)
+              tmp <- .solveWavyLayerTransition(
+                obj = tmp, smoothing.fun = standardization$smoothing.fun, depth.cols = depth_names)
             }
             ## Transição quebrada
             ## O padrão consiste em manter a transição quebrada
@@ -451,8 +465,7 @@ layer <-
             # Se a profundidade foi padronizada e as tabelas serão empilhadas, então os dados de
             # profundidade devem ser definidos como classe 'numeric'
             if (standardization$plus.sign != "keep" && standardization$transition != "keep") {
-              tmp[c("profund_sup", "profund_inf")] <-
-                sapply(tmp[c("profund_sup", "profund_inf")], as.numeric)
+              tmp[depth_names] <- sapply(tmp[depth_names], as.numeric)
             }
             # PADRONIZAÇÃO II
             # Unidade de medida e número de casas decimais de colunas adicionais
