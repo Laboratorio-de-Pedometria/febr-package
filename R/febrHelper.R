@@ -4,21 +4,10 @@
       owncloud = "https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F",
       observation = list(
         std.cols =
-          c(observacao_id = "observacao_id",
-            # "sisb_id",
-            # "ibge_id",
-            observacao_data = "observacao_data",
-            coord_datum = "coord_sistema",
-            coord_longitude = "coord_x",
-            coord_latitude = "coord_y",
-            coord_precisao = "coord_precisao",
-            coord_fonte = "coord_fonte",
-            pais_id = "pais_id",
-            estado_sigla = "estado_id",
-            municipio_nome = "municipio_id",
-            # "amostra_tipo",
-            subamostra_quanti = "amostra_quanti",
-            amostra_area = "amostra_area")
+          c("observacao_id", "sisb_id", "ibge_id", "observacao_data",
+            "coord_sistema", "coord_x", "coord_y", "coord_precisao", "coord_fonte",
+            "pais_id", "estado_id", "municipio_id",
+            "amostra_tipo", "amostra_quanti", "amostra_area")
       ),
       layer = list(
         std.cols =
