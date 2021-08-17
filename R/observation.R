@@ -9,7 +9,7 @@
 #' @template metadata_template
 #'
 #' @param febr.repo (optional) Defaults to the remote file directory of the Federal University of
-#' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}. 
+#' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
 #' Alternatively, a local directory path can be informed if the user has a local copy of the data
 #' repository.
 #'
@@ -17,17 +17,17 @@
 #' observation missing spatial coordinates, `coord`, date of observation, `time`, or data on
 #' variables, `data`. Options are `"keep"` (default) and `"drop"`.
 #'
-#' @param standardization (optional) List with named sub-arguments indicating how to perform data 
+#' @param standardization (optional) List with named sub-arguments indicating how to perform data
 #' standardization.
 #' \itemize{
 #' \item `crs` Character string indicating the EPSG code of the coordinate reference system (CRS)
 #' to which spatial coordinates should be transformed. For example, `crs = "EPSG:4674"`, i.e.
-#' SIRGAS 2000, the standard CRS for Brazil. Defaults to `crs = NULL`, i.e. no transformation 
+#' SIRGAS 2000, the standard CRS for Brazil. Defaults to `crs = NULL`, i.e. no transformation
 #' is performed.
 #'
-#' \item `time.format` Character string indicating how to format dates. For example, 
-#' \code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to 
-#' `time.format = NULL`, i.e. no formatting is performed. See [base::as.Date()] for more 
+#' \item `time.format` Character string indicating how to format dates. For example,
+#' \code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to
+#' `time.format = NULL`, i.e. no formatting is performed. See [base::as.Date()] for more
 #' details.
 #'
 #' \item `units` Logical value indicating if the measurement unit(s) of the continuous variable(s)
@@ -52,39 +52,34 @@
 #' }
 #'
 #' @details
-#' \subsection{Standard identification variables}{
-#' Standard identification variables and their content are as follows:
+#' \subsection{Default variables}{
+#' Default variables (fields) present in the 'observation' table are as follows:
 #' \itemize{
 #' \item `dataset_id`. Identification code of the dataset in the FEBR to which an observation
 #' belongs.
 #' \item `observacao_id`. Identification code of an observation in a dataset.
-#' \item `sisb_id`. Identification code of an observation in the Brazilian Soil Information System
-#' maintained by the Brazilian Agricultural Research Corporation (EMBRAPA).
-#' \item `ibge_id`. Identification code of an observation in the database of the Brazilian Institute
-#' of Geography and Statistics (IBGE).
 #' \item `observacao_data`. Date (dd-mm-yyyy) in which an observation was made.
-#' \item `coord_sistema`. EPSG code of the coordinate reference system.
-#' \item `coord_x`. Longitude (deg) or easting (m).
-#' \item `coord_y`. Latitude (deg) or northing (m).
-#' \item `coord_precisao`. Precision with which x- and y-coordinates were determined (m).
-#' \item `coord_fonte`. Source of the x- and y-coordinates.
-#' \item `pais_id`. Country code (ISO 3166-1 alpha-2).
-#' \item `estado_id`. Code of the Brazilian federative unit where an observation was made.
-#' \item `municipio_id`. Name of the Brazilian municipality where as observation was made.
-#' \item `amostra_tipo`. Type of sample taken.
-#' \item `amostra_quanti`. Number of samples taken.
-#' \item `amostra_area`. Sampling area.
+#' \item `coord_datum`. EPSG code of the coordinate reference system.
+#' \item `coord_longitude`. Longitude (deg) or easting (m).
+#' \item `coord_latitude`. Latitude (deg) or northing (m).
+#' \item `coord_precisao`. Precision with which the spatial coordinates were determined (m).
+#' \item `coord_fonte`. Source of the spatial coordinates.
+#' \item `pais_id`. Code (ISO 3166-1 alpha-2) of the county where an observation was made.
+#' \item `estado_sigla`. Acronym of the Brazilian federative unit where an observation was made.
+#' \item `municipio_nome`. Name of the Brazilian municipality where as observation was made.
+#' \item `subamostra_quanti`. Number of sub samples taken (used to indicate composite sampling).
+#' \item `amostra_area`. Sampling area (used to indicate areal or block sampling).
 #' }
-#' Further details about the content of the standard identification variables can be found in 
+#' Further details about the content of the default variables (fields) can be found in
 #' \url{https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM}
 #' (in Portuguese).
 #' }
-#' 
+#'
 #' \subsection{Harmonization}{
 #' Data harmonization consists of converting the values of a variable determined using some method
 #' *B* so that they are (approximately) equivalent to the values that would have been obtained if
 #' the standard method *A* had been used instead. For example, converting carbon content values
-#' obtained using a wet digestion method to the standard dry combustion method is data
+#' obtained using a wet combustion method to the standard dry combustion method is data
 #' harmonization.
 #'
 #' A heuristic data harmonization procedure is implemented in the __febr__ package. It consists of
@@ -96,17 +91,16 @@
 #' variables will be re-coded as `aaa_bbb`, thus becoming the same variable.
 #' }
 #'
-#' @return A list of data frames or a data frame with data on the chosen variable(s) of the chosen
-#' dataset(s).
+#' @return A `list` of `data.frame`s or a `data.frame` with, possibly standardize or harmonized,
+#' data of the chosen variable(s) of the chosen dataset(s).
 #'
-#' @note Check the new core data download function [febr::readFEBR()].
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso [febr::layer()], [febr::dictionary()], [febr::unit()]
+#' @seealso [febr::readFEBR()], [febr::layer()], [febr::dictionary()], [febr::unit()]
 #' @export
-#' 
+#'
 #' @examples
 #' res <- observation(data.set = "ctb0013")
-#' 
+#'
 #' if (interactive()) {
 #' # Download two data sets and standardize CRS
 #' res <- observation(
@@ -116,10 +110,10 @@
 #'
 #' # Try to download a data set that is not available yet
 #' res <- observation(data.set = "ctb0020")
-#' 
+#'
 #' # Try to download a non existing data set
 #' #res <- observation(data.set = "ctb0000")
-#' 
+#'
 #' # Try to read all files from local directory
 #' febr.repo <- "~/ownCloud/febr-repo/publico"
 #' febr.repo <- ifelse(dir.exists(febr.repo), febr.repo, NULL)
@@ -134,7 +128,7 @@ observation <-
            progress = TRUE, verbose = TRUE, febr.repo = NULL) {
     # OPÇÕES E PADRÕES
     opts <- .opt()
-    std_cols <- opts$observation$std.cols
+    std_cols <- opts$observation$std.cols()
     # ARGUMENT CHECK ----
     ## data.set
     if (missing(data.set)) {
@@ -301,10 +295,23 @@ observation <-
         colnames(unit) <- unlist(unit[1, ])
         unit <- unit[-1, ]
         n_rows <- nrow(tmp)
+        # PADRONIZAÇÀO/ATUALIZAÇÃO DOS NOMES DAS COLUNAS
+        in_cols <- colnames(tmp)
+        test_oldid_colnames <- std_cols[["campo_oldid"]] %in% in_cols
+        if (any(test_oldid_colnames)) {
+          cross_colnames <- std_cols[which(test_oldid_colnames), ]
+          # Atualização dos nomes das colunas da tabela de dados
+          data.table::setnames(tmp, cross_colnames[["campo_oldid"]], cross_colnames[["campo_id"]])
+          in_cols <- colnames(tmp)
+          # Atualização dos nomes das colunas da tabela de unidades de medida
+          data.table::setnames(unit, cross_colnames[["campo_oldid"]], cross_colnames[["campo_id"]])
+        }
+        # Nomes das colunas usadas para armazenar coordenadas espaciais
+        coord_names <- c("coord_longitude", "coord_latitude")
         # PROCESSAMENTO I
         ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas
         ## coordenadas e na data.
-        na_coord <- max(apply(tmp[, c("coord_x", "coord_y")], 2, function(x) sum(is.na(x))))
+        na_coord <- max(apply(tmp[, coord_names], 2, function(x) sum(is.na(x))))
         na_time <- is.na(tmp$observacao_data)
         n_na_time <- sum(na_time)
         if (missing$coord == "keep" && missing$time == "keep" ||
@@ -313,16 +320,14 @@ observation <-
             missing$coord == "keep" | missing$coord == "drop" && missing$time == "drop" &&
             n_na_time < n_rows) {
           # COLUNAS
-          ## Definir as colunas a serem mantidas
-          ## As colunas padrão são sempre mantidas.
-          ## No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados,
-          ## assim sendo ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.
-          in_cols <- colnames(tmp)
-          cols <- in_cols[in_cols %in% std_cols]
+          ## Definir as colunas a serem mantidas para além das colunas obrigatórias
+          ## É possível que algumas colunas adicionais não contenham quaisquer dados,
+          ## sendo ocupadas por 'NA': tais colunas são descartadas da tabela de dados.
+          cols <- in_cols[in_cols %in% std_cols[["campo_id"]]]
           extra_cols <- vector()
           if (!missing(variable)) {
             if (length(variable) == 1 && variable == "all") {
-              extra_cols <- in_cols[!in_cols %in% std_cols]
+              extra_cols <- in_cols[!in_cols %in% std_cols[["campo_id"]]]
               idx_na <- apply(tmp[extra_cols], 2, function(x) all(is.na(x)))
               extra_cols <- extra_cols[!idx_na]
             } else {
@@ -330,7 +335,7 @@ observation <-
                 in_cols[grep(paste("^", x, sep = ""), in_cols)]
               })
               extra_cols <- unlist(extra_cols)
-              extra_cols <- extra_cols[!extra_cols %in% std_cols]
+              extra_cols <- extra_cols[!extra_cols %in% std_cols[["campo_id"]]]
               idx_na <- apply(tmp[extra_cols], 2, function(x) all(is.na(x)))
               extra_cols <- extra_cols[!idx_na]
             }
@@ -375,9 +380,9 @@ observation <-
             ## Sistema de referência de coordenadas
             ## Primeiro verificar se existem observações com coordenadas e se o SRC deve ser
             ## transformado
-            na_coord <- max(apply(tmp[, c("coord_x", "coord_y")], 2, function(x) sum(is.na(x))))
+            na_coord <- max(apply(tmp[, coord_names], 2, function(x) sum(is.na(x))))
             if (n_rows > na_coord && !is.null(standardization$crs)) {
-              tmp <- .crsTransform(obj = tmp, crs = standardization$crs)
+              tmp <- .crsTransform(obj = tmp, crs = standardization$crs, coord.names = coord_names)
             }
             
             # PADRONIZAÇÃO II
@@ -396,7 +401,7 @@ observation <-
               ## TODO: EXCETO 'coord_precisao'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
               id_class <- sapply(tmp, class)
               cont_idx <- which(id_class %in% c("numeric", "integer") &
-                                  !names(id_class) %in% std_cols)
+                                  !names(id_class) %in% std_cols[["campo_id"]])
               if (length(cont_idx) >= 1) {
                 
                 # Tabela com padrões das variáveis contínuas identificadas
