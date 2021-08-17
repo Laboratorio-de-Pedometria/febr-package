@@ -229,9 +229,10 @@
     }
     # Continuar processamento apenas se restaram linhas
     if (nrow(obj) >= 1) {
+      is_layer <- "camada_id" %in% colnames(obj)
       # Tabela 'observacao'
-      is_obs <- all(c(coord.names, "observacao_data") %in% colnames(obj))
-      if (is_obs) {
+      # is_obs <- all(c(coord.names, "observacao_data") %in% colnames(obj))
+      if (!is_layer) {
         ## remover linhas sem dados de coordenadas
         if (!is.null(missing$coord) && missing$coord == "drop") {
           na_coord_id <- apply(obj[coord.names], 1, function(x) sum(is.na(x))) >= 1
@@ -242,19 +243,11 @@
           na_time_id <- is.na(obj$observacao_data)
           obj <- obj[!na_time_id, ]
         }
-      }
-      # Continuar processamento apenas se restaram linhas
-      if (nrow(obj) >= 1) {
-        # Tabela 'camada'
-        is_lyr <- all(depth.names %in% colnames(obj))
-        if (is_lyr) {
-          ## remover linhas sem dados de profundidade
-          if (!is.null(missing$depth) && missing$depth == "drop") {
-            na_depth_id <- apply(obj[depth.names], 1, function(x) {
-              sum(is.na(x))}
-            ) >= 1
-            obj <- obj[!na_depth_id, ]
-          }
+      } else if (is_layer) {
+        ## remover linhas sem dados de profundidade
+        if (!is.null(missing$depth) && missing$depth == "drop") {
+          na_depth_id <- apply(obj[depth.names], 1, function(x) { sum(is.na(x)) }) >= 1
+          obj <- obj[!na_depth_id, ]
         }
       }
     }

@@ -74,7 +74,7 @@
     id_class <- id_class[!names(id_class) %in% c("dataset_id", .opt()$layer$std.cols()[["campo_id"]])]
     id_cha <- names(id_class[id_class %in% "character"])
     # A corrente de caracteres começa com o símbolo '<', seguido de um ou mais dígitos, não podendo
-    # haver qualquer caracter alfabético
+    # haver qualquer caractere alfabético
     if (length(id_cha) >= 1) {
       idx_lessthan <- names(which(sapply(obj[id_cha], function(x) {
         any(.hasLessThanSign(stats::na.omit(x)))

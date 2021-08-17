@@ -15,7 +15,7 @@
 #' @references
 #' Jeroen Ooms (2014). The jsonlite Package: A Practical and Consistent
 #' Mapping Between JSON Data and R Objects. arXiv:1403.2805 \[stat.CO\]
-#' URL [https://arxiv.org/abs/1403.2805].
+#' URL \url{https://arxiv.org/abs/1403.2805}.
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
@@ -57,7 +57,7 @@
 #'     list(plus.sign = "remove", lessthan.sign = "remove",
 #'          transition = "smooth", units = TRUE, round = TRUE))
 #' horizons <- horizons[horizons$observacao_id %in% idx, ]
-#' horizons[, 7:46] <- lapply(horizons[, 7:46], as.numeric)
+#' horizons[, 9:48] <- lapply(horizons[, 9:48], as.numeric)
 #' horizons <- cbind(
 #'   horizons,
 #'   morphology(x = horizons$morfologia_descricao, variable = "color"),

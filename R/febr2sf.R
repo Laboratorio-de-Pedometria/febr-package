@@ -14,7 +14,7 @@
 #'
 #' @references
 #' Pebesma, E., 2018. Simple Features for R: Standardized Support for Spatial Vector Data.
-#' The R Journal 10 (1), 439-446, [https://doi.org/10.32614/RJ-2018-009]
+#' The R Journal 10 (1), 439-446, \url{https://doi.org/10.32614/RJ-2018-009}
 #'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
@@ -27,13 +27,11 @@
 ####################################################################################################
 febr2sf <-
   function(obj) {
-    #
     if (!requireNamespace("sf")) stop("sf package is missing")
-    #
     # Verificar sistema de referência de coordenadas
-    crs <- unique(obj[["coord_sistema"]])
+    crs <- unique(obj[["coord_datum"]])
     if (length(crs) == 1) {
-      obj <- sf::st_as_sf(x = obj, coords = c("coord_x", "coord_y"), crs = crs)
+      obj <- sf::st_as_sf(x = obj, coords = c("coord_longitude", "coord_latitude"), crs = crs)
     } else {
       stop("coordinate reference system has not been standardized")
     }

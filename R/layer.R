@@ -119,7 +119,7 @@
 #' @export
 #' @examples
 #' res <- layer(data.set = "ctb0003")
-#' 
+#'
 #' if (interactive()) {
 #' # Download two data sets and standardize units
 #' res <- layer(
@@ -376,19 +376,19 @@ layer <-
           # As colunas padrão são sempre mantidas.
           # No caso das colunas adicionais, é possível que algumas não contenham quaisquer dados,
           # assim sendo ocupadas por 'NA'. Nesse caso, as respectivas colunas são descartadas.
-          in_cols <- colnames(tmp)
-          cols <- in_cols[in_cols %in% std_cols]
+          # in_cols <- colnames(tmp)
+          cols <- in_cols[in_cols %in% std_cols[["campo_id"]]]
           extra_cols <- vector()
           if (!missing(variable)) {
             if (length(variable) == 1 && variable == "all") {
               # if (variable == "all") {
-              extra_cols <- in_cols[!in_cols %in% std_cols]
+              extra_cols <- in_cols[!in_cols %in% std_cols[["campo_id"]]]
               idx_na <- apply(tmp[extra_cols], 2, function(x) all(is.na(x)))
               extra_cols <- extra_cols[!idx_na]
             } else {
               extra_cols <- lapply(variable, function(x) in_cols[grep(paste0("^", x), in_cols)])
               extra_cols <- unlist(extra_cols)
-              extra_cols <- extra_cols[!extra_cols %in% std_cols]
+              extra_cols <- extra_cols[!extra_cols %in% std_cols[["campo_id"]]]
               idx_na <- apply(tmp[extra_cols], 2, function(x) all(is.na(x)))
               extra_cols <- extra_cols[!idx_na]
             }
@@ -419,7 +419,7 @@ layer <-
             # devem estar no formato de caracter para evitar erros durante o empilhamento das tabelas
             # devido ao tipo de dado.
             if (stack) {
-              tmp[std_cols] <- sapply(tmp[std_cols], as.character)
+              tmp[std_cols[["campo_id"]]] <- sapply(tmp[std_cols[["campo_id"]]], as.character)
             }
             # PADRONIZAÇÃO I
             # Profundidade e transição entre as camadas
@@ -474,7 +474,7 @@ layer <-
               # identificação padrão.
               id_class <- sapply(tmp, class)
               cont_idx <-
-                which(id_class %in% c("numeric", "integer") & !names(id_class) %in% std_cols)
+                which(id_class %in% c("numeric", "integer") & !names(id_class) %in% std_cols[["campo_id"]])
               if (length(cont_idx) >= 1) {
                 # Tabela com padrões das variáveis contínuas identificadas
                 tmp_stds <- match(cols[cont_idx], febr_stds[["campo_id"]])

@@ -79,8 +79,8 @@ Alternatively, a local directory path can be informed if the user has a local co
 repository.}
 }
 \value{
-A list of data frames or a data frame with data on the chosen variable(s) of the chosen
-dataset(s).
+A \code{list} of \code{data.frame}s or a \code{data.frame} with, possibly standardize or harmonized,
+data of the chosen variable(s) of the chosen dataset(s).
 }
 \description{
 Download data from the 'observation' ("observacao") table of one or more datasets published in
@@ -89,39 +89,33 @@ This table includes data such as latitude, longitude, date of observation, under
 land use and vegetation, local topography, soil classification, and much more.
 }
 \details{
-\subsection{Standard identification variables}{
-Standard identification variables and their content are as follows:
+\subsection{Default variables}{
+Default variables (fields) present in the 'observation' table are as follows:
 \itemize{
 \item \code{dataset_id}. Identification code of the dataset in the FEBR to which an observation
 belongs.
 \item \code{observacao_id}. Identification code of an observation in a dataset.
-\item \code{sisb_id}. Identification code of an observation in the Brazilian Soil Information System
-maintained by the Brazilian Agricultural Research Corporation (EMBRAPA).
-\item \code{ibge_id}. Identification code of an observation in the database of the Brazilian Institute
-of Geography and Statistics (IBGE).
 \item \code{observacao_data}. Date (dd-mm-yyyy) in which an observation was made.
-\item \code{coord_sistema}. EPSG code of the coordinate reference system.
-\item \code{coord_x}. Longitude (deg) or easting (m).
-\item \code{coord_y}. Latitude (deg) or northing (m).
-\item \code{coord_precisao}. Precision with which x- and y-coordinates were determined (m).
-\item \code{coord_fonte}. Source of the x- and y-coordinates.
-\item \code{pais_id}. Country code (ISO 3166-1 alpha-2).
-\item \code{estado_id}. Code of the Brazilian federative unit where an observation was made.
-\item \code{municipio_id}. Name of the Brazilian municipality where as observation was made.
-\item \code{amostra_tipo}. Type of sample taken.
-\item \code{amostra_quanti}. Number of samples taken.
-\item \code{amostra_area}. Sampling area.
+\item \code{coord_datum}. EPSG code of the coordinate reference system.
+\item \code{coord_longitude}. Longitude (deg) or easting (m).
+\item \code{coord_latitude}. Latitude (deg) or northing (m).
+\item \code{coord_precisao}. Precision with which the spatial coordinates were determined (m).
+\item \code{coord_fonte}. Source of the spatial coordinates.
+\item \code{pais_id}. Code (ISO 3166-1 alpha-2) of the county where an observation was made.
+\item \code{estado_sigla}. Acronym of the Brazilian federative unit where an observation was made.
+\item \code{municipio_nome}. Name of the Brazilian municipality where as observation was made.
+\item \code{subamostra_quanti}. Number of sub samples taken (used to indicate composite sampling).
+\item \code{amostra_area}. Sampling area (used to indicate areal or block sampling).
 }
-Further details about the content of the standard identification variables can be found in
+Further details about the content of the default variables (fields) can be found in
 \url{https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM}
 (in Portuguese).
 }
-
 \subsection{Harmonization}{
 Data harmonization consists of converting the values of a variable determined using some method
 \emph{B} so that they are (approximately) equivalent to the values that would have been obtained if
 the standard method \emph{A} had been used instead. For example, converting carbon content values
-obtained using a wet digestion method to the standard dry combustion method is data
+obtained using a wet combustion method to the standard dry combustion method is data
 harmonization.
 
 A heuristic data harmonization procedure is implemented in the \strong{febr} package. It consists of
@@ -132,9 +126,6 @@ consider a variable with an identification code composed of four levels, \code{a
 then these two variables will remain coded as separate variables. But if \code{level = 2}, then both
 variables will be re-coded as \code{aaa_bbb}, thus becoming the same variable.
 }
-}
-\note{
-Check the new core data download function \code{\link[=readFEBR]{readFEBR()}}.
 }
 \examples{
 res <- observation(data.set = "ctb0013")
@@ -159,7 +150,7 @@ res <- observation(data.set = "all", febr.repo = febr.repo)
 }
 }
 \seealso{
-\code{\link[=layer]{layer()}}, \code{\link[=dictionary]{dictionary()}}, \code{\link[=unit]{unit()}}
+\code{\link[=readFEBR]{readFEBR()}}, \code{\link[=layer]{layer()}}, \code{\link[=dictionary]{dictionary()}}, \code{\link[=unit]{unit()}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

@@ -58,3 +58,27 @@ a <- httr::GET('https://docs.google.com/spreadsheets/d/1l_ag2vVnEjKSUYyWsy89a6LY
 a <- a$content
 a <- readBin(con = a, what = character())
 
+
+
+
+profiles <- observation(
+   data.set = "ctb0025", variable = c("taxon_sibcs", "relevo_drenagem"),
+   standardization = list(units = TRUE, round = TRUE))
+idx <- profiles$observacao_id[1]
+profiles <- profiles[profiles$observacao_id %in% idx, ]
+horizons <- layer(
+   data.set = "ctb0025", variable = "all",
+   standardization =
+     list(plus.sign = "remove", lessthan.sign = "remove",
+          transition = "smooth", units = TRUE, round = TRUE))
+horizons <- horizons[horizons$observacao_id %in% idx, ]
+
+
+horizons[, 9:48] <- lapply(horizons[, 9:48], as.numeric)
+ horizons <- cbind(
+   horizons,
+   morphology(x = horizons$morfologia_descricao, variable = "color"),
+   morphology(x = horizons$morfologia_descricao, variable = "structure"),
+   morphology(x = horizons$morfologia_descricao, variable = "consistence"),
+   stringsAsFactors = FALSE)
+

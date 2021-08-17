@@ -102,8 +102,8 @@ Alternatively, a local directory path can be informed if the user has a local co
 repository.}
 }
 \value{
-A list of data frames or a data frame with data on the chosen variable(s) of the chosen
-dataset(s).
+A \code{list} of \code{data.frame}s or a \code{data.frame} with, possibly standardize or harmonized,
+data of the chosen variable(s) of the chosen dataset(s).
 }
 \description{
 Download data from the 'layer' ("camada") table of one or more datasets published in the Free
@@ -112,18 +112,18 @@ table includes data such as sampling depth, horizon designation, and variables s
 and clay content, and much more.
 }
 \details{
-\subsection{Standard identification variables}{
-Standard identification variables and their content are as follows:
+\subsection{Default variables}{
+Default variables (fields) present in the 'layer' table are as follows:
 \itemize{
 \item \code{dataset_id}. Identification of the dataset in FEBR to which an observation belongs.
 \item \code{observacao_id}. Identification code of an observation in a dataset.
 \item \code{camada_id}. Sequential layer number, from top to bottom.
-\item \code{camada_nome}. Layer designation according to some standard description guide.
+\item \code{camada_altid}. Layer designation according to some standard description guide.
 \item \code{amostra_id}. Laboratory number of a sample.
 \item \code{profund_sup}. Upper boundary of a layer (cm).
 \item \code{profund_inf}. Lower boundary of a layer (cm).
 }
-Further details about the content of the standard identification variables can be found in
+Further details about the content of the default variables (fields) can be found in
 \url{https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM}
 (in Portuguese).
 }
@@ -142,9 +142,6 @@ consider a variable with an identification code composed of four levels, \code{a
 then these two variables will remain coded as separate variables. But if \code{level = 2}, then both
 variables will be re-coded as \code{aaa_bbb}, thus becoming the same variable.
 }
-}
-\note{
-Check the new core data download function \code{\link[=readFEBR]{readFEBR()}}.
 }
 \examples{
 res <- layer(data.set = "ctb0003")
@@ -169,7 +166,7 @@ res <- layer(data.set = "all", febr.repo = febr.repo)
 }
 }
 \seealso{
-\code{\link[=observation]{observation()}}, \code{\link[=dictionary]{dictionary()}}, \code{\link[=unit]{unit()}}
+\code{\link[=readFEBR]{readFEBR()}}, \code{\link[=observation]{observation()}}, \code{\link[=dictionary]{dictionary()}}, \code{\link[=unit]{unit()}}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

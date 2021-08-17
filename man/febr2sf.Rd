@@ -30,7 +30,7 @@ plot(res["geometry"], axes = TRUE, graticule = TRUE)
 }
 \references{
 Pebesma, E., 2018. Simple Features for R: Standardized Support for Spatial Vector Data.
-The R Journal 10 (1), 439-446, \link{https://doi.org/10.32614/RJ-2018-009}
+The R Journal 10 (1), 439-446, \url{https://doi.org/10.32614/RJ-2018-009}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

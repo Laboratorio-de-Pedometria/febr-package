@@ -7,18 +7,20 @@
 goto(data.set, page)
 }
 \arguments{
-\item{data.set}{(optional) Character vector indicating a single data set.}
+\item{data.set}{(optional) Character vector indicating a (unique) dataset whose
+metadata web page you wish to visit.}
 
-\item{page}{(optional) Character string indicating a web page of the FEBR, with options:
+\item{page}{(optional) Character string indicating a web page of the FEBR, with
+options:
 \itemize{
 \item \code{"febr"}: FEBR main web page,
 \item \code{"dictionary"}: FEBR data dictionary and vocabulary,
 \item \code{"forum"}: FEBR public forum at Google Groups,
 \item \code{"github"}: \strong{febr} package source code repository on GitHub,
-\item \code{"index"}: FEBR data set index, and
+\item \code{"index"}: FEBR data set index,
 \item \code{"search"}: data set search web page,
 \item \code{"package"}: \strong{febr} package on CRAN,
-\item \code{"template"}: FEBR spreadsheet data template.
+\item \code{"template"}: FEBR spreadsheet template on Google Sheets,
 \item \code{"units"}: units and conversion factors used in FEBR.
 }}
 }
@@ -26,8 +28,7 @@ goto(data.set, page)
 Load a given URL into an HTML browser via \code{\link[utils:browseURL]{utils::browseURL()}}.
 }
 \description{
-Go to one of the web pages of the Free Brazilian Repository for Open Soil Data (FEBR),
-including data set web pages.
+Visit FEBR assets on the web.
 }
 \examples{
 if (interactive()) {
