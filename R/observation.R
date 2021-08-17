@@ -4,15 +4,15 @@
 #' the Free Brazilian Repository for Open Soil Data (FEBR), \url{https://www.pedometria.org/febr/}.
 #' This table includes data such as latitude, longitude, date of observation, underlying geology,
 #' land use and vegetation, local topography, soil classification, and much more.
-#' 
+#'
 #' @template data_template
 #' @template metadata_template
-#' 
+#'
 #' @param febr.repo (optional) Defaults to the remote file directory of the Federal University of
 #' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}. 
 #' Alternatively, a local directory path can be informed if the user has a local copy of the data
 #' repository.
-#' 
+#'
 #' @param missing (optional) List with named sub-arguments indicating what should be done with an
 #' observation missing spatial coordinates, `coord`, date of observation, `time`, or data on
 #' variables, `data`. Options are `"keep"` (default) and `"drop"`.
@@ -24,34 +24,34 @@
 #' to which spatial coordinates should be transformed. For example, `crs = "EPSG:4674"`, i.e.
 #' SIRGAS 2000, the standard CRS for Brazil. Defaults to `crs = NULL`, i.e. no transformation 
 #' is performed.
-#' 
+#'
 #' \item `time.format` Character string indicating how to format dates. For example, 
 #' \code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to 
 #' `time.format = NULL`, i.e. no formatting is performed. See [base::as.Date()] for more 
 #' details.
-#' 
+#'
 #' \item `units` Logical value indicating if the measurement unit(s) of the continuous variable(s)
 #' should be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no
 #' conversion is performed. See [febr::dictionary()] for more information.
-#' 
+#'
 #' \item `round` Logical value indicating if the values of the continuous variable(s) should be
 #' rounded to the standard number of decimal places. Requires `units = TRUE`. Defaults to
 #' `round = FALSE`, i.e. no rounding is performed. See [febr::dictionary()] for more
 #' information.
 #' }
-#' 
+#'
 #' @param harmonization (optional) List with named sub-arguments indicating if and how to perform
 #' data harmonization.
 #' \itemize{
 #' \item `harmonize` Logical value indicating if data should be harmonized. Defaults to
 #' `harmonize = FALSE`, i.e. no harmonization is performed.
-#' 
+#'
 #' \item `level` Integer value indicating the number of levels of the identification code of the
 #' variable(s) that should be considered for harmonization. Defaults to `level = 2`. See
 #' \sQuote{Details} for more information.
 #' }
 #'
-#' @details 
+#' @details
 #' \subsection{Standard identification variables}{
 #' Standard identification variables and their content are as follows:
 #' \itemize{
