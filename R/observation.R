@@ -264,7 +264,7 @@ observation <-
     ## solicitada ou quando empilhamento é solicitado
     if (standardization$units || stack) {
       febr_stds <- .getStds()
-      febr_unit <- .readGoogleSheetCSV(sheet.name = 'unidades')
+      febr_unit <- .readGoogleSheetCSV(sheet.name = "unidades")
     }
     ## stack + stadardization
     ## Padronização não precisa ser feita no caso de descarregamento apenas das variáveis padrão
