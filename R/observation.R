@@ -74,7 +74,6 @@
 #' \url{https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM}
 #' (in Portuguese).
 #' }
-#'
 #' \subsection{Harmonization}{
 #' Data harmonization consists of converting the values of a variable determined using some method
 #' *B* so that they are (approximately) equivalent to the values that would have been obtained if

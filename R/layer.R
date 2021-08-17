@@ -9,7 +9,7 @@
 #' @template metadata_template
 #'
 #' @param febr.repo (optional) Defaults to the remote file directory of the Federal University of
-#' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}. 
+#' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
 #' Alternatively, a local directory path can be informed if the user has a local copy of the data
 #' repository.
 #'
@@ -34,24 +34,24 @@
 #' \item `lessthan.frac` Numeric value between 0 and 1 (a fraction) by which the lower limit of
 #' detection should be subtracted when `lessthan.sign = "subtract"`. Defaults to
 #' `lessthan.frac = 0.5`, i.e. subtract 50\% from the lower limit of detection.
-#' 
+#'
 #' \item `repetition` Character string indicating what should be done with repetitions, i.e.
 #' repeated measurements of layers in an observation. Options are `"keep"` (default) and
 #' `"combine"`. In the latter case, it is recommended to set `lessthan.sign = "subtract"` or
 #' `lessthan.sign = "remove"`.
-#' 
+#'
 #' \item `combine.fun` Character string indicating the function that should be used to combine
 #' repeated measurements of layers in an observation when `repetition = "combine"`. Options are
 #' `"mean"` (default), `"min"`, `"max"`, and `"median"`.
-#' 
+#'
 #' \item `transition` Character string indicating what should be done about the wavy and irregular
 #' transition between subsequent layers in an observation. Options are `"keep"` (default) and
 #' `"smooth"`.
-#' 
+#'
 #' \item `smoothing.fun` Character string indicating the function that should be used to smooth wavy
 #' and irregular transitions between subsequent layers in an observation when
 #' `transition = "smooth"`. Options are `"mean"` (default), `"min"`, `"max"`, and `"median"`.
-#' 
+#'
 # \item `broken.transition` Character string indicating what should be done about the broken
 # transition between intermingled, disrupted layers in an observation. Options are `"keep"`
 # (default) and `"merge"`.
@@ -59,40 +59,40 @@
 # intermingled, disrupted layers (also called broken transition) in an observation when
 # `broken.transition = "merge"`. Options are `"weighted.mean"` (default), `"mean"`, `"min"`,
 # `"max"`, and `"median"`.
-# 
+#
 #' \item `units` Logical value indicating if the measurement unit(s) of the continuous variable(s)
 #' should be converted to the standard measurement unit(s). Defaults to `units = FALSE`, i.e. no
 #' conversion is performed. See [febr::dictionary()] for more information.
-#' 
+#'
 #' \item `round` Logical value indicating if the values of the continuous variable(s) should be
 #' rounded to the standard number of decimal places. Requires `units = TRUE`. Defaults to
 #' `round = FALSE`, i.e. no rounding is performed. See [febr::dictionary()] for more information.
 #' }
-#' 
+#'
 #' @param harmonization (optional) List with named sub-arguments indicating if and how to perform
 #' data harmonization.
 #' \itemize{
 #' \item `harmonize` Logical value indicating if data should be harmonized. Defaults to
 #' `harmonize = FALSE`, i.e. no harmonization is performed.
-#' 
+#'
 #' \item `level` Integer value indicating the number of levels of the identification code of the
 #' variable(s) that should be considered for harmonization. Defaults to `level = 2`. See
 #' \sQuote{Details} for more information.
 #' }
-#' 
+#'
 #' @details
-#' \subsection{Standard identification variables}{
-#' Standard identification variables and their content are as follows:
+#' \subsection{Default variables}{
+#' Default variables (fields) present in the 'layer' table are as follows:
 #' \itemize{
 #' \item \code{dataset_id}. Identification of the dataset in FEBR to which an observation belongs.
 #' \item \code{observacao_id}. Identification code of an observation in a dataset.
 #' \item \code{camada_id}. Sequential layer number, from top to bottom.
-#' \item \code{camada_nome}. Layer designation according to some standard description guide.
+#' \item \code{camada_altid}. Layer designation according to some standard description guide.
 #' \item \code{amostra_id}. Laboratory number of a sample.
 #' \item \code{profund_sup}. Upper boundary of a layer (cm).
 #' \item \code{profund_inf}. Lower boundary of a layer (cm).
 #' }
-#' Further details about the content of the standard identification variables can be found in
+#' Further details about the content of the default variables (fields) can be found in
 #' \url{https://docs.google.com/document/d/1Bqo8HtitZv11TXzTviVq2bI5dE6_t_fJt0HE-l3IMqM}
 #' (in Portuguese).
 #' }
@@ -111,12 +111,11 @@
 #' then these two variables will remain coded as separate variables. But if `level = 2`, then both
 #' variables will be re-coded as `aaa_bbb`, thus becoming the same variable.
 #' }
-#' @return A list of data frames or a data frame with data on the chosen variable(s) of the chosen
-#' dataset(s).
-#' 
-#' @note Check the new core data download function [febr::readFEBR()].
+#' @return A `list` of `data.frame`s or a `data.frame` with, possibly standardize or harmonized,
+#' data of the chosen variable(s) of the chosen dataset(s).
+#'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#' @seealso [febr::observation()], [febr::dictionary()], [febr::unit()]
+#' @seealso [febr::readFEBR()], [febr::observation()], [febr::dictionary()], [febr::unit()]
 #' @export
 #' @examples
 #' res <- layer(data.set = "ctb0003")
@@ -153,7 +152,6 @@ layer <-
              units = FALSE, round = FALSE),
            harmonization = list(harmonize = FALSE, level = 2),
            progress = TRUE, verbose = TRUE, febr.repo = NULL) {
-    
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$layer$std.cols
