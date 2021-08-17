@@ -1,14 +1,30 @@
+# febr 1.8.0
+
+* __Improvement 1.__ Mandatory fields for data tables are not hard coded in the package anymore.
+  Instead, now they are read directly from the online repository dictionary. This enables any update
+  in the dictionary to have an imediate effect for users. Before this minor release, changes in the
+  dictionary required the package to be updated, generally resulting in some unwanted delay.
+  * In the dictionary, mandatory fields are now indicated using a new field called `campo_vital`.
+* __Improvement 2.__ The online repository dictionary is reviewed and expanded periodically. Some
+  changes include the modification of field names. These modifications can affect the functioning of
+  functions such as `observation()` or `layer()`. To avoid these negative impacts, now these
+  functions contain code to update field names before executing any data processing step e.g.
+  standardization and harmonization.
+  * In the dictionary, old field IDs are now recorded using a new field called `campo_oldid`.
+* __Improvement 3.__ The package documentation has been updated accordingly.
+
 # febr 1.7.5
 
-* Bug fix. Corrects data table stacking when embargoed datasets are present. The previous version
-  ignored that embargoed datasets return a string when called using `observation()` or `layer()`.
-  The presence of strings broke the data table stacking procedure.
+* __Bug fix.__ Corrects data table stacking when embargoed datasets are present. The previous
+  version ignored that embargoed datasets return a string when called using `observation()` or
+  `layer()`. The presence of strings broke the data table stacking procedure.
 
 # febr 1.7.4
 
-* Bug fix. Corrects the evaluation of `stack = TRUE` when all datasets `data.set = "all"` are read
-  using `observation()` and `layer()`. The previous version ignored that `data.set = "all"` returns
-  a vector with hundreds of datasets, and thus `stack` was automaticaly set to `stack = FALSE`.
+* __Bug fix.__ Corrects the evaluation of `stack = TRUE` when all datasets `data.set = "all"` are
+  read using `observation()` and `layer()`. The previous version ignored that `data.set = "all"`
+  returns a vector with hundreds of datasets, and thus `stack` was automatically set to
+  `stack = FALSE`.
 
 # febr 1.7.3
 

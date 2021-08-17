@@ -1,8 +1,8 @@
 Package: febr
 Type: Package
 Title: Free Brazilian Repository for Open Soil Data
-Version: 1.7.5
-Date: 2021-08-09
+Version: 1.8.0
+Date: 2021-08-17
 Authors@R: c(
     person("Alessandro", "Samuel-Rosa", role = c("aut", "cre"),
            email = "alessandrosamuelrosa@gmail.com", 
