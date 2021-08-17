@@ -3,11 +3,17 @@
     list(
       owncloud = "https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F",
       observation = list(
-        std.cols =
-          c("observacao_id", "sisb_id", "ibge_id", "observacao_data",
-            "coord_sistema", "coord_x", "coord_y", "coord_precisao", "coord_fonte",
-            "pais_id", "estado_id", "municipio_id",
-            "amostra_tipo", "amostra_quanti", "amostra_area")
+        # std.cols =
+        #   c("observacao_id", "sisb_id", "ibge_id", "observacao_data",
+        #     "coord_sistema", "coord_x", "coord_y", "coord_precisao", "coord_fonte",
+        #     "pais_id", "estado_id", "municipio_id",
+        #     "amostra_tipo", "amostra_quanti", "amostra_area"),
+        std.cols = function() {
+          which_columns <- c("tabela_id", "campo_id", "campo_vital", "campo_oldid")
+          padroes <- .getStds()[which_columns]
+          which_rows <- (padroes[["tabela_id"]] == "observacao" & padroes[["campo_vital"]] == TRUE)
+          padroes <- padroes[which_rows, c("campo_id", "campo_oldid")]
+        }
       ),
       layer = list(
         std.cols =
@@ -263,7 +269,7 @@
   }
 # Download FEBR dictionary #########################################################################
 .getStds <-
-  function(x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI", ws) {
+  function(x = "1Dalqi5JbW4fg9oNkXw5TykZTA39pR5GezapVeV0lJZI") {
     # O símbolo '-' é usado para indicar variáveis que não possuem unidade de medida. Portanto, não
     # pode ser lido como NA. Na prática, '-' é lido como uma unidade de medida. Do contrário, não é
     # possível realizar a padronização das unidades de medida quando descarregamos variáveis sem
