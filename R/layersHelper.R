@@ -21,7 +21,7 @@
 # (res <- res[res$observacao_id == "E85", c("profund_sup", "profund_inf")])
 # .setMaximumObservationDepth(res)
 .setMaximumObservationDepth <-
-  function (obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
+  function(obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
             plus.sign = "add", plus.depth = 2.5) {
     if (!requireNamespace("stringr")) stop("stringr package is missing")
     plus.depth <- paste("+", plus.depth)
@@ -45,11 +45,11 @@
           obj[idx_plus, depth.cols[2]] <-
             gsub("+", plus.depth, obj[idx_plus, depth.cols[2]], fixed = TRUE)
           obj[idx_plus, depth.cols[2]] <-
-            sapply(obj[idx_plus, depth.cols[2]], function (x) {
+            sapply(obj[idx_plus, depth.cols[2]], function(x) {
               is_broken <- grepl(pattern = "/", x = x, fixed = TRUE)
               if (is_broken) {
                 y <- stringr::str_split_fixed(x, "/", Inf)
-                y <- sapply(y, function (y) eval(parse(text = y)))
+                y <- sapply(y, function(y) eval(parse(text = y)))
                 paste(y, collapse = "/")
               } else {
                 eval(parse(text = x))
@@ -58,7 +58,7 @@
         }
       )
     }
-    return (obj)
+    return(obj)
   }
 
 # Símbolo indicador do limite inferior de detecção do método de determinação (<) ###################
@@ -68,12 +68,12 @@
 # x <- tmp$zinco_aquaregia_icpms
 # .hasLessThanSign(x)
 .hasLessThanSign <-
-  function (x) {
+  function(x) {
     all(any(grepl(pattern = "^<[0-9]+", x = x)) && all(!grepl(pattern = "[:alpha:]", x = x)))
     # all(nchar(x = x) <= 10)
   }
 .setLowestMeasuredValue <-
-  function (obj, lessthan.sign = "subtract", lessthan.frac = 0.5) {
+  function(obj, lessthan.sign = "subtract", lessthan.frac = 0.5) {
     
     # if (!requireNamespace("glue")) stop("glue package is missing")
     
@@ -85,7 +85,7 @@
     # A corrente de caracteres começa com o símbolo '<', seguido de um ou mais dígitos, não podendo
     # haver qualquer caracter alfabético
     if (length(id_cha) >= 1) {
-      idx_lessthan <- names(which(sapply(obj[id_cha], function (x) {
+      idx_lessthan <- names(which(sapply(obj[id_cha], function(x) {
         any(.hasLessThanSign(stats::na.omit(x)))
       })))
       # Processar dados
@@ -97,7 +97,7 @@
           # Precisa substituir vírgula por ponto como separador decimal
           remove = {
             obj[idx_lessthan] <- 
-              lapply(obj[idx_lessthan], function (x) {
+              lapply(obj[idx_lessthan], function(x) {
                 # alguns casos incluem espaço após '<'
                 out <- gsub(pattern = "^< ", replacement = "", x = x)
                 out <- gsub(pattern = "^<", replacement = "", x = x)
@@ -110,19 +110,19 @@
           # Precisa substituir vírgula por ponto como separador decimal
           subtract = {
             obj[idx_lessthan] <-
-              lapply(obj[idx_lessthan], function (x) {
+              lapply(obj[idx_lessthan], function(x) {
                 out <- gsub(
                   # pattern = "^<", replacement = glue::glue("{1 - lessthan.frac}*"), x = x)
                   pattern = "^<", replacement = paste0(1 - lessthan.frac, "*"), x = x)
                 out <- gsub(pattern = "(.),(.)", replacement = "\\1.\\2", x = out)
-                sapply(out, function (out) eval(parse(text = out)), USE.NAMES = FALSE)
+                sapply(out, function(out) eval(parse(text = out)), USE.NAMES = FALSE)
               })
           }
         )
       }
     }
     
-    return (obj)
+    return(obj)
   }
 # What to do with wavy and irregular layer transitions?
 # 
@@ -162,13 +162,13 @@
 # 
 #' @importFrom stats median 
 .solveWavyLayerTransition <-
-  function (obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
+  function(obj, id.col = "observacao_id", depth.cols = c("profund_sup", "profund_inf"),
             smoothing.fun = "mean") {
     if (!requireNamespace("stringr")) stop("stringr package is missing")
     # Note that a wavy/irregular transition at 'profund_inf' does not necessarily mean a
     # wavy/irregular transition at the next 'profund_sup' because the consistency of the order of
     # the layers is not guaranteed -- we are dealing with character data.
-    idx_wavy <- lapply(obj[depth.cols], function (x) grep(pattern = "/", x = x, fixed = TRUE))
+    idx_wavy <- lapply(obj[depth.cols], function(x) grep(pattern = "/", x = x, fixed = TRUE))
     
     
     wavy <- sum(sapply(idx_wavy, length))
@@ -183,23 +183,23 @@
         smoothing.fun,
         mean = {
           obj[depth.cols][as.matrix(i)] <-
-            apply(new_depth, 1, function (x) mean(as.numeric(x), na.rm = TRUE))
+            apply(new_depth, 1, function(x) mean(as.numeric(x), na.rm = TRUE))
         },
         min = {
           obj[depth.cols][as.matrix(i)] <-
-            apply(new_depth, 1, function (x) min(as.numeric(x), na.rm = TRUE))
+            apply(new_depth, 1, function(x) min(as.numeric(x), na.rm = TRUE))
         },
         max = {
           obj[depth.cols][as.matrix(i)] <-
-            apply(new_depth, 1, function (x) max(as.numeric(x), na.rm = TRUE))
+            apply(new_depth, 1, function(x) max(as.numeric(x), na.rm = TRUE))
         },
         median = {
           obj[depth.cols][as.matrix(i)] <-
-            apply(new_depth, 1, function (x) stats::median(as.numeric(x), na.rm = TRUE))
+            apply(new_depth, 1, function(x) stats::median(as.numeric(x), na.rm = TRUE))
         }
       )
     }
-    return (obj)
+    return(obj)
   }
 # What to do with broken layer transitions?
 # 
@@ -222,13 +222,13 @@
 # res
 # .solveBrokenLayerTransition(obj)
 # .weightedTable <-
-#   function (x, w) {
+#   function(x, w) {
 #     res <- by(data = w, INDICES = x, FUN = sum)
 #     res <- names(which.max(res))
-#     return (res)
+#     return(res)
 #   }
 # .solveBrokenLayerTransition <-
-#   function (obj, depth.cols = c("profund_sup", "profund_inf"), merge.fun = "weighted.mean",
+#   function(obj, depth.cols = c("profund_sup", "profund_inf"), merge.fun = "weighted.mean",
 #             id.cols = c("observacao_id", "camada_id", "camada_nome", "amostra_id")) {
 #     
 #     # Dividir camadas por 'observacao_id' 
@@ -237,12 +237,12 @@
 #     # Tipo 1: Uma ou mais camadas possuem valores idênticos de 'profund_sup' (mas não
 #     necessariamente de 'profund_inf'), indicando que elas começam na mesma profundidade (mas não
 #     necessariamente terminam na mesma profundidade).
-#     has_broken1 <- sapply(split_obj, function (x) any(duplicated(x[depth.cols[1]])))
+#     has_broken1 <- sapply(split_obj, function(x) any(duplicated(x[depth.cols[1]])))
 #     
 #     # Tipo 2: Uma ou mais camadas possuem valores idênticos de 'profund_inf' (mas não
 #     necessariamente de 'profund_sup'), indicando que elas terminam na mesma profundidade (mas não
 #     necessariamente começam na mesma profundidade).
-#     has_broken2 <- sapply(split_obj, function (x) any(duplicated(x[depth.cols[2]])))
+#     has_broken2 <- sapply(split_obj, function(x) any(duplicated(x[depth.cols[2]])))
 #     
 #     if (length(has_broken1) >= 1) {
 #       
@@ -250,18 +250,18 @@
 #       
 #       res <- split_obj
 #       
-#       res[has_broken1] <- lapply(split_obj[has_broken1], function (obj) {
+#       res[has_broken1] <- lapply(split_obj[has_broken1], function(obj) {
 #         
 #         # Which layers share the same 'profund_sup'?
 #         idx <-  match(obj[[depth.cols[1]]], obj[[depth.cols[1]]])
 # 
 #         # Dividir camadas por 'profund_sup'
 #         new_obj <- split(x = obj, f = idx)
-#         idx2 <- sapply(new_obj, function (x) nrow(x) > 1)
+#         idx2 <- sapply(new_obj, function(x) nrow(x) > 1)
 #           
 #         # Processar os dados
 #         # Usar a primeira camada para armazenar os dados
-#         new_obj[idx2] <- lapply(new_obj[idx2], function (x) {
+#         new_obj[idx2] <- lapply(new_obj[idx2], function(x) {
 #           
 #           # Número de camadas
 #           n <- nrow(x)
@@ -285,7 +285,7 @@
 #               merge.fun,
 #               weighted.mean = {
 #                 x[1, id_con] <- 
-#                   apply(x[id_con], 2, function (y) stats::weighted.mean(x = y, w = thick, na.rm = TRUE))
+#                   apply(x[id_con], 2, function(y) stats::weighted.mean(x = y, w = thick, na.rm = TRUE))
 #               },
 #               mean = {
 #                 x[1, id_con] <- apply(x[id_con], 2, mean, na.rm = TRUE)
@@ -307,9 +307,9 @@
 #           id_cat <- id_cat[!names(id_class[id_cat]) %in% c("dataset_id", id.cols, depth.cols)]
 #           if (length(id_cat) >= 1) {
 #             if (n >= 3) {
-#               x[1, id_cat] <- apply(x[id_cat], 2, function (y) .weightedTable(x = y, w = thick))
+#               x[1, id_cat] <- apply(x[id_cat], 2, function(y) .weightedTable(x = y, w = thick))
 #             } else {
-#               x[1, id_cat] <- apply(x[id_cat], 2, function (y) y[i])
+#               x[1, id_cat] <- apply(x[id_cat], 2, function(y) y[i])
 #             }
 #           }
 #           
@@ -322,38 +322,30 @@
 #     } else {
 #       res <- obj
 #     }
-#     return (res)
+#     return(res)
 #   }
-# Repetições de laboratório ###################################################################################
+# Repetições de laboratório ########################################################################
 .solveLayerRepetition <-
-  function (obj, observation.id = "observacao_id", layer.id = "camada_id", sample.id = "amostra_id",
-            combine.fun = "mean") {
-    
+  function(obj, observation.id = "observacao_id", layer.id = "camada_id", sample.id = "amostra_id",
+          combine.fun = "mean") {
     # Dividir camadas por 'observacao_id'
     split_obj <- split(x = obj, f = obj[[observation.id]])
-    
     # Duas ou mais camadas possuem valor idêntico de 'camada_id' -- exceto NA, ou seja, quando as
     # camadas não possuem código de identificação (caso de conjuntos de dados ainda não revisados).
-    # has_rep <- sapply(split_obj, function (x) any(duplicated(x[[layer.id]])))
-    has_rep <- sapply(split_obj, function (x) any(duplicated(x[[layer.id]], incomparables = NA)))
+    # has_rep <- sapply(split_obj, function(x) any(duplicated(x[[layer.id]])))
+    has_rep <- sapply(split_obj, function(x) any(duplicated(x[[layer.id]], incomparables = NA)))
     if (length(has_rep) >= 1) {
-      
       id_class <- lapply(obj, class)
-      
       res <- split_obj
-      res[has_rep] <- lapply(split_obj[has_rep], function (obj) {
-        
+      res[has_rep] <- lapply(split_obj[has_rep], function(obj) {
         # Quais camadas possuem o mesmo 'camada_id'?
         idx <-  match(obj[[layer.id]], obj[[layer.id]])
-        
         # Dividir camadas por 'camada_id'
         new_obj <- split(x = obj, f = idx)
-        idx2 <- sapply(new_obj, function (x) nrow(x) > 1)
-        
+        idx2 <- sapply(new_obj, function(x) nrow(x) > 1)
         # Processar os dados
         # Usar a primeira camada para armazenar os dados
-        new_obj[idx2] <- lapply(new_obj[idx2], function (x) {
-          
+        new_obj[idx2] <- lapply(new_obj[idx2], function(x) {
           # Variáveis contínuas
           id_con <- which(id_class %in% c("numeric", "integer"))
           if (length(id_con) >= 1) {
@@ -373,7 +365,6 @@
               }
             )
           }
-          
           # Variáveis categóricas
           n <- nrow(x) # número de camadas
           i <- sample(x = seq(n), size = 1) # selecionar uma camada aleatoriamente
@@ -382,24 +373,21 @@
             if (n >= 3) { # Se houver três ou mais, seleciona-se a mais comum (maior frequência)
               x[1, id_cat] <- 
                 as.character(
-                  apply(x[id_cat], 2, function (y) names(sort(table(y), decreasing = TRUE))[1]))
+                  apply(x[id_cat], 2, function(y) names(sort(table(y), decreasing = TRUE))[1]))
             } else { # Se houver apenas duas, seleciona-se aleatoriamente
-              x[1, id_cat] <- apply(x[id_cat], 2, function (y) y[i])
+              x[1, id_cat] <- apply(x[id_cat], 2, function(y) y[i])
             }
           }
-          
           # Remover 'amostra_id'
           x[1, sample.id] <- NA
-          
           # Retornar apenas a primeira camada
           x[1, ]
         })
         do.call(rbind, new_obj)
       })
       res <- do.call(rbind, c(res, make.row.names = FALSE, stringsAsFactors = FALSE))  
-      
     } else {
       res <- obj
     }
-    return (res)
+    return(res)
   }
