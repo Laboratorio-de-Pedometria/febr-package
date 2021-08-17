@@ -132,7 +132,6 @@ observation <-
            standardization = list(crs = NULL, time.format = NULL, units = FALSE, round = FALSE),
            harmonization = list(harmonize = FALSE, level = 2),
            progress = TRUE, verbose = TRUE, febr.repo = NULL) {
-    
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$observation$std.cols
