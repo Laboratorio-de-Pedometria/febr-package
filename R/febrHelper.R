@@ -17,8 +17,16 @@
         }
       ),
       layer = list(
-        std.cols =
-          c("observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup", "profund_inf")
+        # std.cols =
+          # c("observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup",
+          # "profund_inf")
+        std.cols = function() {
+          which_columns <- c("tabela_id", "campo_id", "campo_vital", "campo_oldid")
+          padroes <- .getStds()[which_columns]
+          which_rows <- (padroes[["tabela_id"]] == "camada" & padroes[["campo_vital"]] == TRUE)
+          padroes <- padroes[which_rows, c("campo_id", "campo_oldid")]
+          return(padroes)
+        }
       ),
       gs = list(
         comment = "#metadado>",
