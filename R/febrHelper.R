@@ -182,7 +182,7 @@
     new_colnames <- stringr::str_split_fixed(string = extra_cols, pattern = "_", n = Inf)
     n_new_colnames <- seq(min(harmonization$level, ncol(new_colnames)))
     new_colnames <- matrix(new_colnames[, n_new_colnames], nrow = nrow(new_colnames))
-    new_colnames <- 
+    new_colnames <-
       apply(new_colnames, 1, function(x) paste(x[!x == ""], collapse = "_", sep = ""))
     
     # No caso de nomes idênticos, manter o nome original
