@@ -73,7 +73,7 @@ goto <-
           url <- "https://CRAN.R-project.org/package=febr"
         },
         github = {
-          url <- "https://github.com/samuel-rosa/febr-package"
+          url <- "https://github.com/laboratorio-de-pedometria/febr-package"
         },
         forum = {
           url <- "https://groups.google.com/forum/#!forum/febr-forum"
