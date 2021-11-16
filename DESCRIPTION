@@ -1,8 +1,8 @@
 Package: febr
 Type: Package
 Title: Free Brazilian Repository for Open Soil Data
-Version: 1.8.0
-Date: 2021-08-17
+Version: 1.8.1
+Date: 2021-11-16
 Authors@R: c(
     person("Alessandro", "Samuel-Rosa", role = c("aut", "cre"),
            email = "alessandrosamuelrosa@gmail.com", 
@@ -28,8 +28,8 @@ Suggests:
   stringr,
   knitr
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
-URL: https://github.com/samuel-rosa/febr-package/
-BugReports: https://github.com/samuel-rosa/febr-package/issues/
+URL: https://github.com/laboratorio-de-pedometria/febr-package/
+BugReports: https://github.com/laboratorio-de-pedometria/febr-package/issues/
 Language: en-US

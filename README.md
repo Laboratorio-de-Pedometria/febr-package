@@ -6,7 +6,7 @@ Repositório Brasileiro Livre para Dados Abertos do Solo (FEBR)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![packageversion](https://img.shields.io/badge/devel%20version-1.8.0-firebrick.svg?style=flat-square)](commits/master)
+[![packageversion](https://img.shields.io/badge/devel%20version-1.8.1-firebrick.svg?style=flat-square)](commits/master)
 [![Build
 Status](https://travis-ci.org/samuel-rosa/febr-package.svg?branch=master)](https://travis-ci.org/samuel-rosa/febr-package)
 [![CRAN](https://www.r-pkg.org/badges/version/febr)](https://cran.r-project.org/package=febr)
@@ -14,26 +14,35 @@ Status](https://travis-ci.org/samuel-rosa/febr-package.svg?branch=master)](https
 checks](https://cranchecks.info/badges/worst/febr)](https://cran.r-project.org/web/checks/check_results_febr.html)
 [![Downloads](https://cranlogs.r-pkg.org/badges/febr?color=brightgreen)](https://www.r-pkg.org/pkg/febr)
 
+O pacote **febr** para [R](https://www.r-project.org/) foi criado para
+facilitar o acesso aos conjuntos de dados do solo publicados no
+Repositório Brasileiro Livre para Dados Abertos do Solo, também
+conhecido como [FEBR](https://www.pedometria.org/projeto/febr/)
+(/ˈfɛ.bɾe/).
+
 Instalação
 ----------
 
-O pacote febr para [R](https://www.r-project.org/) foi criado para
-facilitar o acesso aos conjuntos de dados publicados no Repositório
-Brasileiro Livre para Dados Abertos do Solo, também conhecido como
-[FEBR](https://www.pedometria.org/projeto/febr/) (/ˈfɛ.bɾe/). Ele pode
-ser descarregado do [CRAN](https://CRAN.R-project.org/package=febr) da
-seguinte maneira:
+A última versão estável do pacote **febr** geralmente pode ser
+descarregada do *Comprehensive R Archive Network*
+([CRAN](https://CRAN.R-project.org/package=febr)).
 
+    # Instalar pacote febr do CRAN
     install.packages(pkgs = "febr")
 
-Já a versão de desenvolvimento, disponível no
-[GitHub](https://github.com/samuel-rosa/febr-package), pode ser
-instalada—usando o pacote `remotes`—da seguinte maneira:
+Se a instalação a partir do CRAN falhar, você pode instalar a versão de
+desenvolvimento do pacote **febr** disponível no
+[GitHub](https://github.com/laboratorio-de-pedometria/febr-package)
+usando o pacote **remotes**. Se você estiver usando uma máquina
+[Windows](https://cran.r-project.org/bin/windows/), contudo, você terá
+que instalar o [Rtools](https://cran.r-project.org/bin/windows/Rtools/)
+primeiro.
 
+    # Instalar pacote febr do GitHub
     if (!require(remotes)) {
       install.packages(pkgs = "remotes")
     }
-    remotes::install_github("samuel-rosa/febr-package")
+    remotes::install_github(repo = "laboratorio-de-pedometria/febr-package")
 
 Utilização básica
 -----------------

@@ -18,22 +18,39 @@ pkg.info <- drop(read.dcf(file = "DESCRIPTION", fields = c("Title", "Version", "
 [![cran checks](https://cranchecks.info/badges/worst/febr)](https://cran.r-project.org/web/checks/check_results_febr.html)
 [![Downloads](https://cranlogs.r-pkg.org/badges/febr?color=brightgreen)](https://www.r-pkg.org/pkg/febr)
 
+O pacote __febr__ para [R][rproject] foi criado para facilitar o acesso aos conjuntos de dados do
+solo publicados no Repositório Brasileiro Livre para Dados Abertos do Solo, também conhecido como
+[FEBR][febr] (/ˈfɛ.bɾe/).
+
+[rproject]: https://www.r-project.org/
+[febr]: https://www.pedometria.org/projeto/febr/
+
 ## Instalação
 
-O pacote febr para [R](https://www.r-project.org/) foi criado para facilitar o acesso aos conjuntos de dados publicados no Repositório Brasileiro Livre para Dados Abertos do Solo, também conhecido como [FEBR](https://www.pedometria.org/projeto/febr/) (/ˈfɛ.bɾe/). Ele pode ser descarregado do [CRAN](https://CRAN.R-project.org/package=febr) da seguinte maneira:
+A última versão estável do pacote __febr__ geralmente pode ser descarregada do
+_Comprehensive R Archive Network_ ([CRAN][cran]).
 
 ```R
+# Instalar pacote febr do CRAN
 install.packages(pkgs = "febr")
 ```
 
-Já a versão de desenvolvimento, disponível no [GitHub](https://github.com/samuel-rosa/febr-package), pode ser instalada---usando o pacote `remotes`---da seguinte maneira:
+Se a instalação a partir do CRAN falhar, você pode instalar a versão de desenvolvimento do pacote
+__febr__ disponível no [GitHub][github] usando o pacote __remotes__. Se você estiver usando uma
+máquina [Windows][windows], contudo, você terá que instalar o [Rtools][rtools] primeiro.
 
 ```R
+# Instalar pacote febr do GitHub
 if (!require(remotes)) {
   install.packages(pkgs = "remotes")
 }
-remotes::install_github("samuel-rosa/febr-package")
+remotes::install_github(repo = "laboratorio-de-pedometria/febr-package")
 ```
+
+[windows]: https://cran.r-project.org/bin/windows/
+[rtools]: https://cran.r-project.org/bin/windows/Rtools/
+[cran]: https://CRAN.R-project.org/package=febr
+[github]: https://github.com/laboratorio-de-pedometria/febr-package
 
 ## Utilização básica
 
