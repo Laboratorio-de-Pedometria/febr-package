@@ -126,17 +126,17 @@
 #'   data.set = paste("ctb000", 4:5, sep = ""),
 #'   variable = "carbono", stack = TRUE,
 #'   standardization = list(units = TRUE))
-#'   
+#'
 #' # Try to download a data set that is not available yet
 #' res <- layer(data.set = "ctb0020")
-#' 
+#'
 #' # Try to download a non existing data set
 #' # res <- observation(data.set = "ctb0000")
-#' 
-#' # Try to read all files from local directory
-#' febr.repo <- "~/ownCloud/febr-repo/publico"
-#' febr.repo <- ifelse(dir.exists(febr.repo), febr.repo, NULL)
-#' res <- layer(data.set = "all", febr.repo = febr.repo)
+#
+# Try to read all files from local directory
+# febr.repo <- "~/ownCloud/febr-repo/publico"
+# febr.repo <- ifelse(dir.exists(febr.repo), febr.repo, NULL)
+# res <- layer(data.set = "all", febr.repo = febr.repo)
 #' }
 ####################################################################################################
 layer <-
