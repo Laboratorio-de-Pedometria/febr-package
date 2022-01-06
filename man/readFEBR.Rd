@@ -34,8 +34,8 @@ you find any.}
 A list of data tables (data frames) with data from the chosen data sets.
 }
 \description{
-Download soil data from one or more data sets published in the Free Brazilian Repository for
-Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}.
+Download soil data from one or more data sets published in the FEBR Soil Data
+Repository, \url{https://www.pedometria.org/febr/}.
 }
 \examples{
 res <- readFEBR(data.set = "ctb0003")

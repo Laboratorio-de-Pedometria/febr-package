@@ -1,11 +1,13 @@
 url: https://www.pedometria.org/software/febr
 authors:
   Alessandro Samuel-Rosa:
-    href: https://www.pedometria.org/autor/alessandro-samuel-rosa/
+    href: https://www.pedometria.org/alessandro-samuel-rosa/
+  Taciara Zborowski Horst:
+    href: https://www.pedometria.org/taciara-zborowski-horst/
 template:
   params:
     bootswatch: simplex
-  path: pkgdown/templates
+  path: pkgdown/templates/
 navbar:
   title: "febr"
   type: default
@@ -21,7 +23,6 @@ navbar:
   right:
     - icon: fa-github
       href: https://github.com/samuel-rosa/febr-package
-
 reference:
   - title: "Funções estruturais"
     desc: >
@@ -52,4 +53,5 @@ reference:
       - febr2sse
       - morphology
       - readIndex
+      - readVocabulary
       - taxonomy

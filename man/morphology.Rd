@@ -13,7 +13,8 @@ morphology(x, variable = "color")
 \code{color}, \code{structure}, \code{consistence}.}
 }
 \description{
-Extract and process soil morphological properties from field soil morphology descriptions.
+Extract and process soil morphological properties from field soil morphology
+descriptions.
 }
 \examples{
 \donttest{

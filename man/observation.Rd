@@ -84,7 +84,7 @@ data of the chosen variable(s) of the chosen dataset(s).
 }
 \description{
 Download data from the 'observation' ("observacao") table of one or more datasets published in
-the Free Brazilian Repository for Open Soil Data (FEBR), \url{https://www.pedometria.org/febr/}.
+the FEBR Soil Data Repository, \url{https://www.pedometria.org/febr/}.
 This table includes data such as latitude, longitude, date of observation, underlying geology,
 land use and vegetation, local topography, soil classification, and much more.
 }

@@ -17,14 +17,14 @@ taxonomy(
 \item{method}{Character string defining the string processing method.
 Options: \code{decompose}.}
 
-\item{sep}{Character string.
-Defaults to \code{sep = " "}.}
+\item{sep}{Character string. Defaults to \code{sep = " "}.}
 
-\item{pattern}{Character string (in Portuguese).
-Defaults to \code{pattern = c(", ", " A ", " textura ")}.}
+\item{pattern}{Character string (in Portuguese). Defaults to
+\code{pattern = c(", ", " A ", " textura ")}.}
 }
 \description{
-Extract and process soil taxonomic data from textual soil classification description.
+Extract and process soil taxonomic data from textual soil classification
+description.
 }
 \examples{
 text <-

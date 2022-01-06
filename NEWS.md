@@ -1,5 +1,15 @@
 # News
 
+## febr 1.9.0
+
+* __Improvement 1.__ New function `readVocabulary()`. This function reads the table
+  containing the controlled vocabulary used in the FEBR Soil Data Repository. The controlled
+  vocabulary is used in FEBR to standardize the values of categorical soil variables.
+* __Improvement 2.__ Expands the documentation of function `readIndex()`.
+* __Improvement 3.__ Adds new author (Taciara Zborowski Horst) and contributor (Glauber José Vaz).
+  Modifies the package description, making it more accurate: the repository is now called 'FEBR Soil
+  Data Repository'.
+
 ## febr 1.8.1
 
 * __Improvement 1.__ Documentation on how to install the development version from GitHub was

@@ -10,8 +10,8 @@ goto(data.set, page)
 \item{data.set}{(optional) Character vector indicating a (unique) dataset whose
 metadata web page you wish to visit.}
 
-\item{page}{(optional) Character string indicating a web page of the FEBR, with
-options:
+\item{page}{(optional) Character string indicating a web page of the FEBR Soil Data Repository,
+with options:
 \itemize{
 \item \code{"febr"}: FEBR main web page,
 \item \code{"dictionary"}: FEBR data dictionary and vocabulary,
@@ -28,7 +28,7 @@ options:
 Load a given URL into an HTML browser via \code{\link[utils:browseURL]{utils::browseURL()}}.
 }
 \description{
-Visit FEBR assets on the web.
+Visit FEBR Soil Data Repository assets on the web.
 }
 \examples{
 if (interactive()) {

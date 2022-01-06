@@ -19,7 +19,8 @@ febr2sse(profiles, horizons, file, ...)
 An object of class \code{character} containing a unicode JSON string.
 }
 \description{
-Export FEBR soil profile data to the JSON file format required by the SmartSolos Expert API.
+Export FEBR soil profile data to the JSON file format required by the SmartSolos
+Expert API.
 }
 \examples{
 # Toy example

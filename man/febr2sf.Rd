@@ -7,7 +7,8 @@
 febr2sf(obj)
 }
 \arguments{
-\item{obj}{Object of class \code{data.frame} downloaded from the FEBR using \code{\link[=observation]{observation()}}.}
+\item{obj}{Object of class \code{data.frame} downloaded from the FEBR Soil Data Repository using
+\code{\link[=observation]{observation()}}.}
 }
 \value{
 An object of class \code{sfc_POINT} (single soil observation) or \code{sfc_MULTIPOINT} (multiple
@@ -18,8 +19,8 @@ Set spatial coordinates and coordinate reference system (CRS) to a set of soil o
 }
 \details{
 Create an sf object from the
-\emph{observation} ("observacao") table of one or more standardized datasets contained in the Free
-Brazilian Repository for Open Soil Data (FEBR), \url{https://www.pedometria.org/febr/}.
+\emph{observation} ("observacao") table of one or more standardized datasets contained in the FEBR
+Soil Data Repository, \url{https://www.pedometria.org/febr/}.
 }
 \examples{
 res <- observation(

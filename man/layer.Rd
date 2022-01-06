@@ -106,8 +106,8 @@ A \code{list} of \code{data.frame}s or a \code{data.frame} with, possibly standa
 data of the chosen variable(s) of the chosen dataset(s).
 }
 \description{
-Download data from the 'layer' ("camada") table of one or more datasets published in the Free
-Brazilian Repository for Open Soil Data (FEBR), \url{https://www.pedometria.org/febr/}. This
+Download data from the 'layer' ("camada") table of one or more datasets published in the
+FEBR Soil Data Repository, \url{https://www.pedometria.org/febr/}. This
 table includes data such as sampling depth, horizon designation, and variables such as pH, carbon
 and clay content, and much more.
 }
