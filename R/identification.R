@@ -1,7 +1,7 @@
 #' Get 'identification' table
 #'
 #' Download data from the 'identification' ("identificacao") table of one or more soil datasets
-#' published in the Free Brazilian Repository for Open Soil Data (FEBR),
+#' published in the FEBR Soil Data Repository,
 #' \url{https://www.pedometria.org/febr/}. This table includes data such as dataset title and
 #' description, author and institution, data license, and much more.
 #'

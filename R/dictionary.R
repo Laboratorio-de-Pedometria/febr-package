@@ -1,27 +1,20 @@
-#' Access the FEBR dictionary
-#'
-#' Download definitions from the dictionary of the Free Brazilian Repository for Open Soil Data
-#' (FEBR). For each field, the dictionary includes an identification code and name, the standard
+#' @title Access the FEBR dictionary
+#' @description Download definitions from the dictionary of the FEBR Soil Data Repository.
+#' For each field, the dictionary includes an identification code and name, the standard
 #' measurement unit, recommended number of decimal places, type of data, and description of the
 #' respective analytical method. The dictionary is used to standardize the data contained in a
 #' dataset.
-#'
 #' @param table (optional) Character vector indicating one or more table IDs that should be used to
 #' filter the dictionary. Accepted values: `"metadado"`, `"versionamento"`, `"observacao"`, and
 #' `"camada"`.
-#'
 #' @param variable (optional) Character vector indicating one or more variables that should be used
 #' to filter the dictionary. Accepts both specific identification codes, e.g.
 #' `"ferro_oxalato_icpoes"`, as well as general identification codes, e.g. `"ferro"`.
-#'
 #' @param unit (optional) Character vector indicating one or more measurement units that should be
 #' used to filter the dictionary. For example, ' `"g/kg"`, `"g/cm^3"`, and `"cmolc/kg"`.
-#'
 #' @param precision (optional) Integer vector indicating one or more number of decimal places that
 #' should be used to filter the dictionary.
-#'
 #' @return An object of class `data.frame` with definitions for the selected fields.
-#'
 #' @references
 #' Teixeira, P. C., Donagemma, G. K., Fontana, A., Teixeira, W. G. (2017)
 #' _Manual de Métodos de Análise de Solo_. Brasília: Embrapa.

@@ -1,12 +1,9 @@
-#' Soil morphology
-#' 
-#' Extract and process soil morphological properties from field soil morphology descriptions.
-#' 
+#' @title Soil morphology
+#' @description Extract and process soil morphological properties from field soil morphology
+#' descriptions.
 #' @param x Character string with field soil morphology description (in Portuguese).
-#' 
 #' @param variable Character string defining the soil morphological property of interest. Options:
 #' `color`, `structure`, `consistence`.
-#' 
 #' @export
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @examples

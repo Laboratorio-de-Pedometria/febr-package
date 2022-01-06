@@ -1,12 +1,12 @@
 #' Go to FEBR
 #'
-#' Visit FEBR assets on the web.
+#' Visit FEBR Soil Data Repository assets on the web.
 #'
 #' @param data.set (optional) Character vector indicating a (unique) dataset whose
 #' metadata web page you wish to visit.
 #'
-#' @param page (optional) Character string indicating a web page of the FEBR, with
-#' options:
+#' @param page (optional) Character string indicating a web page of the FEBR Soil Data Repository,
+#' with options:
 #' * `"febr"`: FEBR main web page,
 #' * `"dictionary"`: FEBR data dictionary and vocabulary,
 #' * `"forum"`: FEBR public forum at Google Groups,

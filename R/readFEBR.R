@@ -1,29 +1,20 @@
-#' Get soil data
-#'
-#' Download soil data from one or more data sets published in the Free Brazilian Repository for
-#' Open Soil Data -- FEBR, \url{https://www.pedometria.org/febr/}.
-#'
+#' @title Get soil data
+#' @description Download soil data from one or more data sets published in the FEBR Soil Data
+#' Repository, \url{https://www.pedometria.org/febr/}.
 #' @param data.set Character vector indicating the identification code of one or more data sets.
 #' Use `data.set = "all"` to download all data sets.
-#' 
 #' @param data.table Character vector indicating one or more data tables, with supported values
 #' `"identificacao"`, `"versionamento"`, `"metadado"`, `"observacao"`, and `"camada"`.
-#' 
 #' @param febr.repo (optional) Defaults to the remote file directory of the Federal University of
 #' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}. 
 #' Alternatively, a local directory path can be informed if the user has a local copy of the data
 #' repository.
-#' 
 #' @param verbose (optional) Logical value indicating if informative messages should be displayed.
 #' Generally useful to identify issues—please report to \email{febr-forum@@googlegroups.com} if
 #' you find any.
-#' 
 #' @param ... (optional) Arguments passed to [data.table::fread()].
-#'
 #' @return A list of data tables (data frames) with data from the chosen data sets.
-#'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
-#'
 #' @export
 #' @examples
 #' res <- readFEBR(data.set = "ctb0003")

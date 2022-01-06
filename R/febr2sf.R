@@ -2,12 +2,13 @@
 #'
 #' Set spatial coordinates and coordinate reference system (CRS) to a set of soil observations.
 #'
-#' @param obj Object of class `data.frame` downloaded from the FEBR using [febr::observation()].
+#' @param obj Object of class `data.frame` downloaded from the FEBR Soil Data Repository using
+#' [febr::observation()].
 #'
 #' @details
 #' Create an sf object from the
-#' *observation* ("observacao") table of one or more standardized datasets contained in the Free
-#' Brazilian Repository for Open Soil Data (FEBR), \url{https://www.pedometria.org/febr/}.
+#' *observation* ("observacao") table of one or more standardized datasets contained in the FEBR
+#' Soil Data Repository, \url{https://www.pedometria.org/febr/}.
 #'
 #' @return An object of class `sfc_POINT` (single soil observation) or `sfc_MULTIPOINT` (multiple
 #' soil observations).
