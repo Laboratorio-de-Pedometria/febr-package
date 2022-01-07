@@ -1,6 +1,6 @@
 #' @title Get soil data
-#' @description Download soil data from one or more data sets published in the FEBR Soil Data
-#' Repository, \url{https://www.pedometria.org/febr/}.
+#' @description Download soil data from one or more data sets published in the
+#' [Data Repository of the Brazilian Soil](https://www.pedometria.org/febr/).
 #' @param data.set Character vector indicating the identification code of one or more data sets.
 #' Use `data.set = "all"` to download all data sets.
 #' @param data.table Character vector indicating one or more data tables, with supported values

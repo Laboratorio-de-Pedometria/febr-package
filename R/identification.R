@@ -1,9 +1,8 @@
-#' Get 'identification' table
-#'
-#' Download data from the 'identification' ("identificacao") table of one or more soil datasets
-#' published in the FEBR Soil Data Repository,
-#' \url{https://www.pedometria.org/febr/}. This table includes data such as dataset title and
-#' description, author and institution, data license, and much more.
+#' @title Get 'identification' table
+#' @description Download data from the 'identification' ("identificacao") table of one or more soil
+#' datasets published in the
+#' [Data Repository of the Brazilian Soil](https://www.pedometria.org/febr/). This table includes
+#' data such as dataset title and description, author and institution, data license, and much more.
 #'
 #' @param febr.repo (optional) Defaults to the remote file directory of the Federal University of
 #' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}. 

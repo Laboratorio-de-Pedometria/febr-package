@@ -1,22 +1,17 @@
-#' Create an sf object
-#'
-#' Set spatial coordinates and coordinate reference system (CRS) to a set of soil observations.
-#'
-#' @param obj Object of class `data.frame` downloaded from the FEBR Soil Data Repository using
-#' [febr::observation()].
-#'
+#' @title Create an sf object
+#' @description Set spatial coordinates and coordinate reference system (CRS) to a set of soil
+#' observations.
+#' @param obj Object of class `data.frame` downloaded from the Data Repository of the Brazilian Soil
+#' using [febr::observation()].
 #' @details
 #' Create an sf object from the
 #' *observation* ("observacao") table of one or more standardized datasets contained in the FEBR
 #' Soil Data Repository, \url{https://www.pedometria.org/febr/}.
-#'
 #' @return An object of class `sfc_POINT` (single soil observation) or `sfc_MULTIPOINT` (multiple
 #' soil observations).
-#'
 #' @references
 #' Pebesma, E., 2018. Simple Features for R: Standardized Support for Spatial Vector Data.
-#' The R Journal 10 (1), 439-446, \url{https://doi.org/10.32614/RJ-2018-009}
-#'
+#' The R Journal 10 (1), 439-446, \doi{10.32614/RJ-2018-009}
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples

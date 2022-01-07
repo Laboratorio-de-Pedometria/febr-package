@@ -1,21 +1,15 @@
-#' Get 'metadata' table
-#'
-#' Download data from the 'metadata' ("metadado") table of one or more datasets published in the 
-#' FEBR Soil Data Repository, \url{https://www.pedometria.org/febr/}.
+#' @title Get 'metadata' table
+#' @description Download data from the 'metadata' ("metadado") table of one or more datasets
+#' published in the [Data Repository of the Brazilian Soil](https://www.pedometria.org/febr/).
 #' This table includes data such as variable names, description of analytical methods, and
 #' identification of analysis laboratories.
-#'
 #' @template metadata_template
-#'
 #' @param febr.repo (optional) Defaults to the remote file directory of the Federal University of
 #' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}. 
 #' Alternatively, a local directory path can be informed if the user has a local copy of the data
 #' repository.
-#'
 #' @return A list of data frames or a data frame with metadata of the chosen dataset(s).
-#'
 #' @note Check the new core data download function [febr::readFEBR()].
-#'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples

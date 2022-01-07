@@ -1,5 +1,5 @@
 ---
-title: "Repositório Brasileiro Livre para Dados Abertos do Solo -- Guia Básico"
+title: "Repositório de Dados do Solo Brasileiro -- Guia Básico"
 author: "Alessandro Samuel-Rosa"
 date: "`r format(Sys.Date(), '%Y-%m-%d')`"
 output: 
@@ -8,20 +8,43 @@ output:
 bibliography: biblio.bib
 link-citations: true
 vignette: >
-  %\VignetteIndexEntry{Repositório Brasileiro Livre para Dados Abertos do Solo -- Guia Básico}
+  %\VignetteIndexEntry{Repositório de Dados do Solo Brasileiro -- Guia Básico}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-# Introdução
+## Introdução
 
-O pacote febr para [R](https://www.r-project.org/) [@r] foi criado para facilitar o acesso aos conjuntos de dados publicados no Repositório Brasileiro Livre para Dados Abertos do Solo, também conhecido como [FEBR](https://www.pedometria.org/febr/) (/ˈfɛ.bɾe/). Ele pode ser descarregado do [CRAN](https://CRAN.R-project.org/package=febr) da seguinte maneira:
+O pacote __febr__ para [R][rproject] [@r] foi criado para facilitar o acesso aos conjuntos de dados
+publicados no [Repositório de Dados do Solo Brasileiro][febr].
 
-```{r, echo=TRUE, eval=FALSE}
-install.packages("febr")
+[rproject]: https://www.r-project.org/
+[febr]: https://www.pedometria.org/febr/
+
+A última versão estável do pacote __febr__ geralmente pode ser descarregada do
+_Comprehensive R Archive Network_ ([CRAN][cran]).
+
+```R
+# Instalar pacote febr do CRAN
+install.packages(pkgs = "febr")
 ```
 
-Já a versão de desenvolvimento, disponível no [GitHub](https://github.com/samuel-rosa/febr-package), pode ser instalada usando o pacote `remotes` [@remotes].
+Se a instalação a partir do CRAN falhar, você pode instalar a versão de desenvolvimento do pacote
+__febr__ disponível no [GitHub][github] usando o pacote __remotes__. Se você estiver usando uma
+máquina [Windows][windows], contudo, você terá que instalar o [Rtools][rtools] primeiro.
+
+```R
+# Instalar pacote febr do GitHub
+if (!require(remotes)) {
+  install.packages(pkgs = "remotes")
+}
+remotes::install_github(repo = "laboratorio-de-pedometria/febr-package")
+```
+
+[windows]: https://cran.r-project.org/bin/windows/
+[rtools]: https://cran.r-project.org/bin/windows/Rtools/
+[cran]: https://CRAN.R-project.org/package=febr
+[github]: https://github.com/laboratorio-de-pedometria/febr-package
 
 O pacote febr possui três grupos de funções: estruturais, acesso e auxiliares—veja tabela abaixo. Uma demonstração básica da forma de uso e aplicações dessas funções é apresentada nas próximas seções.
 
@@ -48,7 +71,7 @@ if (!requireNamespace("knitr", quietly = TRUE)) {
 }
 ```
 
-# Funções estruturais
+## Funções estruturais
 
 As funções estruturais servem para conhecer a estrutura das tabelas dos conjuntos de dados publicados no FEBR. Elas também servem para conhecer os padrões de codificação, nomenclatura, unidades de medida e número de casas decimais usados no FEBR.
 
@@ -64,7 +87,7 @@ A função `unit` (do inglês, *unit*, para unidade) serve de interface para uma
 uni <- unit(source = "Mg/m^3", target = "kg/dm^3")
 ```
 
-# Funções de acesso
+## Funções de acesso
 
 As funções de acesso servem para descarregar os dados e metadados dos conjuntos de dados publicados no FEBR. Isso inclui as tabelas `identificacao`, `metadado`, `observacao` e `camada`.
 
@@ -92,7 +115,7 @@ A função `layer` (do inglês, *layer*, para camada) serve para descarregar os 
 cam <- layer(data.set = c("ctb0003", "ctb0036"), variable = c("argila", "carbono", "densidade"))
 ```
 
-# Funções auxiliares
+## Funções auxiliares
 
 As funções auxiliares servem para realizar tarefas complementares às funções estruturais e de acesso, assim apoiando o processamento e uso dos dados descarregados do FEBR, por exemplo, a criação de objetos de outras classes e a exportação dos dados.
 
@@ -111,4 +134,4 @@ goto(data.set = "ctb0003")
 
 Novas funções auxiliares podem ser criadas à medida que as usuárias do pacote febr apontarem a sua necessidade. Alternativamente, as usuárias são encorajadas a submeter funções auxiliares para inclusão no pacote febr seguindo o modelo de desenvolvimento colaborativo *fork & pull*.
 
-# Referências
+## Referências

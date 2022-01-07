@@ -1,12 +1,10 @@
-#' Go to FEBR
-#'
-#' Visit FEBR Soil Data Repository assets on the web.
-#'
+#' @title Go to the Data Repository of the Brazilian Soil
+#' @description Visit the web assets of the
+#' [Data Repository of the Brazilian Soil](https://www.pedometria.org/febr/).
 #' @param data.set (optional) Character vector indicating a (unique) dataset whose
 #' metadata web page you wish to visit.
-#'
-#' @param page (optional) Character string indicating a web page of the FEBR Soil Data Repository,
-#' with options:
+#' @param page (optional) Character string indicating a web page of the Data Repository of the
+#' Brazilian Soil, with options:
 #' * `"febr"`: FEBR main web page,
 #' * `"dictionary"`: FEBR data dictionary and vocabulary,
 #' * `"forum"`: FEBR public forum at Google Groups,
@@ -16,11 +14,8 @@
 #' * `"package"`: **febr** package on CRAN,
 #' * `"template"`: FEBR spreadsheet template on Google Sheets,
 #' * `"units"`: units and conversion factors used in FEBR.
-#'
 #' @return Load a given URL into an HTML browser via [utils::browseURL()].
-#'
 #' @seealso [utils::browseURL()]
-#'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples

@@ -1,7 +1,6 @@
-#' Get 'layer' table
-#'
-#' Download data from the 'layer' ("camada") table of one or more datasets published in the
-#' FEBR Soil Data Repository, \url{https://www.pedometria.org/febr/}. This
+#' @title Get 'layer' table
+#' @description Download data from the 'layer' ("camada") table of one or more datasets published in
+#' the [Data Repository of the Brazilian Soil](https://www.pedometria.org/febr/). This
 #' table includes data such as sampling depth, horizon designation, and variables such as pH, carbon
 #' and clay content, and much more.
 #'

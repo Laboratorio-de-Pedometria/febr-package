@@ -20,14 +20,14 @@ observation(
 \item{data.set}{Character vector indicating the identification code of one or more data sets.
 Use \code{data.set = "all"} to download all data sets.}
 
-\item{variable}{(optional) Character vector indicating one or more variables. Accepts only general
-identification codes, e.g. \code{"ferro"} and \code{"carbono"}. If missing, then a set of standard identification
-variables is downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{Details} for
-more information.}
+\item{variable}{(optional) Character vector indicating one or more variables. Accepts only
+general identification codes, e.g. \code{"ferro"} and \code{"carbono"}. If missing, then a set of standard
+identification variables is downloaded. Use \code{variable = "all"} to download all variables. See
+\sQuote{Details} for more information.}
 
-\item{stack}{(optional) Logical value indicating if tables from different datasets should be stacked on a
-single table for output. Requires \code{standardization = list(units = TRUE)} -- see below. Defaults to
-\code{stack = FALSE}, the output being a list of tables.}
+\item{stack}{(optional) Logical value indicating if tables from different datasets should be
+stacked on a single table for output. Requires \code{standardization = list(units = TRUE)} -- see
+below. Defaults to \code{stack = FALSE}, the output being a list of tables.}
 
 \item{missing}{(optional) List with named sub-arguments indicating what should be done with an
 observation missing spatial coordinates, \code{coord}, date of observation, \code{time}, or data on
@@ -40,7 +40,6 @@ standardization.
 to which spatial coordinates should be transformed. For example, \code{crs = "EPSG:4674"}, i.e.
 SIRGAS 2000, the standard CRS for Brazil. Defaults to \code{crs = NULL}, i.e. no transformation
 is performed.
-
 \item \code{time.format} Character string indicating how to format dates. For example,
 \code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to
 \code{time.format = NULL}, i.e. no formatting is performed. See \code{\link[base:as.Date]{base::as.Date()}} for more
@@ -83,8 +82,8 @@ A \code{list} of \code{data.frame}s or a \code{data.frame} with, possibly standa
 data of the chosen variable(s) of the chosen dataset(s).
 }
 \description{
-Download data from the 'observation' ("observacao") table of one or more datasets published in
-the FEBR Soil Data Repository, \url{https://www.pedometria.org/febr/}.
+Download data from the 'observation' ("observacao") table of one or more datasets
+published in \href{https://www.pedometria.org/febr/}{Data Repository of the Brazilian Soil}.
 This table includes data such as latitude, longitude, date of observation, underlying geology,
 land use and vegetation, local topography, soil classification, and much more.
 }

@@ -25,8 +25,8 @@ repository.}
 A list of data frames or a data frame with metadata of the chosen dataset(s).
 }
 \description{
-Download data from the 'metadata' ("metadado") table of one or more datasets published in the
-FEBR Soil Data Repository, \url{https://www.pedometria.org/febr/}.
+Download data from the 'metadata' ("metadado") table of one or more datasets
+published in the \href{https://www.pedometria.org/febr/}{Data Repository of the Brazilian Soil}.
 This table includes data such as variable names, description of analytical methods, and
 identification of analysis laboratories.
 }

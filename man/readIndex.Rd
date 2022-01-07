@@ -13,8 +13,8 @@ readIndex(...)
 An object of class \link[data.table:data.table]{data.table::data.table}.
 }
 \description{
-Download the index of data sets published in the FEBR Soil Data Repository,
-\url{https://www.pedometria.org/febr/}.
+Download the index of data sets published in the
+\href{https://www.pedometria.org/febr/}{Data Repository of the Brazilian Soil}.
 }
 \examples{
 index <- readIndex()

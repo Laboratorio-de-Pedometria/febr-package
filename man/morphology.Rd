@@ -12,6 +12,9 @@ morphology(x, variable = "color")
 \item{variable}{Character string defining the soil morphological property of interest. Options:
 \code{color}, \code{structure}, \code{consistence}.}
 }
+\value{
+An object of class \code{data.frame}.
+}
 \description{
 Extract and process soil morphological properties from field soil morphology
 descriptions.

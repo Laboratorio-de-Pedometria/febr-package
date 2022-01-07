@@ -25,10 +25,10 @@ repository.}
 A list of data frames or a data frame with data of the chosen dataset(s).
 }
 \description{
-Download data from the 'identification' ("identificacao") table of one or more soil datasets
-published in the FEBR Soil Data Repository,
-\url{https://www.pedometria.org/febr/}. This table includes data such as dataset title and
-description, author and institution, data license, and much more.
+Download data from the 'identification' ("identificacao") table of one or more soil
+datasets published in the
+\href{https://www.pedometria.org/febr/}{Data Repository of the Brazilian Soil}. This table includes
+data such as dataset title and description, author and institution, data license, and much more.
 }
 \note{
 Check the new core data download function \code{\link[=readFEBR]{readFEBR()}}.

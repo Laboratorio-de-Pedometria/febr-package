@@ -13,8 +13,8 @@ readVocabulary(...)
 An object of class \link[data.table:data.table]{data.table::data.table}.
 }
 \description{
-Download the controlled vocabulary used in the FEBR Soil Data Repository,
-\url{https://www.pedometria.org/febr/}.
+Download the controlled vocabulary used in the
+\href{https://www.pedometria.org/febr/}{Data Repository of the Brazilian Soil}.
 }
 \examples{
 vocab <- readVocabulary()

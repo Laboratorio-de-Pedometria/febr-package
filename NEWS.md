@@ -1,5 +1,10 @@
 # News
 
+## febr 1.9.1
+
+* __Improvement 1.__ Minor documentation changes, making it more accurate. The repository is now
+  called _Data Repository of the Brazilian Soil_.
+
 ## febr 1.9.0
 
 * __Improvement 1.__ New function `readVocabulary()`. This function reads the table

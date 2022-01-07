@@ -4,10 +4,10 @@ authors:
     href: https://www.pedometria.org/alessandro-samuel-rosa/
   Taciara Zborowski Horst:
     href: https://www.pedometria.org/taciara-zborowski-horst/
-template:
-  params:
-    bootswatch: simplex
-  path: pkgdown/templates/
+# template:
+#   params:
+#     bootswatch: simplex
+#   path: pkgdown/templates/
 navbar:
   title: "febr"
   type: default

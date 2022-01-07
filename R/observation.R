@@ -1,22 +1,17 @@
-#' Get 'observation' table
-#'
-#' Download data from the 'observation' ("observacao") table of one or more datasets published in
-#' the FEBR Soil Data Repository, \url{https://www.pedometria.org/febr/}.
+#' @title Get 'observation' table
+#' @description Download data from the 'observation' ("observacao") table of one or more datasets
+#' published in [Data Repository of the Brazilian Soil](https://www.pedometria.org/febr/).
 #' This table includes data such as latitude, longitude, date of observation, underlying geology,
 #' land use and vegetation, local topography, soil classification, and much more.
-#'
 #' @template data_template
 #' @template metadata_template
-#'
 #' @param febr.repo (optional) Defaults to the remote file directory of the Federal University of
 #' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
 #' Alternatively, a local directory path can be informed if the user has a local copy of the data
 #' repository.
-#'
 #' @param missing (optional) List with named sub-arguments indicating what should be done with an
 #' observation missing spatial coordinates, `coord`, date of observation, `time`, or data on
 #' variables, `data`. Options are `"keep"` (default) and `"drop"`.
-#'
 #' @param standardization (optional) List with named sub-arguments indicating how to perform data
 #' standardization.
 #' \itemize{
@@ -24,7 +19,6 @@
 #' to which spatial coordinates should be transformed. For example, `crs = "EPSG:4674"`, i.e.
 #' SIRGAS 2000, the standard CRS for Brazil. Defaults to `crs = NULL`, i.e. no transformation
 #' is performed.
-#'
 #' \item `time.format` Character string indicating how to format dates. For example,
 #' \code{time.format = "\%d-\%m-\%Y"}, i.e. dd-mm-yyyy such as in 31-12-2001. Defaults to
 #' `time.format = NULL`, i.e. no formatting is performed. See [base::as.Date()] for more
@@ -50,7 +44,6 @@
 #' variable(s) that should be considered for harmonization. Defaults to `level = 2`. See
 #' \sQuote{Details} for more information.
 #' }
-#'
 #' @details
 #' \subsection{Default variables}{
 #' Default variables (fields) present in the 'observation' table are as follows:
@@ -91,11 +84,9 @@
 #' }
 #' @return A `list` of `data.frame`s or a `data.frame` with, possibly standardize or harmonized,
 #' data of the chosen variable(s) of the chosen dataset(s).
-#'
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @seealso [febr::readFEBR()], [febr::layer()], [febr::dictionary()], [febr::unit()]
 #' @export
-#'
 #' @examples
 #' res <- observation(data.set = "ctb0013")
 #'

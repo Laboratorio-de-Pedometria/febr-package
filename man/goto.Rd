@@ -2,7 +2,7 @@
 % Please edit documentation in R/goto.R
 \name{goto}
 \alias{goto}
-\title{Go to FEBR}
+\title{Go to the Data Repository of the Brazilian Soil}
 \usage{
 goto(data.set, page)
 }
@@ -10,8 +10,8 @@ goto(data.set, page)
 \item{data.set}{(optional) Character vector indicating a (unique) dataset whose
 metadata web page you wish to visit.}
 
-\item{page}{(optional) Character string indicating a web page of the FEBR Soil Data Repository,
-with options:
+\item{page}{(optional) Character string indicating a web page of the Data Repository of the
+Brazilian Soil, with options:
 \itemize{
 \item \code{"febr"}: FEBR main web page,
 \item \code{"dictionary"}: FEBR data dictionary and vocabulary,
@@ -28,7 +28,8 @@ with options:
 Load a given URL into an HTML browser via \code{\link[utils:browseURL]{utils::browseURL()}}.
 }
 \description{
-Visit FEBR Soil Data Repository assets on the web.
+Visit the web assets of the
+\href{https://www.pedometria.org/febr/}{Data Repository of the Brazilian Soil}.
 }
 \examples{
 if (interactive()) {

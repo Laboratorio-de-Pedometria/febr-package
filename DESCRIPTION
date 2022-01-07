@@ -1,8 +1,8 @@
 Package: febr
 Type: Package
-Title: FEBR Soil Data Repository
-Version: 1.9.0
-Date: 2022-01-06
+Title: Data Repository of the Brazilian Soil
+Version: 1.9.1
+Date: 2022-01-07
 Authors@R: c(
     person("Alessandro", "Samuel-Rosa", role = c("aut", "cre"),
            email = "alessandrosamuelrosa@gmail.com", 
@@ -12,14 +12,14 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-1135-028X")),
     person("Glauber José", "Vaz", role = "ctb",
            email = "glauber.vaz@embrapa.br",
-           comment = c(ORCID = "0000-0002-4527-5150 ")),
+           comment = c(ORCID = "0000-0002-4527-5150")),
     person("Universidade Federal de Santa Maria", role = "fnd",
            email = "ppgcs@ufsm.br"),
     person("Universidade Tecnológica Federal do Paraná", role = "fnd",
            email = "coagr-sh@utfpr.edu.br"))
 Description: 
-  Access to data published in the
-  FEBR Soil Data Repository
+  The febr package facilitates access to the
+  Data Repository of the Brazilian Soil
   <https://www.pedometria.org/febr/>.
 License: GPL (>= 2)
 Encoding: UTF-8

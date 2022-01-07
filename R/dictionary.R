@@ -1,6 +1,7 @@
 #' @title Access the FEBR dictionary
-#' @description Download definitions from the dictionary of the FEBR Soil Data Repository.
-#' For each field, the dictionary includes an identification code and name, the standard
+#' @description Download definitions from the dictionary of the
+#' [Data Repository of the Brazilian Soil](https://www.pedometria.org/febr/). For each field, the
+#' dictionary includes an identification code and name, the standard
 #' measurement unit, recommended number of decimal places, type of data, and description of the
 #' respective analytical method. The dictionary is used to standardize the data contained in a
 #' dataset.

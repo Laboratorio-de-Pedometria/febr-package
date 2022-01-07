@@ -22,14 +22,14 @@ layer(
 \item{data.set}{Character vector indicating the identification code of one or more data sets.
 Use \code{data.set = "all"} to download all data sets.}
 
-\item{variable}{(optional) Character vector indicating one or more variables. Accepts only general
-identification codes, e.g. \code{"ferro"} and \code{"carbono"}. If missing, then a set of standard identification
-variables is downloaded. Use \code{variable = "all"} to download all variables. See \sQuote{Details} for
-more information.}
+\item{variable}{(optional) Character vector indicating one or more variables. Accepts only
+general identification codes, e.g. \code{"ferro"} and \code{"carbono"}. If missing, then a set of standard
+identification variables is downloaded. Use \code{variable = "all"} to download all variables. See
+\sQuote{Details} for more information.}
 
-\item{stack}{(optional) Logical value indicating if tables from different datasets should be stacked on a
-single table for output. Requires \code{standardization = list(units = TRUE)} -- see below. Defaults to
-\code{stack = FALSE}, the output being a list of tables.}
+\item{stack}{(optional) Logical value indicating if tables from different datasets should be
+stacked on a single table for output. Requires \code{standardization = list(units = TRUE)} -- see
+below. Defaults to \code{stack = FALSE}, the output being a list of tables.}
 
 \item{missing}{(optional) List with named sub-arguments indicating what should be done with a
 layer missing data on sampling depth, \code{depth}, or data on variable(s), \code{data}. Options are
@@ -106,8 +106,8 @@ A \code{list} of \code{data.frame}s or a \code{data.frame} with, possibly standa
 data of the chosen variable(s) of the chosen dataset(s).
 }
 \description{
-Download data from the 'layer' ("camada") table of one or more datasets published in the
-FEBR Soil Data Repository, \url{https://www.pedometria.org/febr/}. This
+Download data from the 'layer' ("camada") table of one or more datasets published in
+the \href{https://www.pedometria.org/febr/}{Data Repository of the Brazilian Soil}. This
 table includes data such as sampling depth, horizon designation, and variables such as pH, carbon
 and clay content, and much more.
 }
