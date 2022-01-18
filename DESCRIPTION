@@ -1,8 +1,8 @@
 Package: febr
 Type: Package
 Title: Data Repository of the Brazilian Soil
-Version: 1.9.1
-Date: 2022-01-07
+Version: 1.9.2
+Date: 2022-01-14
 Authors@R: c(
     person("Alessandro", "Samuel-Rosa", role = c("aut", "cre"),
            email = "alessandrosamuelrosa@gmail.com", 

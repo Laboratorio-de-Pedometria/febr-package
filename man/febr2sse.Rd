@@ -25,12 +25,12 @@ Expert API.
 \examples{
 # Toy example
 pro <- data.frame(
-  observacao_id = "Perfil-1",
+  evento_id_febr = "Perfil-1",
   taxon_sibcs_1999 = "Argissolo",
   stringsAsFactors = FALSE
 )
 hor <- data.frame(
-  observacao_id = rep("Perfil-1", 3),
+  evento_id_febr = rep("Perfil-1", 3),
   camada_id = c("Ap", "B1", "B2"),
   profund_sup = c(0, 16, 32),
   profund_inf = c(16, 32, 50),
@@ -52,14 +52,14 @@ if (interactive()) {
 profiles <- observation(
   data.set = "ctb0025", variable = c("taxon_sibcs", "relevo_drenagem"),
   standardization = list(units = TRUE, round = TRUE))
-idx <- profiles$observacao_id[1]
-profiles <- profiles[profiles$observacao_id \%in\% idx, ]
+idx <- profiles$evento_id_febr[1]
+profiles <- profiles[profiles$evento_id_febr \%in\% idx, ]
 horizons <- layer(
   data.set = "ctb0025", variable = "all",
   standardization =
     list(plus.sign = "remove", lessthan.sign = "remove",
          transition = "smooth", units = TRUE, round = TRUE))
-horizons <- horizons[horizons$observacao_id \%in\% idx, ]
+horizons <- horizons[horizons$evento_id_febr \%in\% idx, ]
 horizons[, 9:48] <- lapply(horizons[, 9:48], as.numeric)
 horizons <- cbind(
   horizons,

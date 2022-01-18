@@ -50,8 +50,8 @@
 #' \itemize{
 #' \item `dataset_id`. Identification code of the dataset in the FEBR to which an observation
 #' belongs.
-#' \item `observacao_id`. Identification code of an observation in a dataset.
-#' \item `observacao_data`. Date (dd-mm-yyyy) in which an observation was made.
+#' \item `evento_id_febr`. Identification code of an observation in a dataset.
+#' \item `evento_data`. Date (dd-mm-yyyy) in which an observation was made.
 #' \item `coord_datum`. EPSG code of the coordinate reference system.
 #' \item `coord_longitude`. Longitude (deg) or easting (m).
 #' \item `coord_latitude`. Latitude (deg) or northing (m).
@@ -301,7 +301,7 @@ observation <-
         ## A decisão pelo processamento dos dados começa pela verificação de dados faltantes nas
         ## coordenadas e na data.
         na_coord <- max(apply(tmp[, coord_names], 2, function(x) sum(is.na(x))))
-        na_time <- is.na(tmp$observacao_data)
+        na_time <- is.na(tmp$evento_data)
         n_na_time <- sum(na_time)
         if (missing$coord == "keep" && missing$time == "keep" ||
             missing$coord == "drop" && na_coord < n_rows && missing$time == "keep" |
@@ -349,10 +349,10 @@ observation <-
             }
             
             # TIPO DE DADOS
-            ## 'observacao_id', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para
+            ## 'evento_id_febr', 'sisb_id' e 'ibge_id' precisam estar no formato de caracter para
             ## evitar erros durante o empilhamento das tabelas devido ao tipo de dado.
             ## Nota: esse processamento deve ser feito via Google Sheets.
-            tmp$observacao_id <- as.character(tmp$observacao_id)
+            tmp$evento_id_febr <- as.character(tmp$evento_id_febr)
             if ("sisb_id" %in% colnames(tmp)) {
               tmp$sisb_id <- as.character(tmp$sisb_id)
             }
@@ -432,7 +432,7 @@ observation <-
             unit[2, ] <- as.character(unit[2, names(unit) %in% cols])
             unit[2, ] <- gsub("^-$", "unitless", unit[2, ])
             # https://en.wikipedia.org/wiki/List_of_Unicode_characters
-            unit["observacao_id"] <- c("Identifica\u00E7\u00E3o da observa\u00E7\u00E3o", "unitless")
+            unit["evento_id_febr"] <- c("Identifica\u00E7\u00E3o da observa\u00E7\u00E3o", "unitless")
             dataset_id <- c("Identifica\u00E7\u00E3o do conjunto de dados", "unitless")
             unit <- cbind(dataset_id, unit)
             

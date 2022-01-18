@@ -93,8 +93,8 @@ Default variables (fields) present in the 'observation' table are as follows:
 \itemize{
 \item \code{dataset_id}. Identification code of the dataset in the FEBR to which an observation
 belongs.
-\item \code{observacao_id}. Identification code of an observation in a dataset.
-\item \code{observacao_data}. Date (dd-mm-yyyy) in which an observation was made.
+\item \code{evento_id_febr}. Identification code of an observation in a dataset.
+\item \code{evento_data}. Date (dd-mm-yyyy) in which an observation was made.
 \item \code{coord_datum}. EPSG code of the coordinate reference system.
 \item \code{coord_longitude}. Longitude (deg) or easting (m).
 \item \code{coord_latitude}. Latitude (deg) or northing (m).

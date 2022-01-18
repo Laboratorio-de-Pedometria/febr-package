@@ -2,7 +2,7 @@
 % Please edit documentation in R/taxonomy.R
 \name{taxonomy}
 \alias{taxonomy}
-\title{Soil taxonomy}
+\title{Process soil taxonomy}
 \usage{
 taxonomy(
   text,
@@ -12,19 +12,26 @@ taxonomy(
 )
 }
 \arguments{
-\item{text}{Character string with soil classification description (in Portuguese).}
+\item{text}{Character string(s) with soil classification description(s) (in Portuguese).}
 
-\item{method}{Character string defining the string processing method.
-Options: \code{decompose}.}
+\item{method}{Character string defining the string processing method. Options:
+\itemize{
+\item \code{"decompose"}: decompose the Brazilian soil classification into its four higher categorical
+levels (order, suborder, large group, and subgroup).
+}}
 
 \item{sep}{Character string. Defaults to \code{sep = " "}.}
 
 \item{pattern}{Character string (in Portuguese). Defaults to
 \code{pattern = c(", ", " A ", " textura ")}.}
 }
+\value{
+An object of class \link[base:data.frame]{base::data.frame} with four named columns: \code{ordem} (UPPER CASE),
+\code{subordem} (UPPER CASE), \code{grangrupo} (Title Case), and \code{subgrupo} (lower case).
+}
 \description{
 Extract and process soil taxonomic data from textual soil classification
-description.
+descriptions of the Brazilian Soil Classification System (SiBCS).
 }
 \examples{
 text <-
@@ -35,6 +42,15 @@ text <-
     "Latossolo"
   )
 taxonomy(text)
+}
+\references{
+Santos, H. G. dos, Jacomine, P. K. T., Anjos, L. H. C. dos, Oliveira, V. Á. de, Lumbreras, J.
+F., Coelho, M. R., Almeida, J. A. de, Araújo Filho, J. C. de, Oliveira, J. B. de, & Cunha, T. J.
+F. (2018). Sistema Brasileiro de Classificação de Solos (5th ed., p. 531). Embrapa.
+\url{https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1094003}.
+
+IBGE. (2015). Manual Técnico de Pedologia (3rd ed., p. 430). Instituto Brasileiro de Geografia
+e Estatística. \url{https://biblioteca.ibge.gov.br/visualizacao/livros/liv95017.pdf}
 }
 \author{
 Alessandro Samuel-Rosa \email{alessandrosamuelrosa@gmail.com}

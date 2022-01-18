@@ -116,7 +116,7 @@ and clay content, and much more.
 Default variables (fields) present in the 'layer' table are as follows:
 \itemize{
 \item \code{dataset_id}. Identification of the dataset in FEBR to which an observation belongs.
-\item \code{observacao_id}. Identification code of an observation in a dataset.
+\item \code{evento_id_febr}. Identification code of an observation in a dataset.
 \item \code{camada_id}. Sequential layer number, from top to bottom.
 \item \code{camada_altid}. Layer designation according to some standard description guide.
 \item \code{amostra_id}. Laboratory number of a sample.

@@ -6,7 +6,7 @@ Repositório de Dados do Solo Brasileiro
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![packageversion](https://img.shields.io/badge/devel%20version-1.9.1-firebrick.svg?style=flat-square)](commits/master)
+[![packageversion](https://img.shields.io/badge/devel%20version-1.9.2-firebrick.svg?style=flat-square)](commits/master)
 [![Build
 Status](https://travis-ci.org/samuel-rosa/febr-package.svg?branch=master)](https://travis-ci.org/samuel-rosa/febr-package)
 [![CRAN](https://www.r-pkg.org/badges/version/febr)](https://cran.r-project.org/package=febr)
@@ -16,7 +16,7 @@ checks](https://cranchecks.info/badges/worst/febr)](https://cran.r-project.org/w
 
 O pacote **febr** para [R](https://www.r-project.org/) foi criado para
 facilitar o acesso aos conjuntos de dados publicados no [Repositório de
-Dados do Solo Brasileiro](https://www.pedometria.org/projeto/febr/).
+Dados do Solo Brasileiro](https://www.pedometria.org/febr/).
 
 Instalação
 ----------

@@ -1,5 +1,14 @@
 # News
 
+## febr 1.9.2
+
+* __Improvement 1.__ The data dictionary of the FEBR repository is updated periodically. Recently,
+  the term _evento_ (event) was adopted as a replacement for _observacao_ (observation). Some data
+  field names are hard-coded in the **febr** package. This minor version accounts for some of these
+  changes, specifically:
+  * `observacao_id` -> `evento_id_febr`
+  * `observacao_data` -> `evento_data`
+
 ## febr 1.9.1
 
 * __Improvement 1.__ Minor documentation changes, making it more accurate. The repository is now

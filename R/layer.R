@@ -84,7 +84,7 @@
 #' Default variables (fields) present in the 'layer' table are as follows:
 #' \itemize{
 #' \item \code{dataset_id}. Identification of the dataset in FEBR to which an observation belongs.
-#' \item \code{observacao_id}. Identification code of an observation in a dataset.
+#' \item \code{evento_id_febr}. Identification code of an observation in a dataset.
 #' \item \code{camada_id}. Sequential layer number, from top to bottom.
 #' \item \code{camada_altid}. Layer designation according to some standard description guide.
 #' \item \code{amostra_id}. Laboratory number of a sample.
@@ -414,7 +414,7 @@ layer <-
               tmp <- tmp_clean
             }
             # TIPO DE DADOS
-            # "observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup" e "profund_inf"
+            # "evento_id_febr", "camada_id", "camada_nome", "amostra_id", "profund_sup" e "profund_inf"
             # devem estar no formato de caracter para evitar erros durante o empilhamento das tabelas
             # devido ao tipo de dado.
             if (stack) {
@@ -519,7 +519,7 @@ layer <-
             unit[2, ] <- gsub("^sem unidade$", "unitless", unit[2, ])
             # unit[2, ] <- gsub("^-$", "unitless", unit[2, ])
             # https://en.wikipedia.org/wiki/List_of_Unicode_characters
-            unit["observacao_id"] <-
+            unit["evento_id_febr"] <-
               c("Identifica\u00E7\u00E3o da observa\u00E7\u00E3o", # Identificação da observação
                 "unitless")
             dataset_id <-

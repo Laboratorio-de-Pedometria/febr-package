@@ -4,7 +4,7 @@
       owncloud = "https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso/download?path=%2F",
       observation = list(
         # std.cols =
-        #   c("observacao_id", "sisb_id", "ibge_id", "observacao_data",
+        #   c("evento_id_febr", "sisb_id", "ibge_id", "evento_data",
         #     "coord_datum", "coord_x", "coord_y", "coord_precisao", "coord_fonte",
         #     "pais_id", "estado_id", "municipio_id",
         #     "amostra_tipo", "amostra_quanti", "amostra_area"),
@@ -18,7 +18,7 @@
       ),
       layer = list(
         # std.cols =
-          # c("observacao_id", "camada_id", "camada_nome", "amostra_id", "profund_sup",
+          # c("evento_id_febr", "camada_id", "camada_nome", "amostra_id", "profund_sup",
           # "profund_inf")
         std.cols = function() {
           which_columns <- c("tabela_id", "campo_id", "campo_vital", "campo_oldid")
@@ -161,10 +161,10 @@
     }
     ## 1. Agrupar observações com e sem coordenadas
     ## 2. Organizar as colunas na ordem original de entrada
-    ## 3. Ordenar as linhas em função de 'observacao_id'
+    ## 3. Ordenar as linhas em função de 'evento_id_febr'
     res <- rbind(tmp_obj, obj[-id_coords, ])
     res <- res[, col_names]
-    res <- res[order(res$observacao_id), ]
+    res <- res[order(res$evento_id_febr), ]
     return(res)
   }
 # Harmonização baseada nos níveis dos códigos de identificação ----
@@ -190,31 +190,31 @@
 .formatObservationDate <-
   function(obj, time.format) {
     # Identificar formatação da data
-    time_sep <- ifelse(all(grepl("/", stats::na.omit(obj$observacao_data))), "/", "-")
+    time_sep <- ifelse(all(grepl("/", stats::na.omit(obj$evento_data))), "/", "-")
     time_form0 <- paste0("%d", time_sep, "%m", time_sep, "%Y")
     # Verificar se falta data para alguma observação
-    time_miss <- grepl("xx", obj$observacao_data)
+    time_miss <- grepl("xx", obj$evento_data)
     if (any(time_miss)) {
       ## Falta dia
-      miss_day <- grepl(paste0("^xx", time_sep), obj$observacao_data)
+      miss_day <- grepl(paste0("^xx", time_sep), obj$evento_data)
       if (any(miss_day)) {
-        obj$observacao_data[miss_day] <-
+        obj$evento_data[miss_day] <-
           gsub(pattern = paste0("^xx", time_sep),
                replacement = paste0(format(Sys.Date(), "%d"), time_sep),
-               x = obj$observacao_data[miss_day])
+               x = obj$evento_data[miss_day])
       }
       # Falta mês
-      miss_month <- grepl(paste0(time_sep, "xx", time_sep), obj$observacao_data)
+      miss_month <- grepl(paste0(time_sep, "xx", time_sep), obj$evento_data)
       if (any(miss_month)) {
-        obj$observacao_data[miss_month] <-
+        obj$evento_data[miss_month] <-
           gsub(pattern = paste0(time_sep, "xx", time_sep),
                replacement = paste0(time_sep, format(Sys.Date(), "%m"), time_sep),
-               x = obj$observacao_data[miss_month])
+               x = obj$evento_data[miss_month])
       }
     }
     # Formatar data
-    obj$observacao_data <- as.Date(x = obj$observacao_data, format = time_form0)
-    obj$observacao_data <- as.Date(x = obj$observacao_data, format = time.format)
+    obj$evento_data <- as.Date(x = obj$evento_data, format = time_form0)
+    obj$evento_data <- as.Date(x = obj$evento_data, format = time.format)
     return(obj)
   }
 # Eliminação de linhas sem dados nas tabelas 'camada' e 'observacao' ----
@@ -231,7 +231,7 @@
     if (nrow(obj) >= 1) {
       is_layer <- "camada_id" %in% colnames(obj)
       # Tabela 'observacao'
-      # is_obs <- all(c(coord.names, "observacao_data") %in% colnames(obj))
+      # is_obs <- all(c(coord.names, "evento_data") %in% colnames(obj))
       if (!is_layer) {
         ## remover linhas sem dados de coordenadas
         if (!is.null(missing$coord) && missing$coord == "drop") {
@@ -240,7 +240,7 @@
         }
         ## remover linhas sem dados de data de observação
         if (!is.null(missing$time) && missing$time == "drop") {
-          na_time_id <- is.na(obj$observacao_data)
+          na_time_id <- is.na(obj$evento_data)
           obj <- obj[!na_time_id, ]
         }
       } else if (is_layer) {

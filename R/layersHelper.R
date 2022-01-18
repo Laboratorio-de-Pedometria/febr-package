@@ -14,14 +14,14 @@
 # source("R/febrHelper.R")
 # Sinal de adição na última profundidade
 # res <- layer("ctb0016")
-# (res <- res[res$observacao_id == "LVd-1", c("profund_sup", "profund_inf")])
+# (res <- res[res$evento_id_febr == "LVd-1", c("profund_sup", "profund_inf")])
 # .setMaximumObservationDepth(res)
 # Última profundidade ondulada/irregular com sinal de adição
 # res <- layer("ctb0770")
-# (res <- res[res$observacao_id == "E85", c("profund_sup", "profund_inf")])
+# (res <- res[res$evento_id_febr == "E85", c("profund_sup", "profund_inf")])
 # .setMaximumObservationDepth(res)
 .setMaximumObservationDepth <-
-  function(obj, id.col = "observacao_id", depth.cols, plus.sign = "add", plus.depth = 2.5) {
+  function(obj, id.col = "evento_id_febr", depth.cols, plus.sign = "add", plus.depth = 2.5) {
     if (!requireNamespace("stringr")) stop("stringr package is missing")
     plus.depth <- paste("+", plus.depth)
     # Process data
@@ -150,7 +150,7 @@
 #
 #' @importFrom stats median
 .solveWavyLayerTransition <-
-  function(obj, id.col = "observacao_id", depth.cols, smoothing.fun = "mean") {
+  function(obj, id.col = "evento_id_febr", depth.cols, smoothing.fun = "mean") {
     if (!requireNamespace("stringr")) stop("stringr package is missing")
     # Note that a wavy/irregular transition at 'profund_inf' does not necessarily mean a
     # wavy/irregular transition at the next 'profund_sup' because the consistency of the order of
@@ -193,11 +193,11 @@
 # source("R/layers.R")
 # source("R/standards.R")
 # res <- febrlayer("ctb0643", variable = "all")
-# obj <- res[res$observacao_id == "Perfil-01", 1:10]
+# obj <- res[res$evento_id_febr == "Perfil-01", 1:10]
 # .solveBrokenLayerTransition(obj[c(1:7, 52)])
 # res <- .solveBrokenLayerTransition(res)
-# res[res$observacao_id == "Perfil-01", ]
-# res[res$observacao_id == "Perfil-10", ]
+# res[res$evento_id_febr == "Perfil-01", ]
+# res[res$evento_id_febr == "Perfil-10", ]
 # res <- layers("ctb0002", missing.data = "keep")
 # res
 # res <- .solveBrokenLayerTransition(res)
@@ -211,8 +211,8 @@
 #   }
 # .solveBrokenLayerTransition <-
 #   function(obj, depth.cols = c("profund_sup", "profund_inf"), merge.fun = "weighted.mean",
-#             id.cols = c("observacao_id", "camada_id", "camada_nome", "amostra_id")) {
-#     # Dividir camadas por 'observacao_id' 
+#             id.cols = c("evento_id_febr", "camada_id", "camada_nome", "amostra_id")) {
+#     # Dividir camadas por 'evento_id_febr' 
 #     split_obj <- split(x = obj, f = obj[[id.cols[1]]])
 #     # Tipo 1: Uma ou mais camadas possuem valores idênticos de 'profund_sup' (mas não
 #     necessariamente de 'profund_inf'), indicando que elas começam na mesma profundidade (mas não
@@ -293,9 +293,9 @@
 #   }
 # Repetições de laboratório ########################################################################
 .solveLayerRepetition <-
-  function(obj, observation.id = "observacao_id", layer.id = "camada_id", sample.id = "amostra_id",
+  function(obj, observation.id = "evento_id_febr", layer.id = "camada_id", sample.id = "amostra_id",
           combine.fun = "mean") {
-    # Dividir camadas por 'observacao_id'
+    # Dividir camadas por 'evento_id_febr'
     split_obj <- split(x = obj, f = obj[[observation.id]])
     # Duas ou mais camadas possuem valor idêntico de 'camada_id' -- exceto NA, ou seja, quando as
     # camadas não possuem código de identificação (caso de conjuntos de dados ainda não revisados).
