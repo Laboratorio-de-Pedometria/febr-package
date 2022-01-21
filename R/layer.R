@@ -154,6 +154,8 @@ layer <-
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$layer$std.cols()
+    dic <- dictionary(table = "camada")
+    #
     # ARGUMENT CHECK ----
     ## data.set
     if (missing(data.set)) {
@@ -352,15 +354,15 @@ layer <-
         unit <- unit[, -1]
         unit <- as.data.frame(t(unit), stringsAsFactors = FALSE)
         n_rows <- nrow(tmp)
-        # PADRONIZAÇÀO/ATUALIZAÇÃO DOS NOMES DAS COLUNAS
+        # PADRONIZAÇÀO/ATUALIZAÇÃO DOS NOMES DE TODOS OS CAMPOS
+        # * tmp: tabela de dados
+        # * unit: tabela de unidades de medida
         in_cols <- colnames(tmp)
-        test_oldid_colnames <- std_cols[["campo_oldid"]] %in% in_cols
+        test_oldid_colnames <- dic[["campo_oldid"]] %in% in_cols
         if (any(test_oldid_colnames)) {
-          cross_colnames <- std_cols[which(test_oldid_colnames), ]
-          # Atualização dos nomes das colunas da tabela de dados
+          cross_colnames <- dic[which(test_oldid_colnames), ]
           data.table::setnames(tmp, cross_colnames[["campo_oldid"]], cross_colnames[["campo_id"]])
           in_cols <- colnames(tmp)
-          # Atualização dos nomes das colunas da tabela de unidades de medida
           data.table::setnames(unit, cross_colnames[["campo_oldid"]], cross_colnames[["campo_id"]])
         }
         # Nomes das colunas usadas para armazenar coordenadas verticais (profundidade)
