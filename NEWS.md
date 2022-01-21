@@ -1,5 +1,11 @@
 # News
 
+## febr 1.9.3
+
+* __Improvement 1.__ The data dictionary of the FEBR repository is updated periodically. Data field
+  names need to be updated upon data download. Until recently, only the names of mandatory data
+  fields were updated. Now, the name of any data field is updated.
+
 ## febr 1.9.2
 
 * __Improvement 1.__ The data dictionary of the FEBR repository is updated periodically. Recently,

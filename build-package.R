@@ -8,10 +8,10 @@ update(remotes::package_deps(packages = "devtools"))
 # Reverse dependency tools
 devtools::revdep()
 # Render README
-rmarkdown::render("README.Rmd")
+rmarkdown::render("febr-package/README.Rmd")
 # check documentation ----
-roxygen2::roxygenise()
-devtools::check_man()
+roxygen2::roxygenise("febr-package/")
+devtools::check_man("febr-package/")
 devtools::spell_check(vignettes = FALSE)
 # spelling::update_wordlist()
 
@@ -19,7 +19,7 @@ devtools::spell_check(vignettes = FALSE)
 devtools::run_examples()
 
 # check for Linux (local) ----
-devtools::check(manual = TRUE, run_dont_test = TRUE)
+devtools::check("febr-package/", manual = TRUE, run_dont_test = TRUE)
 
 # check for Windows (remote) ----
 devtools::check_win_oldrelease()

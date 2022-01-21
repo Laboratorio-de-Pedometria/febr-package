@@ -118,6 +118,8 @@ observation <-
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$observation$std.cols()
+    dic <- dictionary(table = "observacao")
+    #
     # ARGUMENT CHECK ----
     ## data.set
     if (missing(data.set)) {
@@ -284,11 +286,13 @@ observation <-
         colnames(unit) <- unlist(unit[1, ])
         unit <- unit[-1, ]
         n_rows <- nrow(tmp)
-        # PADRONIZAÇÀO/ATUALIZAÇÃO DOS NOMES DAS COLUNAS
+        # PADRONIZAÇÀO/ATUALIZAÇÃO DOS NOMES DE TODOS OS CAMPOS
         in_cols <- colnames(tmp)
-        test_oldid_colnames <- std_cols[["campo_oldid"]] %in% in_cols
+        # test_oldid_colnames <- std_cols[["campo_oldid"]] %in% in_cols
+        test_oldid_colnames <- dic[["campo_oldid"]] %in% in_cols
         if (any(test_oldid_colnames)) {
-          cross_colnames <- std_cols[which(test_oldid_colnames), ]
+          # cross_colnames <- std_cols[which(test_oldid_colnames), ]
+          cross_colnames <- dic[which(test_oldid_colnames), ]
           # Atualização dos nomes das colunas da tabela de dados
           data.table::setnames(tmp, cross_colnames[["campo_oldid"]], cross_colnames[["campo_id"]])
           in_cols <- colnames(tmp)
