@@ -1,5 +1,12 @@
 # News
 
+## febr 1.9.4
+
+* __Improvement 1.__ The data dictionary of the FEBR repository is updated periodically. Some data
+  field names are hard-coded in the **febr** package. This minor version accounts for some of these
+  changes, specifically:
+  * `coord_datum` -> `coord_datum_epsg`
+
 ## febr 1.9.3
 
 * __Improvement 1.__ The data dictionary of the FEBR repository is updated periodically. Data field

@@ -25,7 +25,7 @@ febr2sf <-
   function(obj) {
     if (!requireNamespace("sf")) stop("sf package is missing")
     # Verificar sistema de referência de coordenadas
-    crs <- unique(obj[["coord_datum"]])
+    crs <- unique(obj[["coord_datum_epsg"]])
     if (length(crs) == 1) {
       obj <- sf::st_as_sf(x = obj, coords = c("coord_longitude", "coord_latitude"), crs = crs)
     } else {

@@ -16,7 +16,7 @@ devtools::spell_check(vignettes = FALSE)
 # spelling::update_wordlist()
 
 # check examples ----
-devtools::run_examples()
+devtools::run_examples("febr-package/")
 
 # check for Linux (local) ----
 devtools::check("febr-package/", manual = TRUE, run_dont_test = TRUE)

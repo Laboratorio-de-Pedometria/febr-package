@@ -5,7 +5,7 @@
       observation = list(
         # std.cols =
         #   c("evento_id_febr", "sisb_id", "ibge_id", "evento_data",
-        #     "coord_datum", "coord_x", "coord_y", "coord_precisao", "coord_fonte",
+        #     "coord_datum_epsg", "coord_x", "coord_y", "coord_precisao", "coord_fonte",
         #     "pais_id", "estado_id", "municipio_id",
         #     "amostra_tipo", "amostra_quanti", "amostra_area"),
         std.cols = function() {
@@ -111,28 +111,28 @@
     ## Verificar se o SRC está faltando
     ## Caso esteja faltando, e as coordenadas forem geográficas, então atribui-se o SRC usado como
     ## padrão
-    is_na_crs <- is.na(tmp_obj$coord_datum)
+    is_na_crs <- is.na(tmp_obj$coord_datum_epsg)
     if (any(is_na_crs)) {
       is_degree <- nchar(round(abs(tmp_obj[, coord.names[1]]))) <= 2
       is_na_crs <- which(is_na_crs[is_degree])
-      tmp_obj$coord_datum[is_na_crs] <- crs
+      tmp_obj$coord_datum_epsg[is_na_crs] <- crs
     }
     ## Verificar se o SRC é o SAD69
     ## Nota: Isso deve ser feito no Google Sheets
-    is_sad69 <- tmp_obj$coord_datum %in% "SAD69"
+    is_sad69 <- tmp_obj$coord_datum_epsg %in% "SAD69"
     if (any(is_sad69)) {
-      tmp_obj$coord_datum[is_sad69] <- "EPSG:4618"
+      tmp_obj$coord_datum_epsg[is_sad69] <- "EPSG:4618"
     }
     ## Verificar se o SRC é o SIRGAS
     ## Nota: Isso deve ser feito no Google Sheets
-    is_sirgas <- tmp_obj$coord_datum %in% "SIRGAS"
+    is_sirgas <- tmp_obj$coord_datum_epsg %in% "SIRGAS"
     if (any(is_sirgas)) {
-      tmp_obj$coord_datum[is_sirgas] <- crs
+      tmp_obj$coord_datum_epsg[is_sirgas] <- crs
     }
     ## Verificar quantos são os SRC usados
-    n_crs <- nlevels(as.factor(tmp_obj$coord_datum))
+    n_crs <- nlevels(as.factor(tmp_obj$coord_datum_epsg))
     if (n_crs > 1) {
-      tmp_obj <- split(tmp_obj, as.factor(tmp_obj$coord_datum))
+      tmp_obj <- split(tmp_obj, as.factor(tmp_obj$coord_datum_epsg))
       ## Verificar se algum dos SRC é igual ao alvo
       if (crs_upper %in% names(tmp_obj)) {
         j <- which(!names(tmp_obj) %in% crs_upper)
@@ -141,23 +141,23 @@
       }
       ## Transformar os SRC
       tmp_obj[j] <- lapply(tmp_obj[j], function(x) {
-        x <- sf::st_as_sf(x = x, coords = coord.names, crs = .getEPSGcode(x$coord_datum[1]))
+        x <- sf::st_as_sf(x = x, coords = coord.names, crs = .getEPSGcode(x$coord_datum_epsg[1]))
         x <- sf::st_transform(x = x, crs = .getEPSGcode(crs))
         x_coords <- sf::st_coordinates(x = x)
         colnames(x_coords) <- coord.names
         x <- cbind(x_coords, sf::st_drop_geometry(x))
       })
       tmp_obj <- do.call(rbind, tmp_obj)
-      tmp_obj$coord_datum <- crs_upper
-    } else if (tmp_obj$coord_datum[1] != crs_upper) {
+      tmp_obj$coord_datum_epsg <- crs_upper
+    } else if (tmp_obj$coord_datum_epsg[1] != crs_upper) {
       ## Transformar o SRC
       tmp_obj <- sf::st_as_sf(
-        x = tmp_obj, coords = coord.names, crs = .getEPSGcode(tmp_obj$coord_datum[1]))
+        x = tmp_obj, coords = coord.names, crs = .getEPSGcode(tmp_obj$coord_datum_epsg[1]))
       tmp_obj <- sf::st_transform(crs = .getEPSGcode(crs), x = tmp_obj)
       tmp_obj_coords <- sf::st_coordinates(x = tmp_obj)
       colnames(tmp_obj_coords) <- coord.names
       tmp_obj <- cbind(tmp_obj_coords, sf::st_drop_geometry(tmp_obj))
-      tmp_obj$coord_datum <- crs_upper
+      tmp_obj$coord_datum_epsg <- crs_upper
     }
     ## 1. Agrupar observações com e sem coordenadas
     ## 2. Organizar as colunas na ordem original de entrada

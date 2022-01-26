@@ -24,7 +24,6 @@ readFEBR <-
     data.set,
     data.table = c("identificacao", "versionamento", "metadado", "observacao", "camada"),
     febr.repo = NULL, verbose = TRUE, ...) {
-    
     # ARGUMENT CHECK ----
     ## data.set
     if (missing(data.set)) {
