@@ -1,5 +1,12 @@
 # News
 
+## febr 1.9.5
+
+* __Improvement 1.__ The data dictionary of the FEBR repository is updated periodically and some
+  fields are inactivated. The function `dictionary()` has a new argument to enable the user to
+  select whether active (`active = TRUE`), inactive (`active = FALSE`) or any (`active = NULL`,
+  default) field should be returned.
+
 ## febr 1.9.4
 
 * __Improvement 1.__ The data dictionary of the FEBR repository is updated periodically. Some data

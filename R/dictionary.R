@@ -15,6 +15,8 @@
 #' used to filter the dictionary. For example, ' `"g/kg"`, `"g/cm^3"`, and `"cmolc/kg"`.
 #' @param precision (optional) Integer vector indicating one or more number of decimal places that
 #' should be used to filter the dictionary.
+#' @param active (optional) Logical value indicating whether active (`active = TRUE`), inactive
+#' (`active = FALSE`) or any (`active = NULL`, default) field should be returned.
 #' @return An object of class `data.frame` with definitions for the selected fields.
 #' @references
 #' Teixeira, P. C., Donagemma, G. K., Fontana, A., Teixeira, W. G. (2017)
@@ -30,7 +32,7 @@
 # }
 ####################################################################################################
 dictionary <-
-  function(table, variable, unit, precision) {
+  function(table, variable, unit, precision, active = NULL) {
     #
     # CHECK ARGUMENTS
     # table
@@ -80,6 +82,15 @@ dictionary <-
     ## Selecionar por campo_precisao
     if (!missing(precision)) {
       idx <- which(std[["campo_precisao"]] %in% precision)
+      std <- std[idx, ]
+    }
+    ## Selecionar por campo_ativo
+    if (!is.null(active)) {
+      if (active) {
+        idx <- which(std[["campo_active"]] == 1)
+      } else {
+        idx <- which(std[["campo_active"]] == 0)
+      }
       std <- std[idx, ]
     }
     # ERRO

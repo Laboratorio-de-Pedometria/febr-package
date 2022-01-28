@@ -154,7 +154,7 @@ layer <-
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$layer$std.cols()
-    dic <- dictionary(table = "camada")
+    dic <- dictionary(table = "camada", active = TRUE)
     #
     # ARGUMENT CHECK ----
     ## data.set
@@ -494,7 +494,7 @@ layer <-
                   target <- tmp_stds[["campo_unidade"]][match(need_name, tmp_stds[["campo_id"]])]
                   ## Identificar constante
                   k <- lapply(seq_along(source), function(i) {
-                    idx <- febr_unit$unidade_origem %in% source[i] + 
+                    idx <- febr_unit$unidade_origem %in% source[i] +
                       febr_unit$unidade_destino %in% target[i]
                     febr_unit[idx == 2, ]
                   })

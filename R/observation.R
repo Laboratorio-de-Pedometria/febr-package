@@ -118,7 +118,7 @@ observation <-
     # OPÇÕES E PADRÕES
     opts <- .opt()
     std_cols <- opts$observation$std.cols()
-    dic <- dictionary(table = "observacao")
+    dic <- dictionary(table = "observacao", active = TRUE)
     #
     # ARGUMENT CHECK ----
     ## data.set

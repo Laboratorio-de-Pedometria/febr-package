@@ -4,7 +4,7 @@
 \alias{dictionary}
 \title{Access the FEBR dictionary}
 \usage{
-dictionary(table, variable, unit, precision)
+dictionary(table, variable, unit, precision, active = NULL)
 }
 \arguments{
 \item{table}{(optional) Character vector indicating one or more table IDs that should be used to
@@ -20,6 +20,9 @@ used to filter the dictionary. For example, ' \code{"g/kg"}, \code{"g/cm^3"}, an
 
 \item{precision}{(optional) Integer vector indicating one or more number of decimal places that
 should be used to filter the dictionary.}
+
+\item{active}{(optional) Logical value indicating whether active (\code{active = TRUE}), inactive
+(\code{active = FALSE}) or any (\code{active = NULL}, default) field should be returned.}
 }
 \value{
 An object of class \code{data.frame} with definitions for the selected fields.
