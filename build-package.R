@@ -34,7 +34,7 @@ devtools::check_rhub()
 devtools::build()
 
 # Load package
-devtools::load_all()
+devtools::load_all("febr-package")
 
 # Build package site
 if (!require(pkgdown)) {

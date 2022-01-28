@@ -87,9 +87,9 @@ dictionary <-
     ## Selecionar por campo_ativo
     if (!is.null(active)) {
       if (active) {
-        idx <- which(std[["campo_active"]] == 1)
+        idx <- which(std[["campo_ativo"]] == 1)
       } else {
-        idx <- which(std[["campo_active"]] == 0)
+        idx <- which(std[["campo_ativo"]] == 0)
       }
       std <- std[idx, ]
     }
