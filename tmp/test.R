@@ -82,3 +82,12 @@ horizons[, 9:48] <- lapply(horizons[, 9:48], as.numeric)
    morphology(x = horizons$morfologia_descricao, variable = "consistence"),
    stringsAsFactors = FALSE)
 
+
+library(febr)
+RS.febr <- readFEBR(data.set = c("ctb0006", "ctb0028", "ctb0793","ctb0001","ctb0007","ctb0016",
+"ctb0030","ctb0672","ctb0003","ctb0010","ctb0012","ctb0013",
+"ctb0015","ctb0019","ctb0023","ctb0029","ctb0031","ctb0643",
+"ctb0770","ctb0784","ctb0797","ctb0011", "ctb0014","ctb0025",
+"ctb0005", "ctb0036","ctb0009"),
+encoding = "Latin-1" )
+names(RS.febr)

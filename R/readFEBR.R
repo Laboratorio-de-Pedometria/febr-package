@@ -6,7 +6,7 @@
 #' @param data.table Character vector indicating one or more data tables, with supported values
 #' `"identificacao"`, `"versionamento"`, `"metadado"`, `"observacao"`, and `"camada"`.
 #' @param febr.repo (optional) Defaults to the remote file directory of the Federal University of
-#' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}. 
+#' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}.
 #' Alternatively, a local directory path can be informed if the user has a local copy of the data
 #' repository.
 #' @param verbose (optional) Logical value indicating if informative messages should be displayed.
@@ -59,7 +59,7 @@ readFEBR <-
       if (is.null(febr.repo)) {
         path <- paste0(.opt()$owncloud, x, "&files=", x, "-", data.table, ".txt")
       } else {
-        path <- file.path(febr.repo, dataset_ids, paste0(dataset_ids, '-', data.table, ".txt"))
+        path <- file.path(febr.repo, dataset_ids, paste0(dataset_ids, "-", data.table, ".txt"))
         path <- normalizePath(path = path, mustWork = TRUE)
       }
       return(path)
@@ -68,13 +68,12 @@ readFEBR <-
       if (verbose) {
         message(paste0("Reading...\n", paste0(x, collapse = "\n")))
       }
-      # out <- lapply(x, utils::read.table, header = TRUE, dec = ",", stringsAsFactors = FALSE, ...)
       out <- lapply(x, data.table::fread, dec = ",", ...)
       names(out) <- data.table
       out
     })
     # PREPARE OUTPUT ----
-    if(n_datasets == 1) {
+    if (n_datasets == 1) {
       res <- res[[1]]
       if (length(data.table) == 1) {
         res <- res[[1]]
@@ -83,7 +82,7 @@ readFEBR <-
       if (length(data.table) == 1) {
         res <- lapply(res, function(x) x[[1]])
       }
-      names(res) <- n_datasets
+      names(res) <- dataset_ids
     }
     return(res)
   }

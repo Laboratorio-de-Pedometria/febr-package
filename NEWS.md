@@ -1,5 +1,11 @@
 # News
 
+## febr 1.9.6
+
+* __Bug fix.__ Data downloaded using `readFEBR()` were supposed to be named after the respective
+  data id used in the repository. However, the object passed to `names()` was incorrect. This is
+  corrected in the present patch.
+
 ## febr 1.9.5
 
 * __Improvement 1.__ The data dictionary of the FEBR repository is updated periodically and some
