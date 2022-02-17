@@ -13,6 +13,7 @@
 #' Generally useful to identify issues—please report to \email{febr-forum@@googlegroups.com} if
 #' you find any.
 #' @param ... (optional) Arguments passed to [data.table::fread()].
+#'
 #' @return A list of data tables (data frames) with data from the chosen data sets.
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export

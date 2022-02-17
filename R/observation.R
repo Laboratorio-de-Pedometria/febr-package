@@ -82,6 +82,7 @@
 #' then these two variables will remain coded as separate variables. But if `level = 2`, then both
 #' variables will be re-coded as `aaa_bbb`, thus becoming the same variable.
 #' }
+#'
 #' @return A `list` of `data.frame`s or a `data.frame` with, possibly standardize or harmonized,
 #' data of the chosen variable(s) of the chosen dataset(s).
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
@@ -464,7 +465,6 @@ observation <-
             if (progress) {
               utils::setTxtProgressBar(pb, i)
             }
-            
           } else {
             res[[i]] <- data.frame()
             m <- paste("All observations in {dts} are missing data. None will be returned.")
@@ -495,7 +495,7 @@ observation <-
     } else if (n_datasets == 1 & inherits(res, "list")) {
       res <- res[[1]]
     } else {
-      names(res) <- data.set
+      names(res) <- dataset_ids
     }
     return(res)
   }

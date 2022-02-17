@@ -2,6 +2,7 @@
 #' @description Download the index of data sets published in the
 #' [Data Repository of the Brazilian Soil](https://www.pedometria.org/febr/).
 #' @param ... (optional) Arguments passed to [data.table::fread()].
+#'
 #' @return An object of class [data.table::data.table].
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export

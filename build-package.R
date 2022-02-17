@@ -12,8 +12,8 @@ rmarkdown::render("febr-package/README.Rmd")
 # check documentation ----
 roxygen2::roxygenise("febr-package/")
 devtools::check_man("febr-package/")
-devtools::spell_check(vignettes = FALSE)
-# spelling::update_wordlist()
+devtools::spell_check("febr-package/", vignettes = FALSE)
+# spelling::update_wordlist("febr-package/")
 
 # check examples ----
 devtools::run_examples("febr-package/")
@@ -22,14 +22,14 @@ devtools::run_examples("febr-package/")
 devtools::check("febr-package/", manual = TRUE, run_dont_test = TRUE)
 
 # check for Windows (remote) ----
-devtools::check_win_oldrelease()
-devtools::check_win_release()
-devtools::check_win_devel()
+devtools::check_win_oldrelease("febr-package/")
+devtools::check_win_release("febr-package/")
+devtools::check_win_devel("febr-package/")
 
 # check in R-hub ----
 # rhub::validate_email(email = "alessandrosamuelrosa@gmail.com")
 # rhub::check_on_windows()
-devtools::check_rhub()
+devtools::check_rhub("febr-package/")
 
 devtools::build()
 

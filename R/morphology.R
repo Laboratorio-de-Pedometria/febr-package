@@ -4,6 +4,7 @@
 #' @param x Character string with field soil morphology description (in Portuguese).
 #' @param variable Character string defining the soil morphological property of interest. Options:
 #' `color`, `structure`, `consistence`.
+#'
 #' @return An object of class `data.frame`.
 #' @export
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}

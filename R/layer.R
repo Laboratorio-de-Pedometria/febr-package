@@ -573,7 +573,7 @@ layer <-
     } else if (n_datasets == 1 & inherits(res, "list")) {
       res <- res[[1]]
     } else {
-      names(res) <- data.set
+      names(res) <- dataset_ids
     }
     return(res)
   }

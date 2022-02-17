@@ -8,6 +8,7 @@
 #' Technology - Paraná at \url{https://cloud.utfpr.edu.br/index.php/s/Df6dhfzYJ1DDeso}. 
 #' Alternatively, a local directory path can be informed if the user has a local copy of the data
 #' repository.
+#'
 #' @return A list of data frames or a data frame with metadata of the chosen dataset(s).
 #' @note Check the new core data download function [febr::readFEBR()].
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
@@ -71,7 +72,7 @@ metadata <-
     if (n_datasets == 1) {
       res <- res[[1]]
     } else {
-      names(res) <- data.set
+      names(res) <- dataset_ids
     }
     return(res)
   }
