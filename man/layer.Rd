@@ -144,9 +144,9 @@ variables will be re-coded as \code{aaa_bbb}, thus becoming the same variable.
 }
 }
 \examples{
+if (interactive()) {
 res <- layer(data.set = "ctb0003")
 
-if (interactive()) {
 # Download two data sets and standardize units
 res <- layer(
   data.set = paste("ctb000", 4:5, sep = ""),

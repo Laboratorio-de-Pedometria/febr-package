@@ -7,3 +7,4 @@ docs
 *.json
 app-env
 .Renviron
+CRAN-SUBMISSION

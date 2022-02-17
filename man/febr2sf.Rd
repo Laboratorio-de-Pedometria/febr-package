@@ -24,11 +24,13 @@ Create an sf object from the
 Soil Data Repository, \url{https://www.pedometria.org/febr/}.
 }
 \examples{
+if (interactive()) {
 res <- observation(
   data.set = "ctb0013",
   progress = FALSE, verbose = FALSE)
 res <- febr2sf(obj = res)
 plot(res["geometry"], axes = TRUE, graticule = TRUE)
+}
 }
 \references{
 Pebesma, E., 2018. Simple Features for R: Standardized Support for Spatial Vector Data.

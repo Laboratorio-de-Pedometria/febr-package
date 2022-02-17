@@ -15,11 +15,13 @@
 #' @author Alessandro Samuel-Rosa \email{alessandrosamuelrosa@@gmail.com}
 #' @export
 #' @examples
+#' if (interactive()) {
 #' res <- observation(
 #'   data.set = "ctb0013",
 #'   progress = FALSE, verbose = FALSE)
 #' res <- febr2sf(obj = res)
 #' plot(res["geometry"], axes = TRUE, graticule = TRUE)
+#' }
 ####################################################################################################
 febr2sf <-
   function(obj) {

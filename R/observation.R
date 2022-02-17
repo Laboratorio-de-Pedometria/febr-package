@@ -89,9 +89,9 @@
 #' @seealso [febr::readFEBR()], [febr::layer()], [febr::dictionary()], [febr::unit()]
 #' @export
 #' @examples
+#' if (interactive()) {
 #' res <- observation(data.set = "ctb0013")
 #'
-#' if (interactive()) {
 #' # Download two data sets and standardize CRS
 #' res <- observation(
 #'   data.set = paste("ctb000", 4:5, sep = ""),

@@ -127,9 +127,9 @@ variables will be re-coded as \code{aaa_bbb}, thus becoming the same variable.
 }
 }
 \examples{
+if (interactive()) {
 res <- observation(data.set = "ctb0013")
 
-if (interactive()) {
 # Download two data sets and standardize CRS
 res <- observation(
   data.set = paste("ctb000", 4:5, sep = ""),
