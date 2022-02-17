@@ -6,7 +6,7 @@
 update(remotes::package_deps(packages = "febr"))
 update(remotes::package_deps(packages = "devtools"))
 # Reverse dependency tools
-devtools::revdep()
+devtools::revdep("febr-package/")
 # Render README
 rmarkdown::render("febr-package/README.Rmd")
 # check documentation ----

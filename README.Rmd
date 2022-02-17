@@ -13,7 +13,7 @@ pkg.info <- drop(read.dcf(file = "DESCRIPTION", fields = c("Title", "Version", "
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![packageversion](https://img.shields.io/badge/devel%20version-`r pkg.info["Version"]`-firebrick.svg?style=flat-square)](commits/master)
-[![Build Status](https://travis-ci.org/samuel-rosa/febr-package.svg?branch=master)](https://travis-ci.org/samuel-rosa/febr-package)
+<!-- [![Build Status](https://travis-ci.org/samuel-rosa/febr-package.svg?branch=master)](https://travis-ci.org/samuel-rosa/febr-package) -->
 [![CRAN](https://www.r-pkg.org/badges/version/febr)](https://cran.r-project.org/package=febr)
 [![cran checks](https://cranchecks.info/badges/worst/febr)](https://cran.r-project.org/web/checks/check_results_febr.html)
 [![Downloads](https://cranlogs.r-pkg.org/badges/febr?color=brightgreen)](https://www.r-pkg.org/pkg/febr)
