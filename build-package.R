@@ -40,8 +40,8 @@ devtools::load_all("febr-package")
 if (!require(pkgdown)) {
   install.packages("pkgdown")
 }
-pkgdown::build_site()
-html_files <- list.files(path = "docs", pattern = ".html", recursive = TRUE, full.names = TRUE)
+pkgdown::build_site("febr-package")
+html_files <- list.files(path = "febr-package/docs", pattern = ".html", recursive = TRUE, full.names = TRUE)
 for (con in html_files) {
   x <- readLines(con)
   x <- sub("View on CRAN", "Ver no CRAN", x)
@@ -65,9 +65,9 @@ for (con in html_files) {
   writeLines(x, con)
 }
 if (dir.exists("~/projects/web/pedometria.org/static/software/febr")) {
-  system("cp -a docs/. ~/projects/web/pedometria.org/static/software/febr")
+  system("cp -a febr-package/docs/. ~/projects/web/pedometria.org/static/software/febr")
 }
-# pkgdown::preview_site()
+# pkgdown::preview_site("febr-package")
 # pkgdown::build_articles()
 # pkgdown::build_home()
 # pkgdown::build_reference()
@@ -77,8 +77,4 @@ if (dir.exists("~/projects/web/pedometria.org/static/software/febr")) {
 # devtools::dev_mode()
 
 # upload to CRAN
-devtools::release(check = FALSE)
-
-dados <- jsonlite::fromJSON("/home/alessandrorosa/Downloads/SmartSolos-Teste-01-ARGI-VERMELHO-Eutrofico-abruptico.json")
-dados <- write.table(dados$items$HORIZONTES, "/home/alessandrorosa/Downloads/SmartSolos-Teste-01-ARGI-VERMELHO-Eutrofico-abruptico.txt", row.names = FALSE)
-str(dados)
+devtools::release("febr-package", check = FALSE)
