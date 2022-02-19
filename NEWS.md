@@ -1,5 +1,9 @@
 # News
 
+## febr 1.9.8
+
+* __Improvement.__ Package description is clearer and follows CRAN policies.
+
 ## febr 1.9.7
 
 * __Bug fix.__ Data downloaded using `identification()`, `layer()`, `metadata()`, and
@@ -14,27 +18,27 @@
 
 ## febr 1.9.5
 
-* __Improvement 1.__ The data dictionary of the FEBR repository is updated periodically and some
+* __Improvement.__ The data dictionary of the FEBR repository is updated periodically and some
   fields are inactivated. The function `dictionary()` has a new argument to enable the user to
   select whether active (`active = TRUE`), inactive (`active = FALSE`) or any (`active = NULL`,
   default) field should be returned.
 
 ## febr 1.9.4
 
-* __Improvement 1.__ The data dictionary of the FEBR repository is updated periodically. Some data
+* __Improvement.__ The data dictionary of the FEBR repository is updated periodically. Some data
   field names are hard-coded in the **febr** package. This minor version accounts for some of these
   changes, specifically:
   * `coord_datum` -> `coord_datum_epsg`
 
 ## febr 1.9.3
 
-* __Improvement 1.__ The data dictionary of the FEBR repository is updated periodically. Data field
+* __Improvement.__ The data dictionary of the FEBR repository is updated periodically. Data field
   names need to be updated upon data download. Until recently, only the names of mandatory data
   fields were updated. Now, the name of any data field is updated.
 
 ## febr 1.9.2
 
-* __Improvement 1.__ The data dictionary of the FEBR repository is updated periodically. Recently,
+* __Improvement.__ The data dictionary of the FEBR repository is updated periodically. Recently,
   the term _evento_ (event) was adopted as a replacement for _observacao_ (observation). Some data
   field names are hard-coded in the **febr** package. This minor version accounts for some of these
   changes, specifically:
@@ -43,7 +47,7 @@
 
 ## febr 1.9.1
 
-* __Improvement 1.__ Minor documentation changes, making it more accurate. The repository is now
+* __Improvement.__ Minor documentation changes, making it more accurate. The repository is now
   called _Data Repository of the Brazilian Soil_.
 
 ## febr 1.9.0
