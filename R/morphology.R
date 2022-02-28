@@ -40,10 +40,9 @@ morphology <-
             dry_color <- 2
           } else {
             # Fonte: https://stackoverflow.com/questions/8020848/
-            # ú --> \u00fa
+            # Latin Small Letter U With Acute (U+00FA) https://unicodeplus.com/U+00FA
             wet_color <- grep(
-              pattern = "(\u00famido|\U00FAmida|umido|umida)", 
-              x = res[!no_color][[i]])
+              pattern = "(\u00famido|\U00FAmida|umido|umida)", x = res[!no_color][[i]])
             dry_color <- grep(pattern = "(seco|seca)", x = res[!no_color][[i]])
           }
           res[!no_color][[i]] <-
@@ -53,14 +52,15 @@ morphology <-
         res <- do.call(rbind, res)
         colnames(res) <- c("cor_matriz_umido_munsell", "cor_matriz_seco_munsell")
         # Limpeza dos dados
+        # Latin Small Letter U With Acute (U+00FA) https://unicodeplus.com/U+00FA
         res[, 1] <- sub(
-          pattern = "(\u00famido|\U00FAmida|umido|umida)", 
-          replacement = "", x = res[, 1]) # ú --> \u00fa
+          pattern = "(\u00famido|\U00FAmida|umido|umida)", replacement = "", x = res[, 1])
         res[, 2] <- sub("(seco|seca)", "", res[, 2])
         res <- sub(", ", "", res)
         res <- trimws(res)
         res <- sub(",", ".", res)
-        res <- sub("\u00be", "3/4", res) # ¾ --> \u00be
+        # U+00BE: Vulgar Fraction Three Quarters (Unicode Character) https://unicodeplus.com/U+00BE
+        res <- sub("\u00be", "3/4", res)
       },
       structure = {
         res <- strsplit(x, ";")
@@ -68,7 +68,8 @@ morphology <-
         res <- sapply(res, function(x) x[3])
         res <- trimws(res)
         # Grau da estrutura
-        # ã -->  \u00e3
+        # Latin Small Letter A With Tilde (U+00E3) https://unicodeplus.com/U+00E3
+        # Latin Small Letter C With Cedilla (U+00E7) https://unicodeplus.com/U+00E7
         str_degree <- c("gr\u00e3os simples", "maci\u00e7a", "fraca", "moderada", "forte")
         idx <- list()
         for (i in seq_along(str_degree)) {
@@ -80,7 +81,9 @@ morphology <-
         str_type <-
           c("laminar", "prism\u00e1tica", "colunar", "blocos angulares", "blocos subangulares",
             "granular")
-        no_str <- estrutura_grau %in% c("gr\u00e3os simples", "maci\u00e7a") # ç --> \u00e7
+        # Latin Small Letter A With Tilde (U+00E3) https://unicodeplus.com/U+00E3
+        # Latin Small Letter C With Cedilla (U+00E7) https://unicodeplus.com/U+00E7
+        no_str <- estrutura_grau %in% c("gr\u00e3os simples", "maci\u00e7a")
         idx <- list()
         for (i in seq_along(str_type)) {
           idx[[i]] <- grepl(str_type[i], res[!no_str])
@@ -109,8 +112,8 @@ morphology <-
         idx <- grepl("cerosidade", res)
         res[idx] <- sapply(res0[idx], function(x) x[5])
         res <- trimws(res)
-        # Consistência do solo úmido (friabilidade)
-        friabi <- 
+        # Consistencia do solo úmido (friabilidade)
+        friabi <-
           c("solt(o|a)", "muito fri\u00e1vel", "fri\u00e1vel", "firme", "muito firme",
             "extremamente firme")
         idx <- list()
@@ -121,7 +124,7 @@ morphology <-
         consistencia_umido <- rep(NA, length(res))
         consistencia_umido <- apply(idx, 1, function(x) friabi[x][1])
         consistencia_umido <- gsub("(o|a)", "o", consistencia_umido, fixed = TRUE)
-        # Consistência do solo seco (dureza)
+        # Consistencia do solo seco (dureza)
         dureza <-
           c("solt(o|a)", "maci(o|a)", "ligeiramente dur(o|a)", "dur(o|a)", "muito dur(o|a)",
             "extremamente dur(o|a)")
@@ -133,8 +136,8 @@ morphology <-
         consistencia_seco <- rep(NA, length(res))
         consistencia_seco <- apply(idx, 1, function(x) dureza[x][1])
         consistencia_seco <- gsub("(o|a)", "o", consistencia_seco, fixed = TRUE)
-        # Consistência do solo molhado (plasticidade)
-        plasti_class <- 
+        # Consistencia do solo molhado (plasticidade)
+        plasti_class <-
           c("n\u00e3o-pl\u00e1stic(o|a)", "ligeiramente pl\u00e1stic(o|a)", "pl\u00e1stic(o|a)",
             "muito pl\u00e1stic(o|a)")
         idx <- list()
@@ -145,8 +148,8 @@ morphology <-
         plasticidade <- rep(NA, length(res))
         plasticidade <- apply(idx, 1, function(x) plasti_class[x][1])
         plasticidade <- gsub("(o|a)", "o", plasticidade, fixed = TRUE)
-        # Consistência do solo molhado (pegajosidade)
-        pegajo_class <- 
+        # Consistencia do solo molhado (pegajosidade)
+        pegajo_class <-
           c("n\u00e3o pegajos(o|a)", "ligeiramente pegajos(o|a)", "pegajos(o|a)",
             "muito pegajos(o|a)")
         idx <- list()

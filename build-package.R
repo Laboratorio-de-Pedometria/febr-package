@@ -29,7 +29,10 @@ devtools::check_win_devel("febr-package/")
 # check in R-hub ----
 # rhub::validate_email(email = "alessandrosamuelrosa@gmail.com")
 # rhub::check_on_windows()
-devtools::check_rhub("febr-package/")
+# rhub::platforms()
+platforms <- c("fedora-clang-devel",
+  "ubuntu-gcc-release", "debian-clang-devel", "windows-x86_64-devel")
+devtools::check_rhub("febr-package/", platforms = platforms)
 
 devtools::build()
 

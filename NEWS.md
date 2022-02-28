@@ -1,5 +1,10 @@
 # News
 
+## febr 1.9.9
+
+* __Bug fix.__ There were R code comments using non-ASCII characters. This was causing a warning in
+  Debian Linux, R-devel, clang, ISO-8859-15 locale. Those comments were removed in this patch.
+
 ## febr 1.9.8
 
 * __Improvement.__ Package description is clearer and follows CRAN policies.
