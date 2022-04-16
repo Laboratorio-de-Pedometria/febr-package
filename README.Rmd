@@ -8,12 +8,12 @@ html_preview: false
 # Repositório de Dados do Solo Brasileiro
 
 ```{r, echo=FALSE}
-pkg.info <- drop(read.dcf(file = "DESCRIPTION", fields = c("Title", "Version", "Date")))
+pkg.info <- read.dcf(file = "DESCRIPTION", fields = c("Title", "Version", "Date"))
+pkg.info <- drop(pkg.info)
 ```
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![packageversion](https://img.shields.io/badge/devel%20version-`r pkg.info["Version"]`-firebrick.svg?style=flat-square)](commits/master)
-<!-- [![Build Status](https://travis-ci.org/samuel-rosa/febr-package.svg?branch=master)](https://travis-ci.org/samuel-rosa/febr-package) -->
 [![CRAN](https://www.r-pkg.org/badges/version/febr)](https://cran.r-project.org/package=febr)
 [![cran checks](https://cranchecks.info/badges/worst/febr)](https://cran.r-project.org/web/checks/check_results_febr.html)
 [![Downloads](https://cranlogs.r-pkg.org/badges/febr?color=brightgreen)](https://www.r-pkg.org/pkg/febr)
@@ -98,8 +98,8 @@ O objeto retornado é uma lista de conjuntos de dados, os quais são listas com 
 
 ## Quero colaborar
 
-Nós usamos o modelo de desenvolvimento colaborativo *fork & pull*.
-Isso significa que você tem liberdade para fazer um cópia paralela -- *fork* -- do código fonte e fazer as alterações que julgar necessárias.
+Nós usamos o modelo de desenvolvimento colaborativo _fork & pull_.
+Isso significa que você tem liberdade para fazer um cópia paralela -- _fork_ -- do código fonte e fazer as alterações que julgar necessárias.
 Isso tudo sem que seja necessário pedir qualquer autorização para a gente.
-Caso as alterações que você realizou na sua cópia pessoal do código fonte sejam interessantes e você tenha interesse em compartilhar as mesmas conosco, então basta solicitar que sejam puxadas -- *pull request* -- para o código fonte original.
-Depois de uma revisão das alterações, nós decidiremos se elas podem ser fundidas -- *merge* -- com o código fonte original.
+Caso as alterações que você realizou na sua cópia pessoal do código fonte sejam interessantes e você tenha interesse em compartilhar as mesmas conosco, então basta solicitar que sejam puxadas -- _pull request_ -- para o código fonte original.
+Depois de uma revisão das alterações, nós decidiremos se elas podem ser fundidas -- _merge_ -- com o código fonte original.
